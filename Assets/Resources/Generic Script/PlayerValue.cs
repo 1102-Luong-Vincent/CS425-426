@@ -5,15 +5,23 @@ using static ExcelReader;
 
 public class PlayerValue : MonoBehaviour
 {
+    public static PlayerValue Instance { get; private set; }
     public List<CardValue> EquipmentCards = new List<CardValue>();
     public List<CardValue> AllLibraryCards = new List<CardValue>();
     private List<CardValue> AllCards = new List<CardValue>();
 
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         Init();
+        DontDestroyOnLoad(gameObject);
     }
-
 
     public void Init()
     {
