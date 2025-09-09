@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public enum Rarity
+public enum CardRarity
 {
     Common, Rare, VeryRare,Epic
 }
 
-public enum Ability
+public enum CardAbility
 {
-    Buffs, Potions, Items, Healing
+    None,Buffs, Potions, Items, Healing
 }
 
 public class CardValue 
@@ -16,15 +16,17 @@ public class CardValue
     public Sprite CardSprite;
     public string CardDescribe;
     // not yet wait, maybe need excel file
-    public Rarity rarity; 
-    public Ability ability;
+    public CardRarity rarity; 
+    public CardAbility ability;
 
 
-    public CardValue(string CardName) // maybe need make excel to store data or something;
+    public CardValue(ExcelCardData excelCardData) // maybe need make excel to store data or something;
     {
-        this.CardName = CardName;
+        this.CardName = excelCardData.CardName;
         CardSprite = GetCardSprite();
-        CardDescribe = GetCardDescribe();
+        rarity = excelCardData.rarity;
+        ability = excelCardData.ability;
+        CardDescribe = excelCardData.CardDescribe;
     }
 
 
@@ -33,20 +35,5 @@ public class CardValue
         return cardSprite;
     }
 
-    string GetCardDescribe()// maybe need make excel to store data or something;
-    {
-        string cardDescribe = "";
-
-        switch (CardName)
-        {
-            case "Bandage": return "heals player";
-            case "Knife": return "has fast speed. The player can attack twice. Damage is low";
-            case "Pistol": return "has average speed. Damage is average. *unique ability: bullet can shoot through multiple enemies*";
-            case "Shotgun": return "has slow speed. Damage is high. *unique ability: bullets have a chance to dismember enemies, causing them to do less damage to the player*";
-
-        }
-        return cardDescribe;
-
-    }
 
 }
