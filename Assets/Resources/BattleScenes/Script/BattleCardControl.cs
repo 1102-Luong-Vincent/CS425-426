@@ -13,7 +13,7 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private Vector2 originalAnchoredPos;
     private Vector3 originalScale;
-    private float hoverOffset = 170f;
+    private float hoverOffset = 200f;
 
     private bool isCentered = false;
 
@@ -66,19 +66,36 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             if (!isCentered)
             {
-                rt.SetAsLastSibling();
-                RectTransform cardZoneRT = BattlePlayerValue.Instance.CardZone.GetComponent<RectTransform>();
-                rt.anchoredPosition = new Vector2(0f, -cardZoneRT.anchoredPosition.y);
-                rt.localScale = originalScale * 2f; 
-                isCentered = true;
-            }
+                BattlePlayerValue.Instance.SetSelBattleCardControl(this);
+             }
             else
             {
-                rt.anchoredPosition = originalAnchoredPos;
-                rt.localScale = originalScale;
-                isCentered = false;
+                BattlePlayerValue.Instance.SetSelBattleCardControl(null);
             }
         }
+    }
+
+
+    public void ShowCardDetails()
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.SetAsLastSibling();
+        RectTransform cardZoneRT = BattlePlayerValue.Instance.CardZone.GetComponent<RectTransform>();
+        rt.anchoredPosition = new Vector2(0f, -cardZoneRT.anchoredPosition.y);
+        rt.localScale = originalScale * 2f;
+        isCentered = true;
+
+    }
+
+    public void CanceCardDetails()
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        rt.anchoredPosition = originalAnchoredPos;
+        rt.localScale = originalScale;
+        isCentered = false;
+
+
+
     }
 
     void UseCard()

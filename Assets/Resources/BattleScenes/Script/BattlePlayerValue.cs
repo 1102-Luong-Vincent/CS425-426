@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BattlePlayerValue : MonoBehaviour
 {
     public static BattlePlayerValue Instance { get; private set; }
+    private BattleCardControl battleCardControl;
     public BattleCardControl CardControl;
     public Transform CardZone;
     public List<CardValue> BattleCards = new List<CardValue>();
@@ -64,6 +65,22 @@ public class BattlePlayerValue : MonoBehaviour
             float xPos = -parentWidth / 2 + cardWidth / 2 + i * spacing; 
             rt.anchoredPosition = new Vector2(xPos, 0f);
         }
+    }
+
+    public void SetSelBattleCardControl(BattleCardControl battleCardControl)
+    {
+        if (this.battleCardControl != null)
+        {
+            this.battleCardControl.CanceCardDetails();
+            this.battleCardControl = null;
+        }
+        this.battleCardControl = battleCardControl;
+        if (battleCardControl != null)
+        {
+            battleCardControl.ShowCardDetails();
+
+        }
+
     }
 
 

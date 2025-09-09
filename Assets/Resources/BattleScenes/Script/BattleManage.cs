@@ -4,7 +4,7 @@ public class BattleManage : MonoBehaviour
 {
     public static BattleManage Instance { get; private set; }
     public PlayerValue playerValue;
-
+   
     private void Awake()
     {
         if (Instance != null && Instance != this)
