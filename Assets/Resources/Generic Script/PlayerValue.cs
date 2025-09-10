@@ -1,7 +1,18 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ExcelReader;
+
+public enum SceneType
+{
+    None,
+    TempMap,
+    BattleScene,
+    TimeGame,
+    RhythmGame,
+}
+
 
 public class PlayerValue : MonoBehaviour
 {
@@ -57,6 +68,23 @@ public class PlayerValue : MonoBehaviour
             }
         }
     }
+
+    public void LoadSceneByEnum(SceneType scene)
+    {
+
+        switch (scene)
+        {
+            case SceneType.None: return;
+            case SceneType.TempMap:SceneManager.LoadScene("TempMap");break;
+            case SceneType.BattleScene:SceneManager.LoadScene("BattleScene");break;
+            case SceneType.TimeGame:SceneManager.LoadScene("TimeGame");break;
+            case SceneType.RhythmGame:SceneManager.LoadScene("RhythmGame");break;
+            default:
+                Debug.LogWarning("Undefined Scene?" + scene);
+                break;
+        }
+    }
+
 
 }
 

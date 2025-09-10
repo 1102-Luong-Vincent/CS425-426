@@ -3,7 +3,6 @@ using UnityEngine;
 public class BattleManage : MonoBehaviour
 {
     public static BattleManage Instance { get; private set; }
-    public PlayerValue playerValue;
    
     private void Awake()
     {
@@ -31,7 +30,7 @@ public class BattleManage : MonoBehaviour
 
     void Test()
     {
-        BattlePlayerValue.Instance.SetBattlePlayerValue(playerValue);
+        BattlePlayerValue.Instance.SetBattlePlayerValue(PlayerValue.Instance);
 
     }
 
