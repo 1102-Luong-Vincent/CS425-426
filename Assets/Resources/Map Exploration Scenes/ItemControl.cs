@@ -9,7 +9,6 @@ public class ItemControl : MonoBehaviour
     {
        if (other.GetComponent<PlayerMoveControl>() != null)
         {
-            Debug.Log("Hit happend");
             if (targetScene == SceneType.None) return;
             PlayerValue.Instance.LoadSceneByEnum(targetScene);
         }
