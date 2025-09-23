@@ -27,12 +27,10 @@ public class SoundManage : MonoBehaviour
 
 
     #region Background
-    public void SetBackgroundVolume(float volume)
+    public void SetBackgroundVolume(float volume)  // make sure only setting Value use it , other mean only 1 reference form SettingValue;
     {
         backgroundMusic.volume = Mathf.Clamp01(volume);
     }
-
-
 
     public void PlayBackgroundMusic(string fileName, bool loop = true)
     {
@@ -61,7 +59,7 @@ public class SoundManage : MonoBehaviour
 
 
     #region SoundEffect
-    public void SetSoundEffectVolume(float volume)
+    public void SetSoundEffectVolume(float volume) // make sure only setting Value use it , other mean only 1 reference form SettingValue;
     {
         soundEffect.volume = Mathf.Clamp01(volume);
     }
