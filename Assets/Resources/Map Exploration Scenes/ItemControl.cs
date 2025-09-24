@@ -10,11 +10,9 @@ public class ItemControl : MonoBehaviour
        if (other.GetComponent<PlayerMoveControl>() != null)
         {
             if (targetScene == SceneType.None) return;
-            PlayerValue.Instance.LoadSceneByEnum(targetScene);
+            GameValue.Instance.LoadSceneByEnum(targetScene);
         }
     }
-
-
 
 
 }

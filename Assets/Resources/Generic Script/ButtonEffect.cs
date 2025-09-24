@@ -4,6 +4,13 @@ using System;
 
 public static class ButtonEffect
 {
+
+    public static void OnMainMenuButtonClick(Button button, Action onClickAction, bool loop = false)
+    {
+        AddButtonEffect(button, "TestClick", onClickAction, loop);
+    }
+
+
     public static void AddButtonEffect(Button button, AudioClip clip, Action onClickAction, bool loop = false)
     {
         if (button == null) return;

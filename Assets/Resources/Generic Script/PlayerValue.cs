@@ -4,55 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ExcelReader;
 
-public enum SceneType
+public class PlayerValue
 {
-    None,
-    TempMap,
-    BattleScene,
-    TimeGame,
-    RhythmGame,
-}
-
-
-public class PlayerValue : MonoBehaviour
-{
-    public static PlayerValue Instance { get; private set; }
     public List<CardValue> EquipmentCards = new List<CardValue>();
     public List<CardValue> AllLibraryCards = new List<CardValue>();
-    private List<CardValue> AllCards = new List<CardValue>();
 
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
+    public PlayerValue() {
         Init();
-        DontDestroyOnLoad(gameObject);
     }
-
     public void Init()
     {
-        InitAllCardInExcel();
         SetPlayerEquipmentCards();
-
     }
-
-    void InitAllCardInExcel()
-    {
-        List<ExcelCardData> allExcelCardDatas = GetCardData();
-        Debug.Log($"in init All card READER {allExcelCardDatas.Count}");
-        AllCards.Clear();
-        foreach (ExcelCardData excelData in allExcelCardDatas)
-        {
-            CardValue card = new CardValue(excelData);
-            AllCards.Add(card);
-        }
-    }
-
     void SetPlayerEquipmentCards()
     {
         EquipmentCards.Clear();
@@ -60,7 +23,7 @@ public class PlayerValue : MonoBehaviour
 
         foreach (string equipName in starterEquipment)
         {
-            CardValue foundCard = AllCards.Find(card => card.CardName == equipName);
+            CardValue foundCard = GameValue.Instance.GetCardValue(equipName);
 
             if (foundCard != null)
             {
@@ -69,24 +32,77 @@ public class PlayerValue : MonoBehaviour
         }
     }
 
-    public void LoadSceneByEnum(SceneType scene)
+    public Vector3 GetPlayerPosition()
     {
-
-        switch (scene)
+        if (PlayerMoveControl.Instance != null) {
+            return PlayerMoveControl.Instance.GetPlayerCurrentPosition();
+        }else
         {
-            case SceneType.None: return;
-            case SceneType.TempMap:SceneManager.LoadScene("TempMap");break;
-            case SceneType.BattleScene:SceneManager.LoadScene("BattleScene");break;
-            case SceneType.TimeGame:SceneManager.LoadScene("TimeGame");break;
-            case SceneType.RhythmGame:SceneManager.LoadScene("RhythmGame");break;
-            default:
-                Debug.LogWarning("Undefined Scene?" + scene);
-                break;
+            return Vector3.zero;
         }
     }
 
 
+    public void SetPlayerSaveData(PlayerSaveData data)
+    {
+        foreach (string equipName in data.EquipmentSaveCards)
+        {
+            CardValue foundCard = GameValue.Instance.GetCardValue(equipName);
+            if (foundCard != null)
+            {
+                EquipmentCards.Add(foundCard);
+            }
+        }
+
+        foreach (string card in data.AllLibrarySaveCards)
+        {
+            CardValue foundCard = GameValue.Instance.GetCardValue(card);
+            if (foundCard != null)
+            {
+                AllLibraryCards.Add(foundCard);
+            }
+        }
+
+        SetPlayerPosition(data);
+    }
+
+    void SetPlayerPosition(PlayerSaveData data)
+    {
+        if (PlayerMoveControl.Instance == null) return;
+
+        PlayerMoveControl.Instance.SetPlayerPosition(data.GetPlayerPosition());
+
+    }
+
 }
 
+[System.Serializable]
+public class PlayerSaveData
+{
+    public List<string> EquipmentSaveCards = new List<string>();
+    public List<string> AllLibrarySaveCards = new List<string>();
+    public float PlayerPositionX, PlayerPositionY,PlayerPositionZ;
 
+    public PlayerSaveData(PlayerValue playerValue)
+    {
+        foreach (var equipmentCard in playerValue.EquipmentCards)
+        {
+            EquipmentSaveCards.Add(equipmentCard.CardName);
+        }
+        foreach (var card in playerValue.AllLibraryCards)
+        {
+            AllLibrarySaveCards.Add(card.CardName);
+        }
+        PlayerPositionX = playerValue.GetPlayerPosition().x;
+        PlayerPositionY = playerValue.GetPlayerPosition().y;
+        PlayerPositionZ = playerValue.GetPlayerPosition().z;
 
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
+        return playerPosition;
+    }
+
+}

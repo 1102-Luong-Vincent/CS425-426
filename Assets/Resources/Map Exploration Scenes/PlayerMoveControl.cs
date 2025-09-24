@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerMoveControl : MonoBehaviour
 {
+    public static PlayerMoveControl Instance;
     public float moveSpeed = 5f;
     public float sprintSpeed = 20f;
     public float jumpHeight = 2f;
@@ -14,6 +15,18 @@ public class PlayerMoveControl : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
 
     void Start()
     {
@@ -44,5 +57,15 @@ public class PlayerMoveControl : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void SetPlayerPosition(Vector3 position)
+    {
+        gameObject.transform.position = position;  
+    }
+
+    public Vector3 GetPlayerCurrentPosition()
+    {
+        return gameObject.transform.position;
     }
 }

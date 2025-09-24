@@ -11,7 +11,7 @@ public class TestScript : MonoBehaviour
 
     void OnBackButtonClick()
     {
-        PlayerValue.Instance.LoadSceneByEnum(SceneType.TempMap);
+        GameValue.Instance.LoadSceneByEnum(SceneType.TempMap);
     }
 
 

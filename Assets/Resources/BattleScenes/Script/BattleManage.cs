@@ -30,7 +30,7 @@ public class BattleManage : MonoBehaviour
 
     void Test()
     {
-        BattlePlayerValue.Instance.SetBattlePlayerValue(PlayerValue.Instance);
+        BattlePlayerValue.Instance.SetBattlePlayerValue(GameValue.Instance.GetPlayerValue());
 
     }
 

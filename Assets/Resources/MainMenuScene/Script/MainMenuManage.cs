@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static ButtonEffect;
 
 public class MainMenuManage : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static MainMenuManage Instance;
 
     [Header("Buttons")]
@@ -12,9 +12,10 @@ public class MainMenuManage : MonoBehaviour
     [System.Serializable]
     public class Buttons
     {
-        public Button startButton;
+        public Button StartButton;
+        public Button LoadButton;
         public Button OptionButton;
-        public Button exitButton;
+        public Button ExitButton;
     }
     public OptionPanelControl OptionPanelControl;
 
@@ -43,15 +44,25 @@ public class MainMenuManage : MonoBehaviour
 
     void InitButtons()
     {
-        buttons.startButton.onClick.AddListener(OnStarButtonClick);
-        buttons.OptionButton.onClick.AddListener(OnOptionButtonClick);
-        buttons.exitButton.onClick.AddListener(OnExitButtonClick);
+
+        OnMainMenuButtonClick(buttons.StartButton, OnStarButtonClick, false);
+        OnMainMenuButtonClick(buttons.LoadButton, OnLoadButtonClick, false);
+        OnMainMenuButtonClick(buttons.OptionButton, OnOptionButtonClick, false);
+        OnMainMenuButtonClick(buttons.ExitButton, OnExitButtonClick, false);
+
 
     }
 
     void OnStarButtonClick()
     {
-        PlayerValue.Instance.LoadSceneByEnum(SceneType.TempMap);
+        // !!! Remember to initialize GameValue
+        Debug.Log("Remember to initialize GameValue"); 
+        GameValue.Instance.LoadSceneByEnum(SceneType.TempMap);
+    }
+
+    void OnLoadButtonClick()
+    {
+        SaveLoadPanelControl.Instance.ShowPanel();
     }
 
     void OnOptionButtonClick()

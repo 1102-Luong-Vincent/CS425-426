@@ -170,13 +170,6 @@ public class OptionPanelControl : MonoBehaviour
     #endregion
     #region Helper Function
 
-
-    public static void OnMainMenuButtonClick(Button button, Action onClickAction, bool loop = false)
-    {
-        AddButtonEffect(button, "TestClick", onClickAction, loop);
-    }
-
-
     void OpenPanel(PanelType key)
     {
         CloseAllPanels();
