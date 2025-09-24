@@ -30,11 +30,14 @@ public class PlayerMoveControl : MonoBehaviour
 
     void Start()
     {
-        if (GameValue.Instance.GetSetPlayerPosition())
+      /* if (GameValue.Instance.GetSetPlayerPosition())
         {
             SetPlayerPosition(GameValue.Instance.GetPlayerPosition());
             GameValue.Instance.SetSetPlayerPosition(false);
-        }
+        }*/
+
+        SetPlayerPosition(GameValue.Instance.GetPlayerPosition());
+
         controller = GetComponent<CharacterController>();
     }
 

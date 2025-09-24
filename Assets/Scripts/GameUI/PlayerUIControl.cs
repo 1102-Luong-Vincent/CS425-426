@@ -6,8 +6,6 @@ public class PlayerUIControl : MonoBehaviour
     public Button SaveButton;
     public Button LoadButton;
 
-
-
     private void Awake()
     {
         SaveButton.onClick.AddListener(OnSaveButtonClick);

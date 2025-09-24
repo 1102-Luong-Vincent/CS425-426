@@ -10,6 +10,38 @@ using Debug = UnityEngine.Debug;
 public class ExcelReader
 {
     #region helper function
+
+    class ColumnReader
+    {
+        private IExcelDataReader reader;
+        private int index = 0;
+
+        public ColumnReader(IExcelDataReader reader)
+        {
+            this.reader = reader;
+        }
+
+        public int ReadInt()
+        {
+            return ExcelReader.ReadInt(reader, index++);
+        }
+
+        public string ReadString()
+        {
+            return ExcelReader.ReadString(reader, index++);
+        }
+
+        public float ReadFloat()
+        {
+            return ExcelReader.ReadFloat(reader, index++);
+        }
+
+        public bool ReadBool()
+        {
+            return ExcelReader.ReadBool(reader, index++);
+        }
+    }
+
     static int ReadInt(IExcelDataReader reader, int index)
     {
         try
@@ -33,7 +65,6 @@ public class ExcelReader
                     Debug.LogWarning($"[ReadInt] Cell content is a string but cannot be parsed as int: \"{s}\", at column index {index}");
             }
 
-            // Unexpected type
             Debug.LogWarning($"[ReadInt] Cell content is not an int, but {value.GetType().Name}. Content: {value}, at column index {index}");
             return 0;
         }
@@ -95,9 +126,43 @@ public class ExcelReader
     #endregion
 
 
+    public static List<ExcelStoryData> GetStoryData(string fileName)
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, $"Excel/Story/{fileName}.xlsx");
+
+        List<ExcelStoryData> excelDataList = new List<ExcelStoryData>();
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        if (!File.Exists(filePath))
+            return excelDataList;
+
+        using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            reader.Read();
+            do
+            {
+                while (reader.Read())
+                {
+                    var col = new ColumnReader(reader);
+                    ExcelStoryData data = new ExcelStoryData
+                    {
+                        ID = col.ReadInt(),
+                        Content = col.ReadString(),
+                        Effect = col.ReadString()
+                    };
+                    excelDataList.Add(data);
+                }
+
+            } while (reader.NextResult());
+        }
+        return excelDataList;
+    }
+
+
     public static List<ExcelCardData> GetCardData()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Value/CardValue.xlsx");
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/Value/CardValue.xlsx");
 
         List<ExcelCardData> excelDataList = new List<ExcelCardData>();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -106,46 +171,56 @@ public class ExcelReader
             return excelDataList;
 
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
         {
-            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            reader.Read();
+            do
             {
-                reader.Read();
-                do
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    var col = new ColumnReader(reader);
+                    ExcelCardData data = new ExcelCardData
                     {
-                        ExcelCardData data = new ExcelCardData();
-                        int j = 0;
-                        data.ID = ReadInt(reader, j++);
-                        data.CardName = ReadString(reader, j++);
-                        data.rarity = (CardRarity)ReadInt(reader, j++);
-                        string abilityStr = ReadString(reader, j++);
-                        if (!string.IsNullOrEmpty(abilityStr) &&
-                            Enum.TryParse<CardAbility>(abilityStr, true, out var abilityEnum))
-                        {
-                            data.ability = abilityEnum;
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"[Excel Import] Could not parse Ability: {abilityStr}, defaulting to None");
-                            data.ability = CardAbility.None;
-                        }
+                        ID = col.ReadInt(),
+                        CardName = col.ReadString(),
+                        rarity = (CardRarity)col.ReadInt()
+                    };
 
-                        data.CardDescribe = ReadString(reader, j++);
-                        excelDataList.Add(data);
+                    string abilityStr = col.ReadString();
+                    if (!string.IsNullOrEmpty(abilityStr) &&
+                        Enum.TryParse<CardAbility>(abilityStr, true, out var abilityEnum))
+                    {
+                        data.ability = abilityEnum;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[Excel Import] Could not parse Ability: {abilityStr}, defaulting to None");
+                        data.ability = CardAbility.None;
                     }
 
-                } while (reader.NextResult());
-            }
+                    data.CardDescribe = col.ReadString();
+                    excelDataList.Add(data);
+                }
+
+            } while (reader.NextResult());
         }
         return excelDataList;
     }
-
 
 }
 
 
 #region Excel Data
+
+
+public struct ExcelStoryData
+{
+    public int ID;
+    public string Content;
+    public string Effect;
+}
+
+
 
 public struct ExcelCardData
 {

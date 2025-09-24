@@ -5,6 +5,7 @@ using System;
 [System.Serializable]
 public class SettingData
 {
+    public SaveData saveData = null;
     public float backgroundVolume = 0.7f;
     public float soundEffectsVolume = 0.7f;
     public ScreenType screenType = ScreenType.Full;
@@ -48,9 +49,11 @@ public class SettingValue : MonoBehaviour
 
     public void SaveSettings()
     {
+        SaveCurrentGameValue();
         string json = JsonUtility.ToJson(settingData, true);
         File.WriteAllText(savePath, json);
         Debug.Log("Settings saved to " + savePath);
+
     }
 
     public void LoadSettings()
@@ -66,6 +69,12 @@ public class SettingValue : MonoBehaviour
             SaveSettings();
             Debug.Log("No settings found, created default at " + savePath);
         }
+    }
+
+    void SaveCurrentGameValue()
+    {
+        if (GameValue.Instance.GetCurrentScence() == SceneType.None) return;
+        settingData.saveData = new SaveData(savePath, GameValue.Instance);
     }
 
     public SettingData GetSettingData()

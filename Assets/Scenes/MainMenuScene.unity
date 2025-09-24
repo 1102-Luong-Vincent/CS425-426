@@ -5096,6 +5096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttons:
+    ContinueButton: {fileID: 1197354248}
     StartButton: {fileID: 57377630}
     LoadButton: {fileID: 2094725876}
     OptionButton: {fileID: 592858672}
@@ -6605,6 +6606,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3491627990372175757, guid: 2d04300e254bdf742ba76d14a546b026, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169992717995860087, guid: 2d04300e254bdf742ba76d14a546b026, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169992717995860087, guid: 2d04300e254bdf742ba76d14a546b026, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8051891914124910406, guid: 2d04300e254bdf742ba76d14a546b026, type: 3}

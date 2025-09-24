@@ -16,4 +16,9 @@ public class SaveData
         playerSaveData = new PlayerSaveData(gameValue.GetPlayerValue());
         SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
+
+    public bool IsEmpty()
+    {
+        return string.IsNullOrEmpty(SavePath);
+    }
 }

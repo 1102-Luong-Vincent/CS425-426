@@ -7,6 +7,7 @@ using static ExcelReader;
 public enum SceneType
 {
     None,
+    StoryScene,
     TempMap,
     BattleScene,
     TimeGame,
@@ -22,6 +23,7 @@ public class GameValue : MonoBehaviour
     private bool SetPlayerPosition = false;
     SceneType CurrentScene = SceneType.None;
     private Vector3 playerPosition = Vector3.zero;
+    private String happendStoryName = string.Empty;
 
     private void Awake()
     {
@@ -80,7 +82,7 @@ public class GameValue : MonoBehaviour
         if (IsSceneInBuild(sceneName))
         {
             CurrentScene = scene;
-            SetSetPlayerPosition(true);
+            //SetSetPlayerPosition(true);
             SceneManager.LoadScene(sceneName);
         }
         else
@@ -110,7 +112,7 @@ public class GameValue : MonoBehaviour
     }
 
 
-    public bool GetSetPlayerPosition()
+ /*   public bool GetSetPlayerPosition()
     {
         return SetPlayerPosition;
     }
@@ -119,7 +121,7 @@ public class GameValue : MonoBehaviour
     {
         if (!isSetPlayerPosition) playerPosition = Vector3.zero;
         SetPlayerPosition = isSetPlayerPosition;
-    }
+    }*/
 
     public Vector3 GetPlayerPosition()
     {
@@ -134,5 +136,15 @@ public class GameValue : MonoBehaviour
     public PlayerValue GetPlayerValue()
     {
         return playerValue;
+    }
+
+    public string GetHappendStoryName()
+    {
+        return happendStoryName;
+    }
+
+    public void SetHappendStoryName(string happendStoryName)
+    {
+      this.happendStoryName = happendStoryName;
     }
 }

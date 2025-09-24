@@ -12,6 +12,7 @@ public class MainMenuManage : MonoBehaviour
     [System.Serializable]
     public class Buttons
     {
+        public Button ContinueButton;
         public Button StartButton;
         public Button LoadButton;
         public Button OptionButton;
@@ -44,20 +45,26 @@ public class MainMenuManage : MonoBehaviour
 
     void InitButtons()
     {
+           
+        OnMainMenuButtonClick(buttons.ContinueButton, OnContinueButtonClick);
+        buttons.ContinueButton.gameObject.SetActive(!SettingValue.Instance.GetSettingData().saveData.IsEmpty());
 
-        OnMainMenuButtonClick(buttons.StartButton, OnStarButtonClick, false);
-        OnMainMenuButtonClick(buttons.LoadButton, OnLoadButtonClick, false);
-        OnMainMenuButtonClick(buttons.OptionButton, OnOptionButtonClick, false);
-        OnMainMenuButtonClick(buttons.ExitButton, OnExitButtonClick, false);
+        OnMainMenuButtonClick(buttons.StartButton, OnStarButtonClick);
+        OnMainMenuButtonClick(buttons.LoadButton, OnLoadButtonClick);
+        OnMainMenuButtonClick(buttons.OptionButton, OnOptionButtonClick);
+        OnMainMenuButtonClick(buttons.ExitButton, OnExitButtonClick);
+    }
 
-
+    void OnContinueButtonClick()
+    {
+        GameValue.Instance.SetSaveData(SettingValue.Instance.GetSettingData().saveData);
     }
 
     void OnStarButtonClick()
     {
-        // !!! Remember to initialize GameValue
-        Debug.Log("Remember to initialize GameValue"); 
-        GameValue.Instance.LoadSceneByEnum(SceneType.TempMap);
+        Debug.Log("Remember to initialize GameValue");
+        GameValue.Instance.SetHappendStoryName(StoryName.Prologue);
+        GameValue.Instance.LoadSceneByEnum(SceneType.StoryScene);
     }
 
     void OnLoadButtonClick()
