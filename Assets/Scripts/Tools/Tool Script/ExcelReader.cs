@@ -1,11 +1,13 @@
-using System.Collections.Generic;
 using ExcelDataReader;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System;
-using System.Diagnostics;
 using UnityEngine;
+
 using static ExcelReader;
+using static EnumHelper;
 using Debug = UnityEngine.Debug;
 public class ExcelReader
 {
@@ -65,7 +67,7 @@ public class ExcelReader
                     Debug.LogWarning($"[ReadInt] Cell content is a string but cannot be parsed as int: \"{s}\", at column index {index}");
             }
 
-            Debug.LogWarning($"[ReadInt] Cell content is not an int, but {value.GetType().Name}. Content: {value}, at column index {index}");
+            UnityEngine.Debug.LogWarning($"[ReadInt] Cell content is not an int, but {value.GetType().Name}. Content: {value}, at column index {index}");
             return 0;
         }
         catch (Exception ex)
@@ -183,22 +185,13 @@ public class ExcelReader
                     {
                         ID = col.ReadInt(),
                         CardName = col.ReadString(),
-                        rarity = (CardRarity)col.ReadInt()
+                        cardType = ParseEnumOrDefault<CardType>(col.ReadString()),
+                        rarity = (CardRarity)col.ReadInt(),
+                        ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
+                        CardDescribe = col.ReadString()
+
                     };
 
-                    string abilityStr = col.ReadString();
-                    if (!string.IsNullOrEmpty(abilityStr) &&
-                        Enum.TryParse<CardAbility>(abilityStr, true, out var abilityEnum))
-                    {
-                        data.ability = abilityEnum;
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"[Excel Import] Could not parse Ability: {abilityStr}, defaulting to None");
-                        data.ability = CardAbility.None;
-                    }
-
-                    data.CardDescribe = col.ReadString();
                     excelDataList.Add(data);
                 }
 
@@ -226,6 +219,7 @@ public struct ExcelCardData
 {
     public int ID;
     public string CardName;
+    public CardType cardType;
     public CardRarity rarity;
     public CardAbility ability;
     public string CardDescribe;
