@@ -21,6 +21,28 @@ public static class CommandExecutor
         }
     }
 
+
+
+    public static string UnwrapWaitRecursive(string effect)
+    {
+        if (string.IsNullOrEmpty(effect)) return effect;
+
+        if (TryParseEffect(effect, out string functionName, out string[] args))
+        {
+            if (functionName == FunctionName.Wait && args.Length >= 2)
+            {
+                // Recursively unwrap the nested effect (2nd argument)
+                return UnwrapWaitRecursive(args[1].Trim());
+            }
+        }
+
+        // Not a Wait function -> return as is
+        return effect;
+    }
+
+
+
+
     // Parse function name and argument strings
     public static bool TryParseEffect(string effect, out string functionName, out string[] args)
     {

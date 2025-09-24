@@ -54,9 +54,16 @@ public class StoryManage : MonoBehaviour
         for (int i = currentLineIndex; i < storyLines.Count; i++)
         {
             string effect = storyLines[i].Effect;
+
             if (!string.IsNullOrEmpty(effect))
             {
-                ExecuteEffect(effect); // Trigger the effect (e.g., Wait, LoadScene, etc.)
+                // Remove all nested Wait(...) before execution
+                string unwrapped = UnwrapWaitRecursive(effect);
+
+                if (!string.IsNullOrEmpty(unwrapped))
+                {
+                    ExecuteEffect(unwrapped); // Trigger the final unwrapped effect
+                }
             }
         }
 
