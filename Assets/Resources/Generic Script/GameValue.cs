@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +19,9 @@ public class GameValue : MonoBehaviour
     public static GameValue Instance;
     private PlayerValue playerValue;
     private List<CardValue> AllCards = new List<CardValue>();
-
+    private bool SetPlayerPosition = false;
+    SceneType CurrentScene = SceneType.None;
+    private Vector3 playerPosition = Vector3.zero;
 
     private void Awake()
     {
@@ -57,8 +60,6 @@ public class GameValue : MonoBehaviour
     }
 
 
-
-
     void Start()
     {
         
@@ -72,26 +73,63 @@ public class GameValue : MonoBehaviour
 
     public void LoadSceneByEnum(SceneType scene)
     {
+        if (scene == SceneType.None) return;
 
-        switch (scene)
+        string sceneName = scene.ToString();
+
+        if (IsSceneInBuild(sceneName))
         {
-            case SceneType.None: return;
-            case SceneType.TempMap: SceneManager.LoadScene("TempMap"); break;
-            case SceneType.BattleScene: SceneManager.LoadScene("BattleScene"); break;
-            case SceneType.TimeGame: SceneManager.LoadScene("TimeGame"); break;
-            case SceneType.RhythmGame: SceneManager.LoadScene("RhythmGame"); break;
-            default:
-                Debug.LogWarning("Undefined Scene?" + scene);
-                break;
+            CurrentScene = scene;
+            SetSetPlayerPosition(true);
+            SceneManager.LoadScene(sceneName);
         }
+        else
+        {
+            Debug.LogWarning($"Scene {sceneName} not found in Build Settings!");
+        }
+    }
+    private bool IsSceneInBuild(string sceneName)
+    {
+        int count = SceneManager.sceneCountInBuildSettings;
+        for (int i = 0; i < count; i++)
+        {
+            string path = SceneUtility.GetScenePathByBuildIndex(i);
+            string name = System.IO.Path.GetFileNameWithoutExtension(path);
+            if (string.Equals(name, sceneName, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
     }
 
 
     public void SetSaveData(SaveData saveData)
     {
         playerValue.SetPlayerSaveData(saveData.playerSaveData);
+        playerPosition = saveData.playerSaveData.GetPlayerPosition();
+        LoadSceneByEnum(saveData.SceneType);
     }
 
+
+    public bool GetSetPlayerPosition()
+    {
+        return SetPlayerPosition;
+    }
+
+    public void SetSetPlayerPosition(bool isSetPlayerPosition)
+    {
+        if (!isSetPlayerPosition) playerPosition = Vector3.zero;
+        SetPlayerPosition = isSetPlayerPosition;
+    }
+
+    public Vector3 GetPlayerPosition()
+    {
+        return playerPosition;  
+    }
+
+    public SceneType GetCurrentScence()
+    {
+        return CurrentScene;
+    }
 
     public PlayerValue GetPlayerValue()
     {
