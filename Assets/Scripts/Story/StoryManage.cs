@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using static ExcelReader;
 using static CommandExecutor;
+using UnityEngine.SceneManagement;
 
 
 public static class StoryName
@@ -40,6 +41,8 @@ public class StoryManage : MonoBehaviour
 
         // Execute all remaining effects and instantly show the last story line
         DisplayAllEffectsAndLastLine();
+
+        LoadGameStartScene();
     }
 
     /// <summary>
@@ -72,6 +75,8 @@ public class StoryManage : MonoBehaviour
 
         // Update the current line index to the end to prevent further display
         currentLineIndex = storyLines.Count;
+
+        LoadGameStartScene();
     }
 
     public void SetStory(string fileName)
@@ -101,8 +106,9 @@ public class StoryManage : MonoBehaviour
 
             yield return new WaitForSeconds(timeBetweenLines); // Wait for the specified time 
             currentLineIndex++;
-        }
 
+        }
+        LoadGameStartScene();
     }
 
     System.Collections.IEnumerator LineSpeed(string speed)
@@ -118,5 +124,10 @@ public class StoryManage : MonoBehaviour
     void ExecuteEffect(string effect)
     {
          CommandExecutor.Execute(this,effect); 
+    }
+
+    void LoadGameStartScene()
+    {
+        GameValue.Instance.LoadSceneByEnum(SceneType.GameStartScene);
     }
 }

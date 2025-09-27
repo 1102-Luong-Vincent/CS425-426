@@ -12,6 +12,7 @@ public enum SceneType
     BattleScene,
     TimeGame,
     RhythmGame,
+    GameStartScene,
 }
 
 
