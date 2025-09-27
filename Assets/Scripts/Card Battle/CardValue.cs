@@ -2,7 +2,7 @@ using UnityEngine;
 
 public enum CardType
 {
-    Weapons
+    Weapons, AoE, SupportItems
 }
 
 public enum CardRarity
@@ -37,10 +37,13 @@ public class CardValue
         CardSprite = GetCardSprite();
 
     }
-    Sprite GetCardSprite() { 
-        Sprite cardSprite = Resources.Load<Sprite>($"Sprite/Card/{CardType.ToString()}/{CardName}/{CardName.ToLower()}");
+    Sprite GetCardSprite()
+    {
+        string path = $"Sprite/Card/{CardType}/{CardName}/{CardName.ToLower()}";
+        Debug.Log($"[LoadCardSprite] Try load: {path}");
+        Sprite cardSprite = Resources.Load<Sprite>(path);
+        if (cardSprite == null) Debug.LogWarning($"[LoadCardSprite] cardSprite == null, check path or filename!");
         return cardSprite;
     }
-
 
 }
