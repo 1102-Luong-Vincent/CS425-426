@@ -19,7 +19,7 @@ public class PlayerValue
     void SetPlayerEquipmentCards()
     {
         EquipmentCards.Clear();
-        string[] starterEquipment = { "Bandage", "Knife", "Pistol", "Shotgun" };
+        string[] starterEquipment = { "Bandage", "Knife", "Pistol", "Shotgun","AAA" };
 
         foreach (string equipName in starterEquipment)
         {

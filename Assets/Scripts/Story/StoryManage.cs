@@ -41,8 +41,6 @@ public class StoryManage : MonoBehaviour
 
         // Execute all remaining effects and instantly show the last story line
         DisplayAllEffectsAndLastLine();
-
-        LoadGameStartScene();
     }
 
     /// <summary>
@@ -76,7 +74,6 @@ public class StoryManage : MonoBehaviour
         // Update the current line index to the end to prevent further display
         currentLineIndex = storyLines.Count;
 
-        LoadGameStartScene();
     }
 
     public void SetStory(string fileName)
@@ -108,7 +105,6 @@ public class StoryManage : MonoBehaviour
             currentLineIndex++;
 
         }
-        LoadGameStartScene();
     }
 
     System.Collections.IEnumerator LineSpeed(string speed)
@@ -126,8 +122,5 @@ public class StoryManage : MonoBehaviour
          CommandExecutor.Execute(this,effect); 
     }
 
-    void LoadGameStartScene()
-    {
-        GameValue.Instance.LoadSceneByEnum(SceneType.GameStartScene);
-    }
+
 }

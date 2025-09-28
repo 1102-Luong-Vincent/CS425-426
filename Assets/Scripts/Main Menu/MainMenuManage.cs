@@ -64,7 +64,8 @@ public class MainMenuManage : MonoBehaviour
     {
         Debug.Log("Remember to initialize GameValue");
         GameValue.Instance.SetHappendStoryName(StoryName.Prologue);
-        GameValue.Instance.LoadSceneByEnum(SceneType.StoryScene);
+       GameValue.Instance.LoadSceneByEnum(SceneType.StoryScene);
+    //    GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
     }
 
     void OnLoadButtonClick()

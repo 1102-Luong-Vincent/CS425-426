@@ -12,7 +12,7 @@ public enum CardRarity
 
 public enum CardAbility
 {
-    None,Buffs, Potions, Items, Healing
+    None,Attack,Buffs, Potions, Items, Healing
 }
 
 public class CardValue 
@@ -24,7 +24,12 @@ public class CardValue
     // not yet wait, maybe need excel file
     public CardRarity rarity; 
     public CardAbility ability;
+    public int weaponLevel;
+    public int maxLevel = 3;
+    public float damage; //pertains to everything, healing, etc.
+  //  public float attackBoost; //gives a certain amount of extra attack to the player, like 20% extra attack
 
+    
 
     public CardValue(ExcelCardData excelCardData) // maybe need make excel to store data or something;
     {
@@ -33,6 +38,12 @@ public class CardValue
         rarity = excelCardData.rarity;
         ability = excelCardData.ability;
         CardDescribe = excelCardData.CardDescribe;
+        if (CardType == CardType.Weapons)
+        {
+            weaponLevel = excelCardData.weaponLevel;
+            maxLevel    = excelCardData.maxLevel;
+        }
+        damage = excelCardData.damage;
 
         CardSprite = GetCardSprite();
 
