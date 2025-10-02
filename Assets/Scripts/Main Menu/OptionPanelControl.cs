@@ -123,6 +123,7 @@ public class OptionPanelControl : MonoBehaviour
 
     void UpdateScreenText(ScreenType type)
     {
+        if (displayPanelControl.ScreenTypeText == null) return;
         displayPanelControl.ScreenTypeText.text = SettingValue.Instance.GetSettingData().screenType.ToString();
     }
 
@@ -163,6 +164,7 @@ public class OptionPanelControl : MonoBehaviour
 
     void UpdateLanguageText(LanguageType languageType)
     {
+        if (languagePanelControl.LanguageText == null) return;
        languagePanelControl.LanguageText.text = SettingValue.Instance.GetSettingData().language.ToString();
     }
 

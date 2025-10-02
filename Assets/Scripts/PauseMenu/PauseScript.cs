@@ -16,11 +16,11 @@ public class PauseScript : MonoBehaviour
 
     private void Start()
     {
-        ResumeButton.onClick.AddListener(ResumeGame); //resume game on button click
-        SaveButton.onClick.AddListener(SaveGame); //goes to save scene on button click
-        LoadButton.onClick.AddListener(LoadGame); //goes to load scene on button click
-        OptionsButton.onClick.AddListener(Options); //goes to options scene on button click
-        ExitGameButton.onClick.AddListener(ExitGame); //exits the game on button click
+      if (ResumeButton != null)  ResumeButton.onClick.AddListener(ResumeGame); //resume game on button click
+        if (SaveButton != null) SaveButton.onClick.AddListener(SaveGame); //goes to save scene on button click
+        if (LoadButton != null) LoadButton.onClick.AddListener(LoadGame); //goes to load scene on button click
+        if (OptionsButton != null) OptionsButton.onClick.AddListener(Options); //goes to options scene on button click
+        if (ExitGameButton != null) ExitGameButton.onClick.AddListener(ExitGame); //exits the game on button click
     }
 
     private void Update()
