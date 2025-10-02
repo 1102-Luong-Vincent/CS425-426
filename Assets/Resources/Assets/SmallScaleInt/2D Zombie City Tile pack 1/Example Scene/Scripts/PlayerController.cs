@@ -95,114 +95,131 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         void Update()
         {
             // Existing movement and input code...
-            if(isDead)
-            {
-                return;
-            }
+            if (isDead) return;
+
+            // --- Aiming ---
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
-
             float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
             lastAngle = SnapAngleToEightDirections(angle);
 
-            movementDirection = new Vector2(Mathf.Cos(lastAngle * Mathf.Deg2Rad), Mathf.Sin(lastAngle * Mathf.Deg2Rad));
+            // Optional: keep other input like crouching/shooting here
+            HandleCrouching();
+            HandleShooting();
+            //if(isDead)
+            //{
+            //    return;
+            //}
+            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
 
-            HandleMovement();
-            HandleZombieDamage();
-            HandleShooting(); // for playing sound
+            //float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+            //lastAngle = SnapAngleToEightDirections(angle);
 
-            bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
-                             Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
+            //movementDirection = new Vector2(Mathf.Cos(lastAngle * Mathf.Deg2Rad), Mathf.Sin(lastAngle * Mathf.Deg2Rad));
 
-            if (isMoving && !isRunning)
-            {
-                isRunning = true;
-            }
-            else if (!isMoving && isRunning)
-            {
-                isRunning = false;
-            }
+            //HandleMovement();
+            //HandleZombieDamage();
+            //HandleShooting(); // for playing sound
 
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                if (isShapeShifter && isActive)
-                {
-                    StartCoroutine(ShapeShiftDelayed());
-                }
-                HandleCrouching();
-            }
+            //bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
+            //                 Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
 
-            if (isActive)
-            {
-                // Check for missing prefabs (projectile, AoE, etc.)
-                if (projectilePrefab == null || AoEPrefab == null ||
-                    Special1Prefab == null || HookPrefab == null)
-                {
-                    return;
-                }
+            //if (isMoving && !isRunning)
+            //{
+            //    isRunning = true;
+            //}
+            //else if (!isMoving && isRunning)
+            //{
+            //    isRunning = false;
+            //}
 
-                if (isRanged)
-                {
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        Invoke(nameof(DelayedShoot), shootDelay);
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha1))
-                    {
-                        StartCoroutine(DeploySpecial1Delayed());
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha3))
-                    {
-                        StartCoroutine(DeployAoEDelayed());
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha5))
-                    {
-                        if (isSummoner)
-                        {
-                            StartCoroutine(DeployHookDelayed());
-                        }
-                        else
-                        {
-                            StartCoroutine(Quickshot());
-                        }
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha6))
-                    {
-                        StartCoroutine(CircleShot());
-                    }
-                }
+            //if (Input.GetKeyDown(KeyCode.C))
+            //{
+            //    if (isShapeShifter && isActive)
+            //    {
+            //        StartCoroutine(ShapeShiftDelayed());
+            //    }
+            //    HandleCrouching();
+            //}
 
-                if (isMelee)
-                {
-                    if (Input.GetKeyDown(KeyCode.Alpha1))
-                    {
-                        StartCoroutine(DeployAoEDelayed());
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha5))
-                    {
-                        StartCoroutine(DeployHookDelayed());
-                    }
-                    if (Input.GetKeyDown(KeyCode.Alpha6))
-                    {
-                        Invoke(nameof(DelayedShoot), shootDelay);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.LeftControl) && isRunning)
-                {
-                    if (isShapeShifter && isActive)
-                    {
-                        StartCoroutine(ShapeShiftDelayed());
-                    }
-                }
-            }
+            //if (isActive)
+            //{
+            //    // Check for missing prefabs (projectile, AoE, etc.)
+            //    if (projectilePrefab == null || AoEPrefab == null ||
+            //        Special1Prefab == null || HookPrefab == null)
+            //    {
+            //        return;
+            //    }
+
+            //    if (isRanged)
+            //    {
+            //        if (Input.GetMouseButtonDown(1))
+            //        {
+            //            Invoke(nameof(DelayedShoot), shootDelay);
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha1))
+            //        {
+            //            StartCoroutine(DeploySpecial1Delayed());
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha3))
+            //        {
+            //            StartCoroutine(DeployAoEDelayed());
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha5))
+            //        {
+            //            if (isSummoner)
+            //            {
+            //                StartCoroutine(DeployHookDelayed());
+            //            }
+            //            else
+            //            {
+            //                StartCoroutine(Quickshot());
+            //            }
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha6))
+            //        {
+            //            StartCoroutine(CircleShot());
+            //        }
+            //    }
+
+            //    if (isMelee)
+            //    {
+            //        if (Input.GetKeyDown(KeyCode.Alpha1))
+            //        {
+            //            StartCoroutine(DeployAoEDelayed());
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha5))
+            //        {
+            //            StartCoroutine(DeployHookDelayed());
+            //        }
+            //        if (Input.GetKeyDown(KeyCode.Alpha6))
+            //        {
+            //            Invoke(nameof(DelayedShoot), shootDelay);
+            //        }
+            //    }
+            //    else if (Input.GetKeyDown(KeyCode.LeftControl) && isRunning)
+            //    {
+            //        if (isShapeShifter && isActive)
+            //        {
+            //            StartCoroutine(ShapeShiftDelayed());
+            //        }
+            //    }
+            //}
         }
 
         void FixedUpdate()
         {
-            if (movementDirection != Vector2.zero)
-            {
-                rb.MovePosition(rb.position + movementDirection * speed * Time.fixedDeltaTime);
-            }
+            if (isDead) return;
+
+            // --- Keyboard input ---
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+
+            // Optional: apply crouch speed
+            float moveSpeed = isCrouching ? speed * 0.5f : speed;
+
+            // --- Move the player ---
+            rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
         }
 
         private void HandleShooting()
