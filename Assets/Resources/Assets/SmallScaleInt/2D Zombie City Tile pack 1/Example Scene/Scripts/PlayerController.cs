@@ -4,15 +4,26 @@ using UnityEngine.SceneManagement; // For reloading the scene
 using System.Collections;
 using TMPro;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 namespace SmallScaleInc.TopDownPixelCharactersPack1
 {
     public class PlayerController : MonoBehaviour
     {
+        public static PlayerController Instance;
         public AnimationController animationController;
-        private CircleCollider2D circleCollider;
+
+        // for 3d move
+        private SphereCollider sphereCollider;
+        private Rigidbody rb;
+
+        //for 2d move
+        //private CircleCollider2D circleCollider;
+        // private Rigidbody2D rb;
+
         public float speed = 1.0f; // the movement speed of the player
-        private Rigidbody2D rb;
+
+
         private Vector2 movementDirection;
         private bool isOnStairs = false; // when on stairs, the player moves in a different angle.
         public bool isCrouching = false; // when crouching, the player moves slower
@@ -72,10 +83,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         void Start()
         {
-            rb = GetComponent<Rigidbody2D>();
+            // rb = GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody>();
+
             spriteRenderer = GetComponent<SpriteRenderer>();
             animationController = GetComponent<AnimationController>();
-            circleCollider = GetComponent<CircleCollider2D>();
+            sphereCollider = GetComponent<SphereCollider>();
+            // circleCollider = GetComponent<CircleCollider2D>();
             originalColor = spriteRenderer.color;
             // Initialize health
             currentHealth = maxHealth;
@@ -210,6 +224,14 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         void FixedUpdate()
         {
+            //TwoDMover();
+            ThreeDMove();
+        }
+
+
+
+        void TwoDMove()
+        {
             if (isDead) return;
 
             // --- Keyboard input ---
@@ -219,8 +241,30 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             float moveSpeed = isCrouching ? speed * 0.5f : speed;
 
             // --- Move the player ---
+            //rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
+
+        }
+
+        void ThreeDMove()
+        {
+            if (isDead) return;
+
+            float moveX = Input.GetAxisRaw("Horizontal");
+            float moveZ = Input.GetAxisRaw("Vertical");
+            float moveY = 0f;
+
+            // if (Input.GetKey(KeyCode.Space)) moveY = 1f;
+            //if (Input.GetKey(KeyCode.LeftShift)) moveY = -1f;
+
+            Vector3 input = new Vector3(moveX, moveY, moveZ).normalized;
+
+            // Optional: apply crouch speed
+            float moveSpeed = isCrouching ? speed * 0.5f : speed;
+
             rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
         }
+
+
 
         private void HandleShooting()
         {
@@ -249,7 +293,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             // Destroy(gunfireSoundObject, newGunfireSource.clip.length);
         }
 
-                /// <summary>
+        /// <summary>
         /// Allows the gunfire sound to finish naturally if a single shot was fired.
         /// If the button is held, it loops.
         /// </summary>
@@ -296,10 +340,17 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             // Debug.Log("Player died!");
             isDead = true;
 
-            if (circleCollider != null)
+            /* if (circleCollider != null)
+             {
+                 circleCollider.enabled = false;
+             }*/
+
+            if (sphereCollider != null)
             {
-                circleCollider.enabled = false;
+                sphereCollider.enabled = false;
             }
+
+
 
             animationController.TriggerDie();
 
@@ -330,198 +381,198 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         }
 
 
-     // ---------------------------------------------------------------
+        // ---------------------------------------------------------------
         // NEW: Damaging the zombie under the mouse if right mouse held
         // ---------------------------------------------------------------
-        private Coroutine pulseCoroutine; 
+        private Coroutine pulseCoroutine;
         private Vector3 originalScale; // Stores the original size at game start
 
 
-public void IncrementZombieKillCount()
-{
-    zombieKillCount++;
-    if (killCountText != null)
-    {
-        killCountText.text = zombieKillCount.ToString();
-
-        // Stop any ongoing pulse effect before starting a new one
-        if (pulseCoroutine != null)
+        public void IncrementZombieKillCount()
         {
-            StopCoroutine(pulseCoroutine);
+            zombieKillCount++;
+            if (killCountText != null)
+            {
+                killCountText.text = zombieKillCount.ToString();
+
+                // Stop any ongoing pulse effect before starting a new one
+                if (pulseCoroutine != null)
+                {
+                    StopCoroutine(pulseCoroutine);
+                }
+
+                // Start a new pulse effect
+                pulseCoroutine = StartCoroutine(PulseTextEffect(killCountText));
+            }
         }
 
-        // Start a new pulse effect
-        pulseCoroutine = StartCoroutine(PulseTextEffect(killCountText));
-    }
-}
-
-private IEnumerator PulseTextEffect(TextMeshProUGUI text)
-{
-    float duration = 0.2f; // Total pulse duration
-    float maxScaleFactor = 1.5f; // How much larger it grows
-    float time = 0f;
-
-    Vector3 maxScale = originalScale * maxScaleFactor; // Calculate target size
-
-    // Enlarge the text
-    while (time < duration / 2)
-    {
-        text.transform.localScale = Vector3.Lerp(text.transform.localScale, maxScale, time / (duration / 2));
-        time += Time.deltaTime;
-        yield return null;
-    }
-    text.transform.localScale = maxScale;
-    time = 0f;
-
-    // Shrink back to original size
-    while (time < duration / 2)
-    {
-        text.transform.localScale = Vector3.Lerp(text.transform.localScale, originalScale, time / (duration / 2));
-        time += Time.deltaTime;
-        yield return null;
-    }
-
-    text.transform.localScale = originalScale; // Ensure final reset
-    pulseCoroutine = null;
-}
-private void HandleZombieDamage()
-{
-    if (Input.GetMouseButton(1))
-    {
-        float timeBetweenShots = 1f / bulletsPerSecond; // Fire rate control
-        if (Time.time >= nextFireTime)
+        private IEnumerator PulseTextEffect(TextMeshProUGUI text)
         {
-            speed = 0.5f;
-            nextFireTime = Time.time + timeBetweenShots;
+            float duration = 0.2f; // Total pulse duration
+            float maxScaleFactor = 1.5f; // How much larger it grows
+            float time = 0f;
 
-            Vector2 playerPos = transform.position;
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = (mousePos - playerPos).normalized;
-            Vector2 muzzleOrigin = playerPos;
-            float maxDistance = 10f; 
+            Vector3 maxScale = originalScale * maxScaleFactor; // Calculate target size
 
-            // Continue raycasting as long as we are hitting zombies
-            Vector2 rayOrigin = muzzleOrigin;
-            bool shouldContinue = true;
-            List<Vector2> hitPoints = new List<Vector2> { muzzleOrigin }; // Store hit points for the tracer
-
-            while (shouldContinue)
+            // Enlarge the text
+            while (time < duration / 2)
             {
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, maxDistance);
+                text.transform.localScale = Vector3.Lerp(text.transform.localScale, maxScale, time / (duration / 2));
+                time += Time.deltaTime;
+                yield return null;
+            }
+            text.transform.localScale = maxScale;
+            time = 0f;
 
-                if (hit.collider != null)
+            // Shrink back to original size
+            while (time < duration / 2)
+            {
+                text.transform.localScale = Vector3.Lerp(text.transform.localScale, originalScale, time / (duration / 2));
+                time += Time.deltaTime;
+                yield return null;
+            }
+
+            text.transform.localScale = originalScale; // Ensure final reset
+            pulseCoroutine = null;
+        }
+        private void HandleZombieDamage()
+        {
+            if (Input.GetMouseButton(1))
+            {
+                float timeBetweenShots = 1f / bulletsPerSecond; // Fire rate control
+                if (Time.time >= nextFireTime)
                 {
-                    hitPoints.Add(hit.point);
+                    speed = 0.5f;
+                    nextFireTime = Time.time + timeBetweenShots;
 
-                    // If it's a zombie, apply damage
-                    ZombieAI zombie = hit.collider.GetComponent<ZombieAI>();
-                    if (zombie != null)
+                    Vector2 playerPos = transform.position;
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 direction = (mousePos - playerPos).normalized;
+                    Vector2 muzzleOrigin = playerPos;
+                    float maxDistance = 10f;
+
+                    // Continue raycasting as long as we are hitting zombies
+                    Vector2 rayOrigin = muzzleOrigin;
+                    bool shouldContinue = true;
+                    List<Vector2> hitPoints = new List<Vector2> { muzzleOrigin }; // Store hit points for the tracer
+
+                    while (shouldContinue)
                     {
-                        zombie.TakeDamage((int)bulletDamage);
-                        // Debug.Log("Hit zombie! Dealt " + bulletDamage + " damage.");
+                        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, direction, maxDistance);
 
-                        // 50% chance to pass through
-                        if (Random.value > 0.5f)
+                        if (hit.collider != null)
                         {
-                            // Debug.Log("Bullet passed through the zombie!");
-                            rayOrigin = hit.point + direction * 0.1f; // Move slightly forward to avoid hitting the same zombie
+                            hitPoints.Add(hit.point);
+
+                            // If it's a zombie, apply damage
+                            ZombieAI zombie = hit.collider.GetComponent<ZombieAI>();
+                            if (zombie != null)
+                            {
+                                zombie.TakeDamage((int)bulletDamage);
+                                // Debug.Log("Hit zombie! Dealt " + bulletDamage + " damage.");
+
+                                // 50% chance to pass through
+                                if (Random.value > 0.5f)
+                                {
+                                    // Debug.Log("Bullet passed through the zombie!");
+                                    rayOrigin = hit.point + direction * 0.1f; // Move slightly forward to avoid hitting the same zombie
+                                }
+                                else
+                                {
+                                    // Debug.Log("Bullet stopped!");
+                                    shouldContinue = false;
+                                }
+                            }
+                            else
+                            {
+                                shouldContinue = false; // Stop if we hit something else
+                            }
                         }
                         else
                         {
-                            // Debug.Log("Bullet stopped!");
-                            shouldContinue = false;
+                            hitPoints.Add(rayOrigin + direction * maxDistance);
+                            shouldContinue = false; // Stop if we hit nothing
                         }
                     }
-                    else
-                    {
-                        shouldContinue = false; // Stop if we hit something else
-                    }
-                }
-                else
-                {
-                    hitPoints.Add(rayOrigin + direction * maxDistance);
-                    shouldContinue = false; // Stop if we hit nothing
+
+                    // Show tracer line for the full bullet path
+                    StartCoroutine(ShowShotLine(hitPoints));
                 }
             }
-
-            // Show tracer line for the full bullet path
-            StartCoroutine(ShowShotLine(hitPoints));
+            else
+            {
+                speed = 1.0f;
+                nextFireTime = 0f;
+            }
         }
-    }
-    else
-    {
-        speed = 1.0f;
-        nextFireTime = 0f;
-    }
-}
 
-// -------------------------------------------------------------
-// COROUTINE: Instantiates a line prefab and shows the bullet path
-// -------------------------------------------------------------
-private IEnumerator ShowShotLine(List<Vector2> hitPoints)
-{
-    GameObject lineObj = Instantiate(bulletLinePrefab, Vector3.zero, Quaternion.identity);
-    LineRenderer lr = lineObj.GetComponent<LineRenderer>();
+        // -------------------------------------------------------------
+        // COROUTINE: Instantiates a line prefab and shows the bullet path
+        // -------------------------------------------------------------
+        private IEnumerator ShowShotLine(List<Vector2> hitPoints)
+        {
+            GameObject lineObj = Instantiate(bulletLinePrefab, Vector3.zero, Quaternion.identity);
+            LineRenderer lr = lineObj.GetComponent<LineRenderer>();
 
-    lr.positionCount = hitPoints.Count;
-    for (int i = 0; i < hitPoints.Count; i++)
-    {
-        lr.SetPosition(i, hitPoints[i]);
-    }
+            lr.positionCount = hitPoints.Count;
+            for (int i = 0; i < hitPoints.Count; i++)
+            {
+                lr.SetPosition(i, hitPoints[i]);
+            }
 
-    yield return new WaitForSeconds(lineDisplayTime);
-    Destroy(lineObj);
-}
+            yield return new WaitForSeconds(lineDisplayTime);
+            Destroy(lineObj);
+        }
 
-float SnapAngleToEightDirections(float angle)
-{
-    angle = (angle + 360) % 360; // Normalize angle to [0..360)
+        float SnapAngleToEightDirections(float angle)
+        {
+            angle = (angle + 360) % 360; // Normalize angle to [0..360)
 
-    if (isOnStairs)
-    {
-        // -- If you have special "stairs" angles, adjust them likewise.
-        //    (Below is just an example of how you might do it.)
-        if (angle < 30 || angle >= 330)
+            if (isOnStairs)
+            {
+                // -- If you have special "stairs" angles, adjust them likewise.
+                //    (Below is just an example of how you might do it.)
+                if (angle < 30 || angle >= 330)
+                    return 0;
+                else if (angle >= 30 && angle < 75)
+                    return 60;
+                else if (angle >= 75 && angle < 105)
+                    return 90;
+                else if (angle >= 105 && angle < 150)
+                    return 120;
+                else if (angle >= 150 && angle < 210)
+                    return 180;
+                else if (angle >= 210 && angle < 255)
+                    return 240;
+                else if (angle >= 255 && angle < 285)
+                    return 270;
+                else if (angle >= 285 && angle < 330)
+                    return 300;
+            }
+            else
+            {
+                // -- Normal isometric 8 directions
+                //    Adjusted so diagonals fall at 30°, 150°, 210°, and 330°.
+                if (angle < 15 || angle >= 345)
+                    return 0;    // East
+                else if (angle >= 15 && angle < 75)
+                    return 30;   // NE
+                else if (angle >= 75 && angle < 105)
+                    return 90;   // North
+                else if (angle >= 105 && angle < 165)
+                    return 150;  // NW
+                else if (angle >= 165 && angle < 195)
+                    return 180;  // West
+                else if (angle >= 195 && angle < 255)
+                    return 210;  // SW
+                else if (angle >= 255 && angle < 285)
+                    return 270;  // South
+                else if (angle >= 285 && angle < 345)
+                    return 330;  // SE
+            }
+
             return 0;
-        else if (angle >= 30 && angle < 75)
-            return 60;
-        else if (angle >= 75 && angle < 105)
-            return 90;
-        else if (angle >= 105 && angle < 150)
-            return 120;
-        else if (angle >= 150 && angle < 210)
-            return 180;
-        else if (angle >= 210 && angle < 255)
-            return 240;
-        else if (angle >= 255 && angle < 285)
-            return 270;
-        else if (angle >= 285 && angle < 330)
-            return 300;
-    }
-    else
-    {
-        // -- Normal isometric 8 directions
-        //    Adjusted so diagonals fall at 30°, 150°, 210°, and 330°.
-        if (angle < 15 || angle >= 345)
-            return 0;    // East
-        else if (angle >= 15 && angle < 75)
-            return 30;   // NE
-        else if (angle >= 75 && angle < 105)
-            return 90;   // North
-        else if (angle >= 105 && angle < 165)
-            return 150;  // NW
-        else if (angle >= 165 && angle < 195)
-            return 180;  // West
-        else if (angle >= 195 && angle < 255)
-            return 210;  // SW
-        else if (angle >= 255 && angle < 285)
-            return 270;  // South
-        else if (angle >= 285 && angle < 345)
-            return 330;  // SE
-    }
-
-    return 0;
-}
+        }
 
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -693,11 +744,11 @@ float SnapAngleToEightDirections(float angle)
                 }
                 else
                 {
-                    if(isMelee)
+                    if (isMelee)
                     {
                         yield return new WaitForSeconds(0.5f);
                     }
-                    else if(isShapeShifter)
+                    else if (isShapeShifter)
                     {
                         yield return new WaitForSeconds(0.2f);
                     }
@@ -711,7 +762,7 @@ float SnapAngleToEightDirections(float angle)
                 }
 
                 // Destroy the AoE instance after 0.9 seconds
-                
+
             }
         }
 
@@ -722,11 +773,11 @@ float SnapAngleToEightDirections(float angle)
             {
 
                 yield return new WaitForSeconds(0.001f);
-                
+
                 // Instantiate the AoE prefab at the player's position
                 GameObject shapeShiftInstance = Instantiate(ShapeShiftPrefab, transform.position, Quaternion.identity);
 
-                
+
                 // Destroy the instantiated prefab after another 0.5 seconds
                 Destroy(shapeShiftInstance, 0.9f);
             }
@@ -750,7 +801,7 @@ float SnapAngleToEightDirections(float angle)
                 }
                 else
                 {
-                    if(isMelee)
+                    if (isMelee)
                     {
                         yield return new WaitForSeconds(0.5f);
                     }
@@ -771,30 +822,30 @@ float SnapAngleToEightDirections(float angle)
         {
             GameObject hookInstance;
             if (isSummoner)
-                {
-                    // Get mouse position and convert it to world coordinates
-                    Vector3 mouseScreenPosition = Input.mousePosition;
-                    mouseScreenPosition.z = Camera.main.nearClipPlane; // Set this to your camera's near clip plane
-                    Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+            {
+                // Get mouse position and convert it to world coordinates
+                Vector3 mouseScreenPosition = Input.mousePosition;
+                mouseScreenPosition.z = Camera.main.nearClipPlane; // Set this to your camera's near clip plane
+                Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-                    yield return new WaitForSeconds(0.6f); // Wait before instantiating (adjust time as needed)
-                    // Instantiate the Special1 prefab at the mouse's world position
-                    hookInstance = Instantiate(HookPrefab, new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, 0), Quaternion.identity);
+                yield return new WaitForSeconds(0.6f); // Wait before instantiating (adjust time as needed)
+                                                       // Instantiate the Special1 prefab at the mouse's world position
+                hookInstance = Instantiate(HookPrefab, new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, 0), Quaternion.identity);
 
-                    Destroy(hookInstance, 5.2f);
-                }
-                else
+                Destroy(hookInstance, 5.2f);
+            }
+            else
+            {
+                if (HookPrefab != null)
                 {
-                    if (HookPrefab != null)
-                    {
-                        Vector2 direction = new Vector2(Mathf.Cos(lastAngle * Mathf.Deg2Rad), Mathf.Sin(lastAngle * Mathf.Deg2Rad));
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                        hookInstance = Instantiate(HookPrefab, transform.position, Quaternion.Euler(0, 0, angle));
-                        // Destroy the instantiated prefab after another 1.0 seconds
-                        Destroy(hookInstance, 1.0f);
-                    }
-                    yield return null; // Ensures the method correctly implements IEnumerator
+                    Vector2 direction = new Vector2(Mathf.Cos(lastAngle * Mathf.Deg2Rad), Mathf.Sin(lastAngle * Mathf.Deg2Rad));
+                    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                    hookInstance = Instantiate(HookPrefab, transform.position, Quaternion.Euler(0, 0, angle));
+                    // Destroy the instantiated prefab after another 1.0 seconds
+                    Destroy(hookInstance, 1.0f);
                 }
+                yield return null; // Ensures the method correctly implements IEnumerator
+            }
         }
 
         public void FlashGreen()
@@ -837,6 +888,20 @@ float SnapAngleToEightDirections(float angle)
         //     // Optionally, destroy the melee attack prefab after a short duration
         //     Destroy(meleeInstance, 0.1f); // Adjust the duration as needed
         // }
+
+
+
+        public Vector3 GetPlayerCurrentPosition()
+        {
+            return gameObject.transform.position;
+        }
+
+        public void SetPlayerPosition(Vector3 position)
+        {
+            gameObject.transform.position = position;
+        }
+
+
 
     }
 }

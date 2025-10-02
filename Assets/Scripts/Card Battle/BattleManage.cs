@@ -3,6 +3,8 @@ using UnityEngine;
 public class BattleManage : MonoBehaviour
 {
     public static BattleManage Instance { get; private set; }
+
+    private BattleData battleData;
    
     private void Awake()
     {
@@ -14,10 +16,10 @@ public class BattleManage : MonoBehaviour
         Instance = this;
     }
 
-
-
     void Start()
     {
+        battleData = GameValue.Instance.GetBattleData();
+        BattleEnemyManager.Instance.SetEnemy(battleData);
         SetValue();
     }
 

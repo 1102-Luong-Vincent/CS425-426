@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class BattlePlayerValue : MonoBehaviour
 {
     public static BattlePlayerValue Instance { get; private set; }
-    private BattleCardControl battleCardControl;
-    public BattleCardControl CardControl;
+    private BattleCardControl selBattleCardControl;
+    public BattleCardControl WeaponCardControl;
+    public BattleCardControl CardControlPrefab;
     public Transform CardZone;
     public List<CardValue> BattleCards = new List<CardValue>();
 
@@ -24,7 +25,14 @@ public class BattlePlayerValue : MonoBehaviour
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
         BattleCards = playerValue.EquipmentCards;
+        SetWeapon(playerValue.EquipmentWeapon);
         GenerateBattleCards();
+    }
+
+
+    void SetWeapon(WeaponValue weaponValue)
+    {
+        WeaponCardControl.SetWeaponValue(weaponValue);
     }
 
 
@@ -41,40 +49,49 @@ public class BattlePlayerValue : MonoBehaviour
         RectTransform parentRt = CardZone.GetComponent<RectTransform>();
         float parentWidth = parentRt.rect.width;
 
-        RectTransform cardRT = CardControl.GetComponent<RectTransform>();
+        RectTransform cardRT = CardControlPrefab.GetComponent<RectTransform>();
         float cardWidth = cardRT.rect.width;
 
-        float spacing = 0f;
+        float defaultSpacing = 30f; 
+        float spacing = defaultSpacing;
 
-        if (count > 1)
+        float totalWidth = count * cardWidth + (count - 1) * spacing;
+        if (totalWidth > parentWidth)
         {
-            spacing = (parentWidth - cardWidth) / (count - 1); 
+            spacing = (parentWidth - count * cardWidth) / (count - 1);
+            totalWidth = parentWidth; 
         }
+
+        float startX = -totalWidth / 2 + cardWidth / 2;
 
         for (int i = 0; i < count; i++)
         {
             CardValue cardValue = BattleCards[i];
 
-            BattleCardControl cardObj = Instantiate(CardControl, CardZone);
+            BattleCardControl cardObj = Instantiate(CardControlPrefab, CardZone);
             cardObj.SetCardValue(cardValue);
 
             RectTransform rt = cardObj.GetComponent<RectTransform>();
             rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
             rt.pivot = new Vector2(0.5f, 0.5f);
 
-            float xPos = -parentWidth / 2 + cardWidth / 2 + i * spacing; 
+            float xPos = startX + i * (cardWidth + spacing);
             rt.anchoredPosition = new Vector2(xPos, 0f);
         }
     }
 
+
+
+
+
     public void SetSelBattleCardControl(BattleCardControl battleCardControl)
     {
-        if (this.battleCardControl != null)
+        if (this.selBattleCardControl != null)
         {
-            this.battleCardControl.CanceCardDetails();
-            this.battleCardControl = null;
+            this.selBattleCardControl.CanceCardDetails();
+            this.selBattleCardControl = null;
         }
-        this.battleCardControl = battleCardControl;
+        this.selBattleCardControl = battleCardControl;
         if (battleCardControl != null)
         {
             battleCardControl.ShowCardDetails();

@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseScript : MonoBehaviour
+public class PauseControl : MonoBehaviour
 {
+    public GameObject pauseScreen;
+
     public Button ResumeButton;
     public Button SaveButton;
     public Button LoadButton;
@@ -12,7 +14,6 @@ public class PauseScript : MonoBehaviour
 
     private bool isPaused = false;
     public OptionPanelControl OptionPanelControl;
-    public GameObject pauseScreen;
 
     private void Start()
     {

@@ -9,6 +9,7 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardDescription;
 
+    private WeaponValue weaponValue;
     private CardValue cardValue;
 
     private Vector2 originalAnchoredPos;
@@ -30,11 +31,26 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
         UpUIData();
     }
 
+    public void SetWeaponValue(WeaponValue weaponValue)
+    {
+        this.weaponValue = weaponValue;
+        UpUIData();
+    }
+
+
     void UpUIData()
     {
-        CardName.text = cardValue.CardName;
-        CardImage.sprite = cardValue.CardSprite;
-        CardDescription.text = cardValue.CardDescribe;
+        if (cardValue != null)
+        {
+            CardName.text = cardValue.CardName;
+            CardImage.sprite = cardValue.CardSprite;
+            CardDescription.text = cardValue.CardDescribe;
+        } else if (weaponValue != null) {
+        
+            CardName.text = weaponValue.WeaponName;
+            CardImage.sprite = weaponValue.WeaponSprite;
+            CardDescription.text = weaponValue.WeaponDescribe;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -100,6 +116,6 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void UseCard()
     {
-        Debug.Log($"Used card: {cardValue.CardName}");
+        Debug.Log($"Used card: {CardName.text}");
     }
 }

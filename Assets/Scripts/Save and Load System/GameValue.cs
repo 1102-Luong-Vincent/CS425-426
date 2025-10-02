@@ -19,12 +19,16 @@ public enum SceneType
 public class GameValue : MonoBehaviour
 {
     public static GameValue Instance;
+
+    private GameValueLibrary library;
     private PlayerValue playerValue;
-    private List<CardValue> AllCards = new List<CardValue>();
-    private bool SetPlayerPosition = false;
     SceneType CurrentScene = SceneType.None;
     private Vector3 playerPosition = Vector3.zero;
     private String happendStoryName = string.Empty;
+
+    private BattleData battleData;
+    public GameValueTest gameValueTest;
+
 
     private void Awake()
     {
@@ -36,31 +40,17 @@ public class GameValue : MonoBehaviour
         Instance = this;
         Init();
         DontDestroyOnLoad(gameObject);
+
+        if (gameValueTest != null) gameValueTest.SetTestValue(this);
     }
 
 
     public void Init()
     {
-        InitAllCardInExcel();
+        library = new GameValueLibrary();   
         playerValue = new PlayerValue();
     }
 
-    void InitAllCardInExcel()
-    {
-        List<ExcelCardData> allExcelCardDatas = GetCardData();
-        Debug.Log($"in init All card READER {allExcelCardDatas.Count}");
-        AllCards.Clear();
-        foreach (ExcelCardData excelData in allExcelCardDatas)
-        {
-            CardValue card = new CardValue(excelData);
-            AllCards.Add(card);
-        }
-    }
-
-    public CardValue GetCardValue(string CardName)
-    {
-        return AllCards.Find(card => card.CardName == CardName);
-    }
 
 
     void Start()
@@ -113,17 +103,56 @@ public class GameValue : MonoBehaviour
     }
 
 
- /*   public bool GetSetPlayerPosition()
+    /*   public bool GetSetPlayerPosition()
+       {
+           return SetPlayerPosition;
+       }
+
+       public void SetSetPlayerPosition(bool isSetPlayerPosition)
+       {
+           if (!isSetPlayerPosition) playerPosition = Vector3.zero;
+           SetPlayerPosition = isSetPlayerPosition;
+       }*/
+
+
+    #region Get
+
+    public BattleData GetBattleData()
     {
-        return SetPlayerPosition;
+        return battleData;
     }
 
-    public void SetSetPlayerPosition(bool isSetPlayerPosition)
+    public EnemyValue GetInitEnemyValue(int enemyValue)
     {
-        if (!isSetPlayerPosition) playerPosition = Vector3.zero;
-        SetPlayerPosition = isSetPlayerPosition;
-    }*/
+        return GetGameValueLibrary().GetInitEnemyValue(enemyValue);
+    }
 
+    public WeaponValue GetInitWeaponValue(int WeaponID)
+    {
+        return GetGameValueLibrary().GetInitWeapon(WeaponID);
+    }
+
+
+    public WeaponValue GetInitWeaponValue(string WeaponName)
+    {
+        return GetGameValueLibrary().GetInitWeapon(WeaponName);
+    }
+
+    public CardValue GetInitCardValue(int CardID)
+    {
+        return GetGameValueLibrary().GetInitCard(CardID);
+    }
+
+    public CardValue GetInitCardValue(string CardName)
+    {
+        return GetGameValueLibrary().GetInitCard(CardName);
+    }
+
+
+    public GameValueLibrary GetGameValueLibrary()
+    {
+        return library;
+    }
     public Vector3 GetPlayerPosition()
     {
         return playerPosition;  
@@ -144,8 +173,18 @@ public class GameValue : MonoBehaviour
         return happendStoryName;
     }
 
+    #endregion
+
+    #region Set
+
+    public void SetBattleData(BattleData battleData)
+    {
+        this.battleData = battleData;
+    }
+
     public void SetHappendStoryName(string happendStoryName)
     {
       this.happendStoryName = happendStoryName;
     }
+    #endregion
 }

@@ -42,6 +42,13 @@ public class ExcelReader
         {
             return ExcelReader.ReadBool(reader, index++);
         }
+
+        public List<int> ParseIntListFromCell()
+        {
+            string cell = ExcelReader.ReadString(reader, index++);
+            return ExcelReader.ParseIntListFromCell(cell);
+        }
+
     }
 
     static int ReadInt(IExcelDataReader reader, int index)
@@ -161,6 +168,85 @@ public class ExcelReader
         return excelDataList;
     }
 
+    public static List<ExcelEnemyData> GetExcelEnemyDatas()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/Value/EnemyValue.xlsx");
+
+        List<ExcelEnemyData> excelDataList = new List<ExcelEnemyData>();
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        if (!File.Exists(filePath))
+            return excelDataList;
+
+        using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            reader.Read();
+            do
+            {
+                while (reader.Read())
+                {
+                    var col = new ColumnReader(reader);
+                    ExcelEnemyData data = new ExcelEnemyData
+                    {
+                        ID = col.ReadInt(),
+                        enemyName = col.ReadString(),
+                        HP = col.ReadInt(),
+                        attack = col.ReadInt(),
+                        speed = col.ReadInt(),
+                        defaultWeaponID = col.ReadInt(),
+                        enemyDeck = col.ParseIntListFromCell()
+                    };
+                    excelDataList.Add(data);
+                }
+
+            } while (reader.NextResult());
+        }
+        return excelDataList;
+
+    }
+
+
+    public static List<ExcelWeaponData> GetWeaponsData()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/Value/WeaponsValue.xlsx");
+
+        List<ExcelWeaponData> excelDataList = new List<ExcelWeaponData>();
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        if (!File.Exists(filePath))
+            return excelDataList;
+
+        using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            reader.Read();
+            do
+            {
+                while (reader.Read())
+                {
+                    var col = new ColumnReader(reader);
+                    ExcelWeaponData data = new ExcelWeaponData
+                    {
+                        ID = col.ReadInt(),
+                        weaponName = col.ReadString(),
+                        cardType = ParseEnumOrDefault<CardType>(col.ReadString()),
+                        rarity = (CardRarity)col.ReadInt(),
+                        ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
+                        weaponDescribe = col.ReadString(),
+                        weaponLevel = col.ReadInt(),
+                        maxLevel = col.ReadInt(),
+                        damage = col.ReadFloat(),
+
+                    };
+
+                    excelDataList.Add(data);
+                }
+
+            } while (reader.NextResult());
+        }
+        return excelDataList;
+    }
 
     public static List<ExcelCardData> GetCardData()
     {
@@ -184,11 +270,11 @@ public class ExcelReader
                     ExcelCardData data = new ExcelCardData
                     {
                         ID = col.ReadInt(),
-                        CardName = col.ReadString(),
+                        cardName = col.ReadString(),
                         cardType = ParseEnumOrDefault<CardType>(col.ReadString()),
                         rarity = (CardRarity)col.ReadInt(),
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
-                        CardDescribe = col.ReadString(),
+                        cardDescribe = col.ReadString(),
                         weaponLevel = col.ReadInt(),
                         maxLevel = col.ReadInt(),
                         damage = col.ReadFloat(),
@@ -216,20 +302,47 @@ public struct ExcelStoryData
     public string Effect;
 }
 
+public struct ExcelEnemyData
+{
+    public int ID;
+    public string enemyName;
+    public int HP;
+    public int attack;
+    public int speed;
+    public int defaultWeaponID;
+    public List<int> enemyDeck;
+
+}
 
 
 public struct ExcelCardData
 {
     public int ID;
-    public string CardName;
+    public string cardName;
     public CardType cardType;
     public CardRarity rarity;
     public CardAbility ability;
-    public string CardDescribe;
+    public string cardDescribe;
     public int weaponLevel;
     public int maxLevel;
     public float damage;
 
 }
+
+public struct ExcelWeaponData
+{
+    public int ID;
+    public string weaponName;
+    public CardType cardType;
+    public CardRarity rarity;
+    public CardAbility ability;
+    public string weaponDescribe;
+    public int weaponLevel;
+    public int maxLevel;
+    public float damage;
+
+}
+
+
 
 #endregion

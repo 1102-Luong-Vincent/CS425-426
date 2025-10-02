@@ -26,6 +26,8 @@ public class SettingValue : MonoBehaviour
 
     private void Awake()
     {
+        savePath = Path.Combine(Application.persistentDataPath, "settings.json");
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -34,7 +36,6 @@ public class SettingValue : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        savePath = Path.Combine(Application.persistentDataPath, "settings.json");
         LoadSettings();
         InitSettings();
     }

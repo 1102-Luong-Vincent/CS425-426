@@ -19,7 +19,7 @@ public class CardValue
 {
     public string CardName;
     public Sprite CardSprite;
-    public CardType CardType;
+    public CardType CardType = CardType.SupportItems;
     public string CardDescribe;
     // not yet wait, maybe need excel file
     public CardRarity rarity; 
@@ -33,11 +33,11 @@ public class CardValue
 
     public CardValue(ExcelCardData excelCardData) // maybe need make excel to store data or something;
     {
-        this.CardName = excelCardData.CardName;
+        this.CardName = excelCardData.cardName;
         CardType = excelCardData.cardType;
         rarity = excelCardData.rarity;
         ability = excelCardData.ability;
-        CardDescribe = excelCardData.CardDescribe;
+        CardDescribe = excelCardData.cardDescribe;
         if (CardType == CardType.Weapons)
         {
             weaponLevel = excelCardData.weaponLevel;
@@ -45,16 +45,15 @@ public class CardValue
         }
         damage = excelCardData.damage;
 
-        CardSprite = GetCardSprite();
+        SetCardSprite();
 
     }
-    Sprite GetCardSprite()
+    void SetCardSprite()
     {
         string path = $"Sprite/Card/{CardType}/{CardName}/{CardName.ToLower()}";
         Debug.Log($"[LoadCardSprite] Try load: {path}");
-        Sprite cardSprite = Resources.Load<Sprite>(path);
-        if (cardSprite == null) Debug.LogWarning($"[LoadCardSprite] cardSprite == null, check path or filename!");
-        return cardSprite;
+        CardSprite = Resources.Load<Sprite>(path);
+        if (CardSprite == null) Debug.LogWarning($"[LoadCardSprite] cardSprite == null, check path or filename!");
     }
 
 }
