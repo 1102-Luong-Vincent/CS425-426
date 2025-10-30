@@ -82,11 +82,11 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             if (!isCentered)
             {
-                BattlePlayerValue.Instance.SetSelBattleCardControl(this);
+                BattlePlayerUIManager.Instance.SetSelBattleCardControl(this);
              }
             else
             {
-                BattlePlayerValue.Instance.SetSelBattleCardControl(null);
+                BattlePlayerUIManager.Instance.SetSelBattleCardControl(null);
             }
         }
     }
@@ -96,7 +96,7 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         RectTransform rt = GetComponent<RectTransform>();
         rt.SetAsLastSibling();
-        RectTransform cardZoneRT = BattlePlayerValue.Instance.CardZone.GetComponent<RectTransform>();
+        RectTransform cardZoneRT = BattlePlayerUIManager.Instance.CardZone.GetComponent<RectTransform>();
         rt.anchoredPosition = new Vector2(0f, -cardZoneRT.anchoredPosition.y);
         rt.localScale = originalScale * 2f;
         isCentered = true;
@@ -117,5 +117,9 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void UseCard()
     {
         Debug.Log($"Used card: {CardName.text}");
+
+        BattlePlayerValue.Instance.UsedCard(cardValue);
+        BattleManage.Instance.StartNextTurn();
+
     }
 }

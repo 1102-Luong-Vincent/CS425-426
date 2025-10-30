@@ -1,11 +1,36 @@
 using UnityEngine;
 
+using System;
+using UnityEngine;
+
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class BattleManage : MonoBehaviour
 {
     public static BattleManage Instance { get; private set; }
 
     private BattleData battleData;
-   
+    public BattleUIManager BattleUIManager;
+
+    private int turn = 1;
+    private event Action<int> OnTurnChanged;
+
+    public int Turn
+    {
+        get => turn;
+        set
+        {
+            if (turn != value)
+            {
+                turn = value;
+                OnTurnChanged?.Invoke(turn);
+            }
+        }
+    }
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,23 +48,43 @@ public class BattleManage : MonoBehaviour
         SetValue();
     }
 
-
     void SetValue()
     {
+        Turn = 0;
         Test();
+        StartNextTurn();
     }
-
 
     void Test()
     {
         BattlePlayerValue.Instance.SetBattlePlayerValue(GameValue.Instance.GetPlayerValue());
-
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void StartNextTurn()
     {
-        
+        Turn++;
+        if (IsPlayerTurn())
+        {
+            BattlePlayerValue.Instance.StartTurn();
+        } else
+        {
+            Debug.Log("Enemy Turn");
+        }
     }
+
+    bool IsPlayerTurn()
+    {
+        return Turn % 2 == 1;
+    }
+
+
+    #region Turn Function Interface
+    public void TurnListener(Action<int> listener, bool isAdd)
+    {
+        if (isAdd)
+            OnTurnChanged += listener;
+        else
+            OnTurnChanged -= listener;
+    }
+    #endregion
 }

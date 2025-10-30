@@ -1,19 +1,23 @@
 using NUnit.Framework;
 using SmallScaleInc.TopDownPixelCharactersPack1;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 using static ExcelReader;
 
 public class PlayerValue
 {
     public List<CardValue> EquipmentCards = new List<CardValue>();
-    public List<CardValue> HadCardsLibrary = new List<CardValue>();
     public List<CardValue> battleCardsList = new List<CardValue>();
-
+    public List<CardValue> HadCardsLibrary = new List<CardValue>();
 
     public WeaponValue EquipmentWeapon;
     public List<WeaponValue> HadWeaponsLibrary = new List<WeaponValue>();
+
+
+    int Health = 100;
 
     public PlayerValue() {
         Init();
@@ -37,26 +41,42 @@ public class PlayerValue
     void InitPlayerEquipmentCards()
     {
         ClearCard();
-        string[] starterEquipment = { "Bandage","AAA" };
+
+        string[] starterEquipment = { "Bandage", "Syringe", "Bandage", "Syringe" };
         foreach (string equipName in starterEquipment)
         {
-            CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);// maybe change by id
-
+            CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);
             if (foundCard != null)
             {
                 EquipmentCards.Add(foundCard);
             }
         }
 
+        string[] allCards = {
+        "Bandage", "Syringe", "Medkit", "Revival Serum", "Pills", "Rage Pill",
+        "Drugs", "Beer", "Health Potion", "Energy Potion", "Antidote Potion",
+        "Field Surgery Kit", "Adrenal Medkit", "Combat Patch", "Berserker Wrap",
+        "Stimulant Wrap", "Liquid Courage Kit", "Rapid Recovery Injector",
+        "Phoenix Shot", "Boosted Buzz"
+        };
 
-        // init when player battle what card will be use
-        battleCardsList.AddRange(EquipmentCards);
+        foreach (string cardName in allCards)
+        {
+            CardValue foundCard = GameValue.Instance.GetInitCardValue(cardName);
+            if (foundCard != null)
+            {
+                battleCardsList.Add(foundCard);
+            }
+            else
+            {
+                Debug.LogWarning($"Card {cardName} not found in GameValue library!");
+            }
+        }
 
-        // Need to add player init Had Card
         HadCardsLibrary.AddRange(EquipmentCards);
         HadCardsLibrary.AddRange(battleCardsList);
-
     }
+
 
     void ClearWeapons()
     {
@@ -124,6 +144,12 @@ public class PlayerValue
         if (PlayerController.Instance == null) return;
         PlayerController.Instance.SetPlayerPosition(data.GetPlayerPosition());
 
+    }
+
+
+    public int GetHealth()
+    {
+        return Health;
     }
 
 }

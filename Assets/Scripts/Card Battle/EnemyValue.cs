@@ -1,15 +1,62 @@
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
 public class EnemyValue
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private int ID;
     public string EnemyName;
-    public Sprite EnemySprire;
+    public Sprite EnemySprite;
 
-    public int HP;
+    #region Health
+    private int health;
+    private int maxHealth;
+
+    public int MaxHealth
+    {
+        get => maxHealth;
+        set
+        {
+            if (maxHealth != value)
+            {
+                maxHealth = Mathf.Max(1, value); 
+                if (health > maxHealth) Health = maxHealth;
+                OnMaxHealthChanged?.Invoke(maxHealth);
+            }
+        }
+    }
+
+    public int Health
+    {
+        get => health;
+        set
+        {
+            int newValue = Mathf.Clamp(value, 0, MaxHealth);
+            if (health != newValue)
+            {
+                health = newValue;
+                OnHealthChanged?.Invoke(health);
+            }
+        }
+    }
+
+    private event Action<int> OnHealthChanged;
+    private event Action<int> OnMaxHealthChanged;
+
+    public void HealthListener(Action<int> listener, bool isAdd)
+    {
+        if (isAdd) OnHealthChanged += listener;
+        else OnHealthChanged -= listener;
+    }
+
+    public void MaxHealthListener(Action<int> listener, bool isAdd)
+    {
+        if (isAdd) OnMaxHealthChanged += listener;
+        else OnMaxHealthChanged -= listener;
+    }
+    #endregion
+
     public int attack;
     public int speed;
 
@@ -26,28 +73,23 @@ public class EnemyValue
             return;
         }
 
-
-        HP = excelEnemyData.HP;
+        MaxHealth = excelEnemyData.Health;
+        Health = MaxHealth;
         attack = excelEnemyData.attack;
-        speed = excelEnemyData.speed;  
+        speed = excelEnemyData.speed;
 
         SetEnemySprite();
         defaultWeapon = GameValue.Instance.GetInitWeaponValue(excelEnemyData.defaultWeaponID);
         enemyDeckID = excelEnemyData.enemyDeck;
     }
 
-
-    public Sprite GetSprite()
-    {
-        return EnemySprire;
-    }
+    public Sprite GetSprite() => EnemySprite;
 
     void SetEnemySprite()
     {
-
         string path = $"Sprite/Enemy/{EnemyName}/{EnemyName.ToLower()}";
-        EnemySprire = Resources.Load<Sprite>(path);
-        if (EnemySprire == null) Debug.LogWarning($"[LoadCardSprite] cardSprite == null, check path or filename [LoadCardSprite] Try load: {path}!");
+        EnemySprite = Resources.Load<Sprite>(path);
+        if (EnemySprite == null)
+            Debug.LogWarning($"[LoadEnemySprite] sprite == null, check path or filename! Try load: {path}");
     }
-
 }

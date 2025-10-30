@@ -191,7 +191,7 @@ public class ExcelReader
                     {
                         ID = col.ReadInt(),
                         enemyName = col.ReadString(),
-                        HP = col.ReadInt(),
+                        Health = col.ReadInt(),
                         attack = col.ReadInt(),
                         speed = col.ReadInt(),
                         defaultWeaponID = col.ReadInt(),
@@ -234,9 +234,9 @@ public class ExcelReader
                         rarity = (CardRarity)col.ReadInt(),
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
                         weaponDescribe = col.ReadString(),
-                        weaponLevel = col.ReadInt(),
-                        maxLevel = col.ReadInt(),
-                        damage = col.ReadFloat(),
+                        //weaponLevel = col.ReadInt(),
+                        //maxLevel = col.ReadInt(),
+                        //damage = col.ReadFloat(),
 
                     };
 
@@ -275,9 +275,9 @@ public class ExcelReader
                         rarity = (CardRarity)col.ReadInt(),
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
                         cardDescribe = col.ReadString(),
-                        weaponLevel = col.ReadInt(),
-                        maxLevel = col.ReadInt(),
-                        damage = col.ReadFloat(),
+                        //weaponLevel = col.ReadInt(),
+                        //maxLevel = col.ReadInt(),
+                        //damage = col.ReadFloat(),
 
                     };
 
@@ -306,7 +306,7 @@ public struct ExcelEnemyData
 {
     public int ID;
     public string enemyName;
-    public int HP;
+    public int Health;
     public int attack;
     public int speed;
     public int defaultWeaponID;
@@ -323,9 +323,9 @@ public struct ExcelCardData
     public CardRarity rarity;
     public CardAbility ability;
     public string cardDescribe;
-    public int weaponLevel;
-    public int maxLevel;
-    public float damage;
+    //public int weaponLevel;
+    //public int maxLevel;
+    //public float damage;
 
 }
 
