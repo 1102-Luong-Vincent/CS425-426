@@ -1,20 +1,22 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using static CardEffectParser;
 
 public enum CardType
 {
-    None,Weapons, AoE, SupportItems
+    None, Weapons, AoE, SupportItems
 }
 
 public enum CardRarity
 {
-    Common, Rare, VeryRare,Epic
+    Common, Rare, VeryRare, Epic
 }
 
 public enum CardAbility
 {
-    None,Attack,Buffs, Potions, Items, Healing
+    None, Attack, Buffs, Potions, Items, Healing
 }
-
 
 public class CardValue
 {
@@ -25,6 +27,8 @@ public class CardValue
     public CardRarity rarity;
     public CardAbility ability;
     private int ID;
+
+    private List<Action<BattlePlayerValue>> parsedEffects = new List<Action<BattlePlayerValue>>();
 
     public CardValue(ExcelCardData excelCardData)
     {
@@ -42,6 +46,9 @@ public class CardValue
         ability = excelCardData.ability;
         CardDescribe = excelCardData.cardDescribe;
 
+        string effectString = excelCardData.cardFunction;
+        parsedEffects = CardEffectParser.ParseEffectString(effectString);
+
         SetCardSprite();
     }
 
@@ -54,10 +61,32 @@ public class CardValue
         }
 
         string path = $"Sprite/Card/{CardType}/{CardName}/{CardName.ToLower()}";
-        Debug.Log($"[SetCardSprite] Loading sprite at: {path}");
         CardSprite = Resources.Load<Sprite>(path);
 
         if (CardSprite == null)
-            Debug.LogWarning($"[SetCardSprite] Failed to load CardSprite! Check path and filename: {path}");
+            Debug.LogWarning($"[SetCardSprite] Failed to load CardSprite! Check path: {path}");
+    }
+
+    public void UseEffect(BattlePlayerValue player)
+    {
+        if (parsedEffects == null || parsedEffects.Count == 0)
+        {
+            Debug.LogWarning($"[UseEffect] No effects parsed for {CardName}");
+            return;
+        }
+
+        foreach (var effect in parsedEffects)
+        {
+            try
+            {
+                effect?.Invoke(player);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[UseEffect] Error executing {CardName} effect: {e.Message}");
+            }
+        }
+
+        Debug.Log($"[UseEffect] Executed {parsedEffects.Count} effects for {CardName}");
     }
 }

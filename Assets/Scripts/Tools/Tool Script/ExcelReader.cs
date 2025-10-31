@@ -275,6 +275,7 @@ public class ExcelReader
                         rarity = (CardRarity)col.ReadInt(),
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
                         cardDescribe = col.ReadString(),
+                        cardFunction = col.ReadString()
                         //weaponLevel = col.ReadInt(),
                         //maxLevel = col.ReadInt(),
                         //damage = col.ReadFloat(),
@@ -323,6 +324,7 @@ public struct ExcelCardData
     public CardRarity rarity;
     public CardAbility ability;
     public string cardDescribe;
+    public string cardFunction;
     //public int weaponLevel;
     //public int maxLevel;
     //public float damage;

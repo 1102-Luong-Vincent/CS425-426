@@ -117,8 +117,8 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void UseCard()
     {
         Debug.Log($"Used card: {CardName.text}");
-
-        BattlePlayerValue.Instance.UsedCard(cardValue);
+        cardValue.UseEffect(BattlePlayerValue.Instance);
+        BattlePlayerValue.Instance.RemoveCard(cardValue);
         BattleManage.Instance.StartNextTurn();
 
     }

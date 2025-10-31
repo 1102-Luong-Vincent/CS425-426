@@ -51,6 +51,22 @@ public class BattlePlayerValue : MonoBehaviour
     #endregion
 
 
+    public State state;
+    public class State
+    {
+        public bool isBleeding = false;
+        public bool isPoisoned = false;
+
+        public float AttackBuff = 1f;
+        public float DefenseBuff = 1f;
+        public float CriticalDamageBuff = 1.5f;
+        public float CriticalChanceBuff = 0.5f;
+
+    }
+
+
+
+
     public BattlePlayerUIManager BattlePlayerUIManager;
 
     private void Awake()
@@ -65,6 +81,8 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
+        state = new State();
+
         HeldCards = playerValue.EquipmentCards;
         BattleCards = playerValue.battleCardsList;
         weapon = playerValue.EquipmentWeapon;
@@ -95,7 +113,7 @@ public class BattlePlayerValue : MonoBehaviour
         BattlePlayerUIManager.AddNewCard(drawnCard);
     }
 
-    public void UsedCard(CardValue usedCard)
+    public void RemoveCard(CardValue usedCard)
     {
         if (usedCard == null) return;
         bool removed = HeldCards.Remove(usedCard);

@@ -22,6 +22,7 @@ public class PlayerValue
     public PlayerValue() {
         Init();
     }
+
     public void Init()
     {
         InitPlayerEquipmentWeapons();
@@ -42,7 +43,7 @@ public class PlayerValue
     {
         ClearCard();
 
-        string[] starterEquipment = { "Bandage", "Syringe", "Bandage", "Syringe" };
+        string[] starterEquipment = { "Beer", "Beer", "Bandage", "Syringe" };
         foreach (string equipName in starterEquipment)
         {
             CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);

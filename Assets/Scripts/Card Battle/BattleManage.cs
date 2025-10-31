@@ -1,11 +1,5 @@
 using UnityEngine;
-
 using System;
-using UnityEngine;
-
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class BattleManage : MonoBehaviour
 {
@@ -70,11 +64,18 @@ public class BattleManage : MonoBehaviour
         {
             Debug.Log("Enemy Turn");
         }
+
+        DebugTest();
     }
 
     bool IsPlayerTurn()
     {
         return Turn % 2 == 1;
+    }
+
+    void DebugTest()
+    {
+        BattlePlayerTestUIManager.Instance.CheckPlayerState(BattlePlayerValue.Instance);
     }
 
 
