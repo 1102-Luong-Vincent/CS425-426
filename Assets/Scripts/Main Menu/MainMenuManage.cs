@@ -39,7 +39,7 @@ public class MainMenuManage : MonoBehaviour
 
     void PlayerBackgroundMusic()
     {
-        SoundManage.Instance.PlayBackgroundMusic("Alternative Menu sound");
+        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.MainMenuMusicName);
     }
 
 

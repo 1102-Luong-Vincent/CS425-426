@@ -34,7 +34,7 @@ public static class ButtonEffect
         {
             if (!string.IsNullOrEmpty(clipFileName))
             {
-                string path = SoundPath.SoundEffectPath + clipFileName;
+                string path = SoundManagerConstants.SoundEffectPath + clipFileName;
                 AudioClip clip = Resources.Load<AudioClip>(path);
                 SoundManage.Instance.PlaySoundEffect(clip, loop);
             }

@@ -22,9 +22,10 @@ public class GameValue : MonoBehaviour
 
     private GameValueLibrary library;
     private PlayerValue playerValue;
-    SceneType CurrentScene = SceneType.None;
+    [SerializeField] SceneType CurrentScene = SceneType.None;
     private Vector3 playerPosition = Vector3.zero;
     private String happendStoryName = string.Empty;
+    [SerializeField] GameProcessManager gameProcessManager;
 
     private BattleData battleData;
     public GameValueTest gameValueTest;
@@ -80,6 +81,7 @@ public class GameValue : MonoBehaviour
         {
             Debug.LogWarning($"Scene {sceneName} not found in Build Settings!");
         }
+        gameProcessManager.PlayMusic(scene);
     }
     private bool IsSceneInBuild(string sceneName)
     {
@@ -103,16 +105,6 @@ public class GameValue : MonoBehaviour
     }
 
 
-    /*   public bool GetSetPlayerPosition()
-       {
-           return SetPlayerPosition;
-       }
-
-       public void SetSetPlayerPosition(bool isSetPlayerPosition)
-       {
-           if (!isSetPlayerPosition) playerPosition = Vector3.zero;
-           SetPlayerPosition = isSetPlayerPosition;
-       }*/
 
 
     #region Get

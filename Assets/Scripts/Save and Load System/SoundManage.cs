@@ -1,9 +1,14 @@
 using UnityEngine;
 
-public static class SoundPath
+public static class SoundManagerConstants
 {
-    public const string BackgroundPath = "Sound/Background Music/";
-    public const string SoundEffectPath = "Sound/Sound Effect/";
+    public const string BackgroundPath = "Sound/BGM/";
+    public const string SoundEffectPath = "Sound/SFX/";
+    public const string MainMenuMusicName = "Alternative Menu sound";
+    public const string GameplayMusic = "background tension music";
+    public const string PauseScreenMusic = "enigma horror sound";
+    public const string BattleMusic = "enigma horror sound";
+
 }
 
 
@@ -34,7 +39,7 @@ public class SoundManage : MonoBehaviour
 
     public void PlayBackgroundMusic(string fileName, bool loop = true)
     {
-        string path = SoundPath.BackgroundPath + fileName;
+        string path = SoundManagerConstants.BackgroundPath + fileName;
         AudioClip clip = Resources.Load<AudioClip>(path);
         PlayBackgroundMusic(clip, loop);
     }
@@ -66,7 +71,7 @@ public class SoundManage : MonoBehaviour
 
     public void PlaySoundEffect(string fileName,bool loop = false)
     {
-        string path = SoundPath.SoundEffectPath + fileName;
+        string path = SoundManagerConstants.SoundEffectPath + fileName;
         AudioClip clip = Resources.Load<AudioClip>(path);
         PlaySoundEffect(clip,loop);
     }
