@@ -15,8 +15,8 @@ public class PauseControl : MonoBehaviour
 
     private bool isPaused = false;
     public OptionPanelControl OptionPanelControl;
-    [SerializeField] private AudioSource PauseMusic;
-    [SerializeField] private AudioSource gameplayMusic;
+    //[SerializeField] private AudioSource PauseMusic;
+    //[SerializeField] private AudioSource gameplayMusic;
 
     private void Start()
     {
@@ -48,30 +48,32 @@ public class PauseControl : MonoBehaviour
         pauseScreen.SetActive(true); //activates the pauseScreen and pauses the screen
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
-        
-        if(gameplayMusic != null && gameplayMusic.isPlaying)
-        {
-            gameplayMusic.Pause();
-        }
-        if(PauseMusic != null && !PauseMusic.isPlaying)
-        {
-            PauseMusic.Play();
-        }
+
+        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.PauseScreenMusic);
+        //if(gameplayMusic != null && gameplayMusic.isPlaying)
+        //{
+        //    gameplayMusic.Pause();
+        //}
+        //if(PauseMusic != null && !PauseMusic.isPlaying)
+        //{
+        //    PauseMusic.Play();
+        //}
     }
     void ResumeGame()
     {
         pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
         Time.timeScale = 1f; //game starts running again
         isPaused = false;
+        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
 
-        if(PauseMusic != null && PauseMusic.isPlaying)
-        {
-            PauseMusic.Stop();
-        }
-        if (gameplayMusic != null)  
-        {
-            gameplayMusic.UnPause();
-        }
+        //if(PauseMusic != null && PauseMusic.isPlaying)
+        //{
+        //    PauseMusic.Stop();
+        //}
+        //if (gameplayMusic != null)  
+        //{
+        //    gameplayMusic.UnPause();
+        //}
     }
 
     void SaveGame()
