@@ -11,6 +11,7 @@ public class PauseControl : MonoBehaviour
     public Button LoadButton;
     public Button OptionsButton;
     public Button ExitGameButton;
+    public Button MainMenuButton;
 
     private bool isPaused = false;
     public OptionPanelControl OptionPanelControl;
@@ -24,6 +25,7 @@ public class PauseControl : MonoBehaviour
         if (LoadButton != null) LoadButton.onClick.AddListener(LoadGame); //goes to load scene on button click
         if (OptionsButton != null) OptionsButton.onClick.AddListener(Options); //goes to options scene on button click
         if (ExitGameButton != null) ExitGameButton.onClick.AddListener(ExitGame); //exits the game on button click
+        if (MainMenuButton != null) MainMenuButton.onClick.AddListener(MainMenu);
     }
 
     private void Update()
@@ -92,5 +94,10 @@ public class PauseControl : MonoBehaviour
     {
         //UnityEditor.EditorApplication.isPlaying = false; //exits the editor
         Application.Quit(); //quit the application. //doesn't apply to unity. only applications.
+    }
+    void MainMenu()
+    {
+        Time.timeScale = 1f; //make sure time scale is back to normal before going to main menu
+        SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
     }
 }
