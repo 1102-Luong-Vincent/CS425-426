@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41c92b07e7ed4d4da155cd1d84f60f1, type: 3}
+  m_Name: card_poison_cloud
+  m_EditorClassIdentifier: 
+  Title: Poison Cloud
+  Description: Apply 2 poison to all enemies every turn. Destroy
+  Cost: 4
+  Type: 1
+  Border: {fileID: 21300000, guid: d837ee152794e3945a48b7e35d39270a, type: 3}
+  Art: {fileID: 21300000, guid: cea75c3e466d39742a5bef04e384d9c9, type: 3}
+  IsTargeting: 0
+  Traits:
+  - {fileID: 11400000, guid: cced3bfbea501084599465adc6d71032, type: 2}
