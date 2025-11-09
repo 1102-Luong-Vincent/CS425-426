@@ -39,7 +39,7 @@ public class MainMenuManage : MonoBehaviour
 
     void PlayerBackgroundMusic()
     {
-        SoundManage.Instance.PlayBackgroundMusic("TestBGM");
+        SoundManage.Instance.PlayBackgroundMusic("Alternative Menu sound");
     }
 
 
@@ -55,6 +55,14 @@ public class MainMenuManage : MonoBehaviour
         OnMainMenuButtonClick(buttons.ExitButton, OnExitButtonClick);
     }
 
+    public void SetMainMenuButtons(bool isActive)
+    {
+        buttons.ContinueButton.gameObject.SetActive(isActive && !SettingValue.Instance.GetSettingData().saveData.IsEmpty());
+        buttons.StartButton.gameObject.SetActive(isActive);
+        buttons.LoadButton.gameObject.SetActive(isActive);
+        buttons.OptionButton.gameObject.SetActive(isActive);
+        buttons.ExitButton.gameObject.SetActive(isActive);
+    }
     void OnContinueButtonClick()
     {
         GameValue.Instance.SetSaveData(SettingValue.Instance.GetSettingData().saveData);
@@ -75,9 +83,9 @@ public class MainMenuManage : MonoBehaviour
 
     void OnOptionButtonClick()
     {
+        SetMainMenuButtons(false);
         OptionPanelControl.SetOptionPanelActive(true);
     }
-
     void OnExitButtonClick()
     {
         #if UNITY_EDITOR
@@ -86,6 +94,4 @@ public class MainMenuManage : MonoBehaviour
             Application.Quit(); // ????????
         #endif
     }
-
-
 }

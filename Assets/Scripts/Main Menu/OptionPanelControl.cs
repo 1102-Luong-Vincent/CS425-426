@@ -27,10 +27,13 @@ public class OptionPanelControl : MonoBehaviour
     public Button LanguageButton;
     public Button BackButton;
 
-    private Dictionary<PanelType, GameObject> panels = new Dictionary<PanelType, GameObject>();
+    private List<Button> optionButtons;
 
+    private Dictionary<PanelType, GameObject> panels = new Dictionary<PanelType, GameObject>();
     void Start()
     {
+        optionButtons = new List<Button>() { VolumeButton, DisplayButton, LanguageButton };
+
         InitOptionPanel();
         InitOptionPanelButton();
         CloseAllPanels();
@@ -48,19 +51,36 @@ public class OptionPanelControl : MonoBehaviour
     }
     void InitOptionPanelButton()
     {
-        OnMainMenuButtonClick(VolumeButton, () => OpenPanel(PanelType.Volume), false);
-        OnMainMenuButtonClick(DisplayButton, () => OpenPanel(PanelType.Display), false);
-        OnMainMenuButtonClick(LanguageButton, () => OpenPanel(PanelType.Language), false);
-        OnMainMenuButtonClick(BackButton, () => SetOptionPanelActive(false), false);
+        //OnMainMenuButtonClick(VolumeButton, () => OpenPanel(PanelType.Volume), false);
+        //OnMainMenuButtonClick(DisplayButton, () => OpenPanel(PanelType.Display), false);
+        //OnMainMenuButtonClick(LanguageButton, () => OpenPanel(PanelType.Language), false);
+        OnMainMenuButtonClick(VolumeButton, () => OpenSubPanel(PanelType.Volume), false);
+        OnMainMenuButtonClick(DisplayButton, () => OpenSubPanel(PanelType.Display), false);
+        OnMainMenuButtonClick(LanguageButton, () => OpenSubPanel(PanelType.Language), false);
+        //OnMainMenuButtonClick(BackButton, () => SetOptionPanelActive(false), false);
+        OnMainMenuButtonClick(BackButton, () => SetOptionsPanel(false), false);
     }
 
     public void SetOptionPanelActive(bool isActive)
     {
         CloseAllPanels();
         gameObject.SetActive(isActive);
+        SetOptionButtonsActive(true);
 
     }
-
+    void SetOptionButtonsActive(bool isActive)
+    {
+        foreach (var btn in optionButtons)
+            btn.gameObject.SetActive(isActive);
+    }
+    void OpenSubPanel(PanelType key)
+    {
+        CloseAllPanels();
+        SetOptionButtonsActive(false); // hide option buttons when a sub-panel opens
+        SetOptionsBackButtonActive(false); // show back button
+        if (panels.ContainsKey(key))
+            panels[key].SetActive(true);
+    }
 
     #endregion
     #region Volume
@@ -82,7 +102,8 @@ public class OptionPanelControl : MonoBehaviour
     {
         volumePanelControl.BackgroundVolumeSlider.onValueChanged.AddListener((value) => SettingValue.Instance.SetBackgroundVolume(value));
         volumePanelControl.SoundEffectsVolumeSlider.onValueChanged.AddListener((value) => SettingValue.Instance.SetSoundEffectVolume(value));
-        OnMainMenuButtonClick(volumePanelControl.BackButton, () => ClosePanel(PanelType.Volume), false);
+        //OnMainMenuButtonClick(volumePanelControl.BackButton, () => ClosePanel(PanelType.Volume), false);
+        OnMainMenuButtonClick(volumePanelControl.BackButton, () => CloseSubPanel(PanelType.Volume), false);
         volumePanelControl.BackgroundVolumeSlider.value = SettingValue.Instance.GetSettingData().backgroundVolume;
         volumePanelControl.SoundEffectsVolumeSlider.value = SettingValue.Instance.GetSettingData().soundEffectsVolume;
     }
@@ -109,8 +130,8 @@ public class OptionPanelControl : MonoBehaviour
 
         OnMainMenuButtonClick(displayPanelControl.LeftButton, () => OnDisplayScreenButtonClick(-1), false);
         OnMainMenuButtonClick(displayPanelControl.RightButton, () => OnDisplayScreenButtonClick(+1), false);
-        OnMainMenuButtonClick(displayPanelControl.BackButton, () => ClosePanel(PanelType.Display), false);
-
+        //OnMainMenuButtonClick(displayPanelControl.BackButton, () => ClosePanel(PanelType.Display), false);
+        OnMainMenuButtonClick(displayPanelControl.BackButton, () => CloseSubPanel(PanelType.Display), false);
         SettingValue.Instance.OnScreenTypeChanged += UpdateScreenText;
 
     }
@@ -151,8 +172,9 @@ public class OptionPanelControl : MonoBehaviour
 
         OnMainMenuButtonClick(languagePanelControl.LeftButton, () => OnLanguageButtonClick(-1), false);
         OnMainMenuButtonClick(languagePanelControl.RightButton, () => OnLanguageButtonClick(+1), false);
-        OnMainMenuButtonClick(languagePanelControl.BackButton, () => ClosePanel(PanelType.Language), false);
-        
+        //OnMainMenuButtonClick(languagePanelControl.BackButton, () => ClosePanel(PanelType.Language), false);
+        OnMainMenuButtonClick(languagePanelControl.BackButton, () => CloseSubPanel(PanelType.Language), false);
+
         SettingValue.Instance.OnLanguageChanged += UpdateLanguageText;
     }
 
@@ -178,6 +200,15 @@ public class OptionPanelControl : MonoBehaviour
         if (panels.ContainsKey(key))
             panels[key].SetActive(true);
     }
+    void CloseSubPanel(PanelType key)
+    {
+        if (panels.ContainsKey(key))
+            panels[key].SetActive(false);
+
+        SetOptionsPanel(true); // show option buttons again
+        SetOptionButtonsActive(true);         // show Volume/Display/Language buttons
+        SetOptionsBackButtonActive(true);     // show Options Back button again
+    }
 
     void ClosePanel(PanelType key)
     {
@@ -202,4 +233,24 @@ public class OptionPanelControl : MonoBehaviour
         }
     }
 
+    void SetOptionsPanel(bool isActive)
+    {
+        //CloseAllPanels();
+        gameObject.SetActive(isActive);
+
+        // Show main menu buttons if options panel is closed
+        if (!isActive && MainMenuManage.Instance != null)
+        {
+            MainMenuManage.Instance.SetMainMenuButtons(true);
+        }
+
+        if(isActive){
+            SetOptionButtonsActive(true);
+        }
+    }
+    void SetOptionsBackButtonActive(bool isActive)
+    {
+        if (BackButton != null)
+            BackButton.gameObject.SetActive(isActive);
+    }
 }

@@ -14,6 +14,8 @@ public class PauseControl : MonoBehaviour
 
     private bool isPaused = false;
     public OptionPanelControl OptionPanelControl;
+    [SerializeField] private AudioSource PauseMusic;
+    [SerializeField] private AudioSource gameplayMusic;
 
     private void Start()
     {
@@ -44,17 +46,36 @@ public class PauseControl : MonoBehaviour
         pauseScreen.SetActive(true); //activates the pauseScreen and pauses the screen
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
+        
+        if(gameplayMusic != null && gameplayMusic.isPlaying)
+        {
+            gameplayMusic.Pause();
+        }
+        if(PauseMusic != null && !PauseMusic.isPlaying)
+        {
+            PauseMusic.Play();
+        }
     }
     void ResumeGame()
     {
         pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
         Time.timeScale = 1f; //game starts running again
         isPaused = false;
+
+        if(PauseMusic != null && PauseMusic.isPlaying)
+        {
+            PauseMusic.Stop();
+        }
+        if (gameplayMusic != null)  
+        {
+            gameplayMusic.UnPause();
+        }
     }
 
     void SaveGame()
     {
         SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel to save your game
+
     }
 
     void LoadGame()
@@ -69,7 +90,7 @@ public class PauseControl : MonoBehaviour
 
     void ExitGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false; //exits the editor
+        //UnityEditor.EditorApplication.isPlaying = false; //exits the editor
         Application.Quit(); //quit the application. //doesn't apply to unity. only applications.
     }
 }
