@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public static class FunctionName
 {
     public const string LoadSceneByEnum = "LoadSceneByEnum";
+    public const string SetStory = "SetStory";
     public const string Wait = "Wait";
 }
 
@@ -14,14 +15,13 @@ public static class CommandExecutor
     // Entry point for executing effect strings
     public static void Execute(MonoBehaviour runner, string effect)
     {
+        Debug.Log(effect);
         if (TryParseEffect(effect, out string functionName, out string[] args))
         {
             object[] parsedArgs = ParseArgs(args); // Auto type detection
             ExecuteEffect(runner, functionName, parsedArgs);
         }
     }
-
-
 
     public static string UnwrapWaitRecursive(string effect)
     {
@@ -39,8 +39,6 @@ public static class CommandExecutor
         // Not a Wait function -> return as is
         return effect;
     }
-
-
 
 
     // Parse function name and argument strings
@@ -118,22 +116,16 @@ public static class CommandExecutor
 
         switch (functionName)
         {
-            case FunctionName.LoadSceneByEnum:
-                ExecuteLoadSceneByEnum(args);
-                break;
-
-            case FunctionName.Wait:
-                ExecuteWait(runner, args);
-                break;
-
-            default:
-                Debug.LogWarning($"Unknown effect: {functionName}");
-                break;
+            case FunctionName.LoadSceneByEnum:ExecuteLoadSceneByEnum(args);break;
+            case FunctionName.Wait:ExecuteWait(runner, args);break;
+            case FunctionName.SetStory:SetStory(runner, args);break;
+            default:Debug.LogWarning($"Unknown effect: {functionName}");break;
         }
     }
 
     private static void ExecuteLoadSceneByEnum(object[] args)
     {
+
         if (args.Length < 1) return;
         string sceneName = args[0].ToString();
 
@@ -177,4 +169,32 @@ public static class CommandExecutor
         yield return new WaitForSeconds(delay);
         Execute(runner, nestedEffect);
     }
+
+
+    private static void SetStory(MonoBehaviour runner, object[] args)
+    {
+        if (args == null || args.Length < 1)
+        {
+            Debug.LogWarning("ReadStory requires at least one argument: the story file name.");
+            return;
+        }
+
+        string fileName = args[0]?.ToString();
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            Debug.LogWarning("Invalid story file name provided to ReadStory.");
+            return;
+        }
+
+        if (StoryManage.Instance == null)
+        {
+            Debug.LogError("StoryManage.Instance is null. Cannot set story.");
+            return;
+        }
+
+        StoryManage.Instance.SetStory(fileName);
+        Debug.Log($"Story loaded: {fileName}");
+    }
+
+
 }

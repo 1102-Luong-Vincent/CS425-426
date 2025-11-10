@@ -8,24 +8,33 @@ using static ExcelReader;
 using static CommandExecutor;
 using UnityEngine.SceneManagement;
 
-
 public static class StoryName
 {
     public const string Prologue = "Prologue";
 }
 
-
-
 public class StoryManage : MonoBehaviour
 {
+    public static StoryManage Instance;
     public TextMeshProUGUI storyText;
     public float timeBetweenLines = 1.0f; //time before next story line appears 
     public float typingSpeed = 0.05f; // Speed of typing effect 
 
-    private List<ExcelStoryData> storyLines;  
+    private List<ExcelStoryData> storyLines;
     private int currentLineIndex = 0;
+    private bool isTyping = false;
+    private bool isSkipTypingRequested = false;
+    private bool isGlobalSkipMode = false;
 
-    public Button SkipButton; 
+    public Button SkipButton;
+
+    // Store reference to the current story coroutine
+    private Coroutine currentStoryCoroutine;
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     void Start()
     {
@@ -34,93 +43,123 @@ public class StoryManage : MonoBehaviour
         GameValue.Instance.SetHappendStoryName(string.Empty);
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && isTyping)
+        {
+            isSkipTypingRequested = true;
+        }
+    }
+
     void OnSkipButtonClick()
     {
-        // Stop any ongoing coroutines (e.g., typing or display coroutine)
         StopAllCoroutines();
+        isGlobalSkipMode = true;
+        if (currentStoryCoroutine != null)
+        {
+            StopCoroutine(currentStoryCoroutine);
+            currentStoryCoroutine = null;
+        }
 
-        // Execute all remaining effects and instantly show the last story line
         DisplayAllEffectsAndLastLine();
     }
 
-    /// <summary>
-    /// Executes all remaining effects from the current line to the last line,
-    /// and immediately displays the content of the last story line.
-    /// </summary>
     private void DisplayAllEffectsAndLastLine()
     {
         if (storyLines == null || storyLines.Count == 0) return;
-
-        // Loop through all remaining story lines and execute their effects
-        for (int i = currentLineIndex; i < storyLines.Count; i++)
-        {
-            string effect = storyLines[i].Effect;
-
-            if (!string.IsNullOrEmpty(effect))
-            {
-                // Remove all nested Wait(...) before execution
-                string unwrapped = UnwrapWaitRecursive(effect);
-
-                if (!string.IsNullOrEmpty(unwrapped))
-                {
-                    ExecuteEffect(unwrapped); // Trigger the final unwrapped effect
-                }
-            }
-        }
-
-        // Immediately display the content of the last story line
         storyText.text = storyLines[storyLines.Count - 1].Content;
 
-        // Update the current line index to the end to prevent further display
-        currentLineIndex = storyLines.Count;
+        // Loop through all remaining story lines and execute their effects
 
+        for (int i = currentLineIndex; i < storyLines.Count; i++)
+            {
+                string effect = storyLines[i].Effect;
+                if (!string.IsNullOrEmpty(effect))
+                {
+                    // Remove all nested Wait(...) before execution
+                    string unwrapped = UnwrapWaitRecursive(effect);
+                    if (!string.IsNullOrEmpty(unwrapped))
+                    {
+                        ExecuteEffect(unwrapped); // Trigger the final unwrapped effect
+                    }
+                }
+            }
+
+        currentLineIndex = storyLines.Count;
     }
 
     public void SetStory(string fileName)
     {
+        StopAllCoroutines();
+        currentStoryCoroutine = null;
+
+        isTyping = false;
+        isSkipTypingRequested = false;
+        currentLineIndex = 0;
+        storyText.text = string.Empty;
+
         storyLines = GetStoryData(fileName);
+
         if (storyLines != null && storyLines.Count > 0)
         {
             Debug.Log($"Story loaded! Lines: {storyLines.Count}");
-            StartCoroutine(DisplayStoryDialogue());
+
+            if (isGlobalSkipMode)
+            {
+                DisplayAllEffectsAndLastLine();
+                return;
+            }
+
+            currentStoryCoroutine = StartCoroutine(DisplayStoryDialogue());
         }
         else
         {
-            Debug.LogError($"Failed to load story data! {storyLines != null} && storyLines.Count{storyLines.Count}");
+            Debug.LogError($"Failed to load story data! fileName: {fileName}");
         }
-
     }
 
     System.Collections.IEnumerator DisplayStoryDialogue()
     {
         while (currentLineIndex < storyLines.Count)
         {
-            string content = storyLines[currentLineIndex].Content;
-            string effect = storyLines[currentLineIndex].Effect;
-
-            yield return StartCoroutine(LineSpeed(content)); // Type out the current line 
-            ExecuteEffect(effect); 
-
-            yield return new WaitForSeconds(timeBetweenLines); // Wait for the specified time 
+            yield return StartCoroutine(LineSpeed(storyLines[currentLineIndex]));
             currentLineIndex++;
-
         }
+
+        // Clear coroutine reference when finished
+        currentStoryCoroutine = null;
     }
 
-    System.Collections.IEnumerator LineSpeed(string speed)
+    private IEnumerator LineSpeed(ExcelStoryData ExcelStoryline)
     {
-        storyText.text = ""; // Clear existing text
-        foreach (char letter in speed.ToCharArray())
+        storyText.text = "";
+        isTyping = true;
+        isSkipTypingRequested = false;
+
+        foreach (char letter in ExcelStoryline.Content.ToCharArray())
         {
-            storyText.text += letter; // Add one letter at a time
-            yield return new WaitForSeconds(typingSpeed); // Wait for the typing speed duration
+            storyText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+
+            if (isSkipTypingRequested)
+            {
+                storyText.text = ExcelStoryline.Content;
+                break;
+            }
         }
+        isTyping = false;
+        ExecuteEffect(ExcelStoryline.Effect);
     }
 
     void ExecuteEffect(string effect)
     {
-         CommandExecutor.Execute(this,effect); 
+        CommandExecutor.Execute(this, effect);
     }
 
-
+    // Clean up coroutines when object is destroyed
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        currentStoryCoroutine = null;
+    }
 }
