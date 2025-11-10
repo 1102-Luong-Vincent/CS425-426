@@ -7,7 +7,7 @@ public static class SoundManagerConstants
     public const string MainMenuMusicName = "Alternative Menu sound";
     public const string GameplayMusic = "background tension music";
     public const string PauseScreenMusic = "enigma horror sound";
-    public const string BattleMusic = "enigma horror sound";
+    public const string BattleMusic = "3. Time For a Revenge - 157bpm - LOOP 33s";
 
 }
 
