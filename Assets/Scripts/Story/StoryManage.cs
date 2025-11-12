@@ -1,24 +1,33 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using static ExcelReader;
-using static CommandExecutor;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static CommandExecutor;
+using static ExcelReader;
 
 public static class StoryName
 {
     public const string Prologue = "Prologue";
 }
 
+public class StoryCache
+{
+    public string FileName;
+    public List<ExcelStoryData> Lines = new List<ExcelStoryData>();
+    public List<StoryCache> SubStories = new List<StoryCache>();
+}
+
 public class StoryManage : MonoBehaviour
 {
     public static StoryManage Instance;
     public TextMeshProUGUI storyText;
-    public float timeBetweenLines = 1.0f; //time before next story line appears 
-    public float typingSpeed = 0.05f; // Speed of typing effect 
+    public float timeBetweenLines = 1.0f;
+    public float typingSpeed = 0.05f;
 
     private List<ExcelStoryData> storyLines;
     private int currentLineIndex = 0;
@@ -28,8 +37,11 @@ public class StoryManage : MonoBehaviour
 
     public Button SkipButton;
 
-    // Store reference to the current story coroutine
-    private Coroutine currentStoryCoroutine;
+    private readonly List<Coroutine> storyCoroutines = new List<Coroutine>();
+    private Dictionary<string, StoryCache> storyCacheDict = new Dictionary<string, StoryCache>();
+
+    private ExcelStoryData finalStoryLine;
+    private string finalStoryFileName;
 
     private void Awake()
     {
@@ -47,87 +59,165 @@ public class StoryManage : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && isTyping)
         {
-            isSkipTypingRequested = true;
+            if (IsPointerOverStoryUI())
+            {
+                isSkipTypingRequested = true;
+            }
         }
+    }
+
+    private bool IsPointerOverStoryUI()
+    {
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        var results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, results);
+        if (results.Count > 0)
+        {
+            var first = results[0].gameObject;
+            return first.layer == LayerMask.NameToLayer("Story");
+        }
+
+        return false;
     }
 
     void OnSkipButtonClick()
     {
-        StopAllCoroutines();
         isGlobalSkipMode = true;
-        if (currentStoryCoroutine != null)
-        {
-            StopCoroutine(currentStoryCoroutine);
-            currentStoryCoroutine = null;
-        }
-
-        DisplayAllEffectsAndLastLine();
+        StopStoryCoroutines();
+        StartCoroutine(SkipAfterRender());
     }
 
-    private void DisplayAllEffectsAndLastLine()
+    private IEnumerator SkipAfterRender()
+    {
+        storyText.text = finalStoryLine.Content;
+        storyText.ForceMeshUpdate();
+        Canvas.ForceUpdateCanvases();
+        yield return null;
+        DisplayAllEffects();
+    }
+
+
+    private void DisplayAllEffects()
     {
         if (storyLines == null || storyLines.Count == 0) return;
-        storyText.text = storyLines[storyLines.Count - 1].Content;
-
-        // Loop through all remaining story lines and execute their effects
-
         for (int i = currentLineIndex; i < storyLines.Count; i++)
+        {
+            string effect = storyLines[i].Effect;
+            if (!string.IsNullOrEmpty(effect))
             {
-                string effect = storyLines[i].Effect;
-                if (!string.IsNullOrEmpty(effect))
-                {
-                    // Remove all nested Wait(...) before execution
-                    string unwrapped = UnwrapWaitRecursive(effect);
-                    if (!string.IsNullOrEmpty(unwrapped))
-                    {
-                        ExecuteEffect(unwrapped); // Trigger the final unwrapped effect
-                    }
-                }
+                string unwrapped = UnwrapWaitRecursive(effect);
+                if (!string.IsNullOrEmpty(unwrapped)) ExecuteEffect(unwrapped);
             }
-
+        }
         currentLineIndex = storyLines.Count;
     }
 
-    public void SetStory(string fileName)
+
+
+
+    void SetStory(string fileName)
     {
-        StopAllCoroutines();
-        currentStoryCoroutine = null;
+        StopStoryCoroutines();
 
         isTyping = false;
         isSkipTypingRequested = false;
         currentLineIndex = 0;
         storyText.text = string.Empty;
 
-        storyLines = GetStoryData(fileName);
+        if (!storyCacheDict.TryGetValue(fileName, out StoryCache cache))
+        {
+            cache = PreloadStoryRecursive(fileName, new HashSet<string>());
+            storyCacheDict[fileName] = cache;
+            Debug.Log($"? Preloaded story {fileName} with {cache.Lines.Count} lines (including nested)");
+        }
+
+        storyLines = cache.Lines;
+
+        StoryCache deepest = GetDeepestSubStory(cache);
+        finalStoryLine = deepest.Lines.LastOrDefault();
+        finalStoryFileName = deepest.FileName;
+        Debug.Log($"?? Cached final story line from {finalStoryFileName}: {finalStoryLine.Content}");
 
         if (storyLines != null && storyLines.Count > 0)
         {
-            Debug.Log($"Story loaded! Lines: {storyLines.Count}");
-
             if (isGlobalSkipMode)
             {
-                DisplayAllEffectsAndLastLine();
+                DisplayAllEffects();
                 return;
             }
 
-            currentStoryCoroutine = StartCoroutine(DisplayStoryDialogue());
+            StartCoroutine(DisplayStoryDialogue());
         }
         else
         {
-            Debug.LogError($"Failed to load story data! fileName: {fileName}");
+            Debug.LogError($"? Failed to load story data! fileName: {fileName}");
         }
     }
 
-    System.Collections.IEnumerator DisplayStoryDialogue()
+    private StoryCache GetDeepestSubStory(StoryCache cache)
+    {
+        if (cache.SubStories == null || cache.SubStories.Count == 0)
+            return cache;
+
+        return GetDeepestSubStory(cache.SubStories.Last());
+    }
+
+
+
+
+    private StoryCache PreloadStoryRecursive(string fileName, HashSet<string> visited)
+    {
+        if (visited.Contains(fileName))
+        {
+            Debug.LogWarning($"?? Loop detected in story: {fileName}");
+            return new StoryCache { FileName = fileName };
+        }
+        visited.Add(fileName);
+
+        List<ExcelStoryData> lines = GetStoryData(fileName);
+        if (lines == null || lines.Count == 0)
+        {
+            Debug.LogWarning($"?? Story file empty: {fileName}");
+            return new StoryCache { FileName = fileName };
+        }
+
+        StoryCache cache = new StoryCache { FileName = fileName };
+
+        foreach (var line in lines)
+        {
+            cache.Lines.Add(line);
+
+            if (!string.IsNullOrEmpty(line.Effect)
+                && CommandExecutor.TryParseEffect(line.Effect, out string func, out string[] args)
+                && func == FunctionName.SetStory
+                && args.Length > 0)
+            {
+                string subFile = args[0];
+                if (!string.IsNullOrEmpty(subFile))
+                {
+                    Debug.Log($"?? Preloading nested story: {subFile} (from {fileName})");
+                    StoryCache subCache = PreloadStoryRecursive(subFile, visited);
+                    cache.SubStories.Add(subCache);
+                    cache.Lines.AddRange(subCache.Lines);
+                }
+            }
+        }
+
+        return cache;
+    }
+
+    private IEnumerator DisplayStoryDialogue()
     {
         while (currentLineIndex < storyLines.Count)
         {
-            yield return StartCoroutine(LineSpeed(storyLines[currentLineIndex]));
+            yield return StartStoryCoroutine(LineSpeed(storyLines[currentLineIndex]));
             currentLineIndex++;
+            yield return new WaitForSeconds(timeBetweenLines);
         }
-
-        // Clear coroutine reference when finished
-        currentStoryCoroutine = null;
     }
 
     private IEnumerator LineSpeed(ExcelStoryData ExcelStoryline)
@@ -147,6 +237,7 @@ public class StoryManage : MonoBehaviour
                 break;
             }
         }
+
         isTyping = false;
         ExecuteEffect(ExcelStoryline.Effect);
     }
@@ -156,10 +247,24 @@ public class StoryManage : MonoBehaviour
         CommandExecutor.Execute(this, effect);
     }
 
-    // Clean up coroutines when object is destroyed
+    private Coroutine StartStoryCoroutine(IEnumerator routine)
+    {
+        Coroutine c = StartCoroutine(routine);
+        storyCoroutines.Add(c);
+        return c;
+    }
+
+    private void StopStoryCoroutines()
+    {
+        foreach (var c in storyCoroutines)
+        {
+            if (c != null) StopCoroutine(c);
+        }
+        storyCoroutines.Clear();
+    }
+
     private void OnDestroy()
     {
-        StopAllCoroutines();
-        currentStoryCoroutine = null;
+        StopStoryCoroutines();
     }
 }
