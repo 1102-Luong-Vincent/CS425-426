@@ -35,6 +35,10 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         // Add this field at the top where other variables are declared
         private AudioSource gunfireAudioSource;
 
+        //footstep sound effects
+        private float footstepTimer = 0f;
+        public float footstepInterval = 0.1f; // Time between footsteps
+
 
 
         // Archer specifics
@@ -262,6 +266,22 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             float moveSpeed = isCrouching ? speed * 0.5f : speed;
 
             rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
+
+            // Handle footstep sounds
+            if (input.magnitude > 0.1f) // Player is moving
+            {
+                footstepTimer += Time.fixedDeltaTime;
+
+                if (footstepTimer >= footstepInterval)
+                {
+                    SoundManage.Instance.PlaySoundEffect(SoundManagerConstants.FootstepsSound);
+                    footstepTimer = 0f;
+                }
+            }
+            else
+            {
+                footstepTimer = 0f; // reset if player stops
+            }
         }
 
 
