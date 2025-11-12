@@ -64,16 +64,14 @@ public class PauseControl : MonoBehaviour
         pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
         Time.timeScale = 1f; //game starts running again
         isPaused = false;
-        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+        SoundManage.Instance.StopBackgroundMusic(); // Stop any pause music first
 
-        //if(PauseMusic != null && PauseMusic.isPlaying)
-        //{
-        //    PauseMusic.Stop();
-        //}
-        //if (gameplayMusic != null)  
-        //{
-        //    gameplayMusic.UnPause();
-        //}
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene != "GameStartScene") //stops music for this scene only. this is only the tutorial. 
+        {
+            SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+        }
     }
 
     void SaveGame()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class SoundManagerConstants
 {
@@ -29,7 +30,19 @@ public class SoundManage : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    private void Start()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
 
+        if (currentScene == "GameStartScene")
+        {
+            StopBackgroundMusic(); // Disable background music in this scene
+        }
+        else
+        {
+            PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+        }
+    }
 
     #region Background
     public void SetBackgroundVolume(float volume)  // make sure only setting Value use it , other mean only 1 reference form SettingValue;
