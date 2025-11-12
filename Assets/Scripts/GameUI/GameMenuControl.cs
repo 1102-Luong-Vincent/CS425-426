@@ -40,7 +40,7 @@ public class GameMenuControl : MonoBehaviour
 
     MenuState state = MenuState.Deck;
     MenuState previousState = MenuState.Deck;
-    private bool menuActive = false;
+    private bool menuActive = true;
 
     private void Awake()
     {
