@@ -10,6 +10,13 @@ public static class ButtonEffect
         AddButtonEffect(button, "TestClick", onClickAction, loop);
     }
 
+    public static void OnGameMenuButtonClick(Button button, Action onClickAction, bool loop = false)
+    {
+        button.onClick.AddListener(() =>
+        {
+            onClickAction?.Invoke();
+        });
+    }
 
     public static void AddButtonEffect(Button button, AudioClip clip, Action onClickAction, bool loop = false)
     {
