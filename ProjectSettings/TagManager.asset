@@ -12,11 +12,11 @@ TagManager:
   - Water
   - UI
   - Story
-  - WallDetail
-  - Wallspaper
-  - Walls
-  - Floor
   - Player
+  - Walls
+  - Wallspaper
+  - WallDetail
+  - 
   - 
   - 
   - 
@@ -47,6 +47,9 @@ TagManager:
   - name: Player
     uniqueID: 1107392205
     locked: 0
+  - name: GroundDetail
+    uniqueID: 2822072561
+    locked: 0
   - name: Walls
     uniqueID: 4181447901
     locked: 0
@@ -58,9 +61,6 @@ TagManager:
     locked: 0
   - name: WallDetail top
     uniqueID: 3835844049
-    locked: 0
-  - name: Player
-    uniqueID: 3131852555
     locked: 0
   m_RenderingLayers:
   - Default
