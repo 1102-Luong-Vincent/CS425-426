@@ -74,6 +74,32 @@ public class BattleEnemyManager : MonoBehaviour
         return transform.position;
     }
 
+    // Process enemy statuses at the start of their turn (references BattleManage.cs, CardEffectParser.cs and EnemyValue.cs)
+    public void ProcessEnemyStatuses()
+    {
+        foreach (var enemyCtrl in currentEnemys)
+        {
+            if (enemyCtrl == null) continue;
 
+            EnemyValue e = enemyCtrl.EnemyValueReference;
+
+            // DOT Effects
+            e.TickBurn();
+            e.TickPoison();
+
+            // Control Effects
+            e.TickStun();
+            e.TickConfusion();
+
+            // Debuffs
+            e.TickArmorDebuff();
+
+            // Mine trigger
+            e.TriggerMine();
+
+            // C4 bomb countdown
+            e.TickC4();
+        }
+    }
 }
 

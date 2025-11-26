@@ -10,6 +10,7 @@ public class EnemyBattleControl : MonoBehaviour
     public Slider healthBar;
     public TextMeshProUGUI healthText;
     private EnemyValue enemyValue;
+    public EnemyValue EnemyValueReference => enemyValue;
 
     public void Init(EnemyValue enemyValue)
     {

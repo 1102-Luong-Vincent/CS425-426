@@ -63,6 +63,8 @@ public class BattleManage : MonoBehaviour
         } else
         {
             Debug.Log("Enemy Turn");
+
+            BattleEnemyManager.Instance.ProcessEnemyStatuses();
         }
 
         DebugTest();
