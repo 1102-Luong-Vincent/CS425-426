@@ -4,15 +4,15 @@ using System.Collections.Generic;
 [System.Serializable]
 public class CardCombinationRule
 {
-    public string InputA;
-    public string InputB;
+    public string Card1;
+    public string Card2;
     public string Result;
     public float FailChance;
 
     public CardCombinationRule(string a, string b, string result, float failChance)
     {
-        InputA = a;
-        InputB = b;
+        Card1 = a;
+        Card2 = b;
         Result = result;
         FailChance = failChance;
     }
@@ -42,7 +42,6 @@ public class CardCombinations : MonoBehaviour
     {
         var rule = new CardCombinationRule(a, b, result, failChance);
 
-        // Add both input orders: (A,B) and (B,A)
         combinationTable[(a, b)] = rule;
         combinationTable[(b, a)] = rule;
     }
@@ -94,7 +93,6 @@ public class CardCombinations : MonoBehaviour
     }
 
     //combination of both cards
-
     public CardValue Combine(CardValue a, CardValue b)
     {
         if (a == null || b == null)
