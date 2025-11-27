@@ -14,6 +14,9 @@ public static class FuncName
     public const string IncreaseCritChance = "IncreaseCritChance";
     public const string Revive = "Revive";
     public const string CurePoison = "CurePoison";
+    public const string LowerDefense = "LowerDefense";
+    public const string DecreaseDefense = "DecreaseDefense";
+    public const string LowerHealth = "LowerHealth";
 
     //AOE attacks
     public const string DamageAll = "DamageAll";
@@ -132,6 +135,16 @@ public static class CardEffectParser
             case FuncName.CurePoison:
                 return player => CurePoison(player);
 
+            case FuncName.DecreaseDefense:
+                float lowDefPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
+                int lowDefTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                return player => LowerDefense(player, lowDefPercent, lowDefTurns);
+
+            case FuncName.LowerHealth:
+                float lowHPPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
+                int lowHPTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                return player => LowerHealth(player, lowHPPercent, lowHPTurns);
+
             // AOE Effects
             case FuncName.DamageAll:
                 float percent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
@@ -221,6 +234,17 @@ public static class CardEffectParser
     public static void CurePoison(BattlePlayerValue player)
     {
         player.state.isPoisoned = false;
+    }
+
+    public static void LowerDefense(BattlePlayerValue player, float percent, int turns = 1)
+    {
+        player.state.DefenseBuff -= percent;
+    }
+
+    public static void LowerHealth(BattlePlayerValue player, float percent, int turns = 1)
+    {
+        int dmg = Mathf.RoundToInt(player.MaxHealth * percent);
+        player.Health -= dmg;
     }
 
     //AOE Effects
