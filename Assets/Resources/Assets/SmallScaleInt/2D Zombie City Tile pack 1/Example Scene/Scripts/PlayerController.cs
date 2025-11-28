@@ -254,8 +254,8 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (isDead) return;
 
             float moveX = Input.GetAxisRaw("Horizontal");
-            float moveZ = Input.GetAxisRaw("Vertical");
-            float moveY = 0f;
+            float moveZ = 0f;
+            float moveY = Input.GetAxisRaw("Vertical");
 
             // if (Input.GetKey(KeyCode.Space)) moveY = 1f;
             //if (Input.GetKey(KeyCode.LeftShift)) moveY = -1f;
