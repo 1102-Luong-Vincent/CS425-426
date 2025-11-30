@@ -555,6 +555,96 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &123058994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 123058996}
+  - component: {fileID: 123058995}
+  m_Layer: 0
+  m_Name: PlayerTester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &123058995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123058994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a9c5f357288654ea87aa3a8e47b665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BattlePlayerUIManager: {fileID: 0}
+--- !u!4 &123058996
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123058994}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 920.3765, y: 448.47653, z: 6.5899353}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &225874137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 225874139}
+  - component: {fileID: 225874138}
+  m_Layer: 0
+  m_Name: Card Testing Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &225874138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225874137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a0437755b165c74990b3b625db81585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardName: Field Surgery Kit
+--- !u!4 &225874139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225874137}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 920.3765, y: 448.47653, z: 6.5899353}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &241453620
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,6 +949,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 433689480}
   m_CullTransparentMesh: 1
+--- !u!1 &661942584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 661942586}
+  - component: {fileID: 661942585}
+  m_Layer: 0
+  m_Name: Full Card Testing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &661942585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661942584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5940e72f38158d7498049e7e3ccf7759, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardNames:
+  - Bandage
+  - Syringe
+  - Medkit
+  - Revival Serum
+  - Pills
+  - Rage Pill
+  - Drugs
+  - Beer
+  - Health Potion
+  - Energy Potion
+  - Antidote Potion
+  - Field Surgery Kit
+  - Adrenal Medkit
+  - Combat Patch
+  - Berserker Wrap
+  - Stimulant Wrap
+  - Liquid Courage Kit
+  - Rapid Recovery Injector
+  - Boosted Buzz
+  - Combat Stimulant
+  - Balanced Formula
+  - Rebirth Capsule
+  - Titan Formula
+  - Adrenal Surge
+  - Berserker Serum
+  - Fury Rebirth
+  - Aggression Compound
+  - Drunken Rage
+  - Adrenal Mix
+  - Reflex Booster
+  - Bio-Regen Formula
+  - Nerve Enhancer
+  - Survivor's Brew
+  - Soul Brew
+--- !u!4 &661942586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661942584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 920.3765, y: 448.47653, z: 6.5899353}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &693968766
 GameObject:
   m_ObjectHideFlags: 0
@@ -2356,3 +2525,6 @@ SceneRoots:
   - {fileID: 241453623}
   - {fileID: 894418418}
   - {fileID: 1929613955}
+  - {fileID: 225874139}
+  - {fileID: 123058996}
+  - {fileID: 661942586}
