@@ -18,6 +18,7 @@ public class PlayerValue
 
 
     int Health = 100;
+    int energy = 10;
 
     public PlayerValue() {
         Init();
@@ -76,6 +77,17 @@ public class PlayerValue
 
         HadCardsLibrary.AddRange(EquipmentCards);
         HadCardsLibrary.AddRange(battleCardsList);
+    }
+
+    public void AddCard(string cardName)
+    {
+
+        CardValue foundCard = GameValue.Instance.GetInitCardValue(cardName);
+        if (foundCard != null)
+        {
+            EquipmentCards.Add(foundCard);
+        }
+
     }
 
 
@@ -153,6 +165,11 @@ public class PlayerValue
         return Health;
     }
 
+    public int GetEnergy()
+    {
+        return energy;
+    }
+
 }
 
 [System.Serializable]
@@ -196,5 +213,7 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
+
+
 
 }
