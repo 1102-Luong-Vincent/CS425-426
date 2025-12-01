@@ -35,7 +35,7 @@ public class GameMenuControl : MonoBehaviour
 
     public enum MenuState
     {
-        Deck, Combine, Upgrade, Options 
+        Deck, Combine, Upgrade, Options, Closed 
     }
 
     MenuState state = MenuState.Deck;
@@ -58,15 +58,26 @@ public class GameMenuControl : MonoBehaviour
         InitButtons();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            ToggleMenu();
+        }
+    }
+
     // Update is called once per frame
-    void Update()
+    void UpdateMenu()
     {
         if (state != previousState && menuActive)
         {
+            closePreviousPanel();
             switch (state)
             {
                 case MenuState.Deck:
                     panels.DeckPanel.SetActive(true);
+                    if (panels.DeckPanel != null)
+                        panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryOpen();
                     panels.CombinePanel.SetActive(false);
                     panels.UpgradePanel.SetActive(false);
                     panels.OptionsPanel.SetActive(false);
@@ -93,54 +104,78 @@ public class GameMenuControl : MonoBehaviour
                     panels.OptionsPanel.SetActive(true);
                     previousState = MenuState.Options;
                     break;
+                case MenuState.Closed:
+                    previousState = MenuState.Closed;
+                    break;
             }
         }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ToggleMenu();
-        }
+
     }
     void InitButtons()
     {
-
         OnGameMenuButtonClick(buttons.DeckButton, OnDeckButtonClick);
         OnGameMenuButtonClick(buttons.CombineButton, OnCombineButtonClick);
         OnGameMenuButtonClick(buttons.UpgradeButton, OnUpgradeButtonClick);
         OnGameMenuButtonClick(buttons.OptionButton, OnOptionButtonClick);
-
     }
 
     void OnDeckButtonClick()
     {
         state = MenuState.Deck;
+        UpdateMenu();
     }
 
     void OnCombineButtonClick()
     {
         state = MenuState.Combine;
+        UpdateMenu();
     }
 
     void OnUpgradeButtonClick()
     {
         state = MenuState.Upgrade;
+        UpdateMenu();
     }
     void OnOptionButtonClick()
     {
         state = MenuState.Options;
+        UpdateMenu();
     }
 
     void ToggleMenu()
     {
         if(menuActive)
         {
+
+            state = MenuState.Closed;
+           // closePreviousPanel();
+            UpdateMenu();
             MainPanel.SetActive(false);
             menuActive = false;
         }
         else
         {
             MainPanel.SetActive(true);
-            state = MenuState.Deck;
             menuActive = true;
+            state = MenuState.Deck;
+            UpdateMenu();
+
+        }
+    }
+
+    void closePreviousPanel()
+    {
+        switch (previousState)
+        {
+            case MenuState.Deck:
+                panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryClose();
+                break;
+            case MenuState.Combine:
+                break;
+            case MenuState.Upgrade:
+                break;
+            case MenuState.Options:
+                break;
         }
     }
 }
