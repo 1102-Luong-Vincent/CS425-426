@@ -14,6 +14,20 @@ public static class FuncName
     public const string IncreaseCritChance = "IncreaseCritChance";
     public const string Revive = "Revive";
     public const string CurePoison = "CurePoison";
+    public const string LowerDefense = "LowerDefense";
+    public const string DecreaseDefense = "DecreaseDefense";
+    public const string LowerHealth = "LowerHealth";
+
+    //AOE attacks
+    public const string DamageAll = "DamageAll";
+    public const string ApplyBurn = "ApplyBurn";
+    public const string ApplyPoison = "ApplyPoison";
+    public const string ApplyStun = "ApplyStun";
+    public const string ApplyConfusion = "ApplyConfusion";
+    public const string ReduceArmor = "ReduceArmor";
+    public const string AttachC4Bomb = "AttachC4Bomb";
+    public const string DeployMine = "DeployMine";
+
 }
 
 public static class FuncParameter
@@ -121,6 +135,54 @@ public static class CardEffectParser
             case FuncName.CurePoison:
                 return player => CurePoison(player);
 
+            case FuncName.DecreaseDefense:
+                float lowDefPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
+                int lowDefTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                return player => LowerDefense(player, lowDefPercent, lowDefTurns);
+
+            case FuncName.LowerHealth:
+                float lowHPPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
+                int lowHPTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                return player => LowerHealth(player, lowHPPercent, lowHPTurns);
+
+            // AOE Effects
+            case FuncName.DamageAll:
+                float percent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
+                return player => DamageAllEnemies(percent);
+
+            case FuncName.ApplyBurn:
+                int turns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+                float burnPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
+                return player => ApplyBurnToAllEnemies(turns, burnPercent);
+
+            case FuncName.ApplyPoison:
+                int PoisonTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+                float poisonPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
+                return player => ApplyPoisonToAllEnemies(PoisonTurns, poisonPercent);
+
+            case FuncName.ApplyStun:
+                int StunTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                float chanceToStun = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.4f;
+                return player => ApplyStunToAllEnemies(chanceToStun, StunTurns);
+
+            case FuncName.ApplyConfusion:
+                int ConfusionTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+                float chanceToConfuse = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.3f;
+                return player => ApplyConfusionToAllEnemies(chanceToConfuse, ConfusionTurns);
+
+            case FuncName.ReduceArmor:
+                int Reductionturns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 10;
+                float percentReduce = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.5f;
+                return player => ReduceArmorOfAllEnemies(percentReduce, Reductionturns);
+
+            case FuncName.AttachC4Bomb:
+                int c4Damage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 50;
+                int delay = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+                return player => AttachC4BombToEnemy(delay, c4Damage);
+
+            case FuncName.DeployMine:
+                int mineDamage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 40;
+                return player => DeployMineAtEnemy(mineDamage);
 
             default:
                 Debug.LogWarning($"[CardEffectParser] Unknown function: {funcName}");
@@ -172,5 +234,93 @@ public static class CardEffectParser
     public static void CurePoison(BattlePlayerValue player)
     {
         player.state.isPoisoned = false;
+    }
+
+    public static void LowerDefense(BattlePlayerValue player, float percent, int turns = 1)
+    {
+        player.state.DefenseBuff -= percent;
+    }
+
+    public static void LowerHealth(BattlePlayerValue player, float percent, int turns = 1)
+    {
+        int dmg = Mathf.RoundToInt(player.MaxHealth * percent);
+        player.Health -= dmg;
+    }
+
+    //AOE Effects
+    public static void DamageAllEnemies(float percent)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (enemy == null) continue;
+            int damage = Mathf.RoundToInt(enemy.EnemyValueReference.MaxHealth * percent);
+            enemy.EnemyValueReference.Health -= damage;
+        }
+    }
+
+    public static void ApplyBurnToAllEnemies(int turns, float percent)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (enemy == null) continue;
+            enemy.EnemyValueReference.ApplyBurn(new EnemyBurnStatus(turns, percent));
+        }
+    }
+
+    public static void ApplyPoisonToAllEnemies(int turns, float percent)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (enemy == null) continue;
+            enemy.EnemyValueReference.ApplyPoison(new EnemyPoisonStatus(turns, percent));
+        }
+    }
+    public static void ApplyStunToAllEnemies(float chance, int turns)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (UnityEngine.Random.value <= chance)
+            {
+                enemy.EnemyValueReference.SetStunned(turns);
+            }
+        }
+    }
+
+    public static void ApplyConfusionToAllEnemies(float chance, int turns)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (UnityEngine.Random.value <= chance)
+            {
+                enemy.EnemyValueReference.SetConfused(turns);
+            }
+        }
+    }
+
+    public static void ReduceArmorOfAllEnemies(float percent, int turns)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            enemy.EnemyValueReference.tempArmorReduction += percent;
+            enemy.EnemyValueReference.armorReductionTurns = turns;
+        }
+    }
+
+    public static void AttachC4BombToEnemy(int delay, int damage)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (enemy == null) continue;
+            enemy.EnemyValueReference.AttachC4(delay, damage); //explodes after 2 turns (delays) and deals damage
+        }
+    }
+
+    public static void DeployMineAtEnemy(int damage)
+    {
+        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+        {
+            if (enemy == null) continue;
+            enemy.EnemyValueReference.DeployMine(damage);
+        }
     }
 }
