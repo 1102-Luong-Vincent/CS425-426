@@ -13,6 +13,7 @@ public class InventoryUIControl : MonoBehaviour
     public GameObject EmptySlotPrefab;
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI EnergyText;
+    public TextMeshProUGUI CardsText;
 
     [Header("Buttons")]
     public Buttons buttons;
@@ -31,7 +32,7 @@ public class InventoryUIControl : MonoBehaviour
     void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
-        playerValue.EquipmentCards = playerValue.battleCardsList;// for testing delete this later
+        //playerValue.EquipmentCards = playerValue.battleCardsList;// for testing delete this later
         onInventoryOpen();
         InitButtons();
     }
@@ -40,6 +41,7 @@ public class InventoryUIControl : MonoBehaviour
     {
         HealthText.text = playerValue.GetHealth().ToString();
         EnergyText.text = playerValue.GetEnergy().ToString();
+        CardsText.text = playerValue.HadCardsLibrary.Count.ToString();
         GameObject weapon = Instantiate(MenuCardPrefab);
         WeaponValue wval = playerValue.EquipmentWeapon;
         weapon.name = (wval.WeaponName + " card");
