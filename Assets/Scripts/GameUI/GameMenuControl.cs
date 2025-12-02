@@ -168,7 +168,7 @@ public class GameMenuControl : MonoBehaviour
         switch (previousState)
         {
             case MenuState.Deck:
-                panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryClose();
+                panels.DeckPanel.GetComponent<InventoryManager>().CloseInventory();
                 break;
             case MenuState.Combine:
                 break;

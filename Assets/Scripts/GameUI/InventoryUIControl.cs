@@ -21,8 +21,6 @@ public class InventoryUIControl : MonoBehaviour
     [System.Serializable]
     public class Buttons
     {
-        public Button WeaponButton;
-        public Button CardsButton;
         public Button SortAZButton;
         public Button SortZAButton;
     }
@@ -49,12 +47,12 @@ public class InventoryUIControl : MonoBehaviour
         weapon.transform.SetParent(CardZone);
         wmenucard.SetWeaponValue(wval);
         // populate card zone with cards in PlayerValue
-        for(int i = 0; i < 20; i++)
+        for(int i = 0; i < 21; i++)
         {
-            if (i <= playerValue.EquipmentCards.Count - 1)
+            if (i <= playerValue.battleCardsList.Count - 1)
             {
                 GameObject card = Instantiate(MenuCardPrefab);
-                CardValue val = playerValue.EquipmentCards[i];
+                CardValue val = playerValue.battleCardsList[i];
                 card.name = (val.CardName + " card");
                 MenuCardControl menucard = card.GetComponent<MenuCardControl>();
                 card.transform.SetParent(CardZone);
@@ -79,22 +77,16 @@ public class InventoryUIControl : MonoBehaviour
         }
     }
 
+    public void refreshInventory()
+    {
+        onInventoryClose();
+        onInventoryOpen();
+    }
+
     void InitButtons()
     {
-        OnGameMenuButtonClick(buttons.WeaponButton, OnWeaponButtonClick);
-        OnGameMenuButtonClick(buttons.CardsButton, OnCardsButtonClick);
         OnGameMenuButtonClick(buttons.SortAZButton, OnSortAZButtonClick);
         OnGameMenuButtonClick(buttons.SortZAButton, OnSortZAButtonClick);
-    }
-
-    void OnWeaponButtonClick()
-    {
-
-    }
-
-    void OnCardsButtonClick()
-    {
-
     }
 
     void OnSortAZButtonClick()
@@ -138,6 +130,8 @@ public class InventoryUIControl : MonoBehaviour
                 break;
         }
     }
+
+
     void UpdateGameValue()
     {
    
