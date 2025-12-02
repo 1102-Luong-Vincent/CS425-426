@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -25,6 +26,10 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
         originalScale = rt.localScale;
     }
 
+    bool IsInCombineScene()
+    {
+        return SceneManager.GetActiveScene().name == "CombineScene";
+    }
     public void SetCardValue(CardValue cardValue)
     {
         this.cardValue = cardValue;
@@ -55,6 +60,9 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //if (IsInCombineScene())
+        //    return;
+
         if (!isCentered)
         {
             RectTransform rt = GetComponent<RectTransform>();
@@ -64,6 +72,9 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        //if (IsInCombineScene())
+        //    return;
+
         if (!isCentered)
         {
             GetComponent<RectTransform>().anchoredPosition = originalAnchoredPos;
@@ -72,6 +83,16 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        //if (IsInCombineScene())
+        //{
+        //    if (eventData.button == PointerEventData.InputButton.Left && cardValue != null)
+        //    {
+        //        Debug.Log("[CombineScene] Selecting card: " + cardValue.CardName);
+        //        CardCombineManager.Instance.SelectCard(cardValue);
+        //    }
+        //    return;
+        //}
+
         RectTransform rt = GetComponent<RectTransform>();
 
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -109,9 +130,6 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
         rt.anchoredPosition = originalAnchoredPos;
         rt.localScale = originalScale;
         isCentered = false;
-
-
-
     }
 
     void UseCard()
