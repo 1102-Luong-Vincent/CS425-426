@@ -20,7 +20,7 @@ public class GameProcessManager : MonoBehaviour
         {
             case SceneType.GameStartScene: SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic); break;
             case SceneType.BattleScene: SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.BattleMusic); break;
-
+                
         }
 
     }
