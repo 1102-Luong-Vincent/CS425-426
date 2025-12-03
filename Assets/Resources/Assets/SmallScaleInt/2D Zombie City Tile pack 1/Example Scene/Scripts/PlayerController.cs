@@ -83,7 +83,23 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         // --- Score / Kill Count ---
         public int zombieKillCount = 0;
         public TextMeshProUGUI killCountText; // Assign this in the Inspector with your score UI element
+        [SerializeField] AudioSource FootstepsAudioSource;
 
+
+        private void Awake()
+        {
+            Init();
+        }
+
+
+        private void Init()
+        {
+
+            string path = SoundManagerConstants.SoundEffectPath + SoundManagerConstants.FootstepsSound;
+            AudioClip clip = Resources.Load<AudioClip>(path);
+            FootstepsAudioSource.clip = clip;
+
+        }
 
         void Start()
         {
@@ -274,7 +290,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
                 if (footstepTimer >= footstepInterval)
                 {
-                    SoundManage.Instance.PlaySoundEffect(SoundManagerConstants.FootstepsSound);
+                    FootstepsAudioSource.Play();
                     footstepTimer = 0f;
                 }
             }
