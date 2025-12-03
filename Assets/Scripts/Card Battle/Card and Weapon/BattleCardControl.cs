@@ -4,11 +4,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public Image CardImage;
-    public TextMeshProUGUI CardName;
-    public TextMeshProUGUI CardDescription;
 
     private WeaponValue weaponValue;
     private CardValue cardValue;
@@ -47,14 +44,13 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (cardValue != null)
         {
-            CardName.text = cardValue.CardName;
-            CardImage.sprite = cardValue.CardSprite;
-            CardDescription.text = cardValue.CardDescribe;
+            SetCardUI(cardValue);
+
         } else if (weaponValue != null) {
         
-            CardName.text = weaponValue.WeaponName;
-            CardImage.sprite = weaponValue.WeaponSprite;
-            CardDescription.text = weaponValue.WeaponDescribe;
+           base.cardNameText.text = weaponValue.WeaponName;
+            base.cardImage.sprite = weaponValue.WeaponSprite;
+            cardDescriptionText.text = weaponValue.WeaponDescribe;
         }
     }
 
@@ -134,7 +130,7 @@ public class BattleCardControl : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     void UseCard()
     {
-        Debug.Log($"Used card: {CardName.text}");
+        Debug.Log($"Used card: {cardValue.CardName}");
         cardValue.UseEffect(BattlePlayerValue.Instance);
         BattlePlayerValue.Instance.RemoveCard(cardValue);
         BattleManage.Instance.StartNextTurn();

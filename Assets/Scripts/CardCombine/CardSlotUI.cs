@@ -2,12 +2,23 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CardSlotUI : MonoBehaviour
+public class CardSlotUI : CardUIBase
 {
-    public Image cardImage;
-    public TextMeshProUGUI cardNameText;
 
+    [SerializeField] Button slotButton;
     private CardValue currentCard;
+
+    private void Awake()
+    {
+        slotButton.onClick.AddListener(OnSlotButtonClick);
+    }
+
+    void OnSlotButtonClick()
+    {
+        CardCombineManager.Instance.SelectCard(this);
+    }
+
+
 
     public void SetCard(CardValue card)
     {
@@ -18,27 +29,14 @@ public class CardSlotUI : MonoBehaviour
             Clear();
             return;
         }
-
-        cardNameText.text = card.CardName;
-
-        // If you have card art:
-        cardImage.sprite = card.CardSprite;
+        base.SetCardUI(card);
         cardImage.color = Color.white;
     }
 
-    public void ShowFailure()
-    {
-        currentCard = null;
-        cardNameText.text = "Failed!";
-        cardImage.color = Color.red;
-        cardImage.sprite = null;
+
+
+    public CardValue GetCardValue() { 
+        return currentCard;
     }
 
-    public void Clear()
-    {
-        currentCard = null;
-        cardNameText.text = "";
-        cardImage.sprite = null;
-        cardImage.color = new Color(1, 1, 1, 0.2f); // faded
-    }
 }

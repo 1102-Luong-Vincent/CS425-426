@@ -43,6 +43,7 @@ public static class CardEffectParser
     public static List<Action<BattlePlayerValue>> ParseEffectString(string effectString)
     {
         var actions = new List<Action<BattlePlayerValue>>();
+        if (string.IsNullOrEmpty(effectString)) return null;
         var commands = effectString.Split(';');
 
         foreach (var cmdRaw in commands)

@@ -95,6 +95,18 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         private void Init()
         {
 
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
+
+
             string path = SoundManagerConstants.SoundEffectPath + SoundManagerConstants.FootstepsSound;
             AudioClip clip = Resources.Load<AudioClip>(path);
             FootstepsAudioSource.clip = clip;

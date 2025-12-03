@@ -1,13 +1,13 @@
-using ExcelDataReader;
+﻿using ExcelDataReader;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using UnityEngine;
-
-using static ExcelReader;
 using static EnumHelper;
+using static ExcelReader;
 using Debug = UnityEngine.Debug;
 public class ExcelReader
 {
@@ -261,9 +261,13 @@ public class ExcelReader
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
         using (var reader = ExcelReaderFactory.CreateReader(stream))
         {
-            reader.Read();
             do
             {
+                if (reader.Name != "CardValue")
+                    continue;
+
+                reader.Read();
+
                 while (reader.Read())
                 {
                     var col = new ColumnReader(reader);
@@ -276,19 +280,68 @@ public class ExcelReader
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
                         cardDescribe = col.ReadString(),
                         cardFunction = col.ReadString()
-                        //weaponLevel = col.ReadInt(),
-                        //maxLevel = col.ReadInt(),
-                        //damage = col.ReadFloat(),
-
                     };
 
                     excelDataList.Add(data);
                 }
 
+                break;
+
             } while (reader.NextResult());
         }
+
         return excelDataList;
     }
+
+
+
+    public static List<ExcelCardCombinationFunction> GetCardCombinationFunction()
+    {
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/Value/CardValue.xlsx");
+
+        List<ExcelCardCombinationFunction> excelDataList = new List<ExcelCardCombinationFunction>();
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        if (!File.Exists(filePath))
+            return excelDataList;
+
+        using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            do
+            {
+                if (reader.Name == "CardFunction")
+                {
+                    reader.Read();
+
+                    while (reader.Read())
+                    {
+                        var col = new ColumnReader(reader);
+                        ExcelCardCombinationFunction data = new ExcelCardCombinationFunction
+                        {
+                            ID = col.ReadInt(),
+                            card1ID = col.ReadInt(),
+                            card1Name = col.ReadString(),
+                            card2ID = col.ReadInt(),
+                            card2Name = col.ReadString(),
+                            failChance = col.ReadFloat(),
+                            resultID = col.ReadInt(),
+                            resultName = col.ReadString()
+                        };
+
+                        excelDataList.Add(data);
+                    }
+
+                    break; 
+                }
+
+            } while (reader.NextResult());
+        }
+
+        return excelDataList;
+    }
+
+
 
 }
 
@@ -342,6 +395,20 @@ public struct ExcelWeaponData
     public int weaponLevel;
     public int maxLevel;
     public float damage;
+
+}
+
+
+public struct ExcelCardCombinationFunction
+{
+    public int ID;
+    public int card1ID;
+    public string card1Name;
+    public int card2ID;
+    public string card2Name;
+    public float failChance;
+    public int resultID;
+    public string resultName;
 
 }
 

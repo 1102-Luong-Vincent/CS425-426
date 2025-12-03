@@ -89,4 +89,10 @@ public class CardValue
 
         Debug.Log($"[UseEffect] Executed {parsedEffects.Count} effects for {CardName}");
     }
+
+    public int GetID()
+    {
+        return ID;
+    }
+
 }

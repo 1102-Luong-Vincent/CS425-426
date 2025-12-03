@@ -1,21 +1,32 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CardCombineManager : MonoBehaviour
 {
     public static CardCombineManager Instance;
 
+    [SerializeField] GameObject CardCombinePanel;
+
     [Header("UI Slots")]
-    public CardSlotUI FirstCardSlot;
-    public CardSlotUI SecondCardSlot;
-    public CardSlotUI ResultSlot;
+    [SerializeField] CardUI FirstCard;
+    CardSlotUI FirstSlot;
+    [SerializeField] CardUI SecondCard;
+    CardSlotUI SecondSlot;
+    [SerializeField] CardUI ResultCard;
 
     [Header("Buttons")]
-    public Button CombineButton;
-    public Button ClearButton;
+    [SerializeField] Button CombineButton;
+    [SerializeField] Button ClearButton;
 
-    private CardValue FirstCardSelect;
-    private CardValue SecondCardSelect;
+
+    [SerializeField] CardSlotUI slotPrefab;
+
+    List<CardSlotUI> spawnedSlots = new List<CardSlotUI>();
+    [SerializeField] ScrollRect slotList;
+
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -36,31 +47,100 @@ public class CardCombineManager : MonoBehaviour
 
         if (ClearButton != null)
             ClearButton.onClick.AddListener(ClearAllSlots);
+
+        ClosePanel();
     }
 
-    // Called by card-click logic from bottom inventory
-    public void SelectCard(CardValue card)
-    {
-        if (card == null) return;
 
-        // If first slot empty → fill it
-        if (FirstCardSelect == null)
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) SwitchPanel();
+    }
+
+
+    void SwitchPanel()
+    {
+        if (!CardCombinePanel.activeSelf)
         {
-            FirstCardSelect = card;
-            FirstCardSlot.SetCard(card);
+            OpenPanel(); 
+        } else
+        {
+            ClosePanel();
+        }
+    }
+
+
+
+    void OpenPanel()
+    {
+        CardCombinePanel.SetActive(true);
+
+        List<CardValue> cardList = GameValue.Instance.GetPlayerValue().HadCardsLibrary;
+
+        foreach (var card in cardList)
+        {
+            var slot = Instantiate(slotPrefab, slotList.content);
+            slot.SetCard(card);  
+            spawnedSlots.Add(slot);
+        }
+    }
+
+    void ClosePanel()
+    {
+        foreach (var slot in spawnedSlots)
+        {
+            if (slot != null)Destroy(slot.gameObject);
+        }
+        spawnedSlots.Clear();
+        ClearAllSlots();
+        CardCombinePanel.SetActive(false);
+    }
+
+
+    // Called by card-click logic from bottom inventory
+    public void SelectCard(CardSlotUI cardSlot)
+    {
+        if (cardSlot == null) return;
+
+        if (cardSlot == FirstSlot)
+        {
+            ClearFirstCard();
+            UpdateResult();
             return;
         }
 
-        // If second slot empty → fill it
-        if (SecondCardSelect == null)
+        if (cardSlot == SecondSlot)
         {
-            SecondCardSelect = card;
-            SecondCardSlot.SetCard(card);
+            ClearSecondCard();
+            UpdateResult();
+            return;
+        }
+
+        // First slot empty
+        if (FirstSlot == null)
+        {
+            FirstSlot = cardSlot;
+            FirstCard.SetCardUI(cardSlot.GetCardValue());
+            UpdateResult();
+            return;
+        }
+
+        // Second slot empty
+        if (SecondSlot == null)
+        {
+            SecondSlot = cardSlot;
+            SecondCard.SetCardUI(cardSlot.GetCardValue());
+            UpdateResult();
             return;
         }
 
         Debug.Log("[CardCombine] Both slots full. Clear first.");
     }
+
+
+
+
 
     //public void SetFirstCardSlot(CardValue card)
     //{
@@ -86,39 +166,98 @@ public class CardCombineManager : MonoBehaviour
 
     public void CombineCards()
     {
-        if (FirstCardSelect == null || SecondCardSelect == null)
+        if (FirstSlot == null || SecondSlot == null)
         {
             Debug.LogWarning("[Combine] Missing input cards.");
             return;
         }
 
-        Debug.Log($"[Combine] Trying: {FirstCardSelect.CardName} + {SecondCardSelect.CardName}");
+        CardValue first = FirstSlot.GetCardValue();
+        CardValue second = SecondSlot.GetCardValue();
 
-        // Use your CardCombinations system
-        CardValue result = CardCombinations.Instance.Combine(FirstCardSelect, SecondCardSelect);
+        Debug.Log($"[Combine] Trying: {first.CardName} + {second.CardName}");
+
+        CardValue result = CardCombinations.Instance.Combine(first, second);
+
+        var player = GameValue.Instance.GetPlayerValue();
 
         if (result != null)
         {
             Debug.Log("[Combine] SUCCESS → " + result.CardName);
-            ResultSlot.SetCard(result);
 
-            // OPTIONAL: Add resulting card to inventory here later
+            player.HadCardsLibrary.Remove(first);
+            player.HadCardsLibrary.Remove(second);
+            player.HadCardsLibrary.Add(result);
+            ResultCard.SetCardUI(result);
+            ClearAllSlots();
+            RefreshSlotList();
+
         }
         else
         {
             Debug.Log("[Combine] FAILED");
-            ResultSlot.ShowFailure();
+
+            ResultCard.ShowFailure();
+            player.HadCardsLibrary.Remove(first);
+            player.HadCardsLibrary.Remove(second);
+            ClearAllSlots();
+            RefreshSlotList();
         }
     }
 
+
+    void RefreshSlotList()
+    {
+        foreach (var slot in spawnedSlots)
+        {
+            if (slot != null) Destroy(slot.gameObject);
+        }
+        spawnedSlots.Clear();
+        List<CardValue> cardList = GameValue.Instance.GetPlayerValue().HadCardsLibrary;
+
+        foreach (var card in cardList)
+        {
+            var slot = Instantiate(slotPrefab, slotList.content);
+            slot.SetCard(card);
+            spawnedSlots.Add(slot);
+        }
+    }
+
+
+
+    void UpdateResult()
+    {
+        if (FirstSlot == null || SecondSlot == null)
+        {
+            ResultCard.Clear();
+            return;
+        }
+
+        CardValue result = CardCombinations.Instance.GetResultCard(
+            FirstSlot.GetCardValue(),
+            SecondSlot.GetCardValue()
+        );
+
+        ResultCard.SetCardUI(result);
+    }
+
+
     public void ClearAllSlots()
     {
-        FirstCardSelect = null;
-        SecondCardSelect = null;
+        ClearFirstCard();
+        ClearSecondCard();
+        ResultCard.Clear();
+    }
 
-        FirstCardSlot.Clear();
-        SecondCardSlot.Clear();
-        ResultSlot.Clear();
+
+    void ClearFirstCard()
+    {
+        FirstCard.Clear(); FirstSlot = null;
+    }
+
+    void ClearSecondCard()
+    {
+        SecondCard.Clear(); SecondSlot = null;
     }
 
 }
