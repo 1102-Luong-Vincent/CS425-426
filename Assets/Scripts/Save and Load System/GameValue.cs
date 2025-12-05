@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ExcelReader;
+using SmallScaleInc.TopDownPixelCharactersPack1;
 
 public enum SceneType
 {
@@ -13,6 +14,11 @@ public enum SceneType
     TimeGame,
     RhythmGame,
     GameStartScene,
+
+
+    Level_1,
+    Level_1_Hospital,
+
 }
 
 
@@ -23,7 +29,6 @@ public class GameValue : MonoBehaviour
     private GameValueLibrary library;
     private PlayerValue playerValue;
     [SerializeField] SceneType CurrentScene = SceneType.None;
-    private Vector3 playerPosition = Vector3.zero;
     private String happendStoryName = string.Empty;
     [SerializeField] GameProcessManager gameProcessManager;
 
@@ -101,7 +106,7 @@ public class GameValue : MonoBehaviour
     public void SetSaveData(SaveData saveData)
     {
         playerValue.SetPlayerSaveData(saveData.playerSaveData);
-        playerPosition = saveData.playerSaveData.GetPlayerPosition();
+        PlayerController.Instance.SetPlayerPosition(saveData.playerSaveData.GetPlayerPosition());
         LoadSceneByEnum(saveData.SceneType);
     }
 
@@ -148,7 +153,7 @@ public class GameValue : MonoBehaviour
     }
     public Vector3 GetPlayerPosition()
     {
-        return playerPosition;  
+        return PlayerController.Instance.GetPlayerCurrentPosition();  
     }
 
     public SceneType GetCurrentScence()
@@ -169,6 +174,13 @@ public class GameValue : MonoBehaviour
     #endregion
 
     #region Set
+
+    public void SetPlayerPosition(Vector3 pos)
+    {
+        PlayerController.Instance.SetPlayerPosition(pos);
+    }
+
+
 
     public void SetBattleData(BattleData battleData)
     {

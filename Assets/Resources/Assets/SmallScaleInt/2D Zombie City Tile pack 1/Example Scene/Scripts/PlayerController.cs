@@ -85,7 +85,6 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         public TextMeshProUGUI killCountText; // Assign this in the Inspector with your score UI element
         [SerializeField] AudioSource FootstepsAudioSource;
 
-
         private void Awake()
         {
             Init();
@@ -108,8 +107,8 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
 
             string path = SoundManagerConstants.SoundEffectPath + SoundManagerConstants.FootstepsSound;
-            AudioClip clip = Resources.Load<AudioClip>(path);
-            FootstepsAudioSource.clip = clip;
+            AudioClip footStepClip = Resources.Load<AudioClip>(path);
+            FootstepsAudioSource.clip = footStepClip;
 
         }
 
@@ -144,14 +143,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (isDead) return;
 
             // --- Aiming ---
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
-            float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-            lastAngle = SnapAngleToEightDirections(angle);
+            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
+            //float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+            //lastAngle = SnapAngleToEightDirections(angle);
 
-            // Optional: keep other input like crouching/shooting here
-            HandleCrouching();
-            HandleShooting();
+            //HandleCrouching();
+            //HandleShooting();
             //if(isDead)
             //{
             //    return;
@@ -302,6 +300,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
                 if (footstepTimer >= footstepInterval)
                 {
+                    if (FootstepsAudioSource.isPlaying) return;
                     FootstepsAudioSource.Play();
                     footstepTimer = 0f;
                 }

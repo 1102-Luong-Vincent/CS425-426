@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
@@ -50,22 +51,53 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            //swap battle card and equip card
-            CardValue battleCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
-            CardValue equipCard = card.GetComponent<MenuCardControl>().GetCardValue();
+            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
+            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
 
-
-            int battleCardIndex = playerValue.battleCardsList.IndexOf(battleCard);
-            int equipCardIndex = playerValue.EquipmentCards.IndexOf(equipCard);
-            if(targetCard.GetComponent<MenuCardControl>().GetCardValue() != null) // don't place empty card slot into card inventory
+            if(targetCard.gameObject.tag == "EquipCard")
             {
-                playerValue.battleCardsList[battleCardIndex] = equipCard;
-                playerValue.EquipmentCards[equipCardIndex] = battleCard;
+                playerValue.EquipmentCards.Remove(oldCard);
+                playerValue.EquipmentCards.Add(newCard);
             }
-            else
+            else if (targetCard.gameObject.tag == "BattleCard")
             {
-                playerValue.battleCardsList.Add(equipCard);
-                playerValue.EquipmentCards.RemoveAt(equipCardIndex);
+                playerValue.battleCardsList.Remove(oldCard);
+                playerValue.battleCardsList.Add(newCard);
+            }
+
+                control.refreshInventory();
+            CloseCardSelector();
+        }
+    }
+
+    void CardRightClicked(GameObject card)
+    {
+        if (!replacingCard)
+        {
+            if (card.tag == "BattleCard")
+            {
+                playerValue.battleCardsList.Remove(card.GetComponent<MenuCardControl>().GetCardValue());
+            }
+            else if (card.tag == "EquipCard")
+            {
+                playerValue.EquipmentCards.Remove(card.GetComponent<MenuCardControl>().GetCardValue());
+            }
+            control.refreshInventory();
+        }
+        else
+        {
+            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
+            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
+
+            if (targetCard.gameObject.tag == "EquipCard")
+            {
+                playerValue.EquipmentCards.Remove(oldCard);
+                playerValue.EquipmentCards.Add(newCard);
+            }
+            else if (targetCard.gameObject.tag == "BattleCard")
+            {
+                playerValue.battleCardsList.Remove(oldCard);
+                playerValue.battleCardsList.Add(newCard);
             }
 
             control.refreshInventory();
@@ -77,8 +109,20 @@ public class InventoryManager : MonoBehaviour
     {
         replacingCard = true;
         CardSelectorPanel.SetActive(true);
+
+        //make list of cards not already equipped
+        List<CardValue> AvailableCards = new List<CardValue>(playerValue.HadCardsLibrary);
+        foreach(CardValue val in playerValue.battleCardsList)
+        {
+            AvailableCards.Remove(val);
+        }
+        foreach(CardValue val in playerValue.EquipmentCards)
+        {
+            AvailableCards.Remove(val);
+        }
+
         // populate card zone with cards in PlayerValue
-        foreach (CardValue val in playerValue.EquipmentCards)
+        foreach (CardValue val in AvailableCards)
         {
             GameObject card = Instantiate(MenuCardPrefab);
             card.name = (val.CardName + " card");

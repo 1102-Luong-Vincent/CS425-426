@@ -25,7 +25,7 @@ public class FieldEnemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Player (1)")
+        if(other.gameObject.tag == "Player")
         {
             Debug.Log(gameObject.name + " detected " + other.gameObject.name);
             target = other.transform;
@@ -34,7 +34,7 @@ public class FieldEnemy : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name == "Player (1)")
+        if (other.gameObject.tag == "Player")
         {
             Debug.Log(gameObject.name + " lost " + other.gameObject.name);
             target = null;
@@ -43,7 +43,7 @@ public class FieldEnemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Player (1)")
+        if(collision.gameObject.tag == "Player")
         {
             Debug.Log("Enemy touched player -- Entering Battle");
             GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
