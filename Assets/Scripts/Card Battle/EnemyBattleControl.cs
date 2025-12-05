@@ -7,7 +7,11 @@ public class EnemyBattleControl : MonoBehaviour
 {
     public TextMeshProUGUI enemyNameText;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public Image enemyImage;
+=======
+    public Image enemyImgae;
+>>>>>>> Stashed changes
 =======
     public Image enemyImgae;
 >>>>>>> Stashed changes
@@ -22,7 +26,11 @@ public class EnemyBattleControl : MonoBehaviour
 
         enemyNameText.text = enemyValue.EnemyName;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         enemyImage.sprite = enemyValue.GetSprite();
+=======
+        enemyImgae.sprite = enemyValue.GetSprite();
+>>>>>>> Stashed changes
 =======
         enemyImgae.sprite = enemyValue.GetSprite();
 >>>>>>> Stashed changes
