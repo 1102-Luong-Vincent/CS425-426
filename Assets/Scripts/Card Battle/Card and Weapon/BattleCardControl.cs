@@ -130,9 +130,40 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
     void UseCard()
     {
+        //Debug.Log($"Used card: {cardValue.CardName}");
+        //cardValue.UseEffect(BattlePlayerValue.Instance);
+        //BattlePlayerValue.Instance.RemoveCard(cardValue);
+        //BattleManage.Instance.StartNextTurn();
+
         Debug.Log($"Used card: {cardValue.CardName}");
-        cardValue.UseEffect(BattlePlayerValue.Instance);
+
+        // 1. Pick first enemy for now (simple targeting)
+        var target = BattleEnemyManager.Instance.currentEnemys.Count > 0
+            ? BattleEnemyManager.Instance.currentEnemys[0]
+            : null;
+
+        if (target == null)
+        {
+            Debug.LogWarning("No enemy to target.");
+            return;
+        }
+
+        // 2. Check if this card is an attack card (Knife)
+        if (cardValue.CardName == "Knife")
+        {
+            // Apply player card effect
+            BattleManage.Instance.ApplyPlayerCardEffect(cardValue, target);
+        }
+        else
+        {
+            // All non-attack cards follow the original logic
+            cardValue.UseEffect(BattlePlayerValue.Instance);
+        }
+
+        // 3. Remove card from player's hand
         BattlePlayerValue.Instance.RemoveCard(cardValue);
+
+        // 4. Next turn
         BattleManage.Instance.StartNextTurn();
 
     }
