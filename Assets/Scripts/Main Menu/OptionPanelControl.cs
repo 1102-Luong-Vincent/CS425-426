@@ -29,8 +29,7 @@ public class OptionPanelControl : MonoBehaviour
 
     private List<Button> optionButtons;
 
-    PanelType currentPanel = PanelType.Volume;
-
+    private PanelType currentPanelType = PanelType.Volume;
     private Dictionary<PanelType, GameObject> panels = new Dictionary<PanelType, GameObject>();
     void Start()
     {
@@ -204,6 +203,7 @@ public class OptionPanelControl : MonoBehaviour
 
     void OpenPanel(PanelType key)
     {
+        currentPanelType = key;
         CloseAllPanels();
         if (panels.ContainsKey(key))
             panels[key].SetActive(true);

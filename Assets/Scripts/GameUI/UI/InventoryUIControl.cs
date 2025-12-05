@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
@@ -31,7 +32,6 @@ public class InventoryUIControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerValue = GameValue.Instance.GetPlayerValue();
         onInventoryOpen();
         InitButtons();
     }
