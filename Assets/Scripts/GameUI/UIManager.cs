@@ -4,8 +4,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [SerializeField] PauseManager pauseManager;
-    [SerializeField] CardCombineManager cardCombineManager;
     [SerializeField] FadeTransition fadeTransition;
 
 

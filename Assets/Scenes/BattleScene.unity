@@ -400,8 +400,13 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
+<<<<<<< Updated upstream
   m_AnchoredPosition: {x: 395, y: -54}
   m_SizeDelta: {x: 653.4766, y: 672.8123}
+=======
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920, y: 1080}
+>>>>>>> Stashed changes
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &62250101
 MonoBehaviour:
@@ -415,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4957726c00574a84f8770c5e29c4f4c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyControlPrefab: {fileID: 3305065160072016484, guid: ca2422a1a6da1594db4928a791c8f9b5, type: 3}
+  EnemyControlPrefab: {fileID: 8887917277455162078, guid: ca2422a1a6da1594db4928a791c8f9b5, type: 3}
   currentEnemys: []
   minDistance: 1.5
 --- !u!1 &101888316
@@ -936,10 +941,17 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1695107625}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+=======
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -593.18567, y: -470.65002}
+  m_SizeDelta: {x: 0.5, y: 0.5}
+>>>>>>> Stashed changes
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &297217721
 SpriteRenderer:
@@ -1726,6 +1738,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1494224752}
+  - {fileID: 62250100}
   - {fileID: 30794515}
   - {fileID: 62250100}
   - {fileID: 1808844216}
@@ -3401,7 +3414,10 @@ SceneRoots:
   - {fileID: 241453623}
   - {fileID: 894418418}
   - {fileID: 1929613955}
+<<<<<<< Updated upstream
   - {fileID: 1345304406}
   - {fileID: 225874139}
   - {fileID: 123058996}
   - {fileID: 661942586}
+=======
+>>>>>>> Stashed changes

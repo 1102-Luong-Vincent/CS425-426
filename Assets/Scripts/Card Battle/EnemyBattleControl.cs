@@ -6,7 +6,11 @@ using Unity.VisualScripting;
 public class EnemyBattleControl : MonoBehaviour
 {
     public TextMeshProUGUI enemyNameText;
+<<<<<<< Updated upstream
     public Image enemyImage;
+=======
+    public Image enemyImgae;
+>>>>>>> Stashed changes
     public Slider healthBar;
     public TextMeshProUGUI healthText;
     private EnemyValue enemyValue;
@@ -17,7 +21,11 @@ public class EnemyBattleControl : MonoBehaviour
         this.enemyValue = enemyValue;
 
         enemyNameText.text = enemyValue.EnemyName;
+<<<<<<< Updated upstream
         enemyImage.sprite = enemyValue.GetSprite();
+=======
+        enemyImgae.sprite = enemyValue.GetSprite();
+>>>>>>> Stashed changes
 
         SetHealth();
         Listener(true);

@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
 
-public class GameMenuControl : MonoBehaviour
+public class PlayerMenuManager : MonoBehaviour
 {
-    public static GameMenuControl Instance;
+    public static PlayerMenuManager Instance;
 
     public GameObject MainPanel;
 
@@ -28,9 +28,9 @@ public class GameMenuControl : MonoBehaviour
     public class Panels
     {
         public GameObject DeckPanel;
-        public GameObject CombinePanel;
+        public CardCombineManager CombinePanel;
         public GameObject UpgradePanel;
-        public GameObject OptionsPanel;
+        public OptionPanelControl OptionsPanel;
     }
 
     public enum MenuState
@@ -78,30 +78,30 @@ public class GameMenuControl : MonoBehaviour
                     panels.DeckPanel.SetActive(true);
                     if (panels.DeckPanel != null)
                         panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryOpen();
-                    panels.CombinePanel.SetActive(false);
+                    panels.CombinePanel.ClosePanel();
                     panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.SetActive(false);
+                    panels.OptionsPanel.ClosePanel();
                     previousState = MenuState.Deck;
                     break;
                 case MenuState.Combine:
                     panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.SetActive(true);
+                    panels.CombinePanel.OpenPanel();
                     panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.SetActive(false);
+                    panels.OptionsPanel.ClosePanel();
                     previousState = MenuState.Combine;
                     break;
                 case MenuState.Upgrade:
                     panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.SetActive(false);
+                    panels.CombinePanel.ClosePanel();
                     panels.UpgradePanel.SetActive(true);
-                    panels.OptionsPanel.SetActive(false);
+                    panels.OptionsPanel.ClosePanel();
                     previousState = MenuState.Upgrade;
                     break;
                 case MenuState.Options:
                     panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.SetActive(false);
+                    panels.CombinePanel.ClosePanel();
                     panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.SetActive(true);
+                    panels.OptionsPanel.OpenPanel();
                     previousState = MenuState.Options;
                     break;
                 case MenuState.Closed:
@@ -146,7 +146,7 @@ public class GameMenuControl : MonoBehaviour
     {
         if(menuActive)
         {
-
+            Time.timeScale = 1f;
             state = MenuState.Closed;
            // closePreviousPanel();
             UpdateMenu();
@@ -155,6 +155,7 @@ public class GameMenuControl : MonoBehaviour
         }
         else
         {
+            Time.timeScale = 0f; 
             MainPanel.SetActive(true);
             menuActive = true;
             state = MenuState.Deck;
