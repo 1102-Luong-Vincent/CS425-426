@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 public class EnemyBattleControl : MonoBehaviour
 {
     public TextMeshProUGUI enemyNameText;
-    public Image enemyImage;
+    public SpriteRenderer enemySprite;
     public Slider healthBar;
     public TextMeshProUGUI healthText;
     private EnemyValue enemyValue;
@@ -17,7 +17,7 @@ public class EnemyBattleControl : MonoBehaviour
         this.enemyValue = enemyValue;
 
         enemyNameText.text = enemyValue.EnemyName;
-        enemyImage.sprite = enemyValue.GetSprite();
+        enemySprite.sprite = enemyValue.GetSprite();
 
         SetHealth();
         Listener(true);
@@ -64,6 +64,21 @@ public class EnemyBattleControl : MonoBehaviour
 
         if (healthText != null)
             healthText.text = $"{enemyValue.Health}/{maxHealth}";
+    }
+
+
+    public void DealDamage(int amount)
+    {
+        enemyValue.Health -= amount;
+
+        Debug.Log($"Enemy took {amount} damage!");
+
+        if (enemyValue.Health <= 0)
+        {
+            Debug.Log("Enemy died!");
+            BattleEnemyManager.Instance.currentEnemys.Remove(this);
+            Destroy(gameObject);
+        }
     }
 }
 

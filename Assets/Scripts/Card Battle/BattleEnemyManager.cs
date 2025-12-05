@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class BattleEnemyManager : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class BattleEnemyManager : MonoBehaviour
             newEnemy.Init(data.battleEnemys[i]);
             currentEnemys.Add(newEnemy);
         }
+
     }
 
 
@@ -100,6 +102,25 @@ public class BattleEnemyManager : MonoBehaviour
             // C4 bomb countdown
             e.TickC4();
         }
+    }
+
+    public IEnumerator EnemyTurn()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        // pick an enemy card, apply effect, damage player etc.
+        EnemyTakeAction();
+
+        yield return new WaitForSeconds(0.5f);
+
+        BattleManage.Instance.StartNextTurn();
+    }
+
+    private void EnemyTakeAction()
+    {
+        Debug.Log("Enemy attacks!");
+
+        BattlePlayerValue.Instance.Health -= 20; //deals 20 damage to player
     }
 }
 

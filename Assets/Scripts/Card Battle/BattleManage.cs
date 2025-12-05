@@ -39,6 +39,7 @@ public class BattleManage : MonoBehaviour
     {
         battleData = GameValue.Instance.GetBattleData();
         BattleEnemyManager.Instance.SetEnemy(battleData);
+        //BattleEnemyManager.Instance.SetEnemy();
         SetValue();
     }
 
@@ -63,8 +64,9 @@ public class BattleManage : MonoBehaviour
         } else
         {
             Debug.Log("Enemy Turn");
-
+            
             BattleEnemyManager.Instance.ProcessEnemyStatuses();
+            StartCoroutine(BattleEnemyManager.Instance.EnemyTurn());
         }
 
         DebugTest();
@@ -80,7 +82,22 @@ public class BattleManage : MonoBehaviour
         BattlePlayerTestUIManager.Instance.CheckPlayerState(BattlePlayerValue.Instance);
     }
 
+    //Attack Card
+    public void ApplyPlayerCardEffect(CardValue card, EnemyBattleControl target)
+    {
+        Debug.Log($"Player uses {card.CardName}!");
 
+        switch (card.CardName)
+        {
+            case "Knife":
+                target.DealDamage(20);
+                break;
+
+            default:
+                Debug.LogWarning($"Card {card.CardName} has no effect implemented yet.");
+                break;
+        }
+    }
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
     {
