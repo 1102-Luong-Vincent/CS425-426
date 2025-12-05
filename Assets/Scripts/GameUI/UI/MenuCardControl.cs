@@ -75,7 +75,7 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            ShowCardDetails();
+            SendMessageUpwards("CardRightClicked", this.gameObject);
         }
     }
 

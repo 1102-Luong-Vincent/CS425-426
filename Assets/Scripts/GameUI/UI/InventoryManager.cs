@@ -70,6 +70,41 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    void CardRightClicked(GameObject card)
+    {
+        if (!replacingCard)
+        {
+            if (card.tag == "BattleCard")
+            {
+                playerValue.battleCardsList.Remove(card.GetComponent<MenuCardControl>().GetCardValue());
+            }
+            else if (card.tag == "EquipCard")
+            {
+                playerValue.EquipmentCards.Remove(card.GetComponent<MenuCardControl>().GetCardValue());
+            }
+            control.refreshInventory();
+        }
+        else
+        {
+            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
+            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
+
+            if (targetCard.gameObject.tag == "EquipCard")
+            {
+                playerValue.EquipmentCards.Remove(oldCard);
+                playerValue.EquipmentCards.Add(newCard);
+            }
+            else if (targetCard.gameObject.tag == "BattleCard")
+            {
+                playerValue.battleCardsList.Remove(oldCard);
+                playerValue.battleCardsList.Add(newCard);
+            }
+
+            control.refreshInventory();
+            CloseCardSelector();
+        }
+    }
+
     void OpenCardSelector()
     {
         replacingCard = true;
