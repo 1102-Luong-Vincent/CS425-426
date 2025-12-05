@@ -2,41 +2,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using SmallScaleInc.ZombieRural;
 
 public class FadeTransition : MonoBehaviour
 {
-    public static FadeTransition Instance;
     public Image fadeImage;
     public float fadeSpeed = 1f;
+    private bool isFading = false;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
 
-    void Start()
+    public void FadeToScene(SceneType scene, Vector3 pos)
     {
-        StartCoroutine(FadeIn());
-    }
-
-    public void FadeToScene(string sceneName)
-    {
-        StartCoroutine(FadeOut(sceneName));
+        if (isFading) return;
+        StartCoroutine(FadeOut(scene, pos));
     }
 
     IEnumerator FadeIn()
     {
+        isFading = true;
+
         float alpha = 1f;
         Color color = fadeImage.color;
+
         while (alpha > 0f)
         {
             alpha -= Time.deltaTime * fadeSpeed;
@@ -44,14 +31,21 @@ public class FadeTransition : MonoBehaviour
             fadeImage.color = color;
             yield return null;
         }
+
         color.a = 0f;
         fadeImage.color = color;
+
+        isFading = false;
     }
 
-    IEnumerator FadeOut(string sceneName)
+
+    IEnumerator FadeOut(SceneType scene,Vector3 pos)
     {
+        isFading = true;
+
         float alpha = 0f;
         Color color = fadeImage.color;
+
         while (alpha < 1f)
         {
             alpha += Time.deltaTime * fadeSpeed;
@@ -59,10 +53,15 @@ public class FadeTransition : MonoBehaviour
             fadeImage.color = color;
             yield return null;
         }
+
         color.a = 1f;
         fadeImage.color = color;
 
-        SceneManager.LoadScene(sceneName);
-        StartCoroutine(FadeIn());
+        //SceneManager.LoadScene(sceneName);
+        GameValue.Instance.LoadSceneByEnum(scene);
+        GameValue.Instance.SetPlayerPosition(pos);
+
+
+        yield return StartCoroutine(FadeIn());
     }
 }

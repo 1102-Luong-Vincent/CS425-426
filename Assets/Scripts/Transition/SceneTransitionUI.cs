@@ -4,9 +4,10 @@ using UnityEngine.SceneManagement;
 public class SceneTransitionUI : MonoBehaviour
 {
     public GameObject confirmationPanel;
-    public string sceneToLoad;
-
+    public SceneType sceneToLoad;
+    [SerializeField] Vector3 PlayerTransitionPosition;
     bool playerInRange = false;
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +24,7 @@ public class SceneTransitionUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         confirmationPanel.SetActive(false);
-        FadeTransition.Instance.FadeToScene(sceneToLoad);
+        UIManager.Instance.FadeToScene(sceneToLoad, PlayerTransitionPosition);
     }
 
     public void OnCancelButton()
