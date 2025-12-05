@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
-using static GameMenuControl;
+using static PlayerMenuManager;
 
 public class InventoryUIControl : MonoBehaviour
 {
@@ -38,6 +38,7 @@ public class InventoryUIControl : MonoBehaviour
 
     public void onInventoryOpen()
     {
+        if (playerValue == null) playerValue = GameValue.Instance.GetPlayerValue();
         HealthText.text = playerValue.GetHealth().ToString();
         EnergyText.text = playerValue.GetEnergy().ToString();
         CardsText.text = playerValue.HadCardsLibrary.Count.ToString();

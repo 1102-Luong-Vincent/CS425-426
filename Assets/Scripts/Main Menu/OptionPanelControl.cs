@@ -29,6 +29,8 @@ public class OptionPanelControl : MonoBehaviour
 
     private List<Button> optionButtons;
 
+    PanelType currentPanel = PanelType.Volume;
+
     private Dictionary<PanelType, GameObject> panels = new Dictionary<PanelType, GameObject>();
     void Start()
     {
@@ -194,6 +196,12 @@ public class OptionPanelControl : MonoBehaviour
     #endregion
     #region Helper Function
 
+
+    public void OpenPanel()
+    {
+        OpenPanel(currentPanel);
+    }
+
     void OpenPanel(PanelType key)
     {
         CloseAllPanels();
@@ -208,6 +216,12 @@ public class OptionPanelControl : MonoBehaviour
         SetOptionsPanel(true); // show option buttons again
         SetOptionButtonsActive(true);         // show Volume/Display/Language buttons
         SetOptionsBackButtonActive(true);     // show Options Back button again
+    }
+
+
+    public void ClosePanel()
+    {
+        ClosePanel(currentPanel);
     }
 
     void ClosePanel(PanelType key)

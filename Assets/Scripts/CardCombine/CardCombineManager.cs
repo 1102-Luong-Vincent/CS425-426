@@ -72,7 +72,7 @@ public class CardCombineManager : MonoBehaviour
 
 
 
-    void OpenPanel()
+    public void OpenPanel()
     {
         CardCombinePanel.SetActive(true);
 
@@ -86,7 +86,7 @@ public class CardCombineManager : MonoBehaviour
         }
     }
 
-    void ClosePanel()
+    public void ClosePanel()
     {
         foreach (var slot in spawnedSlots)
         {
