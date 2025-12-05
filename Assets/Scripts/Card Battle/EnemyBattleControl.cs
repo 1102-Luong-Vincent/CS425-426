@@ -18,7 +18,6 @@ public class EnemyBattleControl : MonoBehaviour
 
         enemyNameText.text = enemyValue.EnemyName;
         enemyImage.sprite = enemyValue.GetSprite();
-
         SetHealth();
         Listener(true);
     }
