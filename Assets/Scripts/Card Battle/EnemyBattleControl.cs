@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 public class EnemyBattleControl : MonoBehaviour
 {
     public TextMeshProUGUI enemyNameText;
-    public SpriteRenderer enemySprite;
+    public Image enemyImage;
     public Slider healthBar;
     public TextMeshProUGUI healthText;
     private EnemyValue enemyValue;
@@ -17,7 +17,7 @@ public class EnemyBattleControl : MonoBehaviour
         this.enemyValue = enemyValue;
 
         enemyNameText.text = enemyValue.EnemyName;
-        enemySprite.sprite = enemyValue.GetSprite();
+        enemyImage.sprite = enemyValue.GetSprite();
 
         SetHealth();
         Listener(true);
