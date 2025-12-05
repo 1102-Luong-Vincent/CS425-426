@@ -20,8 +20,6 @@ public class PlayerValue
     int Health = 100;
     int energy = 10;
 
-    int MAX_CARDS = 30;
-
     public PlayerValue() {
         Init();
     }
@@ -170,11 +168,6 @@ public class PlayerValue
     public int GetEnergy()
     {
         return energy;
-    }
-
-    public int GetMaxCards()
-    {
-        return MAX_CARDS;
     }
 
 }

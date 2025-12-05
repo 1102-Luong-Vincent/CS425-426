@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
@@ -51,21 +50,25 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
-            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
+            //swap battle card and equip card
+            CardValue battleCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
+            CardValue equipCard = card.GetComponent<MenuCardControl>().GetCardValue();
 
-            if(targetCard.gameObject.tag == "EquipCard")
+
+            int battleCardIndex = playerValue.battleCardsList.IndexOf(battleCard);
+            int equipCardIndex = playerValue.EquipmentCards.IndexOf(equipCard);
+            if(targetCard.GetComponent<MenuCardControl>().GetCardValue() != null) // don't place empty card slot into card inventory
             {
-                playerValue.EquipmentCards.Remove(oldCard);
-                playerValue.EquipmentCards.Add(newCard);
+                playerValue.battleCardsList[battleCardIndex] = equipCard;
+                playerValue.EquipmentCards[equipCardIndex] = battleCard;
             }
-            else if (targetCard.gameObject.tag == "BattleCard")
+            else
             {
-                playerValue.battleCardsList.Remove(oldCard);
-                playerValue.battleCardsList.Add(newCard);
+                playerValue.battleCardsList.Add(equipCard);
+                playerValue.EquipmentCards.RemoveAt(equipCardIndex);
             }
 
-                control.refreshInventory();
+            control.refreshInventory();
             CloseCardSelector();
         }
     }
@@ -74,20 +77,8 @@ public class InventoryManager : MonoBehaviour
     {
         replacingCard = true;
         CardSelectorPanel.SetActive(true);
-
-        //make list of cards not already equipped
-        List<CardValue> AvailableCards = new List<CardValue>(playerValue.HadCardsLibrary);
-        foreach(CardValue val in playerValue.battleCardsList)
-        {
-            AvailableCards.Remove(val);
-        }
-        foreach(CardValue val in playerValue.EquipmentCards)
-        {
-            AvailableCards.Remove(val);
-        }
-
         // populate card zone with cards in PlayerValue
-        foreach (CardValue val in AvailableCards)
+        foreach (CardValue val in playerValue.EquipmentCards)
         {
             GameObject card = Instantiate(MenuCardPrefab);
             card.name = (val.CardName + " card");

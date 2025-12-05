@@ -8,8 +8,6 @@ using static GameMenuControl;
 
 public class InventoryUIControl : MonoBehaviour
 {
-    public Transform WeaponZone;
-    public Transform EquipZone;
     public Transform CardZone;
     public GameObject MenuCardPrefab;
     public GameObject EmptySlotPrefab;
@@ -32,6 +30,7 @@ public class InventoryUIControl : MonoBehaviour
     void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
+        //playerValue.EquipmentCards = playerValue.battleCardsList;// for testing delete this later
         onInventoryOpen();
         InitButtons();
     }
@@ -41,66 +40,35 @@ public class InventoryUIControl : MonoBehaviour
         HealthText.text = playerValue.GetHealth().ToString();
         EnergyText.text = playerValue.GetEnergy().ToString();
         CardsText.text = playerValue.HadCardsLibrary.Count.ToString();
-
-        //put weapon card in card zone
         GameObject weapon = Instantiate(MenuCardPrefab);
         WeaponValue wval = playerValue.EquipmentWeapon;
         weapon.name = (wval.WeaponName + " card");
         MenuCardControl wmenucard = weapon.GetComponent<MenuCardControl>();
-        weapon.transform.SetParent(WeaponZone);
+        weapon.transform.SetParent(CardZone);
         wmenucard.SetWeaponValue(wval);
-
-        int EquipCardCount = 0;
-        // populate card zone with starting hand
-        foreach (CardValue val in playerValue.EquipmentCards)
-        {
-            InstantiateCard(val, EquipZone);
-            EquipCardCount++;
-        }
-        // populate rest of equip zone with empty slots
-        for (int i = EquipCardCount; i < 5; i++)
-        {
-            GameObject emptySlot = Instantiate(EmptySlotPrefab);
-            emptySlot.transform.SetParent(EquipZone);
-            emptySlot.tag = "EquipCard";
-        }
-
-        int BattleCardCount = 0;
         // populate card zone with cards in PlayerValue
-        foreach (CardValue val in playerValue.battleCardsList)
+        for(int i = 0; i < 21; i++)
         {
-            if(BattleCardCount >= playerValue.GetMaxCards()-EquipCardCount - 1) // total = 1 weapon card + # of equip cards
+            if (i <= playerValue.battleCardsList.Count - 1)
             {
-                break;
+                GameObject card = Instantiate(MenuCardPrefab);
+                CardValue val = playerValue.battleCardsList[i];
+                card.name = (val.CardName + " card");
+                MenuCardControl menucard = card.GetComponent<MenuCardControl>();
+                card.transform.SetParent(CardZone);
+                menucard.SetCardValue(val);
             }
-            InstantiateCard(val, CardZone);
-            BattleCardCount++;
-        }
-
-        // populate rest of card zone with empty slots
-        for(int i = BattleCardCount; i < playerValue.GetMaxCards()-6; i++)
-        {
+            else
+            {
                 GameObject emptySlot = Instantiate(EmptySlotPrefab);
                 emptySlot.transform.SetParent(CardZone);
-                emptySlot.tag = "BattleCard";
+            }
         }
     }
 
     public void onInventoryClose()
     {
         // menu closed -- erase menu cards
-        for (int i = WeaponZone.childCount - 1; i >= 0; i--)
-        {
-            GameObject menucard = WeaponZone.GetChild(i).gameObject;
-
-            Destroy(menucard);
-        }
-        for (int i = EquipZone.childCount - 1; i >= 0; i--)
-        {
-            GameObject menucard = EquipZone.GetChild(i).gameObject;
-
-            Destroy(menucard);
-        }
         for (int i = CardZone.childCount - 1; i >= 0; i--)
         {
             GameObject menucard = CardZone.GetChild(i).gameObject;
@@ -164,21 +132,8 @@ public class InventoryUIControl : MonoBehaviour
     }
 
 
-    void InstantiateCard(CardValue val, Transform dest)
+    void UpdateGameValue()
     {
-        GameObject card = Instantiate(MenuCardPrefab);
-        card.name = (val.CardName + " card");
-        MenuCardControl menucard = card.GetComponent<MenuCardControl>();
-        card.transform.SetParent(dest);
-        menucard.SetCardValue(val);
-        
-        if(dest.gameObject == CardZone.gameObject)
-        {
-            card.tag =  "BattleCard";
-        }
-        else if(dest.gameObject == EquipZone.gameObject)
-        {
-            card.tag = "EquipCard";
-        }
+   
     }
 }
