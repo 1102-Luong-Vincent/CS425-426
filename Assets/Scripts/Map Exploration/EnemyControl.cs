@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class FieldEnemy : MonoBehaviour
+public class EnemyControl : MonoBehaviour
 {
     public SphereCollider searchRadius;
+    [SerializeField] int EnemyID = -1;
+    EnemyValue enemyValue;
     Rigidbody rb;
     float speed = 0.05f;
     Transform target;
@@ -11,6 +14,7 @@ public class FieldEnemy : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
     }
 
     // Update is called once per frame
@@ -46,6 +50,9 @@ public class FieldEnemy : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             Debug.Log("Enemy touched player -- Entering Battle");
+            List<EnemyValue> enemyValues = new List<EnemyValue>() {enemyValue};
+            BattleData battleData = new BattleData(enemyValues);
+            GameValue.Instance.SetBattleData(battleData);
             GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
         }
     }

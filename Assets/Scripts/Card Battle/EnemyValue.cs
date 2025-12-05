@@ -26,6 +26,7 @@ public class EnemyPoisonStatus
         percentDmg = p;
     }
 }
+
 public class EnemyValue
 {
     private int ID;
