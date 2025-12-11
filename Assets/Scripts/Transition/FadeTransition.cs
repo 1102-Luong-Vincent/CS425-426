@@ -1,3 +1,8 @@
+// Author: Vincent Luong
+// Created by: Vincent Luong
+// Modified by: Shawn Meng
+// No external source was used.
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;

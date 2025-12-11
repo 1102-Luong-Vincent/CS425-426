@@ -1,3 +1,8 @@
+//Author: Shawn Meng
+//Created by: Shawn Meng
+//Modified by: Shawn Meng
+//No external code was used
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

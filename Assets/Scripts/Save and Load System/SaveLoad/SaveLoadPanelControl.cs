@@ -1,3 +1,6 @@
+//Author: Shawn Meng
+// No external code was used
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;

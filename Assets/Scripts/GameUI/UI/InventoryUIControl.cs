@@ -1,3 +1,8 @@
+// Author: Sean Mastereson
+// Created by: Sean Masterson
+// Modified by: Sean Masterson
+// No external sources were used
+
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;

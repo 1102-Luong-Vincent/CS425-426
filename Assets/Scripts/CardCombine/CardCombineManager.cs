@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// Some code generated with assistance from ChatGPT.
+
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 

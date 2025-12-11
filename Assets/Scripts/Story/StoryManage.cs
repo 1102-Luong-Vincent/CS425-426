@@ -1,3 +1,6 @@
+// Authors: Vincent Luong and Shawn Meng
+//Originally written by Vincent Luong. Modified by Shawn Meng to add story preloading and skip functionality.
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

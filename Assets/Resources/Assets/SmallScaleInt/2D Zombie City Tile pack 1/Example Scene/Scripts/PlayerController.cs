@@ -1,3 +1,8 @@
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// Some code generated with assistance from ChatGPT.
+
 using UnityEngine;
 using UnityEngine.UI;             // For UI elements
 using UnityEngine.SceneManagement; // For reloading the scene

@@ -1,3 +1,8 @@
+// Authors: Vincent Luong and Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Vincent Luong
+// Some code generated with assistance from ChatGPT.
+
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;

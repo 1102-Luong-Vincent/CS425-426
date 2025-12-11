@@ -1,3 +1,8 @@
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// No external source was used
+
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

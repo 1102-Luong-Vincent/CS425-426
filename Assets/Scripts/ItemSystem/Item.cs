@@ -1,3 +1,8 @@
+//Authors: Vincent Luong and Shawn Meng
+//Created by: Shawn Meng
+//Modified by: Shawn Meng and Vincent Luong
+//no external source was used
+
 using UnityEngine;
 using System.Collections.Generic;
 public class Item
