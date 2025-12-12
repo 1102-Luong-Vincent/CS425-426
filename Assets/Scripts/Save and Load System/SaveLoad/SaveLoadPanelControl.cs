@@ -1,5 +1,8 @@
-//Author: Shawn Meng
-// No external code was used
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// No external source was used
+
 
 using UnityEngine;
 using UnityEngine.UI;

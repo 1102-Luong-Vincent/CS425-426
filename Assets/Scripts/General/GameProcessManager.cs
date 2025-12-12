@@ -1,3 +1,9 @@
+// Author: Shawn Meng 
+// Created by: Shawn Meng
+// Modified by: Shawn Meng and Vincent Luong
+// No external source was used
+
+
 using UnityEngine;
 
 public class GameProcessManager : MonoBehaviour

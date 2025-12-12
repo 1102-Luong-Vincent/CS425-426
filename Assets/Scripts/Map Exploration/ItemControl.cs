@@ -1,3 +1,8 @@
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// some code generated with assistance from ChatGPT.
+
 using SmallScaleInc.TopDownPixelCharactersPack1;
 using UnityEngine;
 using UnityEngine.SceneManagement;

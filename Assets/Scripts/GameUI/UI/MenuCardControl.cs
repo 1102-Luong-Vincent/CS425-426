@@ -1,3 +1,8 @@
+// Author: Sean Masterson
+// Created by: Sean Masterson
+// Modified by: Sean Masterson
+// no external source was used.
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;

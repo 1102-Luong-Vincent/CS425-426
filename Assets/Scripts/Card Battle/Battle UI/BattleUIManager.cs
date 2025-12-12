@@ -1,3 +1,9 @@
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// no external source was used.
+
+
 using UnityEngine;
 using TMPro;
 

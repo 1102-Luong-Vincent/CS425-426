@@ -1,3 +1,8 @@
+// Author: Shawn Meng
+// Created by: Shawn Meng
+// Modified by: Shawn Meng
+// No external source was used
+
 using System;
 using UnityEngine;
 using System.Collections;

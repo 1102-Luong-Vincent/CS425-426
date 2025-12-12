@@ -1,3 +1,8 @@
+// Author: Sean Masterson
+// Created by: Sean Masterson
+// Modified by: Sean Masterson
+// No external source was used
+
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;

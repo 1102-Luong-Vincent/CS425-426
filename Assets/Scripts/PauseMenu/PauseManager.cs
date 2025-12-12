@@ -1,3 +1,8 @@
+// Author: Vincent Luong
+// Created by: Vincent Luong
+// Modified by: Vincent Luong
+// No external source was used
+
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour
@@ -16,9 +21,4 @@ public class PauseManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-
-
-
-
 }

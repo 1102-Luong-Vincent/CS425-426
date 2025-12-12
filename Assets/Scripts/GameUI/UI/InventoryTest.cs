@@ -1,3 +1,8 @@
+// Author: Sean Masterson
+// Created by: Sean Masterson
+// Modified by: Sean Masterson and Shawn Meng
+// no external source was used.
+
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;

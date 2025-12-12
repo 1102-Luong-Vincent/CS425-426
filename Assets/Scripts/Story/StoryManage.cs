@@ -1,5 +1,8 @@
-// Authors: Vincent Luong and Shawn Meng
-//Originally written by Vincent Luong. Modified by Shawn Meng to add story preloading and skip functionality.
+// Author: Vincent Luong
+// Created by: Vincent Luong
+// Modified by: Shawn Meng
+// No external source was used
+
 
 using System;
 using System.Collections;
