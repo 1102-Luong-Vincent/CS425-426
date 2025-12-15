@@ -12,6 +12,9 @@ public class BattleData
     public List<EnemyValue> battleEnemys = new List<EnemyValue>();
     public List<CardValue> totalEnemyCardAtBattle = new List<CardValue>();
 
+    private SceneType mapScene; // which map were we on before battle?
+    private Vector3 mapPos; // where was player on the previous map?
+    private GameObject fieldMonster; // who do we delete when the player wins?
     public BattleData(List<EnemyValue> battleEnemys)
     {
         this.battleEnemys = battleEnemys;
@@ -59,5 +62,34 @@ public class BattleData
                 Debug.LogWarning($"Enemy card ID {cardID} not found in GameValue.");
             }
         }
+    }
+
+    public void SetMapPosition(Vector3 pos)
+    {
+        mapPos = pos;
+    }
+
+    public Vector3 GetMapPosition()
+    {
+        return mapPos;
+    }
+
+    public void SetMapScene(SceneType scene)
+    {
+        mapScene = scene;
+    }
+
+    public SceneType GetMapScene()
+    {
+        return mapScene;
+    }
+
+    public void SetFieldMonster(GameObject monster)
+    {
+        fieldMonster = monster;
+    }
+    public GameObject GetFieldMonster()
+    {
+        return fieldMonster;
     }
 }

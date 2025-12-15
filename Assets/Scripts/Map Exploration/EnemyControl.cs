@@ -57,8 +57,13 @@ public class EnemyControl : MonoBehaviour
             Debug.Log("Enemy touched player -- Entering Battle");
             List<EnemyValue> enemyValues = new List<EnemyValue>() {enemyValue};
             BattleData battleData = new BattleData(enemyValues);
+            battleData.SetMapScene(GameValue.Instance.GetCurrentScence());
+            battleData.SetMapPosition(GameValue.Instance.GetPlayerPosition()); // remember where we were on the map
+            battleData.SetFieldMonster(gameObject);
+            Destroy(gameObject);
             GameValue.Instance.SetBattleData(battleData);
             GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
+
         }
     }
 }

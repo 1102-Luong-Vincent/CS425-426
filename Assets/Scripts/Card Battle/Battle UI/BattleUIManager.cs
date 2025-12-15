@@ -10,12 +10,14 @@ using TMPro;
 public class BattleUIManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI TurnText;
+    [SerializeField] GameObject GameOverPanel;
 
 
     void Start()
     {
         SetTurnText(BattleManage.Instance.Turn);
         Listener(true);
+        GameOverPanel.SetActive(false);
     }
 
     private void OnDestroy()
@@ -42,5 +44,10 @@ public class BattleUIManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void DisplayGameOver()
+    {
+        GameOverPanel.SetActive(true);
     }
 }

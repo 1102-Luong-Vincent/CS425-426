@@ -75,7 +75,7 @@ public class EnemyBattleControl : MonoBehaviour
     {
         enemyValue.Health -= amount;
 
-        Debug.Log($"Enemy took {amount} damage!");
+        Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
 
         if (enemyValue.Health <= 0)
         {

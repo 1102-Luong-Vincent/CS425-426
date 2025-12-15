@@ -84,15 +84,6 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        //if (IsInCombineScene())
-        //{
-        //    if (eventData.button == PointerEventData.InputButton.Left && cardValue != null)
-        //    {
-        //        Debug.Log("[CombineScene] Selecting card: " + cardValue.CardName);
-        //        CardCombineManager.Instance.SelectCard(cardValue);
-        //    }
-        //    return;
-        //}
 
         RectTransform rt = GetComponent<RectTransform>();
 
@@ -140,12 +131,15 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         //BattlePlayerValue.Instance.RemoveCard(cardValue);
         //BattleManage.Instance.StartNextTurn();
 
-        Debug.Log($"Used card: {cardValue.CardName}");
+        if(cardValue != null)
+            Debug.Log($"Used card: {cardValue.CardName}");
+        else if(weaponValue != null)
 
+            Debug.Log($"Used weapon: {weaponValue.WeaponName}");
         // 1. Pick first enemy for now (simple targeting)
         var target = BattleEnemyManager.Instance.currentEnemys.Count > 0
-            ? BattleEnemyManager.Instance.currentEnemys[0]
-            : null;
+                ? BattleEnemyManager.Instance.currentEnemys[0]
+                : null;
 
         if (target == null)
         {
@@ -154,10 +148,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         }
 
         // 2. Check if this card is an attack card (Knife)
-        if (cardValue.CardName == "Knife")
+        if (weaponValue != null)
         {
             // Apply player card effect
-            BattleManage.Instance.ApplyPlayerCardEffect(cardValue, target);
+            BattleManage.Instance.ApplyPlayerCardEffect(this, target);
         }
         else
         {
@@ -171,5 +165,15 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         // 4. Next turn
         BattleManage.Instance.StartNextTurn();
 
+    }
+
+    public CardValue GetCardValue()
+    {
+        return cardValue;
+    }
+
+    public WeaponValue GetWeaponValue()
+    {
+        return weaponValue;
     }
 }

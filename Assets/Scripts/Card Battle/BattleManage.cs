@@ -65,13 +65,27 @@ public class BattleManage : MonoBehaviour
         Turn++;
         if (IsPlayerTurn())
         {
-            BattlePlayerValue.Instance.StartTurn();
+            if (BattlePlayerValue.Instance.Health > 0)
+            {
+                BattlePlayerValue.Instance.StartTurn();
+            }
+            else
+            {
+                BattleUIManager.DisplayGameOver();
+            }
         } else
         {
-            Debug.Log("Enemy Turn");
-            
-            BattleEnemyManager.Instance.ProcessEnemyStatuses();
-            StartCoroutine(BattleEnemyManager.Instance.EnemyTurn());
+            if (!allEnemiesDead())
+            {
+                Debug.Log("Enemy Turn");
+                BattleEnemyManager.Instance.ProcessEnemyStatuses();
+                StartCoroutine(BattleEnemyManager.Instance.EnemyTurn());
+            }
+            else
+            {
+                Debug.Log("enemies dead");
+                EndBattle();
+            }
         }
 
         DebugTest();
@@ -88,20 +102,38 @@ public class BattleManage : MonoBehaviour
     }
 
     //Attack Card
-    public void ApplyPlayerCardEffect(CardValue card, EnemyBattleControl target)
+    public void ApplyPlayerCardEffect(BattleCardControl card, EnemyBattleControl target)
     {
-        Debug.Log($"Player uses {card.CardName}!");
-
-        switch (card.CardName)
+        if (card.GetCardValue() != null)
         {
-            case "Knife":
-                target.DealDamage(20);
-                break;
-
-            default:
-                Debug.LogWarning($"Card {card.CardName} has no effect implemented yet.");
-                break;
+            Debug.Log($"Player uses {card.GetCardValue().CardName}!");
         }
+        else if (card.GetWeaponValue() != null)
+        {
+            target.DealDamage(20);
+        }
+            /*switch (card.CardName)
+            {
+                case "Knife":
+                    target.DealDamage(20);
+                    break;
+
+                default:
+                    Debug.LogWarning($"Card {card.CardName} has no effect implemented yet.");
+                    break;
+            }*/
+    }
+
+    public bool allEnemiesDead()
+    {
+        return BattleEnemyManager.Instance.currentEnemys.Count == 0;
+    }
+
+    void EndBattle()
+    {
+        Debug.Log($"going back to previous map {battleData.GetMapScene()}");
+        GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
+        GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
     }
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
