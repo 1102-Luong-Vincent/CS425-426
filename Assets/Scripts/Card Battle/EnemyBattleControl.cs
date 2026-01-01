@@ -45,8 +45,6 @@ public class EnemyBattleControl : MonoBehaviour
         }
     }
 
-
-
     private void OnDestroy()
     {
         Listener(false);

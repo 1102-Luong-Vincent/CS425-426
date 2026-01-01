@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class BattleManage : MonoBehaviour
 {
@@ -101,28 +102,6 @@ public class BattleManage : MonoBehaviour
         BattlePlayerTestUIManager.Instance.CheckPlayerState(BattlePlayerValue.Instance);
     }
 
-    //Attack Card
-    public void ApplyPlayerCardEffect(BattleCardControl card, EnemyBattleControl target)
-    {
-        if (card.GetCardValue() != null)
-        {
-            Debug.Log($"Player uses {card.GetCardValue().CardName}!");
-        }
-        else if (card.GetWeaponValue() != null)
-        {
-            target.DealDamage(20);
-        }
-            /*switch (card.CardName)
-            {
-                case "Knife":
-                    target.DealDamage(20);
-                    break;
-
-                default:
-                    Debug.LogWarning($"Card {card.CardName} has no effect implemented yet.");
-                    break;
-            }*/
-    }
 
     public bool allEnemiesDead()
     {

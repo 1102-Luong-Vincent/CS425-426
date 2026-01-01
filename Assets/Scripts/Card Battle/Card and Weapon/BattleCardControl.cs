@@ -3,11 +3,12 @@
 // Modified by: Vincent Luong
 // Some code generated with assistance from ChatGPT.
 
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -150,14 +151,18 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         // 2. Check if this card is an attack card (Knife)
         if (weaponValue != null)
         {
-            // Apply player card effect
-            BattleManage.Instance.ApplyPlayerCardEffect(this, target);
+            UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
         }
         else
         {
-            // All non-attack cards follow the original logic
-            cardValue.UseEffect(BattlePlayerValue.Instance);
+            cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
         }
+
+
+
+
+
+
 
         // 3. Remove card from player's hand
         BattlePlayerValue.Instance.RemoveCard(cardValue);
@@ -166,6 +171,23 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         BattleManage.Instance.StartNextTurn();
 
     }
+
+    
+
+    void UseWeaponEffect(BattlePlayerValue playerValue, List<EnemyValue> targets)
+    {
+        weaponValue.UseWeaponEffect(playerValue, targets);
+    }
+
+
+
+
+
+
+
+
+
+
 
     public CardValue GetCardValue()
     {

@@ -114,7 +114,7 @@ public class BattleEnemyManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // pick an enemy card, apply effect, damage player etc.
-        EnemyTakeAction();
+        Debug.Log("Enemy action!");
 
         yield return new WaitForSeconds(0.5f);
 
@@ -126,6 +126,17 @@ public class BattleEnemyManager : MonoBehaviour
         Debug.Log("Enemy attacks!");
 
         BattlePlayerValue.Instance.Health -= 20; //deals 20 damage to player
+    }
+
+    public List<EnemyValue> GetEnemyValues()
+    {
+        List < EnemyValue > enemyValues = new List <EnemyValue >();
+        foreach (var enemy in currentEnemys)
+        {
+            enemyValues.Add(enemy.EnemyValueReference);
+        }
+
+        return enemyValues;
     }
 }
 
