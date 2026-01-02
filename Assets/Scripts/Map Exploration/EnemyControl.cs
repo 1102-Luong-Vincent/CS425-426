@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    public SphereCollider searchRadius;
+    public CircleCollider2D searchRadius;
     [SerializeField] int EnemyID = -1;
     EnemyValue enemyValue;
     Rigidbody rb;

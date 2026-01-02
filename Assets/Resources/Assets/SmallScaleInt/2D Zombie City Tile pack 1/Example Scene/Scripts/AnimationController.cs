@@ -181,7 +181,23 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
                 directionToFace = "isSouth"; //character faces and moves down, towards the camera
             }
 
-            if(directionToFace != currentDirection)
+            if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+            {
+                directionToFace = "isNorthEast";
+            }
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+            {
+                directionToFace = "isNorthWest";
+            }
+            if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+            {
+                directionToFace = "isSouthEast";
+            }
+            if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+            {
+                directionToFace = "isSouthWest";
+            }
+            if (directionToFace != currentDirection)
             {
                 UpdateDirection(directionToFace);
             }
