@@ -8,30 +8,6 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
-public class EnemyBurnStatus
-{
-    public int turnsLeft;
-    public float percentDmg;
-
-    public EnemyBurnStatus(int turns, float p)
-    {
-        turnsLeft = turns;
-        percentDmg = p;
-    }
-}
-
-public class EnemyPoisonStatus
-{
-    public int turnsLeft;
-    public float percentDmg;
-
-    public EnemyPoisonStatus(int turns, float p)
-    {
-        turnsLeft = turns;
-        percentDmg = p;
-    }
-}
-
 public class EnemyValue
 {
     private int ID;
@@ -89,30 +65,6 @@ public class EnemyValue
     public int attack;
     public int speed;
 
-    public int StunTurns;
-    public bool isStunned => StunTurns > 0;
-
-    public float tempArmorReduction = 0.2f;
-    public int armorReductionTurns = 2;
-    public bool HasArmorDebuff => armorReductionTurns > 0;
-
-    //public float tempArmorReductionPercent
-    //public int armorDebuffTurns = 0;
-
-    public int stunTurns = 0;
-    public bool IsStunned => stunTurns > 0;
-
-    public bool isConfused = false;
-    public int confusedTurns = 0;
-
-    public EnemyBurnStatus burnStatus;
-    public EnemyPoisonStatus poisonStatus;
-
-    public int c4TurnsLeft = 0;
-    public float c4DamagePercent = 0f;
-
-    public bool hasMine = false;
-    public float mineDamagePercent = 0f;
 
     //public WeaponValue defaultWeapon;
     string defaultWeaponName;
@@ -166,112 +118,4 @@ public class EnemyValue
         player.Health -= amout;
     }
 
-    #region StatusEffects
-
-    public void ApplyBurn(EnemyBurnStatus status)
-    {
-        burnStatus = status;
-    }
-
-    public void TickBurn()
-    {
-        if (burnStatus != null)
-        {
-            int dmg = Mathf.RoundToInt(MaxHealth * burnStatus.percentDmg);
-            Health -= dmg;
-            burnStatus.turnsLeft--;
-            if (burnStatus.turnsLeft <= 0)
-                burnStatus = null;
-        }
-    }
-
-    public void ApplyPoison(EnemyPoisonStatus status)
-    {
-        poisonStatus = status;
-    }
-
-    public void TickPoison()
-    {
-        if (poisonStatus != null)
-        {
-            int dmg = Mathf.RoundToInt(MaxHealth * poisonStatus.percentDmg);
-            Health -= dmg;
-            poisonStatus.turnsLeft--;
-            if (poisonStatus.turnsLeft <= 0)
-                poisonStatus = null;
-        }
-    }
-
-    public void SetStunned(int turns)
-    {
-        stunTurns = turns;
-    }
-
-    public void TickStun()
-    {
-        if (stunTurns > 0)
-            stunTurns--;
-    }
-
-    public void SetConfused(int turns)
-    {
-        isConfused = true;
-        confusedTurns = turns;
-    }
-
-    public void TickConfusion()
-    {
-        if (confusedTurns > 0)
-        {
-            confusedTurns--;
-            if (confusedTurns <= 0)
-                isConfused = false;
-        }
-    }
-
-    public void AttachC4(int turns, float percent)
-    {
-        c4TurnsLeft = turns;
-        c4DamagePercent = percent;
-    }
-
-    public void TickC4()
-    {
-        if (c4TurnsLeft > 0)
-        {
-            c4TurnsLeft--;
-            if (c4TurnsLeft <= 0)
-            {
-                int dmg = Mathf.RoundToInt(MaxHealth * c4DamagePercent);
-                Health -= dmg;
-            }
-        }
-    }
-
-    public void DeployMine(float percent)
-    {
-        hasMine = true;
-        mineDamagePercent = percent;
-    }
-
-    public void TriggerMine()
-    {
-        if (hasMine)
-        {
-            int dmg = Mathf.RoundToInt(MaxHealth * mineDamagePercent);
-            Health -= dmg;
-            hasMine = false;
-        }
-    }
-
-    public void TickArmorDebuff()
-    {
-        if (armorReductionTurns > 0)
-        {
-            armorReductionTurns--;
-            if (armorReductionTurns <= 0)
-                tempArmorReduction = 0f;
-        }
-    }
-    #endregion
 }

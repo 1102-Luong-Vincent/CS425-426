@@ -51,7 +51,7 @@ public class PlayerValue
     {
         ClearCard();
 
-        string[] starterEquipment = { "Beer", "Beer", "Bandage", "Syringe" };
+        string[] starterEquipment = { "Bandage", "Syringe" };
         foreach (string equipName in starterEquipment)
         {
             CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);

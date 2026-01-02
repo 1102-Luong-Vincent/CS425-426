@@ -24,14 +24,14 @@ public static class FuncName
     public const string LowerHealth = "LowerHealth";
 
     //AOE attacks
-    public const string DamageAll = "DamageAll";
-    public const string ApplyBurn = "ApplyBurn";
-    public const string ApplyPoison = "ApplyPoison";
-    public const string ApplyStun = "ApplyStun";
-    public const string ApplyConfusion = "ApplyConfusion";
-    public const string ReduceArmor = "ReduceArmor";
-    public const string AttachC4Bomb = "AttachC4Bomb";
-    public const string DeployMine = "DeployMine";
+    //public const string DamageAll = "DamageAll";
+    //public const string ApplyBurn = "ApplyBurn";
+    //public const string ApplyPoison = "ApplyPoison";
+    //public const string ApplyStun = "ApplyStun";
+    //public const string ApplyConfusion = "ApplyConfusion";
+    //public const string ReduceArmor = "ReduceArmor";
+    //public const string AttachC4Bomb = "AttachC4Bomb";
+    //public const string DeployMine = "DeployMine";
 
 }
 
@@ -150,44 +150,44 @@ public static class CardEffectParser
                 int lowHPTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
                 return (player, enemies) => LowerHealth(player, lowHPPercent, lowHPTurns);
 
-            // AOE Effects
-            case FuncName.DamageAll:
-                float percent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
-                return (player, enemies) => DamageAllEnemies(percent);
+            //// AOE Effects
+            //case FuncName.DamageAll:
+            //    float percent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
+            //    return (player, enemies) => DamageAllEnemies(percent);
 
-            case FuncName.ApplyBurn:
-                int turns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
-                float burnPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
-                return (player, enemies) => ApplyBurnToAllEnemies(turns, burnPercent);
+            //case FuncName.ApplyBurn:
+            //    int turns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+            //    float burnPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
+            //    return (player, enemies) => ApplyBurnToAllEnemies(turns, burnPercent);
 
-            case FuncName.ApplyPoison:
-                int PoisonTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
-                float poisonPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
-                return (player, enemies) => ApplyPoisonToAllEnemies(PoisonTurns, poisonPercent);
+            //case FuncName.ApplyPoison:
+            //    int PoisonTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+            //    float poisonPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
+            //    return (player, enemies) => ApplyPoisonToAllEnemies(PoisonTurns, poisonPercent);
 
-            case FuncName.ApplyStun:
-                int StunTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
-                float chanceToStun = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.4f;
-                return (player, enemies) => ApplyStunToAllEnemies(chanceToStun, StunTurns);
+            //case FuncName.ApplyStun:
+            //    int StunTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+            //    float chanceToStun = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.4f;
+            //    return (player, enemies) => ApplyStunToAllEnemies(chanceToStun, StunTurns);
 
-            case FuncName.ApplyConfusion:
-                int ConfusionTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
-                float chanceToConfuse = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.3f;
-                return (player, enemies) => ApplyConfusionToAllEnemies(chanceToConfuse, ConfusionTurns);
+            //case FuncName.ApplyConfusion:
+            //    int ConfusionTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
+            //    float chanceToConfuse = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.3f;
+            //    return (player, enemies) => ApplyConfusionToAllEnemies(chanceToConfuse, ConfusionTurns);
 
-            case FuncName.ReduceArmor:
-                int Reductionturns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 10;
-                float percentReduce = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.5f;
-                return (player, enemies) => ReduceArmorOfAllEnemies(percentReduce, Reductionturns);
+            //case FuncName.ReduceArmor:
+            //    int Reductionturns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 10;
+            //    float percentReduce = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.5f;
+            //    return (player, enemies) => ReduceArmorOfAllEnemies(percentReduce, Reductionturns);
 
-            case FuncName.AttachC4Bomb:
-                int c4Damage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 50;
-                int delay = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
-                return (player, enemies) => AttachC4BombToEnemy(delay, c4Damage);
+            //case FuncName.AttachC4Bomb:
+            //    int c4Damage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 50;
+            //    int delay = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
+            //    return (player, enemies) => AttachC4BombToEnemy(delay, c4Damage);
 
-            case FuncName.DeployMine:
-                int mineDamage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 40;
-                return (player, enemies) => DeployMineAtEnemy(mineDamage);
+            //case FuncName.DeployMine:
+            //    int mineDamage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 40;
+            //    return (player, enemies) => DeployMineAtEnemy(mineDamage);
 
             default:
                 Debug.LogWarning($"[CardEffectParser] Unknown function: {funcName}");
@@ -252,80 +252,80 @@ public static class CardEffectParser
         player.Health -= dmg;
     }
 
-    //AOE Effects
-    public static void DamageAllEnemies(float percent)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (enemy == null) continue;
-            int damage = Mathf.RoundToInt(enemy.EnemyValueReference.MaxHealth * percent);
-            enemy.EnemyValueReference.Health -= damage;
-        }
-    }
+    ////AOE Effects
+    //public static void DamageAllEnemies(float percent)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (enemy == null) continue;
+    //        int damage = Mathf.RoundToInt(enemy.EnemyValueReference.MaxHealth * percent);
+    //        enemy.EnemyValueReference.Health -= damage;
+    //    }
+    //}
 
-    public static void ApplyBurnToAllEnemies(int turns, float percent)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (enemy == null) continue;
-            enemy.EnemyValueReference.ApplyBurn(new EnemyBurnStatus(turns, percent));
-        }
-    }
+    //public static void ApplyBurnToAllEnemies(int turns, float percent)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (enemy == null) continue;
+    //        enemy.EnemyValueReference.ApplyBurn(new EnemyBurnStatus(turns, percent));
+    //    }
+    //}
 
-    public static void ApplyPoisonToAllEnemies(int turns, float percent)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (enemy == null) continue;
-            enemy.EnemyValueReference.ApplyPoison(new EnemyPoisonStatus(turns, percent));
-        }
-    }
-    public static void ApplyStunToAllEnemies(float chance, int turns)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (UnityEngine.Random.value <= chance)
-            {
-                enemy.EnemyValueReference.SetStunned(turns);
-            }
-        }
-    }
+    //public static void ApplyPoisonToAllEnemies(int turns, float percent)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (enemy == null) continue;
+    //        enemy.EnemyValueReference.ApplyPoison(new EnemyPoisonStatus(turns, percent));
+    //    }
+    //}
+    //public static void ApplyStunToAllEnemies(float chance, int turns)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (UnityEngine.Random.value <= chance)
+    //        {
+    //            enemy.EnemyValueReference.SetStunned(turns);
+    //        }
+    //    }
+    //}
 
-    public static void ApplyConfusionToAllEnemies(float chance, int turns)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (UnityEngine.Random.value <= chance)
-            {
-                enemy.EnemyValueReference.SetConfused(turns);
-            }
-        }
-    }
+    //public static void ApplyConfusionToAllEnemies(float chance, int turns)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (UnityEngine.Random.value <= chance)
+    //        {
+    //            enemy.EnemyValueReference.SetConfused(turns);
+    //        }
+    //    }
+    //}
 
-    public static void ReduceArmorOfAllEnemies(float percent, int turns)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            enemy.EnemyValueReference.tempArmorReduction += percent;
-            enemy.EnemyValueReference.armorReductionTurns = turns;
-        }
-    }
+    //public static void ReduceArmorOfAllEnemies(float percent, int turns)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        enemy.EnemyValueReference.tempArmorReduction += percent;
+    //        enemy.EnemyValueReference.armorReductionTurns = turns;
+    //    }
+    //}
 
-    public static void AttachC4BombToEnemy(int delay, int damage)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (enemy == null) continue;
-            enemy.EnemyValueReference.AttachC4(delay, damage); //explodes after 2 turns (delays) and deals damage
-        }
-    }
+    //public static void AttachC4BombToEnemy(int delay, int damage)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (enemy == null) continue;
+    //        enemy.EnemyValueReference.AttachC4(delay, damage); //explodes after 2 turns (delays) and deals damage
+    //    }
+    //}
 
-    public static void DeployMineAtEnemy(int damage)
-    {
-        foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
-        {
-            if (enemy == null) continue;
-            enemy.EnemyValueReference.DeployMine(damage);
-        }
-    }
+    //public static void DeployMineAtEnemy(int damage)
+    //{
+    //    foreach (var enemy in BattleEnemyManager.Instance.currentEnemys)
+    //    {
+    //        if (enemy == null) continue;
+    //        enemy.EnemyValueReference.DeployMine(damage);
+    //    }
+    //}
 }

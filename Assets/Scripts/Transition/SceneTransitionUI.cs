@@ -14,13 +14,12 @@ public class SceneTransitionUI : MonoBehaviour
     bool playerInRange = false;
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
             confirmationPanel.SetActive(true);
-
             Time.timeScale = 0f;
         }
     }

@@ -90,22 +90,6 @@ public class BattleEnemyManager : MonoBehaviour
 
             EnemyValue e = enemyCtrl.EnemyValueReference;
 
-            // DOT Effects
-            e.TickBurn();
-            e.TickPoison();
-
-            // Control Effects
-            e.TickStun();
-            e.TickConfusion();
-
-            // Debuffs
-            e.TickArmorDebuff();
-
-            // Mine trigger
-            e.TriggerMine();
-
-            // C4 bomb countdown
-            e.TickC4();
         }
     }
 

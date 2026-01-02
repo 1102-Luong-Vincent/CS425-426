@@ -76,7 +76,7 @@ public class BattleManage : MonoBehaviour
             }
         } else
         {
-            if (!allEnemiesDead())
+            if (!AllEnemiesDead())
             {
                 Debug.Log("Enemy Turn");
                 BattleEnemyManager.Instance.ProcessEnemyStatuses();
@@ -103,9 +103,14 @@ public class BattleManage : MonoBehaviour
     }
 
 
-    public bool allEnemiesDead()
+    public bool AllEnemiesDead()
     {
-        return BattleEnemyManager.Instance.currentEnemys.Count == 0;
+        foreach (var enemy in BattleEnemyManager.Instance.GetEnemyValues())
+        {
+            if (enemy.Health > 0) return false;
+        }
+
+        return true;
     }
 
     void EndBattle()

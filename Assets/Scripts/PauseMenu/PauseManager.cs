@@ -19,6 +19,5 @@ public class PauseManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 }
