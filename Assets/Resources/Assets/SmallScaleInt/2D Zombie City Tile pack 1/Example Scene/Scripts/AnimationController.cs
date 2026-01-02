@@ -148,25 +148,44 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         void HandleMovement()
         {
+            //// Calculate direction based on mouse position
 
-            // Calculate direction based on mouse position
-            Vector3 mouseScreenPosition = Input.mousePosition;
-            mouseScreenPosition.z = Camera.main.transform.position.z - transform.position.z;
-            Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-            Vector3 directionToMouse = mouseWorldPosition - transform.position;
-            directionToMouse.Normalize(); // Normalize the direction vector
+            //Vector3 mouseScreenPosition = Input.mousePosition;
+            //mouseScreenPosition.z = Camera.main.transform.position.z - transform.position.z;
+            //Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+            //Vector3 directionToMouse = mouseWorldPosition - transform.position;
+            //directionToMouse.Normalize(); // Normalize the direction vector
 
-            // Determine the closest cardinal or intercardinal direction
-            float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-            if (angle < 0) angle += 360;
+            //// Determine the closest cardinal or intercardinal direction
+            //float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
+            //if (angle < 0) angle += 360;
 
-            string newDirection = DetermineDirectionFromAngle(angle);
+            //string newDirection = DetermineDirectionFromAngle(angle);
 
-            if(newDirection != currentDirection)
+            string directionToFace = currentDirection;
+
+            if (Input.GetKey(KeyCode.W))
             {
-                UpdateDirection(newDirection);
+                directionToFace = "isNorth"; //character faces and moves up, away from the camera
             }
-            string movementDirection = newDirection.Substring(2); // Remove "is" from the direction name
+            if (Input.GetKey(KeyCode.A))
+            {
+                directionToFace = "isWest"; //character faces and moves left. 
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                directionToFace = "isEast"; //character faces and moves right.
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                directionToFace = "isSouth"; //character faces and moves down, towards the camera
+            }
+
+            if(directionToFace != currentDirection)
+            {
+                UpdateDirection(directionToFace);
+            }
+            string movementDirection = directionToFace.Substring(2); // Remove "is" from the direction name
 
             // Capture movement input states
             isRunning = Input.GetKey(KeyCode.W);

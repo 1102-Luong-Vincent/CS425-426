@@ -18,9 +18,9 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         public static PlayerController Instance;
         public AnimationController animationController;
 
-        // for 3d move
-        private SphereCollider sphereCollider;
-        private Rigidbody rb;
+        // for 2d movement
+        private CircleCollider2D circleCollider;
+        private Rigidbody2D rb;
 
         //for 2d move
         //private CircleCollider2D circleCollider;
@@ -119,14 +119,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         void Start()
         {
-            // rb = GetComponent<Rigidbody2D>();
-            rb = GetComponent<Rigidbody>();
+            rb = GetComponent<Rigidbody2D>();
 
             spriteRenderer = GetComponent<SpriteRenderer>();
             animationController = GetComponent<AnimationController>();
-            sphereCollider = GetComponent<SphereCollider>();
-            // circleCollider = GetComponent<CircleCollider2D>();
+            circleCollider = GetComponent<CircleCollider2D>();
             originalColor = spriteRenderer.color;
+
             // Initialize health
             currentHealth = maxHealth;
             if (healthSlider != null)
@@ -260,7 +259,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         void FixedUpdate()
         {
             //TwoDMover();
-            ThreeDMove();
+            TwoDMove();
         }
 
 
@@ -276,7 +275,9 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             float moveSpeed = isCrouching ? speed * 0.5f : speed;
 
             // --- Move the player ---
-            //rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
+            Vector2 newPosition = rb.position + input * moveSpeed * Time.fixedDeltaTime;
+
+            rb.MovePosition(newPosition);
 
         }
 
@@ -296,7 +297,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             // Optional: apply crouch speed
             float moveSpeed = isCrouching ? speed * 0.5f : speed;
 
-            rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
+            //rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
 
             // Handle footstep sounds
             if (input.magnitude > 0.1f) // Player is moving
@@ -397,9 +398,9 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
                  circleCollider.enabled = false;
              }*/
 
-            if (sphereCollider != null)
+            if (circleCollider != null)
             {
-                sphereCollider.enabled = false;
+                circleCollider.enabled = false;
             }
 
 
