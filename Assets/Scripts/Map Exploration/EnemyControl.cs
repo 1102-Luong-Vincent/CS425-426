@@ -1,6 +1,6 @@
 // Author: Sean Masterson
 // Created by: Sean Masterson
-// Modified by: Sean Masterson
+// Modified by: Vincent Luong
 // No external source was used
 
 using System.Collections.Generic;
@@ -12,13 +12,13 @@ public class EnemyControl : MonoBehaviour
     public CircleCollider2D searchRadius;
     [SerializeField] int EnemyID = -1;
     EnemyValue enemyValue;
-    Rigidbody rb;
+    Rigidbody2D rb;
     float speed = 0.05f;
     Transform target;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
         enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
     }
 
@@ -27,32 +27,33 @@ public class EnemyControl : MonoBehaviour
     {
         if(target != null)
         {
-            Vector3 moveDir = Vector3.Lerp(rb.position, target.position, Time.fixedDeltaTime * speed);
+            //Vector3 moveDir = Vector3.Lerp(rb.position, target.position, Time.fixedDeltaTime * speed);
+            Vector2 moveDir = Vector2.Lerp(rb.position, target.position, Time.fixedDeltaTime * speed);
             rb.MovePosition(moveDir);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.CompareTag("Player"))
         {
             Debug.Log(gameObject.name + " detected " + other.gameObject.name);
             target = other.transform;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             Debug.Log(gameObject.name + " lost " + other.gameObject.name);
             target = null;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemy touched player -- Entering Battle");
             List<EnemyValue> enemyValues = new List<EnemyValue>() {enemyValue};
