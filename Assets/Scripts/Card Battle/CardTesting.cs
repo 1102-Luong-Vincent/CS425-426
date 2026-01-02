@@ -3,7 +3,10 @@
 // Modified by: Shawn Meng
 // Some code generated with assistance from ChatGPT.
 
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public class CardTesting : MonoBehaviour
 {
@@ -23,6 +26,7 @@ public class CardTesting : MonoBehaviour
 
         // 2. Get or create a BattlePlayerValue to apply the effect on
         var player = BattlePlayerValue.Instance;
+        List<EnemyValue> enemys = BattleEnemyManager.Instance.GetEnemyValues();
         if (player == null)
         {
             Debug.LogError("[TEST] No BattlePlayerValue.Instance in scene! " +
@@ -46,7 +50,7 @@ public class CardTesting : MonoBehaviour
                   $"CRIT% buff: {player.state.CriticalChanceBuff}");
 
         // 4. Apply the card's effect (this uses the parsedEffects inside CardValue)
-        card.UseEffect(player);
+        card.UseEffect(player,enemys);
 
         // 5. Log the result
         Debug.Log($"[AFTER]  HP: {player.Health}, " +

@@ -4,6 +4,7 @@
 // no external source was used
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponValue
@@ -38,5 +39,35 @@ public class WeaponValue
         if (cardSprite == null) Debug.LogWarning($"[LoadCardSprite] cardSprite == null, check path or filename [LoadCardSprite] Try load: {path}!");
         return cardSprite;
     }
+
+    public void UseWeaponEffect(BattlePlayerValue player, List<EnemyValue> enemys)
+    {
+        switch (WeaponName)
+        {
+            case "Knife": UseKnife(player, enemys); break;
+            case "Pistol": UsePistol(player, enemys); break;
+            case "Shotgun": UseShotgun(player, enemys); break;
+        }
+    }
+
+    void UseKnife(BattlePlayerValue player, List<EnemyValue> enemys)
+    {
+        player.Health -= 10;
+        enemys[0].Health -= 15;
+    }
+
+    void UsePistol(BattlePlayerValue player, List<EnemyValue> enemys)
+    {
+        enemys[0].Health -= 10;
+    }
+
+    void UseShotgun(BattlePlayerValue player, List<EnemyValue> enemys)
+    {
+        foreach (var enemy in enemys)
+        {
+            enemy.Health -= 5;   
+        }
+    }
+
 
 }

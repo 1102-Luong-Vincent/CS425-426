@@ -45,9 +45,9 @@ public static class FuncParameter
 
 public static class CardEffectParser
 {
-    public static List<Action<BattlePlayerValue>> ParseEffectString(string effectString)
+    public static List<Action<BattlePlayerValue,List<EnemyValue>>> ParseEffectString(string effectString)
     {
-        var actions = new List<Action<BattlePlayerValue>>();
+        var actions = new List<Action<BattlePlayerValue, List<EnemyValue>>>();
         if (string.IsNullOrEmpty(effectString)) return null;
         var commands = effectString.Split(';');
 
@@ -97,98 +97,97 @@ public static class CardEffectParser
 
 
 
-    private static Action<BattlePlayerValue> GetEffectFunction(string funcName, Dictionary<string, string> args)
+    private static Action<BattlePlayerValue,List<EnemyValue>> GetEffectFunction(string funcName, Dictionary<string, string> args)
     {
 
         switch (funcName)
         {
             case FuncName.Heal:
                 float healPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
-                return player => Heal(player, healPercent);
+                return (player, enemies) => Heal(player, healPercent);
 
             case FuncName.RestoreEnergy:
                 int RestoreEnergyAmount = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 0;
-                return player => RestoreEnergy(player, RestoreEnergyAmount);
-
+                return (player, enemies) => RestoreEnergy(player, RestoreEnergyAmount);
 
             case FuncName.StopBleeding:
-                return player => StopBleeding(player);
+                return (player, enemies) => StopBleeding(player);
 
             case FuncName.IncreaseAttack:
                 float atkPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
                 int atkTurns = args.ContainsKey(FuncParameter.turns) ? int.Parse(args[FuncParameter.turns]) : 1;
-                return player => IncreaseAttack(player, atkPercent, atkTurns);
+                return (player, enemies) => IncreaseAttack(player, atkPercent, atkTurns);
 
             case FuncName.IncreaseDefense:
                 float defPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
                 int defTurns = args.ContainsKey(FuncParameter.turns) ? int.Parse(args[FuncParameter.turns]) : 1;
-                return player => IncreaseDefense(player, defPercent, defTurns);
+                return (player, enemies) => IncreaseDefense(player, defPercent, defTurns);
 
             case FuncName.IncreaseCritDamage:
                 float cdPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
                 int cdTurns = args.ContainsKey(FuncParameter.turns) ? int.Parse(args[FuncParameter.turns]) : 1;
-                return player => IncreaseCritDamage(player, cdPercent, cdTurns);
+                return (player, enemies) => IncreaseCritDamage(player, cdPercent, cdTurns);
 
             case FuncName.IncreaseCritChance:
                 float ccPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
                 int ccTurns = args.ContainsKey(FuncParameter.turns) ? int.Parse(args[FuncParameter.turns]) : 1;
-                return player => IncreaseCritChance(player, ccPercent, ccTurns);
+                return (player, enemies) => IncreaseCritChance(player, ccPercent, ccTurns);
 
             case FuncName.Revive:
                 float revivePercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.2f;
-                return player => Revive(player, revivePercent);
+                return (player, enemies) => Revive(player, revivePercent);
 
             case FuncName.CurePoison:
-                return player => CurePoison(player);
+                return (player, enemies) => CurePoison(player);
 
             case FuncName.DecreaseDefense:
                 float lowDefPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
                 int lowDefTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
-                return player => LowerDefense(player, lowDefPercent, lowDefTurns);
+                return (player, enemies) => LowerDefense(player, lowDefPercent, lowDefTurns);
 
             case FuncName.LowerHealth:
                 float lowHPPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0;
                 int lowHPTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
-                return player => LowerHealth(player, lowHPPercent, lowHPTurns);
+                return (player, enemies) => LowerHealth(player, lowHPPercent, lowHPTurns);
 
             // AOE Effects
             case FuncName.DamageAll:
                 float percent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0f;
-                return player => DamageAllEnemies(percent);
+                return (player, enemies) => DamageAllEnemies(percent);
 
             case FuncName.ApplyBurn:
                 int turns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
                 float burnPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
-                return player => ApplyBurnToAllEnemies(turns, burnPercent);
+                return (player, enemies) => ApplyBurnToAllEnemies(turns, burnPercent);
 
             case FuncName.ApplyPoison:
                 int PoisonTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
                 float poisonPercent = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.05f;
-                return player => ApplyPoisonToAllEnemies(PoisonTurns, poisonPercent);
+                return (player, enemies) => ApplyPoisonToAllEnemies(PoisonTurns, poisonPercent);
 
             case FuncName.ApplyStun:
                 int StunTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
                 float chanceToStun = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.4f;
-                return player => ApplyStunToAllEnemies(chanceToStun, StunTurns);
+                return (player, enemies) => ApplyStunToAllEnemies(chanceToStun, StunTurns);
 
             case FuncName.ApplyConfusion:
                 int ConfusionTurns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 1;
                 float chanceToConfuse = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.3f;
-                return player => ApplyConfusionToAllEnemies(chanceToConfuse, ConfusionTurns);
+                return (player, enemies) => ApplyConfusionToAllEnemies(chanceToConfuse, ConfusionTurns);
 
             case FuncName.ReduceArmor:
                 int Reductionturns = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 10;
                 float percentReduce = args.ContainsKey(FuncParameter.percent) ? ParsePercent(args[FuncParameter.percent]) : 0.5f;
-                return player => ReduceArmorOfAllEnemies(percentReduce, Reductionturns);
+                return (player, enemies) => ReduceArmorOfAllEnemies(percentReduce, Reductionturns);
 
             case FuncName.AttachC4Bomb:
                 int c4Damage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 50;
                 int delay = args.ContainsKey(FuncParameter.turns) ? ParseInt(args[FuncParameter.turns]) : 2;
-                return player => AttachC4BombToEnemy(delay, c4Damage);
+                return (player, enemies) => AttachC4BombToEnemy(delay, c4Damage);
 
             case FuncName.DeployMine:
                 int mineDamage = args.ContainsKey(FuncParameter.amount) ? ParseInt(args[FuncParameter.amount]) : 40;
-                return player => DeployMineAtEnemy(mineDamage);
+                return (player, enemies) => DeployMineAtEnemy(mineDamage);
 
             default:
                 Debug.LogWarning($"[CardEffectParser] Unknown function: {funcName}");

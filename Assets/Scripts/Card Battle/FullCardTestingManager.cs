@@ -99,7 +99,7 @@ public class FullCardTestingManager : MonoBehaviour
         // so just call UseEffect instead of re-parsing strings.
         try
         {
-            card.UseEffect(testPlayer);
+            card.UseEffect(testPlayer,BattleEnemyManager.Instance.GetEnemyValues());
         }
         catch (System.Exception ex)
         {

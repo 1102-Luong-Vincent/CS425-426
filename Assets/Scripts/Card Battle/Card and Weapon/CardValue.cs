@@ -33,7 +33,7 @@ public class CardValue
     public CardAbility ability;
     private int ID;
 
-    private List<Action<BattlePlayerValue>> parsedEffects = new List<Action<BattlePlayerValue>>();
+    private List<Action<BattlePlayerValue,List<EnemyValue>>> parsedEffects = new List<Action<BattlePlayerValue, List<EnemyValue>>>();
 
     public CardValue(ExcelCardData excelCardData)
     {
@@ -72,7 +72,7 @@ public class CardValue
             Debug.LogWarning($"[SetCardSprite] Failed to load CardSprite! Check path: {path}");
     }
 
-    public void UseEffect(BattlePlayerValue player)
+    public void UseEffect(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         if (parsedEffects == null || parsedEffects.Count == 0)
         {
@@ -84,7 +84,7 @@ public class CardValue
         {
             try
             {
-                effect?.Invoke(player);
+                effect?.Invoke(player, enemys);
             }
             catch (Exception e)
             {
