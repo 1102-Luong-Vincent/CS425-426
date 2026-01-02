@@ -48,7 +48,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -69,8 +69,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   confirmationPanel: {fileID: 8156119961820283454}
-  sceneToLoad: Hospital
-  fadeTransition: {fileID: 3634194067968288762}
+  sceneToLoad: 0
+  PlayerTransitionPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2170273671089758197
 GameObject:
   m_ObjectHideFlags: 0

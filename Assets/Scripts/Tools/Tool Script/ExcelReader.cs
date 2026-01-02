@@ -175,7 +175,10 @@ public class ExcelReader
 
     public static List<ExcelEnemyData> GetExcelEnemyDatas()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/Value/EnemyValue.xlsx");
+        string filePath = Path.Combine(
+            Application.streamingAssetsPath,
+            "Excel/Value/EnemyValue.xlsx"
+        );
 
         List<ExcelEnemyData> excelDataList = new List<ExcelEnemyData>();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -187,29 +190,29 @@ public class ExcelReader
         using (var reader = ExcelReaderFactory.CreateReader(stream))
         {
             reader.Read();
-            do
+
+            while (reader.Read())
             {
-                while (reader.Read())
+                var col = new ColumnReader(reader);
+                ExcelEnemyData data = new ExcelEnemyData
                 {
-                    var col = new ColumnReader(reader);
-                    ExcelEnemyData data = new ExcelEnemyData
-                    {
-                        ID = col.ReadInt(),
-                        enemyName = col.ReadString(),
-                        Health = col.ReadInt(),
-                        attack = col.ReadInt(),
-                        speed = col.ReadInt(),
-                        defaultWeaponID = col.ReadInt(),
-                        enemyDeck = col.ParseIntListFromCell()
-                    };
-                    excelDataList.Add(data);
-                }
+                    ID = col.ReadInt(),
+                    enemyName = col.ReadString(),
+                    Health = col.ReadInt(),
+                    attack = col.ReadInt(),
+                    speed = col.ReadInt(),
+                    defaultWeaponID = col.ReadInt(),
+                    defaultWeaponName = col.ReadString(),
+                    enemyDeck = col.ParseIntListFromCell()
+                };
 
-            } while (reader.NextResult());
+                excelDataList.Add(data);
+            }
         }
-        return excelDataList;
 
+        return excelDataList;
     }
+
 
 
     public static List<ExcelWeaponData> GetWeaponsData()
@@ -369,6 +372,7 @@ public struct ExcelEnemyData
     public int attack;
     public int speed;
     public int defaultWeaponID;
+    public string defaultWeaponName;
     public List<int> enemyDeck;
 
 }

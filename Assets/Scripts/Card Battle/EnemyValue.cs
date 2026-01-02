@@ -114,7 +114,8 @@ public class EnemyValue
     public bool hasMine = false;
     public float mineDamagePercent = 0f;
 
-    public WeaponValue defaultWeapon;
+    //public WeaponValue defaultWeapon;
+    string defaultWeaponName;
     public List<int> enemyDeckID = new List<int>();
 
     public EnemyValue(ExcelEnemyData excelEnemyData)
@@ -133,7 +134,7 @@ public class EnemyValue
         speed = excelEnemyData.speed;
 
         SetEnemySprite();
-        defaultWeapon = GameValue.Instance.GetInitWeaponValue(excelEnemyData.defaultWeaponID);
+        defaultWeaponName = excelEnemyData.defaultWeaponName;
         enemyDeckID = excelEnemyData.enemyDeck;
     }
 
@@ -145,6 +146,24 @@ public class EnemyValue
         EnemySprite = Resources.Load<Sprite>(path);
         if (EnemySprite == null)
             Debug.LogWarning($"[LoadEnemySprite] sprite == null, check path or filename! Try load: {path}");
+    }
+
+    public void UseEffect(BattlePlayerValue player, List<EnemyValue> enemys)
+    {
+        switch (defaultWeaponName)
+        {
+            case "Attack0" : Attack(player, 10); break;
+            case "Attack1": Attack(player, 15);break;
+            case "Attack2": Attack(player, 20);break;
+            case "Attack3": Attack(player, 30);break;
+            case "Attack4": Attack(player, 40);break;
+
+        }
+    }
+
+    void Attack(BattlePlayerValue player,int amout)
+    {
+        player.Health -= amout;
     }
 
     #region StatusEffects
@@ -254,5 +273,5 @@ public class EnemyValue
                 tempArmorReduction = 0f;
         }
     }
+    #endregion
 }
-#endregion

@@ -115,18 +115,17 @@ public class BattleEnemyManager : MonoBehaviour
 
         // pick an enemy card, apply effect, damage player etc.
         Debug.Log("Enemy action!");
+        foreach (var enemy in currentEnemys)
+        {
+            enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
+
+        }
 
         yield return new WaitForSeconds(0.5f);
 
         BattleManage.Instance.StartNextTurn();
     }
 
-    private void EnemyTakeAction()
-    {
-        Debug.Log("Enemy attacks!");
-
-        BattlePlayerValue.Instance.Health -= 20; //deals 20 damage to player
-    }
 
     public List<EnemyValue> GetEnemyValues()
     {
