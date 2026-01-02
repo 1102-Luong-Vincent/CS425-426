@@ -3,10 +3,11 @@
 // Modified by: Vincent Luong
 // Some code generated with assistance from ChatGPT.
 
-using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI;
 using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyBattleControl : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class EnemyBattleControl : MonoBehaviour
     public TextMeshProUGUI healthText;
     private EnemyValue enemyValue;
     public EnemyValue EnemyValueReference => enemyValue;
+    int enemyID;
+    public List<RuntimeAnimatorController> enemyAnimators = new List<RuntimeAnimatorController>();
+
 
     public void Init(EnemyValue enemyValue)
     {

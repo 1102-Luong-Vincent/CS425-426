@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 7529773252753131275}
   - component: {fileID: 6232321739943441387}
   - component: {fileID: 3305065160072016484}
+  - component: {fileID: 1989450637434725278}
   m_Layer: 5
   m_Name: Battle Enemy
   m_TagString: Untagged
@@ -275,6 +276,34 @@ MonoBehaviour:
   enemyImage: {fileID: 1987365401301842756}
   healthBar: {fileID: 148905202046789903}
   healthText: {fileID: 5466880901071799351}
+  enemyAnimators:
+  - {fileID: 9100000, guid: f19169d44c8366847941c5a5524723be, type: 2}
+  - {fileID: 9100000, guid: 8df1632e7cd61ed4bb9f1ca702c04175, type: 2}
+  - {fileID: 9100000, guid: 74a32691251737449b2ef72f07a9c667, type: 2}
+  - {fileID: 9100000, guid: dcfbb431e13bf064a8ed5f4ccc582262, type: 2}
+  - {fileID: 9100000, guid: 6514f124bd301554984f662a4e350072, type: 2}
+--- !u!95 &1989450637434725278
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367757438533252005}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f19169d44c8366847941c5a5524723be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4480397463050548677
 GameObject:
   m_ObjectHideFlags: 0
