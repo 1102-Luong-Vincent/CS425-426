@@ -12,7 +12,7 @@ public class EnemyControl : MonoBehaviour
 
     [Header("Movement")]
     Rigidbody2D rb;
-    float speed = 0.05f;
+    float speed = 0.5f;
     Transform target;
 
     [Header("Animation")]
@@ -28,6 +28,7 @@ public class EnemyControl : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         EnemyID = this.EnemyID - 1;
+
         enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
         previousPosition = transform.position;
 

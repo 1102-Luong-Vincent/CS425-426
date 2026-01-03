@@ -15,7 +15,7 @@ public class BattleEnemyManager : MonoBehaviour
     public List<EnemyBattleControl> currentEnemys = new List<EnemyBattleControl>();
 
 
-    private Vector2 rangeSize = new Vector2(600f, 600f); 
+    private Vector2 rangeSize = new Vector2(5f, 5f); 
     public float minDistance = 1.5f;
 
 

@@ -118,4 +118,9 @@ public class EnemyValue
         player.Health -= amout;
     }
 
+    public int GetID()
+    {
+        return ID;
+    }
+
 }
