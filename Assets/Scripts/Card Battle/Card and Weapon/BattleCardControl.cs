@@ -151,17 +151,12 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         // 2. Check if this card is an attack card (Knife)
         if (weaponValue != null)
         {
-            UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
+            UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
         }
         else
         {
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
         }
-
-
-
-
-
 
 
         // 3. Remove card from player's hand
@@ -174,19 +169,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
     
 
-    void UseWeaponEffect(BattlePlayerValue playerValue, List<EnemyValue> targets)
+    void UseWeaponEffect(BattlePlayerValue playerValue, List<EnemyBattleControl> targets)
     {
         weaponValue.UseWeaponEffect(playerValue, targets);
     }
-
-
-
-
-
-
-
-
-
 
 
     public CardValue GetCardValue()

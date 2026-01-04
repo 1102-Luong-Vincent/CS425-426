@@ -33,7 +33,7 @@ public class CardValue
     public CardAbility ability;
     private int ID;
 
-    private List<Action<BattlePlayerValue,List<EnemyValue>>> parsedEffects = new List<Action<BattlePlayerValue, List<EnemyValue>>>();
+    //private List<Action<BattlePlayerValue,List<EnemyValue>>> parsedEffects = new List<Action<BattlePlayerValue, List<EnemyValue>>>();
 
     public CardValue(ExcelCardData excelCardData)
     {
@@ -51,8 +51,8 @@ public class CardValue
         ability = excelCardData.ability;
         CardDescribe = excelCardData.cardDescribe;
 
-        string effectString = excelCardData.cardFunction;
-        parsedEffects = CardEffectParser.ParseEffectString(effectString);
+        //string effectString = excelCardData.cardFunction;
+        //parsedEffects = CardEffectParser.ParseEffectString(effectString);
 
         SetCardSprite();
     }
@@ -74,25 +74,7 @@ public class CardValue
 
     public void UseEffect(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        if (parsedEffects == null || parsedEffects.Count == 0)
-        {
-            Debug.LogWarning($"[UseEffect] No effects parsed for {CardName}");
-            return;
-        }
-
-        foreach (var effect in parsedEffects)
-        {
-            try
-            {
-                effect?.Invoke(player, enemys);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"[UseEffect] Error executing {CardName} effect: {e.Message}");
-            }
-        }
-
-        Debug.Log($"[UseEffect] Executed {parsedEffects.Count} effects for {CardName}");
+        CardEffect.UseEffect(CardName,player, enemys);
     }
 
     public int GetID()

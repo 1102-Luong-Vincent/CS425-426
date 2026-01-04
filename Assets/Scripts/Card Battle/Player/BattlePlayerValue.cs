@@ -1,4 +1,4 @@
-// Author: Shawn Meng
+﻿// Author: Shawn Meng
 // Created by: Shawn Meng
 // Some code generated with assistance from ChatGPT.
 
@@ -58,6 +58,9 @@ public class BattlePlayerValue : MonoBehaviour
     public State state;
     public class State
     {
+        public int Attack = 10;
+        public int Defense = 10;
+
         public bool isBleeding = false;
         public bool isPoisoned = false;
 
@@ -67,9 +70,6 @@ public class BattlePlayerValue : MonoBehaviour
         public float CriticalChanceBuff = 0.5f;
 
     }
-
-
-
 
     public BattlePlayerUIManager BattlePlayerUIManager;
 
@@ -128,8 +128,109 @@ public class BattlePlayerValue : MonoBehaviour
         }
     }
 
+    public void AddHealth(int healthToAdd)
+    {
+        if (health <= 0) return;
+        AddHealthAmount(healthToAdd);
+    }
+
+    public void AddHealth(float healthPercentage)
+    {
+        if (healthPercentage <= 0) return;
+        int healthToAdd = Mathf.RoundToInt(MaxHealth * healthPercentage);
+        AddHealthAmount(healthToAdd);
+    }
+
+    void AddHealthAmount(int healthToAdd)
+    {
+        int HealthAmount = Mathf.Min(healthToAdd, MaxHealth - Health);
+        Health += HealthAmount;
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+    }
+
+    public void IncreasesCriticalDamage(float IncreasesPercentage)
+    {
+       state.CriticalChanceBuff += IncreasesPercentage;
+    }
+
+    public void IncreasesCriticalDamageChance(float IncreasesPercentage)
+    {
+        state.CriticalChanceBuff += IncreasesPercentage;
+    }
+
+    public void AddAttack(int attackAmount)
+    {
+        state.Attack += attackAmount;
+    }
+
+    public void AddAttack(float increasesPercentage)
+    {
+        int attackToAdd = Mathf.RoundToInt(state.Attack * increasesPercentage);
+        state.Attack += attackToAdd;
+    }
+
+    // Defense 相关
+    public void AddDefense(int defenseAmount)
+    {
+        state.Defense += defenseAmount;
+        state.Defense = Mathf.Max(0, state.Defense);
+    }
+
+    public void AddDefense(float increasesPercentage)
+    {
+        int defenseToAdd = Mathf.RoundToInt(state.Defense * increasesPercentage);
+        AddDefense(defenseToAdd);
+    }
+
+    public void ReduceDefense(int defenseAmount)
+    {
+        AddDefense(-defenseAmount); 
+    }
+
+    public void ReduceDefense(float decreasePercentage)
+    {
+        int defenseToReduce = Mathf.RoundToInt(state.Defense * decreasePercentage);
+        AddDefense(-defenseToReduce);
+    }
+
+    public void ReduceHealth(float healthPercentage)
+    {
+        if (healthPercentage <= 0) return;
+        int healthToReduce = Mathf.RoundToInt(MaxHealth * healthPercentage);
+        ReduceHealth(healthToReduce);
+    }
+
+    public void ReduceHealth(int healthAmount)
+    {
+        if (healthAmount <= 0) return;
+        int newHealth = Mathf.Max(1, Health - healthAmount);
+        Health = newHealth;
+    }
 
     #region Get
+
+    public DamageResult GetDamageDetailed(float multiplier, float hitChance)
+    {
+        DamageResult result = new DamageResult();
+
+        result.IsHit = UnityEngine.Random.value < hitChance;
+        if (!result.IsHit)
+        {
+            result.Damage = 0;
+            result.IsCritical = false;
+            return result;
+        }
+
+        float baseDamage = state.Attack * state.AttackBuff * multiplier;
+        result.IsCritical = UnityEngine.Random.value < state.CriticalChanceBuff;
+        if (result.IsCritical)
+        {
+            baseDamage *= state.CriticalDamageBuff;
+        }
+
+        result.Damage = Mathf.RoundToInt(baseDamage);
+        return result;
+    }
 
     public List<CardValue> GetBattleCards() => HeldCards;
     public WeaponValue GetWeapon() => weapon;

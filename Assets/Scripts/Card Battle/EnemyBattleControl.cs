@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -65,6 +66,7 @@ public class EnemyBattleControl : MonoBehaviour
 
         currentDirection = "isWest";
         animator.SetBool(currentDirection, true);
+        TriggerTakeDamageAnimation();
     }
 
     void ResetDirectionBools()
@@ -119,18 +121,45 @@ public class EnemyBattleControl : MonoBehaviour
     {
         enemyValue.Health -= amount;
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
-
         TriggerTakeDamageAnimation();
-
         if (enemyValue.Health <= 0)
         {
             Debug.Log("Enemy died!");
             TriggerDieAnimation();
-
             BattleEnemyManager.Instance.currentEnemys.Remove(this);
-
-            Destroy(gameObject, 2f);
+            StartCoroutine(DeathSequence());
         }
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        float animationLength = GetAnimationLength("dieWest");
+        yield return new WaitForSeconds(animationLength);
+
+        Destroy(gameObject);
+    }
+
+    private float GetAnimationLength(string animationName)
+    {
+        if (animator == null) return 2f;
+
+        AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        foreach (var clip in clipInfo)
+        {
+            if (clip.clip.name.Contains(animationName))
+            {
+                return clip.clip.length;
+            }
+        }
+        return 2f; // 默认值
+    }
+
+    public void TriggerDieAnimation()
+    {
+        if (animator == null || !gameObject.activeInHierarchy) return;
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isRunning", false);
+        animator.SetTrigger("dieWest");
     }
 
     public void TriggerTakeDamageAnimation()
@@ -142,16 +171,6 @@ public class EnemyBattleControl : MonoBehaviour
         animator.SetBool("TakeDamageWest", true);
 
         StartCoroutine(ResetTakeDamageParameters());
-    }
-
-    public void TriggerDieAnimation()
-    {
-        if (animator == null || !gameObject.activeInHierarchy) return;
-
-        animator.SetBool("isWalking", false);
-        animator.SetBool("isRunning", false);
-
-        animator.SetTrigger("dieWest");
     }
 
     private System.Collections.IEnumerator ResetTakeDamageParameters()

@@ -105,9 +105,9 @@ public class BattleManage : MonoBehaviour
 
     public bool AllEnemiesDead()
     {
-        foreach (var enemy in BattleEnemyManager.Instance.GetEnemyValues())
+        foreach (var enemy in BattleEnemyManager.Instance.GetEnemyBattleControls())
         {
-            if (enemy.Health > 0) return false;
+            if (enemy.EnemyValueReference.Health  > 0) return false;
         }
 
         return true;

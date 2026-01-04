@@ -4,6 +4,7 @@
 // Some code generated with assistance from ChatGPT.
 
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -112,6 +113,7 @@ public class CardCombineManager : MonoBehaviour
         {
             ClearFirstCard();
             UpdateResult();
+            cardSlot.HighLightCard(false);
             return;
         }
 
@@ -119,6 +121,7 @@ public class CardCombineManager : MonoBehaviour
         {
             ClearSecondCard();
             UpdateResult();
+            cardSlot.HighLightCard(false);
             return;
         }
 
@@ -127,6 +130,7 @@ public class CardCombineManager : MonoBehaviour
         {
             FirstSlot = cardSlot;
             FirstCard.SetCardUI(cardSlot.GetCardValue());
+            cardSlot.HighLightCard(true);
             UpdateResult();
             return;
         }
@@ -136,6 +140,7 @@ public class CardCombineManager : MonoBehaviour
         {
             SecondSlot = cardSlot;
             SecondCard.SetCardUI(cardSlot.GetCardValue());
+            cardSlot.HighLightCard(true);
             UpdateResult();
             return;
         }
@@ -258,6 +263,7 @@ public class CardCombineManager : MonoBehaviour
     void ClearFirstCard()
     {
         FirstCard.Clear(); FirstSlot = null;
+       
     }
 
     void ClearSecondCard()

@@ -7,6 +7,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct DamageResult
+{
+    public int Damage;
+    public bool IsHit;
+    public bool IsCritical;
+}
+
+
 public class WeaponValue
 {
     public string WeaponName;
@@ -40,7 +48,7 @@ public class WeaponValue
         return cardSprite;
     }
 
-    public void UseWeaponEffect(BattlePlayerValue player, List<EnemyValue> enemys)
+    public void UseWeaponEffect(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
         switch (WeaponName)
         {
@@ -50,22 +58,25 @@ public class WeaponValue
         }
     }
 
-    void UseKnife(BattlePlayerValue player, List<EnemyValue> enemys)
+    void UseKnife(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
-        player.Health -= 10;
-        enemys[0].Health -= 15;
+        DamageResult damageResult = player.GetDamageDetailed(1.1f,1f);
+        enemys[0].DealDamage(damageResult.Damage);
     }
 
-    void UsePistol(BattlePlayerValue player, List<EnemyValue> enemys)
+    void UsePistol(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
-        enemys[0].Health -= 10;
+        DamageResult damageResult = player.GetDamageDetailed(1f,0.9f);
+        enemys[0].DealDamage(damageResult.Damage);
     }
 
-    void UseShotgun(BattlePlayerValue player, List<EnemyValue> enemys)
+    void UseShotgun(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
+
         foreach (var enemy in enemys)
         {
-            enemy.Health -= 5;   
+            DamageResult damageResult = player.GetDamageDetailed(0.7f, 0.8f);
+            enemy.DealDamage(damageResult.Damage);
         }
     }
 

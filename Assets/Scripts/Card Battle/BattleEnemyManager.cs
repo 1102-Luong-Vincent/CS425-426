@@ -121,5 +121,11 @@ public class BattleEnemyManager : MonoBehaviour
 
         return enemyValues;
     }
+
+    public List<EnemyBattleControl> GetEnemyBattleControls()
+    {
+        return currentEnemys;
+    }
+
 }
 

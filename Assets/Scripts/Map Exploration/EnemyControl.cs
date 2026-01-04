@@ -22,16 +22,17 @@ public class EnemyControl : MonoBehaviour
     private string currentDirection = "isSouth";
     [SerializeField] private float directionUpdateInterval = 0.2f;
     private float nextDirectionUpdateTime = 0f;
-
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        EnemyID = this.EnemyID - 1;
 
+        rb.freezeRotation = true;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        EnemyID = this.EnemyID - 1;
         enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
         previousPosition = transform.position;
-
         SetAnimator();
     }
 
@@ -103,6 +104,8 @@ public class EnemyControl : MonoBehaviour
             List<EnemyValue> enemyValues = new List<EnemyValue>() { enemyValue };
             BattleData battleData = new BattleData(enemyValues);
             battleData.SetMapScene(GameValue.Instance.GetCurrentScence());
+            Debug.Log($"battleData Scene is {battleData.GetMapScene()}");
+
             battleData.SetMapPosition(GameValue.Instance.GetPlayerPosition());
             battleData.SetFieldMonster(gameObject);
             Destroy(gameObject);

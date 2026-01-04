@@ -3,9 +3,10 @@
 // Modified by: Shawn Meng
 // No external source was used
 
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public abstract class CardUIBase : MonoBehaviour
 {
