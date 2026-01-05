@@ -57,8 +57,9 @@ public class ItemControl : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("On trigger Enter");
         PlayerController player = other.GetComponent<PlayerController>();
         if (player != null)
         {
@@ -68,7 +69,7 @@ public class ItemControl : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         PlayerController player = other.GetComponent<PlayerController>();
         if (player != null)
