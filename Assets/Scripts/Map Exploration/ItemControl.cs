@@ -33,6 +33,9 @@ public class ItemControl : MonoBehaviour
     [Header("Custom Effects")]
     [SerializeField] private UnityEvent onInteract; // Configurable event in Unity Inspector
 
+    [Header("Interaction Window Pop Up")]
+    [SerializeField] GameObject windowPanel;
+
     // Whether player is in interaction range
     private bool playerInRange = false;
     private PlayerController currentPlayer = null;
@@ -41,6 +44,7 @@ public class ItemControl : MonoBehaviour
     private void Start()
     {
         HideUI();
+        windowPanel.SetActive(false);
     }
 
     private void Update()
@@ -49,6 +53,7 @@ public class ItemControl : MonoBehaviour
         if (playerInRange && Input.GetKeyDown(interactionKey))
         {
             TriggerInteraction();
+            windowPanel.SetActive(true);
         }
     }
 
