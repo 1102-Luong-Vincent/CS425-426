@@ -7,6 +7,7 @@ using SmallScaleInc.TopDownPixelCharactersPack1;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 // Item interaction type enumeration
 public enum ItemInteractionType
@@ -35,6 +36,7 @@ public class ItemControl : MonoBehaviour
 
     [Header("Interaction Window Pop Up")]
     [SerializeField] GameObject windowPanel;
+    [SerializeField] Button backButton;
 
     // Whether player is in interaction range
     private bool playerInRange = false;
@@ -45,6 +47,11 @@ public class ItemControl : MonoBehaviour
     {
         HideUI();
         windowPanel.SetActive(false);
+        backButton.onClick.AddListener(() =>
+        {
+            windowPanel.SetActive(false);
+            Time.timeScale = 1f; // Resume the game
+        });
     }
 
     private void Update()
@@ -54,6 +61,7 @@ public class ItemControl : MonoBehaviour
         {
             TriggerInteraction();
             windowPanel.SetActive(true);
+            Time.timeScale = 0f; // Pause the game
         }
     }
 
