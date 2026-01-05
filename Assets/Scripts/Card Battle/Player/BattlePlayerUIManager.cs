@@ -169,7 +169,9 @@ public class BattlePlayerUIManager : MonoBehaviour
 
     private void LayoutCards()
     {
-        int count = cardUIMap.Count;
+        //int count = cardUIMap.Count;
+        List<CardValue> cardOrder = playerValue.GetBattleCards();
+        int count = cardOrder.Count;
         if (count == 0) return;
 
         RectTransform parentRt = CardZone.GetComponent<RectTransform>();
@@ -182,7 +184,7 @@ public class BattlePlayerUIManager : MonoBehaviour
         float spacing = defaultSpacing;
 
         float totalWidth = count * cardWidth + (count - 1) * spacing;
-        if (totalWidth > parentWidth)
+        if (totalWidth > parentWidth && count > 1)
         {
             spacing = (parentWidth - count * cardWidth) / (count - 1);
             totalWidth = parentWidth;
@@ -190,13 +192,20 @@ public class BattlePlayerUIManager : MonoBehaviour
 
         float startX = cardWidth / 2;
 
-        int i = 0;
-        foreach (var kvp in cardUIMap)
+        //foreach (var kvp in cardUIMap)
+        for (int i = 0; i < cardOrder.Count; i++)
         {
-            RectTransform rt = kvp.Value.GetComponent<RectTransform>();
+            CardValue card = cardOrder[i];
+
+            if (!cardUIMap.TryGetValue(card, out BattleCardControl cardObj))
+                continue;
+
+            RectTransform rt = cardObj.GetComponent<RectTransform>();
+            //RectTransform rt = kvp.Value.GetComponent<RectTransform>();
             float xPos = startX + i * (cardWidth + spacing);
             rt.anchoredPosition = new Vector2(xPos, 0f);
-            i++;
+            cardObj.UpdateOriginalPosition();
+            //i++;
         }
     }
 

@@ -184,4 +184,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     {
         return weaponValue;
     }
+
+    public void UpdateOriginalPosition() // called when cards are rearranged
+    {
+        RectTransform rt = GetComponent<RectTransform>();
+        originalAnchoredPos = rt.anchoredPosition;
+    }
 }
