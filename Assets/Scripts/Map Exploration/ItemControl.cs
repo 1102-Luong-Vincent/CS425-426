@@ -1,7 +1,7 @@
 // Author: Shawn Meng
 // Created by: Shawn Meng
 // Modified by: Shawn Meng
-// some code generated with assistance from ChatGPT.
+// no external sources were used
 
 using SmallScaleInc.TopDownPixelCharactersPack1;
 using UnityEngine;
