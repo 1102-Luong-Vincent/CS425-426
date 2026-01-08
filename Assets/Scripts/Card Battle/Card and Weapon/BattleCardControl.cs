@@ -19,6 +19,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     private Vector2 originalAnchoredPos;
     private Vector3 originalScale;
     private float hoverOffset = 200f;
+    private Transform originalPosition; //allows the card to be centered at the center of the canvas screen, instead of the cardZone. 
 
     private bool isCentered = false;
 
@@ -109,10 +110,21 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     public void ShowCardDetails()
     {
         RectTransform rt = GetComponent<RectTransform>();
+        originalPosition = rt.parent; //saves the original state 
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        rt.SetParent(canvas.transform, true);
+
         rt.SetAsLastSibling();
+
         RectTransform cardZoneRT = BattlePlayerUIManager.Instance.CardZone.GetComponent<RectTransform>();
-        rt.anchoredPosition = new Vector2(0f, -cardZoneRT.anchoredPosition.y);
-        rt.localScale = originalScale * 2f;
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        //rt.anchoredPosition = new Vector2(0f, -cardZoneRT.anchoredPosition.y);
+        //rt.anchoredPosition = Vector2.zero;
+        rt.anchoredPosition = new Vector2(0f, 120f); //change this value to adjust how far up the card is when right clicking; lower value = lower on screen.
+        rt.localScale = originalScale * 1f; //change the 1f if you want to make the card bigger when righ clicking. 
         isCentered = true;
 
     }
@@ -120,6 +132,8 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     public void CanceCardDetails()
     {
         RectTransform rt = GetComponent<RectTransform>();
+
+        rt.SetParent(originalPosition, true);
         rt.anchoredPosition = originalAnchoredPos;
         rt.localScale = originalScale;
         isCentered = false;

@@ -38,6 +38,9 @@ public class ItemControl : MonoBehaviour
     [SerializeField] GameObject windowPanel;
     [SerializeField] Button backButton;
 
+    [Header("Item Pick Up ID")]
+    [SerializeField] int ItemID = 1;   
+
     // Whether player is in interaction range
     private bool playerInRange = false;
     private PlayerController currentPlayer = null;
@@ -52,6 +55,8 @@ public class ItemControl : MonoBehaviour
             windowPanel.SetActive(false);
             Time.timeScale = 1f; // Resume the game
         });
+
+        //ItemID = CardValue.Instance.itemID;
     }
 
     private void Update()
@@ -159,12 +164,39 @@ public class ItemControl : MonoBehaviour
     /// <summary>
     /// Pickup item effect - Can be overridden in derived classes
     /// </summary>
-    protected virtual void PickupItem()
+    public void PickupItem()
     {
         Debug.Log($"Picked up item: {gameObject.name}");
 
-        // Example: Add to player inventory
-        // InventoryManager.Instance.AddItem(itemData);
+        PlayerValue playerValue = GameValue.Instance.GetPlayerValue();
+
+        // Example: Add item to player inventory by ItemID
+        CardValue AddCard = null;
+
+        foreach(CardValue card in playerValue.HadCardsLibrary)
+        {
+            if (card.ID == ItemID)
+            {
+                AddCard = card;
+                break;
+            }
+        }
+        
+        if (AddCard != null) {
+            playerValue.HadCardsLibrary.Add(AddCard);
+            Debug.Log($"Added card ID {ItemID} to inventory.");
+        }
+        else
+        {
+            Debug.LogWarning($"Item with ID {ItemID} not found in library.");
+        }
+
+        //if(InventoryManager.Instance != null && InventoryManager.Instance.control != null)
+        //{
+        //    InventoryManager.Instance.control.refreshInventory();
+        //}
+
+        //InventoryManager.Instance.AddItem(itemData);
 
         // Play pickup sound
         // AudioManager.Instance.PlaySound("PickupSound");
@@ -228,6 +260,7 @@ public class ItemControl : MonoBehaviour
     {
         onInteract.RemoveListener(action);
     }
+
 
     // ================= Gizmos Visualization =================
     private void OnDrawGizmos()

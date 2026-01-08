@@ -31,7 +31,7 @@ public class CardValue
     public string CardDescribe;
     public CardRarity rarity;
     public CardAbility ability;
-    private int ID;
+    public int ID;
 
     //private List<Action<BattlePlayerValue,List<EnemyValue>>> parsedEffects = new List<Action<BattlePlayerValue, List<EnemyValue>>>();
 

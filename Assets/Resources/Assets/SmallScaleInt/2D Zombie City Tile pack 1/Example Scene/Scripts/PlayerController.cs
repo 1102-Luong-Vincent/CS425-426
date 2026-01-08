@@ -1,7 +1,7 @@
 // Author: Shawn Meng
 // Created by: Shawn Meng
-// Modified by: Shawn Meng
-// Some code generated with assistance from ChatGPT.
+// Modified by: Vincent Luong
+// No external sources were used
 
 using UnityEngine;
 using UnityEngine.UI;             // For UI elements
@@ -27,6 +27,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         // private Rigidbody2D rb;
 
         public float speed = 1.0f; // the movement speed of the player
+        public float runningSpeed = 3.0f; //the running speed of the player
 
 
         private Vector2 movementDirection;
@@ -260,6 +261,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             //TwoDMover();
             TwoDMove();
+            RunSpeed();
         }
 
 
@@ -954,7 +956,17 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             gameObject.transform.position = position;
         }
 
+        public void RunSpeed()
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed = runningSpeed;
+            }
 
-
+            else
+            {
+                speed = 1.0f;
+            }
+        }
     }
 }
