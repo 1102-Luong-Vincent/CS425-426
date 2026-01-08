@@ -19,8 +19,8 @@ public static class CardEffect
             case "Bandage":
                 DoBandage(player, enemys);
                 break;
-            case "Beer":
-                DoBeer(player, enemys);
+            case "Reflex Tonic":
+                DoReflexTonic(player, enemys);
                 break;
             case "Berserker Wrap":
                 DoBerserkerWrap(player, enemys);
@@ -31,8 +31,8 @@ public static class CardEffect
             case "Combat Patch":
                 DoCombatPatch(player, enemys);
                 break;
-            case "Brugs":
-                DoBrugs(player, enemys);
+            case "Stamina Capsule":
+                DoStaminaCapsule(player, enemys);
                 break;
             case "Energy Potion":
                 DoEnergyPotion(player, enemys);
@@ -52,11 +52,11 @@ public static class CardEffect
             case "Phoenix Shot":
                 DoPhoenixShot(player, enemys);
                 break;
-            case "Pills":
-                DoPills(player, enemys);
+            case "Emergency Capsule":
+                DoEmergencyCapsule(player, enemys);
                 break;
-            case "Rage Pill":
-                DoRagePill(player, enemys);
+            case "Fury Catalyst":
+                DoFuryCatalyst(player, enemys);
                 break;
             case "Rapid Recovery Injector":
                 DoRapidRecoveryInjector(player, enemys);
@@ -91,7 +91,7 @@ public static class CardEffect
         player.AddHealth(0.50f);
     }
 
-    static void DoBeer(BattlePlayerValue player, List<EnemyValue> enemys)
+    static void DoReflexTonic(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         player.AddAttack(10);
     }
@@ -115,7 +115,7 @@ public static class CardEffect
         player.AddHealth(0.25f);
     }
 
-    static void DoBrugs(BattlePlayerValue player, List<EnemyValue> enemys)
+    static void DoStaminaCapsule(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         player.IncreasesCriticalDamageChance(0.20f);
     }
@@ -157,13 +157,13 @@ public static class CardEffect
         }
     }
 
-    static void DoPills(BattlePlayerValue player, List<EnemyValue> enemys)
+    static void DoEmergencyCapsule(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         player.AddAttack(5);
         player.ReduceHealth(5);
     }
 
-    static void DoRagePill(BattlePlayerValue player, List<EnemyValue> enemys)
+    static void DoFuryCatalyst(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         player.AddAttack(20);
         player.ReduceHealth(0.2f);
