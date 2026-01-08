@@ -18,7 +18,7 @@ public class InventoryUIControl : MonoBehaviour
     public Transform EquipZone;
     public Transform CardZone;
     public GameObject MenuCardPrefab;
-    public GameObject EmptySlotPrefab;
+    //public GameObject EmptySlotPrefab;
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI EnergyText;
     public TextMeshProUGUI CardsText;
@@ -64,12 +64,12 @@ public class InventoryUIControl : MonoBehaviour
             EquipCardCount++;
         }
         // populate rest of equip zone with empty slots
-        for (int i = EquipCardCount; i < 5; i++)
-        {
-            GameObject emptySlot = Instantiate(EmptySlotPrefab);
-            emptySlot.transform.SetParent(EquipZone);
-            emptySlot.tag = "EquipCard";
-        }
+        //for (int i = EquipCardCount; i < 5; i++)
+        //{
+        //    GameObject emptySlot = Instantiate(EmptySlotPrefab);
+        //    emptySlot.transform.SetParent(EquipZone);
+        //    emptySlot.tag = "EquipCard";
+        //}
 
         int BattleCardCount = 0;
         // populate card zone with cards in PlayerValue
@@ -83,13 +83,13 @@ public class InventoryUIControl : MonoBehaviour
             BattleCardCount++;
         }
 
-        // populate rest of card zone with empty slots
-        for(int i = BattleCardCount; i < playerValue.GetMaxCards()-6; i++)
-        {
-                GameObject emptySlot = Instantiate(EmptySlotPrefab);
-                emptySlot.transform.SetParent(CardZone);
-                emptySlot.tag = "BattleCard";
-        }
+        //// populate rest of card zone with empty slots
+        //for(int i = BattleCardCount; i < playerValue.GetMaxCards()-6; i++)
+        //{
+        //        GameObject emptySlot = Instantiate(EmptySlotPrefab);
+        //        emptySlot.transform.SetParent(CardZone);
+        //        emptySlot.tag = "BattleCard";
+        //}
     }
 
     public void onInventoryClose()

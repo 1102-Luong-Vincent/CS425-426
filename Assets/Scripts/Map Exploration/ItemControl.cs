@@ -168,22 +168,13 @@ public class ItemControl : MonoBehaviour
     {
         Debug.Log($"Picked up item: {gameObject.name}");
 
-        PlayerValue playerValue = GameValue.Instance.GetPlayerValue();
 
         // Example: Add item to player inventory by ItemID
-        CardValue AddCard = null;
+        CardValue AddCard = GameValue.Instance.GetGameValueLibrary().GetInitCard(ItemID);
 
-        foreach(CardValue card in playerValue.HadCardsLibrary)
-        {
-            if (card.ID == ItemID)
-            {
-                AddCard = card;
-                break;
-            }
-        }
         
         if (AddCard != null) {
-            playerValue.HadCardsLibrary.Add(AddCard);
+            GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
             Debug.Log($"Added card ID {ItemID} to inventory.");
         }
         else
