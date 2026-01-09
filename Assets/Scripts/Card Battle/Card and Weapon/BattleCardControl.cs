@@ -23,6 +23,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
     private bool isCentered = false;
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip hoverSound;
+
     void Start()
     {
         RectTransform rt = GetComponent<RectTransform>();
@@ -65,6 +69,8 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     {
         //if (IsInCombineScene())
         //    return;
+
+        audioSource.PlayOneShot(hoverSound);
 
         if (!isCentered)
         {
