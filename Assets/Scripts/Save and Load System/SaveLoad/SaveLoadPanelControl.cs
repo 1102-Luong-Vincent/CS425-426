@@ -7,6 +7,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.Audio;
 
 public static class SaveLoadPath
 {
@@ -29,6 +30,10 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     private string normalSavePath;
     private string autoSavePath;
+
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip buttonClickSound;
 
     private void Awake()
     {
@@ -67,7 +72,6 @@ public class SaveLoadPanelControl : MonoBehaviour
     {
         SetSelSaveLoadButton(null);
         SaveLoadPanel.SetActive(false);
-
     }
 
 
@@ -95,6 +99,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     {
         if (selSaveLoadButton == null) return;
         GameValue.Instance.SetSaveData(selSaveLoadButton.GetSaveData());
+        audioSource.PlayOneShot(buttonClickSound);
     }
 
     public void SetSelSaveLoadButton(SaveLoadButtonControl saveLoadButtonControl)

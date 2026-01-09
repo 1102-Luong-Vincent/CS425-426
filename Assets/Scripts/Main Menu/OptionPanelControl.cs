@@ -1,6 +1,6 @@
 //Author: Shawn Meng
 //Created by: Shawn Meng
-//Modified by: Shawn Meng
+//Modified by: Vincent Luong
 //No external code was used
 
 using System.Collections.Generic;
@@ -36,6 +36,10 @@ public class OptionPanelControl : MonoBehaviour
 
     private PanelType currentPanel = PanelType.Volume;
     private Dictionary<PanelType, GameObject> panels = new Dictionary<PanelType, GameObject>();
+
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip buttonClickSound;
     void Start()
     {
         optionButtons = new List<Button>() { VolumeButton, DisplayButton, LanguageButton };
@@ -84,6 +88,7 @@ public class OptionPanelControl : MonoBehaviour
         CloseAllPanels();
         SetOptionButtonsActive(false); // hide option buttons when a sub-panel opens
         SetOptionsBackButtonActive(false); // show back button
+        audioSource.PlayOneShot(buttonClickSound);
         if (panels.ContainsKey(key))
             panels[key].SetActive(true);
     }
@@ -146,6 +151,7 @@ public class OptionPanelControl : MonoBehaviour
     {
         ScreenType screenType = GetEnumByOffset(SettingValue.Instance.GetSettingData().screenType, offset);
         SettingValue.Instance.SetScreenType(screenType);
+        audioSource.PlayOneShot(buttonClickSound);
     }
 
     void UpdateScreenText(ScreenType type)
@@ -188,6 +194,7 @@ public class OptionPanelControl : MonoBehaviour
     {
         LanguageType languageType = GetEnumByOffset(SettingValue.Instance.GetSettingData().language, offset);
         SettingValue.Instance.SetLanguage(languageType);
+        audioSource.PlayOneShot(buttonClickSound);
     }
 
     void UpdateLanguageText(LanguageType languageType)
@@ -255,6 +262,7 @@ public class OptionPanelControl : MonoBehaviour
     void SetOptionsPanel(bool isActive)
     {
         //CloseAllPanels();
+        audioSource.PlayOneShot(buttonClickSound);
         gameObject.SetActive(isActive);
 
         // Show main menu buttons if options panel is closed

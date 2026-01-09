@@ -39,7 +39,11 @@ public class ItemControl : MonoBehaviour
     [SerializeField] Button backButton;
 
     [Header("Item Pick Up ID")]
-    [SerializeField] int ItemID = 1;   
+    [SerializeField] int ItemID = 1;
+
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip interactionSound;
 
     // Whether player is in interaction range
     private bool playerInRange = false;
@@ -66,6 +70,7 @@ public class ItemControl : MonoBehaviour
         {
             TriggerInteraction();
             windowPanel.SetActive(true);
+            audioSource.PlayOneShot(interactionSound);
             Time.timeScale = 0f; // Pause the game
         }
     }

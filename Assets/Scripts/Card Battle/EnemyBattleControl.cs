@@ -20,6 +20,10 @@ public class EnemyBattleControl : MonoBehaviour
     public List<RuntimeAnimatorController> enemyAnimators = new List<RuntimeAnimatorController>();
     private Animator animator;
 
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip attackSound;
+
     public void Init(EnemyValue enemyValue)
     {
         this.enemyValue = enemyValue;
@@ -181,6 +185,14 @@ public class EnemyBattleControl : MonoBehaviour
         {
             animator.SetBool("isTakeDamage", false);
             animator.SetBool("TakeDamageWest", false);
+        }
+    }
+
+    public void PlayAttackSound()
+    {
+        if (audioSource != null && attackSound != null)
+        {
+            audioSource.PlayOneShot(attackSound);
         }
     }
 }

@@ -14,6 +14,10 @@ public class MainMenuManage : MonoBehaviour
     [Header("Buttons")]
     public Buttons buttons;
 
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip buttonClickSound;
+
     [System.Serializable]
     public class Buttons
     {
@@ -70,12 +74,14 @@ public class MainMenuManage : MonoBehaviour
     }
     void OnContinueButtonClick()
     {
+        audioSource.PlayOneShot(buttonClickSound);
         GameValue.Instance.SetSaveData(SettingValue.Instance.GetSettingData().saveData);
     }
 
     void OnStarButtonClick()
     {
         Debug.Log("Remember to initialize GameValue");
+        audioSource.PlayOneShot(buttonClickSound);
         GameValue.Instance.SetHappendStoryName(StoryName.Prologue);
        GameValue.Instance.LoadSceneByEnum(SceneType.StoryScene);
     //    GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
@@ -83,6 +89,7 @@ public class MainMenuManage : MonoBehaviour
 
     void OnLoadButtonClick()
     {
+        audioSource.PlayOneShot(buttonClickSound);
         SaveLoadPanelControl.Instance.ShowPanel();
     }
 
@@ -90,13 +97,15 @@ public class MainMenuManage : MonoBehaviour
     {
         SetMainMenuButtons(false);
         OptionPanelControl.SetOptionPanelActive(true);
+        audioSource.PlayOneShot(buttonClickSound);
     }
     void OnExitButtonClick()
     {
         #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false; 
-        #else
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
             Application.Quit(); // ????????
-        #endif
+#endif
+        audioSource.PlayOneShot(buttonClickSound);
     }
 }

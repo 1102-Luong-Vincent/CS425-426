@@ -18,7 +18,6 @@ public class BattleEnemyManager : MonoBehaviour
     private Vector2 rangeSize = new Vector2(5f, 5f); 
     public float minDistance = 1.5f;
 
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -101,6 +100,7 @@ public class BattleEnemyManager : MonoBehaviour
         Debug.Log("Enemy action!");
         foreach (var enemy in currentEnemys)
         {
+            enemy.PlayAttackSound();
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
 
         }
@@ -126,6 +126,5 @@ public class BattleEnemyManager : MonoBehaviour
     {
         return currentEnemys;
     }
-
 }
 
