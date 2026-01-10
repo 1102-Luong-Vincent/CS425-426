@@ -242,10 +242,11 @@ public class ExcelReader
                         rarity = (CardRarity)col.ReadInt(),
                         ability = ParseEnumOrDefault<CardAbility>(col.ReadString()),
                         weaponDescribe = col.ReadString(),
-                        //weaponLevel = col.ReadInt(),
-                        //maxLevel = col.ReadInt(),
-                        //damage = col.ReadFloat(),
-
+                        weaponLevel = col.ReadInt(),
+                        maxLevel = col.ReadInt(),
+                        damage = col.ReadFloat(),
+                        materialName = col.ReadString(),
+                        materialNeed = col.ReadInt(),
                     };
 
                     excelDataList.Add(data);
@@ -404,7 +405,8 @@ public struct ExcelWeaponData
     public int weaponLevel;
     public int maxLevel;
     public float damage;
-
+    public string materialName;
+    public int materialNeed;
 }
 
 
