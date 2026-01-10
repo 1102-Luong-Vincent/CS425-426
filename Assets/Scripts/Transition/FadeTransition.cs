@@ -63,9 +63,12 @@ public class FadeTransition : MonoBehaviour
         fadeImage.color = color;
 
         //SceneManager.LoadScene(sceneName);
-        GameValue.Instance.LoadSceneByEnum(scene);
-        GameValue.Instance.SetPlayerPosition(pos);
 
+        GameValue.Instance.LoadSceneByEnum(scene);
+
+        yield return null; // Wait one frame for the scene to load
+
+        GameValue.Instance.SetPlayerPosition(pos);
 
         yield return StartCoroutine(FadeIn());
     }
