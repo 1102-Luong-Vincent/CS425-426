@@ -23,6 +23,7 @@ public enum SceneType
 
     Level_1,
     Level_1_Hospital,
+    Level_2,
 
 }
 
