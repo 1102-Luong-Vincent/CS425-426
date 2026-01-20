@@ -26,6 +26,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
     [Header("Sound Effects")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip hoverSound;
+    [SerializeField] private AudioClip cardUseSound;
 
     void Start()
     {
@@ -152,8 +153,9 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         //BattlePlayerValue.Instance.RemoveCard(cardValue);
         //BattleManage.Instance.StartNextTurn();
 
-        if(cardValue != null)
+        if (cardValue != null)
             Debug.Log($"Used card: {cardValue.CardName}");
+
         else if(weaponValue != null)
 
             Debug.Log($"Used weapon: {weaponValue.WeaponName}");
@@ -172,10 +174,12 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         if (weaponValue != null)
         {
             UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
+            audioSource.PlayOneShot(cardUseSound);
         }
         else
         {
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
+            audioSource.PlayOneShot(cardUseSound);
         }
 
 

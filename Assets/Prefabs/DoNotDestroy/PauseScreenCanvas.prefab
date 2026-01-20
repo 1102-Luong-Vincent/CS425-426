@@ -2704,6 +2704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3754146476702648301}
   - component: {fileID: 2365667471207343745}
+  - component: {fileID: 2968863675116989774}
   m_Layer: 5
   m_Name: Pause Control
   m_TagString: Untagged
@@ -2747,10 +2748,110 @@ MonoBehaviour:
   ResumeButton: {fileID: 2361653933953912790}
   SaveButton: {fileID: 4757699973997608896}
   LoadButton: {fileID: 6933650495365394810}
+  RestartButton: {fileID: 0}
   OptionsButton: {fileID: 1484706373453741591}
   ExitGameButton: {fileID: 3125488777380920857}
   MainMenuButton: {fileID: 3397188447733305975}
   OptionPanelControl: {fileID: 2261085073182090722}
+  audioSource: {fileID: 2968863675116989774}
+  buttonClickSound: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
+--- !u!82 &2968863675116989774
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044882521832935468}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4234526956827802518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3422,6 +3523,8 @@ MonoBehaviour:
   DisplayButton: {fileID: 4011652067774154360}
   LanguageButton: {fileID: 8132978649084343447}
   BackButton: {fileID: 5182797113803550783}
+  audioSource: {fileID: 0}
+  buttonClickSound: {fileID: 0}
   volumePanelControl:
     VolumePanel: {fileID: 2795561573244806836}
     BackgroundVolumeSlider: {fileID: 4559033463875473943}
@@ -6715,6 +6818,8 @@ MonoBehaviour:
   DisplayButton: {fileID: 4011652067774154360}
   LanguageButton: {fileID: 8132978649084343447}
   BackButton: {fileID: 5182797113803550783}
+  audioSource: {fileID: 0}
+  buttonClickSound: {fileID: 0}
   volumePanelControl:
     VolumePanel: {fileID: 2795561573244806836}
     BackgroundVolumeSlider: {fileID: 4559033463875473943}
