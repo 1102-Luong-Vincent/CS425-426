@@ -1,6 +1,6 @@
-// Author: Shawn Meng
-// Created by: Shawn Meng
-// Modified by: Shawn Meng
+// Author: Shawn Meng, Yuhan Tang
+// Created by: Shawn Meng, Yuhan Tang
+// Modified by: Shawn Meng, Yuhan Tang
 // no external source was used
 
 using System;
@@ -60,13 +60,13 @@ public class WeaponValue
 
     void UseKnife(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
-        DamageResult damageResult = player.GetDamageDetailed(1.1f,1f);
+        DamageResult damageResult = player.GetDamageDetailed(damage, 1f);
         enemys[0].DealDamage(damageResult.Damage);
     }
 
     void UsePistol(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
-        DamageResult damageResult = player.GetDamageDetailed(1f,0.9f);
+        DamageResult damageResult = player.GetDamageDetailed(damage, 0.9f);
         enemys[0].DealDamage(damageResult.Damage);
     }
 
@@ -75,7 +75,7 @@ public class WeaponValue
 
         foreach (var enemy in enemys)
         {
-            DamageResult damageResult = player.GetDamageDetailed(0.7f, 0.8f);
+            DamageResult damageResult = player.GetDamageDetailed(damage, 0.8f);
             enemy.DealDamage(damageResult.Damage);
         }
     }

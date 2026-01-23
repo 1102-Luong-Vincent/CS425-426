@@ -21,6 +21,8 @@ public class PlayerValue
     public WeaponValue EquipmentWeapon;
     public List<WeaponValue> HadWeaponsLibrary = new List<WeaponValue>();
 
+    public Dictionary<string, int> Materials = new Dictionary<string, int>();
+
 
     int Health = 100;
     int energy = 10;
@@ -36,6 +38,38 @@ public class PlayerValue
         InitPlayerEquipmentWeapons();
         InitPlayerEquipmentCards();
     }
+
+    // New add Player Material Backpack
+    public int GetMaterialCount(string materialName)
+    {
+        if (string.IsNullOrEmpty(materialName)) return 0;
+        return Materials.TryGetValue(materialName, out int count) ? count : 0;
+    }
+
+    public void AddMaterial(string materialName, int amount)
+    {
+        if (string.IsNullOrEmpty(materialName)) return;
+        if (amount <= 0) return;
+
+        if (!Materials.ContainsKey(materialName))
+            Materials[materialName] = 0;
+
+        Materials[materialName] += amount;
+    }
+
+    public bool TrySpendMaterial(string materialName, int amount)
+    {
+        if (string.IsNullOrEmpty(materialName)) return false;
+        if (amount <= 0) return true;
+
+        int have = GetMaterialCount(materialName);
+        if (have < amount) return false;
+
+        Materials[materialName] = have - amount;
+        return true;
+    }
+    // Unitl here
+
     void InitPlayerEquipmentWeapons()
     {
         ClearWeapons();
@@ -108,6 +142,7 @@ public class PlayerValue
     {
         EquipmentCards.Clear();
         HadCardsLibrary.Clear();
+        battleCardsList.Clear();
     }
 
 
@@ -146,12 +181,20 @@ public class PlayerValue
         EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(data.EquipmentWeapon);
 
 
-        foreach (string card in data.HadWeaponsSaveLibrary)
+        //foreach (string card in data.HadWeaponsSaveLibrary)
+        //{
+        //    CardValue foundCard = GameValue.Instance.GetInitCardValue(card);
+        //    if (foundCard != null)
+        //    {
+        //        HadCardsLibrary.Add(foundCard);
+        //    }
+        //}
+        foreach (string weaponName in data.HadWeaponsSaveLibrary)
         {
-            CardValue foundCard = GameValue.Instance.GetInitCardValue(card);
-            if (foundCard != null)
+            WeaponValue foundWeapon = GameValue.Instance.GetInitWeaponValue(weaponName);
+            if (foundWeapon != null)
             {
-                HadCardsLibrary.Add(foundCard);
+                HadWeaponsLibrary.Add(foundWeapon);
             }
         }
 
@@ -225,7 +268,4 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
-
-
-
 }
