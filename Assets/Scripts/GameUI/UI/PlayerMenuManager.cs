@@ -46,7 +46,7 @@ public class PlayerMenuManager : MonoBehaviour
 
     MenuState state = MenuState.Deck;
     MenuState previousState = MenuState.Deck;
-    private bool menuActive = true;
+    private bool menuActive = false;
 
     private void Awake()
     {
