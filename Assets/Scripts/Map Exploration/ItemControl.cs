@@ -41,6 +41,11 @@ public class ItemControl : MonoBehaviour
     [Header("Item Pick Up ID")]
     [SerializeField] int ItemID = 1;
 
+    [Header("Pickup Item Type")]
+    //[SerializeField] private WeaponInteractionType weaponType = WeaponInteractionType.Card;
+    [SerializeField] public int weaponID;
+    [SerializeField] public bool isWeaponPickup = false;
+
     [Header("Sound Effects")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip interactionSound;
@@ -174,19 +179,6 @@ public class ItemControl : MonoBehaviour
         Debug.Log($"Picked up item: {gameObject.name}");
 
 
-        // Example: Add item to player inventory by ItemID
-        CardValue AddCard = GameValue.Instance.GetGameValueLibrary().GetInitCard(ItemID);
-
-        
-        if (AddCard != null) {
-            GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
-            Debug.Log($"Added card ID {ItemID} to inventory.");
-        }
-        else
-        {
-            Debug.LogWarning($"Item with ID {ItemID} not found in library.");
-        }
-
         //if(InventoryManager.Instance != null && InventoryManager.Instance.control != null)
         //{
         //    InventoryManager.Instance.control.refreshInventory();
@@ -197,8 +189,36 @@ public class ItemControl : MonoBehaviour
         // Play pickup sound
         // AudioManager.Instance.PlaySound("PickupSound");
 
-        // Destroy item
-        Destroy(gameObject);
+        if (isWeaponPickup)
+        {
+            WeaponValue weapon = GameValue.Instance.GetGameValueLibrary().GetInitWeapon(weaponID);
+
+            if (weapon != null)
+            {
+                GameValue.Instance.GetPlayerValue().HadWeaponsLibrary.Add(weapon);
+                Debug.Log($"Added weapon {weaponID} to inventory.");
+            }
+            else
+            {
+                Debug.LogWarning($"Weapon with ID {weaponID} not found in library.");
+            }
+        }
+        else
+        {
+            CardValue AddCard = GameValue.Instance.GetGameValueLibrary().GetInitCard(ItemID);
+
+            if (AddCard != null)
+            {
+                GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
+                Debug.Log($"Added card ID {ItemID} to inventory.");
+            }
+            else
+            {
+                Debug.LogWarning($"Item with ID {ItemID} not found in library.");
+            }
+        }
+            // Destroy item
+            Destroy(gameObject);
     }
 
     /// <summary>
