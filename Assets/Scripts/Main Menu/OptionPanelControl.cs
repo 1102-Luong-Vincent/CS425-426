@@ -25,7 +25,7 @@ public enum PanelType
    None,Volume,Display, Language
 }
 
-public class OptionPanelControl : MonoBehaviour
+public class OptionPanelControl : PanelControl
 {
     public Button VolumeButton;
     public Button DisplayButton;
@@ -208,9 +208,10 @@ public class OptionPanelControl : MonoBehaviour
     #region Helper Function
 
 
-    public void OpenPanel()
+    public override void ShowPanel()
     {
         OpenPanel(currentPanel);
+        base.ShowPanel();
     }
 
     void OpenPanel(PanelType key)
@@ -231,9 +232,10 @@ public class OptionPanelControl : MonoBehaviour
     }
 
 
-    public void ClosePanel()
+    public override void HidePanel()
     {
         ClosePanel(currentPanel);
+        base.HidePanel();
     }
 
     void ClosePanel(PanelType key)

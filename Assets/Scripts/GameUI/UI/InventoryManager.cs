@@ -70,7 +70,7 @@ public class InventoryManager : MonoBehaviour
                 playerValue.battleCardsList.Add(newCard);
             }
 
-                control.refreshInventory();
+                control.RefreshInventory();
             CloseCardSelector();
         }
     }
@@ -87,7 +87,7 @@ public class InventoryManager : MonoBehaviour
             {
                 playerValue.EquipmentCards.Remove(card.GetComponent<MenuCardControl>().GetCardValue());
             }
-            control.refreshInventory();
+            control.RefreshInventory();
         }
         else
         {
@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour
                 playerValue.battleCardsList.Add(newCard);
             }
 
-            control.refreshInventory();
+            control.RefreshInventory();
             CloseCardSelector();
         }
     }
@@ -158,7 +158,7 @@ public class InventoryManager : MonoBehaviour
     public void CloseInventory()
     {
         CloseCardSelector();
-        control.onInventoryClose();
+        control.OnInventoryClose();
         if(WeaponSelectorPanel.activeInHierarchy == true)
         {
             OnWeaponCancelButtonClick();
