@@ -1,6 +1,6 @@
 // Author: Shawn Meng
 // Created by: Shawn Meng
-// Modified by: Shawn Meng
+// Modified by: Shawn Meng, Yuhan Tang
 // No external source was used
 
 using System;
@@ -40,6 +40,8 @@ public class GameValue : MonoBehaviour
 
     private BattleData battleData;
     public GameValueTest gameValueTest;
+    // new add for weapon upgrade
+    private List<ExcelWeaponData> weaponExcelCache;
 
 
     private void Awake()
@@ -61,6 +63,8 @@ public class GameValue : MonoBehaviour
     {
         library = new GameValueLibrary();   
         playerValue = new PlayerValue();
+        
+        weaponExcelCache = ExcelReader.GetWeaponsData();
     }
 
 
@@ -116,7 +120,23 @@ public class GameValue : MonoBehaviour
         LoadSceneByEnum(saveData.SceneType);
     }
 
+    //new add Weapon upgrade
+    public WeaponValue GetWeaponByNameAndLevel(string weaponName, int level)
+    {
+        if (weaponExcelCache == null || weaponExcelCache.Count == 0)
+            weaponExcelCache = ExcelReader.GetWeaponsData();
 
+        foreach (var w in weaponExcelCache)
+        {
+            if (w.weaponName == weaponName && w.weaponLevel == level)
+            {
+                return new WeaponValue(w);
+            }
+        }
+
+        Debug.LogWarning($"[GetWeaponByNameAndLevel] Not found: {weaponName} Lv{level}");
+        return null;
+    }
 
 
     #region Get

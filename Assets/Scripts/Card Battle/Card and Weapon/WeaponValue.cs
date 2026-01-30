@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static ExcelReader;
 
 public struct DamageResult
 {
@@ -25,6 +26,8 @@ public class WeaponValue
     public int weaponLevel;
     public int maxLevel = 3;
     public float damage;
+    public string upgradeMaterialName;
+    public int upgradeMaterialNeed;
 
 
     public WeaponValue(ExcelWeaponData excelData) 
@@ -36,6 +39,9 @@ public class WeaponValue
         weaponLevel = excelData.weaponLevel;
         maxLevel = excelData.maxLevel;
         damage = excelData.damage;
+
+        upgradeMaterialName = excelData.materialName;
+        upgradeMaterialNeed = excelData.materialNeed;
 
         WeaponSprite = GetWeaponSprite();
 

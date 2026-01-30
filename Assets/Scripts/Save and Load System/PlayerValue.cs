@@ -1,6 +1,6 @@
 //Authors: Vincent Luong, Shawn Meng, Yuhan Tang, and Sean Masterson
 //Created by: Team 4
-//Modified by: Shawn Meng
+//Modified by: Shawn Meng, Yuhan Tang
 //Some code generated with assistance from ChatGPT.
 
 using NUnit.Framework;
@@ -37,6 +37,10 @@ public class PlayerValue
     {
         InitPlayerEquipmentWeapons();
         InitPlayerEquipmentCards();
+
+        //≤‚ ‘≤ƒ¡œ
+        AddMaterial("Whetstone", 999);
+        //AddMaterial("Metal", 999);
     }
 
     // New add Player Material Backpack
