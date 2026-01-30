@@ -42,7 +42,7 @@ using UnityEngine.UI;
 using TMPro;
 //using UnityEngine.UIElements;
 
-public class WeaponUpgradeUIController : MonoBehaviour
+public class WeaponUpgradeUIController : PanelControl
 {
     [Header("Panels")]
     [SerializeField] private GameObject selectPanel;
@@ -87,7 +87,6 @@ public class WeaponUpgradeUIController : MonoBehaviour
         if (cancelButton != null) cancelButton.onClick.AddListener(OnSelectCancel);
         if (resultConfirmButton != null) resultConfirmButton.onClick.AddListener(OnResultConfirm);
 
-        ShowSelect();
         RefreshSelectUI();
     }
 
@@ -201,6 +200,16 @@ public class WeaponUpgradeUIController : MonoBehaviour
 
         ShowResultMessage($"Upgrade Success!\n{current.WeaponName}: LV{current.weaponLevel} -> LV{next.weaponLevel}");
     }
+
+
+
+    public override void ShowPanel()
+    {
+        base.ShowPanel();
+        ShowSelect();
+    }
+
+
 
     public void OnSelectCancel()
     {

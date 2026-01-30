@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using static ButtonEffect;
 using static PlayerMenuManager;
 
-public class InventoryUIControl : MonoBehaviour
+public class InventoryUIControl :  PanelControl
 {
     public Transform WeaponZone;
     public Transform EquipZone;
@@ -37,11 +37,11 @@ public class InventoryUIControl : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        onInventoryOpen();
+        OnInventoryOpen();
         InitButtons();
     }
 
-    public void onInventoryOpen()
+    public void OnInventoryOpen()
     {
         if (playerValue == null) playerValue = GameValue.Instance.GetPlayerValue();
         HealthText.text = playerValue.GetHealth().ToString();
@@ -92,7 +92,7 @@ public class InventoryUIControl : MonoBehaviour
         //}
     }
 
-    public void onInventoryClose()
+    public void OnInventoryClose()
     {
         // menu closed -- erase menu cards
         for (int i = WeaponZone.childCount - 1; i >= 0; i--)
@@ -115,10 +115,22 @@ public class InventoryUIControl : MonoBehaviour
         }
     }
 
-    public void refreshInventory()
+    public override void ShowPanel()
     {
-        onInventoryClose();
-        onInventoryOpen();
+        base.ShowPanel();
+        OnInventoryOpen();
+    }
+
+    public override void HidePanel()
+    {
+        base.HidePanel();
+        OnInventoryClose();
+    }
+
+    public void RefreshInventory()
+    {
+        OnInventoryClose();
+        OnInventoryOpen();
     }
 
     void InitButtons()
@@ -150,10 +162,10 @@ public class InventoryUIControl : MonoBehaviour
 
                 switch (order)
                 {
-                    case "Ascending":
+                    case InventoryConstants.Ascending:
                         children = children.OrderBy(child => child.name).ToList();
                         break;
-                    case "Descending":
+                    case InventoryConstants.Descending:
                         children = children.OrderByDescending(child => child.name).ToList();
                         break;
                 }
@@ -180,11 +192,21 @@ public class InventoryUIControl : MonoBehaviour
         
         if(dest.gameObject == CardZone.gameObject)
         {
-            card.tag =  "BattleCard";
+            card.tag = InventoryConstants.BattleCard;
         }
         else if(dest.gameObject == EquipZone.gameObject)
         {
-            card.tag = "EquipCard";
+            card.tag = InventoryConstants.EquipCard;
         }
     }
+}
+
+
+public static class InventoryConstants
+{
+    public const string Ascending = "Ascending";
+    public const string Descending = "Descending";
+    public const string BattleCard = "BattleCard";
+    public const string EquipCard = "EquipCard";
+
 }

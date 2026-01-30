@@ -7,7 +7,9 @@
 using TCG_CardMaker;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using static ButtonEffect;
+using System.Security.Cryptography.X509Certificates;
 
 public class PlayerMenuManager : MonoBehaviour
 {
@@ -15,29 +17,19 @@ public class PlayerMenuManager : MonoBehaviour
 
     public GameObject MainPanel;
 
-    [Header("Buttons")]
-    public Buttons buttons;
+    public ButtonAndPanel Deck;
+    public ButtonAndPanel Combine;
+    public ButtonAndPanel Upgrade;
+    public ButtonAndPanel Option;
 
-    [System.Serializable]
-    public class Buttons
+
+    [Serializable]
+    public class ButtonAndPanel
     {
-        public Button DeckButton;
-        public Button CombineButton;
-        public Button UpgradeButton;
-        public Button OptionButton;
+        public Button button;
+        public PanelControl panel;
     }
 
-    [Header("Panels")]
-    public Panels panels;
-
-    [System.Serializable]
-    public class Panels
-    {
-        public GameObject DeckPanel;
-        public CardCombineManager CombinePanel;
-        public GameObject UpgradePanel;
-        public OptionPanelControl OptionsPanel;
-    }
 
     public enum MenuState
     {
@@ -46,7 +38,7 @@ public class PlayerMenuManager : MonoBehaviour
 
     MenuState state = MenuState.Deck;
     MenuState previousState = MenuState.Deck;
-    private bool menuActive = true;
+    private bool menuActive = false;
 
     private void Awake()
     {
@@ -77,52 +69,67 @@ public class PlayerMenuManager : MonoBehaviour
     {
         if (state != previousState && menuActive)
         {
-            closePreviousPanel();
-            switch (state)
-            {
-                case MenuState.Deck:
-                    panels.DeckPanel.SetActive(true);
-                    if (panels.DeckPanel != null)
-                        panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryOpen();
-                    panels.CombinePanel.ClosePanel();
-                    panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.ClosePanel();
-                    previousState = MenuState.Deck;
-                    break;
-                case MenuState.Combine:
-                    panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.OpenPanel();
-                    panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.ClosePanel();
-                    previousState = MenuState.Combine;
-                    break;
-                case MenuState.Upgrade:
-                    panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.ClosePanel();
-                    panels.UpgradePanel.SetActive(true);
-                    panels.OptionsPanel.ClosePanel();
-                    previousState = MenuState.Upgrade;
-                    break;
-                case MenuState.Options:
-                    panels.DeckPanel.SetActive(false);
-                    panels.CombinePanel.ClosePanel();
-                    panels.UpgradePanel.SetActive(false);
-                    panels.OptionsPanel.OpenPanel();
-                    previousState = MenuState.Options;
-                    break;
-                case MenuState.Closed:
-                    previousState = MenuState.Closed;
-                    break;
-            }
+            ClosePreviousPanel();
+            Deck.panel.SetActive(state == MenuState.Deck);
+           Combine.panel.SetActive(state == MenuState.Combine);
+           Upgrade.panel.SetActive(state == MenuState.Upgrade);
+           Option.panel.SetActive(state == MenuState.Options);
+            previousState = state;
+
+
+
+            //switch (state)
+            //{
+            //    case MenuState.Deck:
+            //        panels.DeckPanel.SetActive(true);
+            //        if (panels.DeckPanel != null)
+            //            panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryOpen();
+            //        panels.CombinePanel.ClosePanel();
+            //        panels.UpgradePanel.SetActive(false);
+            //        panels.OptionsPanel.ClosePanel();
+            //        previousState = MenuState.Deck;
+            //        break;
+            //    case MenuState.Combine:
+            //        panels.DeckPanel.SetActive(false);
+            //        panels.CombinePanel.OpenPanel();
+            //        panels.UpgradePanel.SetActive(false);
+            //        panels.OptionsPanel.ClosePanel();
+            //        previousState = MenuState.Combine;
+            //        break;
+            //    case MenuState.Upgrade:
+            //        panels.DeckPanel.SetActive(false);
+            //        panels.CombinePanel.ClosePanel();
+            //        panels.UpgradePanel.SetActive(true);
+            //        panels.OptionsPanel.ClosePanel();
+            //        previousState = MenuState.Upgrade;
+            //        break;
+            //    case MenuState.Options:
+            //        panels.DeckPanel.SetActive(false);
+            //        panels.CombinePanel.ClosePanel();
+            //        panels.UpgradePanel.SetActive(false);
+            //        panels.OptionsPanel.OpenPanel();
+            //        previousState = MenuState.Options;
+            //        break;
+            //    case MenuState.Closed:
+            //        previousState = MenuState.Closed;
+            //        break;
+            //}
         }
 
     }
+
+
+
+
+
+
     void InitButtons()
     {
-        OnGameMenuButtonClick(buttons.DeckButton, OnDeckButtonClick);
-        OnGameMenuButtonClick(buttons.CombineButton, OnCombineButtonClick);
-        OnGameMenuButtonClick(buttons.UpgradeButton, OnUpgradeButtonClick);
-        OnGameMenuButtonClick(buttons.OptionButton, OnOptionButtonClick);
+        OnGameMenuButtonClick(Deck.button, OnDeckButtonClick);
+        OnGameMenuButtonClick(Combine.button, OnCombineButtonClick);
+        OnGameMenuButtonClick(Upgrade.button, OnUpgradeButtonClick);
+        OnGameMenuButtonClick(Option.button, OnOptionButtonClick);
+
     }
 
     void OnDeckButtonClick()
@@ -148,6 +155,7 @@ public class PlayerMenuManager : MonoBehaviour
         UpdateMenu();
     }
 
+
     void ToggleMenu()
     {
         if (menuActive)
@@ -170,19 +178,15 @@ public class PlayerMenuManager : MonoBehaviour
         }
     }
 
-    void closePreviousPanel()
+    void ClosePreviousPanel()
     {
         switch (previousState)
         {
-            case MenuState.Deck:
-                panels.DeckPanel.GetComponent<InventoryManager>().CloseInventory();
-                break;
-            case MenuState.Combine:
-                break;
-            case MenuState.Upgrade:
-                break;
-            case MenuState.Options:
-                break;
+            case MenuState.Deck: Deck.panel.HidePanel() ;break;
+            case MenuState.Combine: Combine.panel.HidePanel(); break;
+            case MenuState.Upgrade: Upgrade.panel.HidePanel(); break;
+            case MenuState.Options: Option.panel.HidePanel(); break;
+
         }
     }
 }

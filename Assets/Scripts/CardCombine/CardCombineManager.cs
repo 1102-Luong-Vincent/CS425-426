@@ -8,11 +8,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardCombineManager : MonoBehaviour
+public class CardCombineManager : PanelControl
 {
     public static CardCombineManager Instance;
-
-    [SerializeField] GameObject CardCombinePanel;
 
     [Header("UI Slots")]
     [SerializeField] CardUI FirstCard;
@@ -54,7 +52,7 @@ public class CardCombineManager : MonoBehaviour
         if (ClearButton != null)
             ClearButton.onClick.AddListener(ClearAllSlots);
 
-        ClosePanel();
+        HidePanel();
     }
 
 
@@ -67,21 +65,19 @@ public class CardCombineManager : MonoBehaviour
 
     void SwitchPanel()
     {
-        if (!CardCombinePanel.activeSelf)
+        if (!Panel.activeSelf)
         {
-            OpenPanel(); 
+            ShowPanel(); 
         } else
         {
-            ClosePanel();
+            HidePanel();
         }
     }
 
 
 
-    public void OpenPanel()
+    public override void ShowPanel()
     {
-        CardCombinePanel.SetActive(true);
-
         List<CardValue> cardList = GameValue.Instance.GetPlayerValue().HadCardsLibrary;
 
         foreach (var card in cardList)
@@ -90,9 +86,11 @@ public class CardCombineManager : MonoBehaviour
             slot.SetCard(card);  
             spawnedSlots.Add(slot);
         }
+        base.ShowPanel();
+
     }
 
-    public void ClosePanel()
+    public override void HidePanel()
     {
         foreach (var slot in spawnedSlots)
         {
@@ -100,7 +98,7 @@ public class CardCombineManager : MonoBehaviour
         }
         spawnedSlots.Clear();
         ClearAllSlots();
-        CardCombinePanel.SetActive(false);
+        base.HidePanel();
     }
 
 

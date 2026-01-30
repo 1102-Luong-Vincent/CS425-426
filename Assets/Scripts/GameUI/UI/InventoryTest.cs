@@ -43,6 +43,6 @@ public class InventoryTest : MonoBehaviour
                 Debug.LogWarning($"Card {cardName} not found in GameValue library!");
             }
         }
-        control.refreshInventory();
+        control.RefreshInventory();
     }
 }
