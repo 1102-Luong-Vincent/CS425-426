@@ -26,7 +26,12 @@ public class PanelControl : MonoBehaviour
 
     public virtual void HidePanel()
     {
-        if (Panel == null) Debug.LogWarning($"HidePanel() s{gameObject.name}"); return;
+        if (Panel == null)
+        {
+            Debug.LogWarning($"HidePanel() s{gameObject.name}"); 
+            return;
+        }
+            
         Panel.SetActive(false);
     }
 

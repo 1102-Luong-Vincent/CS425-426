@@ -36,8 +36,10 @@ public class PlayerMenuManager : MonoBehaviour
         Deck, Combine, Upgrade, Options, Closed
     }
 
-    MenuState state = MenuState.Deck;
-    MenuState previousState = MenuState.Deck;
+    //MenuState state = MenuState.Deck;
+    //MenuState previousState = MenuState.Deck;
+    MenuState state = MenuState.Closed;
+    MenuState previousState = MenuState.Closed;
     private bool menuActive = false;
 
     private void Awake()
@@ -54,6 +56,17 @@ public class PlayerMenuManager : MonoBehaviour
     void Start()
     {
         InitButtons();
+
+        MainPanel.SetActive(false);
+        menuActive = false;
+
+        Deck.panel.HidePanel();
+        Combine.panel.HidePanel();
+        Upgrade.panel.HidePanel();
+        Option.panel.HidePanel();
+
+        state = MenuState.Closed;
+        previousState = MenuState.Closed;
     }
 
     private void Update()
@@ -69,14 +82,13 @@ public class PlayerMenuManager : MonoBehaviour
     {
         if (state != previousState && menuActive)
         {
+
             ClosePreviousPanel();
             Deck.panel.SetActive(state == MenuState.Deck);
-           Combine.panel.SetActive(state == MenuState.Combine);
-           Upgrade.panel.SetActive(state == MenuState.Upgrade);
-           Option.panel.SetActive(state == MenuState.Options);
+            Combine.panel.SetActive(state == MenuState.Combine);
+            Upgrade.panel.SetActive(state == MenuState.Upgrade);
+            Option.panel.SetActive(state == MenuState.Options);
             previousState = state;
-
-
 
             //switch (state)
             //{
@@ -117,11 +129,6 @@ public class PlayerMenuManager : MonoBehaviour
         }
 
     }
-
-
-
-
-
 
     void InitButtons()
     {
@@ -172,6 +179,15 @@ public class PlayerMenuManager : MonoBehaviour
             Time.timeScale = 0f;
             MainPanel.SetActive(true);
             menuActive = true;
+            //state = MenuState.Deck;
+            //UpdateMenu();
+            Deck.panel.HidePanel();
+            Combine.panel.HidePanel();
+            Upgrade.panel.HidePanel();
+            Option.panel.HidePanel();
+
+            previousState = MenuState.Closed;
+
             state = MenuState.Deck;
             UpdateMenu();
 
