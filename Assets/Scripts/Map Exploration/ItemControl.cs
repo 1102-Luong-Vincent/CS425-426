@@ -41,7 +41,7 @@ public class ItemControl : MonoBehaviour
     [Header("Item Pick Up ID")]
     [SerializeField] int ItemID = 1;
 
-    [Header("Pickup Item Type")]
+    [Header("Weapon Pick Up ID")]
     //[SerializeField] private WeaponInteractionType weaponType = WeaponInteractionType.Card;
     [SerializeField] public int weaponID;
     [SerializeField] public bool isWeaponPickup = false;
@@ -49,6 +49,7 @@ public class ItemControl : MonoBehaviour
     [Header("Sound Effects")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip interactionSound;
+    [SerializeField] AudioClip pickupSound;
 
     // Whether player is in interaction range
     private bool playerInRange = false;
@@ -74,9 +75,13 @@ public class ItemControl : MonoBehaviour
         if (playerInRange && Input.GetKeyDown(interactionKey))
         {
             TriggerInteraction();
-            windowPanel.SetActive(true);
-            audioSource.PlayOneShot(interactionSound);
-            Time.timeScale = 0f; // Pause the game
+
+            if (interactionType != ItemInteractionType.Pickup && interactionSound != null)
+            {
+                audioSource.PlayOneShot(interactionSound);
+                windowPanel.SetActive(true);
+                Time.timeScale = 0f; //pause the game
+            }
         }
     }
 
@@ -178,7 +183,10 @@ public class ItemControl : MonoBehaviour
     {
         Debug.Log($"Picked up item: {gameObject.name}");
 
-
+        if (pickupSound != null)
+        {
+            audioSource.PlayOneShot(pickupSound);
+        }
         //if(InventoryManager.Instance != null && InventoryManager.Instance.control != null)
         //{
         //    InventoryManager.Instance.control.refreshInventory();
@@ -218,7 +226,7 @@ public class ItemControl : MonoBehaviour
             }
         }
             // Destroy item
-            Destroy(gameObject);
+            Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
     }
 
     /// <summary>

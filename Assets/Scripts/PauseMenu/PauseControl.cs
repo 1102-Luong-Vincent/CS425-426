@@ -80,9 +80,13 @@ public class PauseControl : MonoBehaviour
 
         string currentScene = SceneManager.GetActiveScene().name;
 
-        if (currentScene != "GameStartScene") //stops music for this scene only. this is only the tutorial. 
+        if (currentScene == "Level_1") //did this for now for testing the music. I know it's not the best way to do it.  
         {
             SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+        }
+        if(currentScene == "Level_1_Hospital") //did this for now for testing the music. I know it's not the best way to do it.
+        {
+            SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
         }
     }
 

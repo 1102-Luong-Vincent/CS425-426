@@ -1,7 +1,7 @@
 // Authors: Vincent Luong and Shawn Meng
 // Created by: Shawn Meng
 // Modified by: Vincent Luong
-// Some code generated with assistance from ChatGPT.
+// No external source was used.
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,10 +10,11 @@ public static class SoundManagerConstants
 {
     public const string BackgroundPath = "Sound/BGM/";
     public const string SoundEffectPath = "Sound/SFX/";
-    public const string MainMenuMusicName = "Alternative Menu sound";
-    public const string GameplayMusic = "background tension music";
+    public const string MainMenuMusicName = "danger and resolution";
+    public const string GameplayMusic = "intense-horror-game-ambience";
+    public const string GameplayMusic_Hospital = "thevoid";
     public const string PauseScreenMusic = "enigma horror sound";
-    public const string BattleMusic = "3. Time For a Revenge - 157bpm - LOOP 33s";
+    public const string BattleMusic = "silent-escape-survival-thriller";
     public const string FootstepsSound = "Footsteps_Tile_Walk_03";
 }
 
@@ -46,6 +47,11 @@ public class SoundManage : MonoBehaviour
         else
         {
             PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+        }
+
+        if(currentScene == "Level_1_Hospital") //did this for now for testing the music. i know it's not the best way to do it.
+        {
+            PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
         }
     }
 

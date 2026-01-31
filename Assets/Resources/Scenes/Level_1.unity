@@ -22665,11 +22665,19 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: pickupID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: weaponID
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: itemPickupType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1606297017596563937, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
@@ -51769,6 +51777,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1407640557520323250, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2136910878728673209, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4313062790370337090, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}

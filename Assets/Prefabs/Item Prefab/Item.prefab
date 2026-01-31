@@ -114,8 +114,11 @@ MonoBehaviour:
   windowPanel: {fileID: 8743917328937754648}
   backButton: {fileID: 5287615695322312662}
   ItemID: 1
+  weaponID: 0
+  isWeaponPickup: 0
   audioSource: {fileID: 313156410930487335}
   interactionSound: {fileID: 8300000, guid: 2ae6c9b74c2900a4990a38b83b3c5a3f, type: 3}
+  pickupSound: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
 --- !u!70 &8743344105781874655
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
