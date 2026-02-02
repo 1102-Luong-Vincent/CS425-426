@@ -174,6 +174,7 @@ public class ItemControl : MonoBehaviour
 
         Debug.Log($"Transitioning to scene: {targetScene}");
         GameValue.Instance.LoadSceneByEnum(targetScene);
+        //UIManager.Instance.FadeToScene(targetScene, currentPlayer.transform.position);
     }
 
     /// <summary>
