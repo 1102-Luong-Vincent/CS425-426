@@ -1,15 +1,13 @@
 // Author: Sean Masterson
 // Created by: Sean Masterson
-// Modified by: Sean Masterson and Shawn Meng
+// Modified by: Sean Masterson and Shawn Meng, Yuhan Tang
 // no external source was used.
-
 
 using TCG_CardMaker;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 using static ButtonEffect;
-using System.Security.Cryptography.X509Certificates;
 
 public class PlayerMenuManager : MonoBehaviour
 {
@@ -22,7 +20,6 @@ public class PlayerMenuManager : MonoBehaviour
     public ButtonAndPanel Upgrade;
     public ButtonAndPanel Option;
 
-
     [Serializable]
     public class ButtonAndPanel
     {
@@ -30,20 +27,22 @@ public class PlayerMenuManager : MonoBehaviour
         public PanelControl panel;
     }
 
-
     public enum MenuState
     {
-        Deck, Combine, Upgrade, Options, Closed
+        Deck,
+        Combine,
+        Upgrade,
+        Options,
+        Closed
     }
 
-    //MenuState state = MenuState.Deck;
-    //MenuState previousState = MenuState.Deck;
-    MenuState state = MenuState.Closed;
-    MenuState previousState = MenuState.Closed;
-    private bool menuActive = false;
+    private MenuState currentState = MenuState.Closed;
+
+    #region Unity Lifecycle
 
     private void Awake()
     {
+        // Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -52,157 +51,164 @@ public class PlayerMenuManager : MonoBehaviour
         Instance = this;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InitButtons();
-
-        MainPanel.SetActive(false);
-        menuActive = false;
-
-        Deck.panel.HidePanel();
-        Combine.panel.HidePanel();
-        Upgrade.panel.HidePanel();
-        Option.panel.HidePanel();
-
-        state = MenuState.Closed;
-        previousState = MenuState.Closed;
+        CloseAllMenus();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        // Toggle menu with Tab or Escape key
+        if (Input.GetKeyDown(KeyCode.Tab) )
         {
-            ToggleMenu();
+            if (currentState == MenuState.Closed)
+            {
+                OpenSpecificMenu(MenuState.Deck);
+            } else
+            {
+                CloseAllMenus();
+            }
         }
     }
 
-    // Update is called once per frame
-    void UpdateMenu()
-    {
-        if (state != previousState && menuActive)
-        {
+    #endregion
 
-            ClosePreviousPanel();
-            Deck.panel.SetActive(state == MenuState.Deck);
-            Combine.panel.SetActive(state == MenuState.Combine);
-            Upgrade.panel.SetActive(state == MenuState.Upgrade);
-            Option.panel.SetActive(state == MenuState.Options);
-            previousState = state;
+    #region Initialization
 
-            //switch (state)
-            //{
-            //    case MenuState.Deck:
-            //        panels.DeckPanel.SetActive(true);
-            //        if (panels.DeckPanel != null)
-            //            panels.DeckPanel.GetComponent<InventoryUIControl>().onInventoryOpen();
-            //        panels.CombinePanel.ClosePanel();
-            //        panels.UpgradePanel.SetActive(false);
-            //        panels.OptionsPanel.ClosePanel();
-            //        previousState = MenuState.Deck;
-            //        break;
-            //    case MenuState.Combine:
-            //        panels.DeckPanel.SetActive(false);
-            //        panels.CombinePanel.OpenPanel();
-            //        panels.UpgradePanel.SetActive(false);
-            //        panels.OptionsPanel.ClosePanel();
-            //        previousState = MenuState.Combine;
-            //        break;
-            //    case MenuState.Upgrade:
-            //        panels.DeckPanel.SetActive(false);
-            //        panels.CombinePanel.ClosePanel();
-            //        panels.UpgradePanel.SetActive(true);
-            //        panels.OptionsPanel.ClosePanel();
-            //        previousState = MenuState.Upgrade;
-            //        break;
-            //    case MenuState.Options:
-            //        panels.DeckPanel.SetActive(false);
-            //        panels.CombinePanel.ClosePanel();
-            //        panels.UpgradePanel.SetActive(false);
-            //        panels.OptionsPanel.OpenPanel();
-            //        previousState = MenuState.Options;
-            //        break;
-            //    case MenuState.Closed:
-            //        previousState = MenuState.Closed;
-            //        break;
-            //}
-        }
-
-    }
-
+    /// <summary>
+    /// Initialize all button click listeners
+    /// </summary>
     void InitButtons()
     {
         OnGameMenuButtonClick(Deck.button, OnDeckButtonClick);
         OnGameMenuButtonClick(Combine.button, OnCombineButtonClick);
         OnGameMenuButtonClick(Upgrade.button, OnUpgradeButtonClick);
         OnGameMenuButtonClick(Option.button, OnOptionButtonClick);
-
     }
+
+    #endregion
+
+    #region Button Callbacks
 
     void OnDeckButtonClick()
     {
-        state = MenuState.Deck;
-        UpdateMenu();
+        OpenSpecificMenu(MenuState.Deck);
     }
 
     void OnCombineButtonClick()
     {
-        state = MenuState.Combine;
-        UpdateMenu();
+        OpenSpecificMenu(MenuState.Combine);
     }
 
     void OnUpgradeButtonClick()
     {
-        state = MenuState.Upgrade;
-        UpdateMenu();
+        OpenSpecificMenu(MenuState.Upgrade);
     }
+
     void OnOptionButtonClick()
     {
-        state = MenuState.Options;
-        UpdateMenu();
+        OpenSpecificMenu(MenuState.Options);
     }
 
+    #endregion
 
-    void ToggleMenu()
+    #region Public API
+
+    /// <summary>
+    /// Open a specific menu panel
+    /// </summary>
+    /// <param name="targetState">The menu state to open</param>
+    public void OpenSpecificMenu(MenuState targetState)
     {
-        if (menuActive)
+        if (targetState == MenuState.Closed)
         {
-            Time.timeScale = 1f;
-            state = MenuState.Closed;
-            // closePreviousPanel();
-            UpdateMenu();
-            MainPanel.SetActive(false);
-            menuActive = false;
+            CloseAllMenus();
+            return;
         }
-        else
+
+        // Activate main panel if not already active
+        if (IsClose())
         {
             Time.timeScale = 0f;
             MainPanel.SetActive(true);
-            menuActive = true;
-            //state = MenuState.Deck;
-            //UpdateMenu();
-            Deck.panel.HidePanel();
-            Combine.panel.HidePanel();
-            Upgrade.panel.HidePanel();
-            Option.panel.HidePanel();
-
-            previousState = MenuState.Closed;
-
-            state = MenuState.Deck;
-            UpdateMenu();
-
         }
+
+        // Update state and refresh UI
+        currentState = targetState;
+        OpenPanelByState(currentState);
     }
 
-    void ClosePreviousPanel()
+    /// <summary>
+    /// Close all menu panels and return to game
+    /// </summary>
+    public void CloseAllMenus()
     {
-        switch (previousState)
-        {
-            case MenuState.Deck: Deck.panel.HidePanel() ;break;
-            case MenuState.Combine: Combine.panel.HidePanel(); break;
-            case MenuState.Upgrade: Upgrade.panel.HidePanel(); break;
-            case MenuState.Options: Option.panel.HidePanel(); break;
+        Time.timeScale = 1f;
 
+        // Hide all panels
+        Deck.panel.HidePanel();
+        Combine.panel.HidePanel();
+        Upgrade.panel.HidePanel();
+        Option.panel.HidePanel();
+
+        MainPanel.SetActive(false);
+
+        currentState = MenuState.Closed;
+    }
+
+
+    /// <summary>
+    /// Get current menu state
+    /// </summary>
+    public MenuState GetCurrentState()
+    {
+        return currentState;
+    }
+
+    #endregion
+
+    #region Private Methods
+
+
+    /// <summary>
+    /// Close panel based on menu state
+    /// </summary>
+    private void ClosePanelByState(MenuState state)
+    {
+        switch (state)
+        {
+            case MenuState.Deck:
+                Deck.panel.HidePanel();
+                break;
+            case MenuState.Combine:
+                Combine.panel.HidePanel();
+                break;
+            case MenuState.Upgrade:
+                Upgrade.panel.HidePanel();
+                break;
+            case MenuState.Options:
+                Option.panel.HidePanel();
+                break;
         }
     }
+
+    /// <summary>
+    /// Open panel based on menu state
+    /// </summary>
+    private void OpenPanelByState(MenuState state)
+    {
+        Deck.panel.SetActive(state == MenuState.Deck);
+        Combine.panel.SetActive(state == MenuState.Combine);
+        Upgrade.panel.SetActive(state == MenuState.Upgrade);
+        Option.panel.SetActive(state == MenuState.Options);
+
+    }
+
+    bool IsClose()
+    {
+        return currentState == MenuState.Closed;
+    }
+
+    #endregion
 }
