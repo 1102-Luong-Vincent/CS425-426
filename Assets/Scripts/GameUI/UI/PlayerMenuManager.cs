@@ -198,6 +198,7 @@ public class PlayerMenuManager : MonoBehaviour
     /// </summary>
     private void OpenPanelByState(MenuState state)
     {
+        Debug.Log(state);
         Deck.panel.SetActive(state == MenuState.Deck);
         Combine.panel.SetActive(state == MenuState.Combine);
         Upgrade.panel.SetActive(state == MenuState.Upgrade);
