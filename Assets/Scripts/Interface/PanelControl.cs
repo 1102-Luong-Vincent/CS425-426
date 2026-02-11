@@ -21,6 +21,7 @@ public class PanelControl : MonoBehaviour
 
     public virtual void ShowPanel()
     {
+        Debug.Log("showpanel: " + this.gameObject.name);
         Panel.SetActive(true);
     }
 
