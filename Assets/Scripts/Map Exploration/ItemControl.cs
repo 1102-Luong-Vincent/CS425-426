@@ -1,6 +1,6 @@
 // Author: Shawn Meng
 // Created by: Shawn Meng
-// Modified by: Shawn Meng
+// Modified by: Shawn Meng and Vincent Luong
 // no external sources were used
 
 using SmallScaleInc.TopDownPixelCharactersPack1;
