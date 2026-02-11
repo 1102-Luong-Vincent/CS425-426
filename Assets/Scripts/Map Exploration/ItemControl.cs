@@ -41,6 +41,7 @@ public class ItemControl : MonoBehaviour
     [Header("Item Pick Up ID")]
     [SerializeField] int ItemID = 1;
 
+
     [Header("Weapon Pick Up ID")]
     //[SerializeField] private WeaponInteractionType weaponType = WeaponInteractionType.Card;
     [SerializeField] public int weaponID;
@@ -51,6 +52,8 @@ public class ItemControl : MonoBehaviour
     [SerializeField] AudioClip interactionSound;
     [SerializeField] AudioClip pickupSound;
 
+    [Header("Pickup Icon")]
+    [SerializeField] private Sprite pickupIcon;
     // Whether player is in interaction range
     private bool playerInRange = false;
     private PlayerController currentPlayer = null;
@@ -198,6 +201,8 @@ public class ItemControl : MonoBehaviour
         // Play pickup sound
         // AudioManager.Instance.PlaySound("PickupSound");
 
+        string itemName = "";
+
         if (isWeaponPickup)
         {
             WeaponValue weapon = GameValue.Instance.GetGameValueLibrary().GetInitWeapon(weaponID);
@@ -205,6 +210,7 @@ public class ItemControl : MonoBehaviour
             if (weapon != null)
             {
                 GameValue.Instance.GetPlayerValue().HadWeaponsLibrary.Add(weapon);
+                itemName = weapon.WeaponName;
                 Debug.Log($"Added weapon {weaponID} to inventory.");
             }
             else
@@ -219,6 +225,7 @@ public class ItemControl : MonoBehaviour
             if (AddCard != null)
             {
                 GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
+                itemName = AddCard.CardName;
                 Debug.Log($"Added card ID {ItemID} to inventory.");
             }
             else
@@ -226,8 +233,13 @@ public class ItemControl : MonoBehaviour
                 Debug.LogWarning($"Item with ID {ItemID} not found in library.");
             }
         }
-            // Destroy item
-            Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
+
+        if (!string.IsNullOrEmpty(itemName))
+        {
+            InteractableNotification.Instance.ShowNotification(itemName, pickupIcon);
+        }
+        // Destroy item
+        Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
     }
 
     /// <summary>
