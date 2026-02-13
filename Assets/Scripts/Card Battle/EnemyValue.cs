@@ -102,15 +102,16 @@ public class EnemyValue
 
     public void UseEffect(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        switch (defaultWeaponName)
-        {
-            case "Attack0" : Attack(player, 10); break;
-            case "Attack1": Attack(player, 15);break;
-            case "Attack2": Attack(player, 20);break;
-            case "Attack3": Attack(player, 30);break;
-            case "Attack4": Attack(player, 40);break;
+        //switch (defaultWeaponName)
+        //{
+        //    case "Attack0" : Attack(player, 10); break;
+        //    case "Attack1": Attack(player, 15);break;
+        //    case "Attack2": Attack(player, 20);break;
+        //    case "Attack3": Attack(player, 30);break;
+        //    case "Attack4": Attack(player, 40);break;
+        Attack(player, attack);
 
-        }
+        //}
     }
 
     void Attack(BattlePlayerValue player,int amout)

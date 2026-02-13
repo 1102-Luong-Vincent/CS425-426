@@ -24,6 +24,9 @@ public class EnemyBattleControl : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip attackSound;
 
+    [SerializeField] private DamageText damageText;
+
+
     public void Init(EnemyValue enemyValue)
     {
         this.enemyValue = enemyValue;
@@ -125,6 +128,7 @@ public class EnemyBattleControl : MonoBehaviour
     {
         enemyValue.Health -= amount;
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
+        damageText.ShowDamage(amount, transform);
         TriggerTakeDamageAnimation();
         if (enemyValue.Health <= 0)
         {
@@ -135,6 +139,14 @@ public class EnemyBattleControl : MonoBehaviour
         }
     }
 
+    //void ShowDamage(int damage, Transform targetTransform)
+    //{
+    //    Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+    //    GameObject textObj = Instantiate(damageTextPrefab, canvas.transform);
+    //    DamageText dmgText = textObj.GetComponent<DamageText>();
+    //    dmgText.ShowDamage(damage, targetTransform);
+    //}
     private IEnumerator DeathSequence()
     {
         float animationLength = GetAnimationLength("dieWest");

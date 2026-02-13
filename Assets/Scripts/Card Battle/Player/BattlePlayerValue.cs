@@ -221,7 +221,10 @@ public class BattlePlayerValue : MonoBehaviour
             return result;
         }
 
-        float baseDamage = state.Attack * state.AttackBuff * multiplier;
+        //float baseDamage = state.Attack * state.AttackBuff * multiplier;
+        float baseDamage = state.Attack + multiplier;
+        baseDamage *= state.AttackBuff;
+
         result.IsCritical = UnityEngine.Random.value < state.CriticalChanceBuff;
         if (result.IsCritical)
         {

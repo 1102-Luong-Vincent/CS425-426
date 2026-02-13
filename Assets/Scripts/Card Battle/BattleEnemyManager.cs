@@ -94,7 +94,7 @@ public class BattleEnemyManager : MonoBehaviour
 
     public IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.2f);
 
         // pick an enemy card, apply effect, damage player etc.
         Debug.Log("Enemy action!");
