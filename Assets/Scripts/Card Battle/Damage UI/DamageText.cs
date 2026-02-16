@@ -8,6 +8,7 @@ public class DamageText : MonoBehaviour
     [SerializeField] private TextMeshProUGUI damageText; // assign prefab in inspector
     public float displayDuration = 2f; // duration to display damage text
     public float timer;
+    //public Vector3 offset = new Vector3(0, 50, 0);
 
     private void Awake()
     {
@@ -20,9 +21,9 @@ public class DamageText : MonoBehaviour
         if (damageText.gameObject.activeSelf)
         {
             // simple float-up effect
-            damageText.transform.position += Vector3.up * 20f * Time.deltaTime;
+            //damageText.transform.position += Vector3.up * 20f * Time.deltaTime;
 
-            // count down
+            //// count down
             timer -= Time.deltaTime;
             if (timer <= 0f)
                 damageText.gameObject.SetActive(false);
@@ -30,12 +31,11 @@ public class DamageText : MonoBehaviour
     }
     public void ShowDamage(int amount, Transform target)
     {
-
+        //Vector3 screenPos = Camera.main.WorldToScreenPoint(target.position) + offset;
+        //damageText.transform.position = screenPos;
         // set the damage amount
         damageText.text = amount.ToString();
         damageText.gameObject.SetActive(true);
-
-        // reset timer
         timer = displayDuration;
     }
 }

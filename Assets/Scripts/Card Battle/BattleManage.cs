@@ -119,6 +119,29 @@ public class BattleManage : MonoBehaviour
         GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
         GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
     }
+
+    public void ResetBattle()
+    {
+        Debug.Log("Resetting battle...");
+
+        // 1. Reset player to starting state
+        BattlePlayerValue.Instance.RestoreStartingState();
+
+        // 2. Reset all enemies
+        foreach (var enemy in BattleEnemyManager.Instance.GetEnemyBattleControls())
+        {
+            enemy.RestoreStartingState();
+        }
+
+        // 3. Reset turn counter
+        Turn = 0;
+
+        // 4. Start player turn
+        BattlePlayerValue.Instance.StartTurn();
+
+        // 5. Update UI
+        BattleUIManager.SetTurnText(Turn);
+    }
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
     {

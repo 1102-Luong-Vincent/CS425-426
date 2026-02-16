@@ -26,6 +26,15 @@ public class EnemyBattleControl : MonoBehaviour
 
     [SerializeField] private DamageText damageText;
 
+    private EnemySnapshot startingBattleState;
+
+    [System.Serializable]
+    public class EnemySnapshot
+    {
+        public int Health;
+        public int MaxHealth;
+        public EnemyValue EnemyValue;
+    }
 
     public void Init(EnemyValue enemyValue)
     {
@@ -37,6 +46,8 @@ public class EnemyBattleControl : MonoBehaviour
 
         SetHealth();
         Listener(true);
+
+        CaptureStartingState();
     }
 
     void InitAnimator()
@@ -128,7 +139,7 @@ public class EnemyBattleControl : MonoBehaviour
     {
         enemyValue.Health -= amount;
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
-        damageText.ShowDamage(amount, transform);
+        //damageText.ShowDamage(amount, transform);
         TriggerTakeDamageAnimation();
         if (enemyValue.Health <= 0)
         {
@@ -207,4 +218,32 @@ public class EnemyBattleControl : MonoBehaviour
             audioSource.PlayOneShot(attackSound);
         }
     }
+
+    #region Saves enemy state upon restarting battle
+    public void CaptureStartingState()
+    {
+        startingBattleState = new EnemySnapshot
+        {
+            Health = enemyValue.Health,
+            MaxHealth = enemyValue.MaxHealth,
+            EnemyValue = enemyValue
+        };
+    }
+
+    public void RestoreStartingState()
+    {
+        if (startingBattleState == null) return;
+
+        enemyValue.MaxHealth = startingBattleState.MaxHealth;
+        enemyValue.Health = startingBattleState.Health;
+
+        UpdateMaxHealthUI(enemyValue.MaxHealth);
+        UpdateHealthUI(enemyValue.Health);
+
+        // Reactivate enemy if it was destroyed/dead
+        if (!gameObject.activeInHierarchy)
+            gameObject.SetActive(true);
+
+    }
+    #endregion
 }

@@ -62,6 +62,10 @@ public class BattleUIManager : MonoBehaviour
 
     public void Retry()
     {
+        if (BattlePlayerValue.Instance.Health <= 0)
+        {
+            BattleManage.Instance.ResetBattle();
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); //reloads the current scene so battle can restart
     }
 
