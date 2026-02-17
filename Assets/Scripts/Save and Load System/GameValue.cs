@@ -99,6 +99,7 @@ public class GameValue : MonoBehaviour
         }
         gameProcessManager.PlayMusic(scene);
     }
+    
     private bool IsSceneInBuild(string sceneName)
     {
         int count = SceneManager.sceneCountInBuildSettings;
