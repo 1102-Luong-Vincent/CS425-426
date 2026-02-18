@@ -22,7 +22,7 @@ public enum ScreenType
 
 public enum PanelType
 {
-   None,Volume,Display, Language
+   None,Volume,Display, Language, Controls
 }
 
 public class OptionPanelControl : PanelControl
@@ -30,6 +30,7 @@ public class OptionPanelControl : PanelControl
     public Button VolumeButton;
     public Button DisplayButton;
     public Button LanguageButton;
+    public Button ControlsButton;
     public Button BackButton;
 
     private List<Button> optionButtons;
@@ -42,7 +43,7 @@ public class OptionPanelControl : PanelControl
     [SerializeField] AudioClip buttonClickSound;
     void Start()
     {
-        optionButtons = new List<Button>() { VolumeButton, DisplayButton, LanguageButton };
+        optionButtons = new List<Button>() { VolumeButton, DisplayButton, LanguageButton, ControlsButton};
 
         InitOptionPanel();
         InitOptionPanelButton();
@@ -50,6 +51,7 @@ public class OptionPanelControl : PanelControl
         InitVolumePanel();
         InitDisplayPanel();
         InitLanguagePanel();
+        InitControlsPanel();
     }
     #region Option
     void InitOptionPanel()
@@ -57,6 +59,7 @@ public class OptionPanelControl : PanelControl
         panels[PanelType.Volume] = volumePanelControl.VolumePanel;
         panels[PanelType.Display] = displayPanelControl.DisplayPanel;
         panels[PanelType.Language] = languagePanelControl.LanguagePanel;
+        panels[PanelType.Controls] = controlsPanelControl.ControlsPanel;
         SetOptionPanelActive(false);
     }
     void InitOptionPanelButton()
@@ -67,6 +70,7 @@ public class OptionPanelControl : PanelControl
         OnMainMenuButtonClick(VolumeButton, () => OpenSubPanel(PanelType.Volume), false);
         OnMainMenuButtonClick(DisplayButton, () => OpenSubPanel(PanelType.Display), false);
         OnMainMenuButtonClick(LanguageButton, () => OpenSubPanel(PanelType.Language), false);
+        OnMainMenuButtonClick(ControlsButton, () => OpenSubPanel(PanelType.Controls), false);
         //OnMainMenuButtonClick(BackButton, () => SetOptionPanelActive(false), false);
         OnMainMenuButtonClick(BackButton, () => SetOptionsPanel(false), false);
     }
@@ -205,6 +209,21 @@ public class OptionPanelControl : PanelControl
 
 
     #endregion
+    #region Controls
+    public ControlsPanelControl controlsPanelControl;
+
+    [System.Serializable]
+    public class ControlsPanelControl
+    {
+        public GameObject ControlsPanel;
+        public Button ControlsBackButton;
+    }
+
+    void InitControlsPanel()
+    {
+        OnMainMenuButtonClick(controlsPanelControl.ControlsBackButton, () => CloseSubPanel(PanelType.Controls), false);
+    }
+    #endregion
     #region Helper Function
 
 
@@ -229,6 +248,7 @@ public class OptionPanelControl : PanelControl
         SetOptionsPanel(true); // show option buttons again
         SetOptionButtonsActive(true);         // show Volume/Display/Language buttons
         SetOptionsBackButtonActive(true);     // show Options Back button again
+
     }
 
 

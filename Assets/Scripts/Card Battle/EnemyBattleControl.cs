@@ -26,6 +26,9 @@ public class EnemyBattleControl : MonoBehaviour
 
     [SerializeField] private DamageText damageText;
 
+    [Header("Visual Effects")]
+    [SerializeField] ParticleSystem bloodEffect;
+
     private EnemySnapshot startingBattleState;
 
     [System.Serializable]
@@ -138,6 +141,9 @@ public class EnemyBattleControl : MonoBehaviour
     public void DealDamage(int amount)
     {
         enemyValue.Health -= amount;
+
+        SpawnBlood();
+
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
         //damageText.ShowDamage(amount, transform);
         TriggerTakeDamageAnimation();
@@ -158,6 +164,18 @@ public class EnemyBattleControl : MonoBehaviour
     //    DamageText dmgText = textObj.GetComponent<DamageText>();
     //    dmgText.ShowDamage(damage, targetTransform);
     //}
+
+    private void SpawnBlood()
+    {
+
+        if (bloodEffect == null) return;
+
+        ParticleSystem effect = Instantiate(bloodEffect, transform.position, Quaternion.identity);
+
+        effect.Play();
+
+        Destroy(effect.gameObject, effect.main.duration + 1.0f);
+    }
     private IEnumerator DeathSequence()
     {
         float animationLength = GetAnimationLength("dieWest");
