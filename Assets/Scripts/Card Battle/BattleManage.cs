@@ -14,6 +14,8 @@ public class BattleManage : MonoBehaviour
     private BattleData battleData;
     public BattleUIManager BattleUIManager;
 
+    [SerializeField] BattlePlayerController player;
+
     private int turn = 1;
     private event Action<int> OnTurnChanged;
 
@@ -142,6 +144,13 @@ public class BattleManage : MonoBehaviour
         // 5. Update UI
         BattleUIManager.SetTurnText(Turn);
     }
+
+    public BattlePlayerController GetBattlePlayerController()
+    {
+        return player;
+    }
+
+
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
     {

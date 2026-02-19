@@ -18,6 +18,9 @@ public class BattleEnemyManager : MonoBehaviour
     private Vector2 rangeSize = new Vector2(2f, 2f); 
     public float minDistance = 1.5f;
 
+    [Header("Visual Effects")]
+    [SerializeField] public ParticleSystem bloodEffect;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -102,6 +105,7 @@ public class BattleEnemyManager : MonoBehaviour
         {
             enemy.PlayAttackSound();
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
+            BattleManage.Instance.GetBattlePlayerController().SpawnBlood();
 
         }
 
@@ -110,6 +114,7 @@ public class BattleEnemyManager : MonoBehaviour
         BattleManage.Instance.StartNextTurn();
     }
 
+    
 
     public List<EnemyValue> GetEnemyValues()
     {

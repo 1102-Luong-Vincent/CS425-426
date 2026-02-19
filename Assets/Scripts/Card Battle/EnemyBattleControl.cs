@@ -165,7 +165,7 @@ public class EnemyBattleControl : MonoBehaviour
     //    dmgText.ShowDamage(damage, targetTransform);
     //}
 
-    private void SpawnBlood()
+    private void SpawnBlood() //function for playing the particle system
     {
 
         if (bloodEffect == null) return;
