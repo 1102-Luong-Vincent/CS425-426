@@ -16,6 +16,10 @@ public class BattlePlayerValue : MonoBehaviour
     private List<CardValue> HeldCards = new List<CardValue>();
     private List<CardValue> BattleCards = new List<CardValue>();
 
+    [Header("Visual Effects")]
+    [SerializeField] private ParticleSystem healEffectPrefab;
+    //[SerializeField] private Transform playerVisual;
+
     #region MaxHealth and Health
     private int maxHealth;
     private int health;
@@ -157,6 +161,7 @@ public class BattlePlayerValue : MonoBehaviour
     {
         int HealthAmount = Mathf.Min(healthToAdd, MaxHealth - Health);
         Health += HealthAmount;
+        SpawnHealEffect();
         Health = Mathf.Clamp(Health, 0, MaxHealth);
     }
 
@@ -245,6 +250,16 @@ public class BattlePlayerValue : MonoBehaviour
 
         result.Damage = Mathf.RoundToInt(baseDamage);
         return result;
+    }
+
+    private void SpawnHealEffect()
+    {
+        if (healEffectPrefab == null) return;
+
+        ParticleSystem effect = Instantiate(healEffectPrefab, transform.position, Quaternion.identity);
+
+        effect.Play();
+        Destroy(effect.gameObject, effect.main.duration + 0.5f);
     }
 
     public void CaptureStartingState()

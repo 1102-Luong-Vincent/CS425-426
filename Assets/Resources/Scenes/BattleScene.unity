@@ -349,6 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a9c5f357288654ea87aa3a8e47b665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healEffectPrefab: {fileID: 1376590762040394498, guid: d0c0d9906b8a5934d9815e33e78d37ac, type: 3}
   BattlePlayerUIManager: {fileID: 30794519}
 --- !u!114 &30794519
 MonoBehaviour:
@@ -4398,6 +4399,10 @@ PrefabInstance:
     - target: {fileID: 2121824357397542284, guid: 9e2dd44f280534443bcc7cc482bbfcc7, type: 3}
       propertyPath: m_Name
       value: DamageNotification
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121824357397542284, guid: 9e2dd44f280534443bcc7cc482bbfcc7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3282965546996809929, guid: 9e2dd44f280534443bcc7cc482bbfcc7, type: 3}
       propertyPath: m_fontAsset
