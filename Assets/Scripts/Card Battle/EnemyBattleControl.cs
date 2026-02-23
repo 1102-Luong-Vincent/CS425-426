@@ -24,6 +24,21 @@ public class EnemyBattleControl : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip attackSound;
 
+    [SerializeField] private DamageText damageText;
+
+    [Header("Visual Effects")]
+    [SerializeField] ParticleSystem bloodEffect;
+
+    private EnemySnapshot startingBattleState;
+
+    [System.Serializable]
+    public class EnemySnapshot
+    {
+        public int Health;
+        public int MaxHealth;
+        public EnemyValue EnemyValue;
+    }
+
     public void Init(EnemyValue enemyValue)
     {
         this.enemyValue = enemyValue;
@@ -34,6 +49,8 @@ public class EnemyBattleControl : MonoBehaviour
 
         SetHealth();
         Listener(true);
+
+        CaptureStartingState();
     }
 
     void InitAnimator()
@@ -124,7 +141,11 @@ public class EnemyBattleControl : MonoBehaviour
     public void DealDamage(int amount)
     {
         enemyValue.Health -= amount;
+
+        SpawnBlood();
+
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
+        //damageText.ShowDamage(amount, transform);
         TriggerTakeDamageAnimation();
         if (enemyValue.Health <= 0)
         {
@@ -135,6 +156,26 @@ public class EnemyBattleControl : MonoBehaviour
         }
     }
 
+    //void ShowDamage(int damage, Transform targetTransform)
+    //{
+    //    Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+    //    GameObject textObj = Instantiate(damageTextPrefab, canvas.transform);
+    //    DamageText dmgText = textObj.GetComponent<DamageText>();
+    //    dmgText.ShowDamage(damage, targetTransform);
+    //}
+
+    private void SpawnBlood() //function for playing the particle system
+    {
+
+        if (bloodEffect == null) return;
+
+        ParticleSystem effect = Instantiate(bloodEffect, transform.position, Quaternion.identity);
+
+        effect.Play();
+
+        Destroy(effect.gameObject, effect.main.duration + 1.0f);
+    }
     private IEnumerator DeathSequence()
     {
         float animationLength = GetAnimationLength("dieWest");
@@ -195,4 +236,32 @@ public class EnemyBattleControl : MonoBehaviour
             audioSource.PlayOneShot(attackSound);
         }
     }
+
+    #region Saves enemy state upon restarting battle
+    public void CaptureStartingState()
+    {
+        startingBattleState = new EnemySnapshot
+        {
+            Health = enemyValue.Health,
+            MaxHealth = enemyValue.MaxHealth,
+            EnemyValue = enemyValue
+        };
+    }
+
+    public void RestoreStartingState()
+    {
+        if (startingBattleState == null) return;
+
+        enemyValue.MaxHealth = startingBattleState.MaxHealth;
+        enemyValue.Health = startingBattleState.Health;
+
+        UpdateMaxHealthUI(enemyValue.MaxHealth);
+        UpdateHealthUI(enemyValue.Health);
+
+        // Reactivate enemy if it was destroyed/dead
+        if (!gameObject.activeInHierarchy)
+            gameObject.SetActive(true);
+
+    }
+    #endregion
 }

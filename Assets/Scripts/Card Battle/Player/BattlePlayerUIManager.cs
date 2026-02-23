@@ -148,7 +148,7 @@ public class BattlePlayerUIManager : MonoBehaviour
         return cardObj;
     }
 
-    private void ClearAllCardUI()
+    public void ClearAllCardUI()
     {
         foreach (Transform child in CardZone)
         {

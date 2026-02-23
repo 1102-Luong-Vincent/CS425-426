@@ -15,8 +15,11 @@ public class BattleEnemyManager : MonoBehaviour
     public List<EnemyBattleControl> currentEnemys = new List<EnemyBattleControl>();
 
 
-    private Vector2 rangeSize = new Vector2(5f, 5f); 
+    private Vector2 rangeSize = new Vector2(2f, 2f); 
     public float minDistance = 1.5f;
+
+    [Header("Visual Effects")]
+    [SerializeField] public ParticleSystem bloodEffect;
 
     private void Awake()
     {
@@ -94,7 +97,7 @@ public class BattleEnemyManager : MonoBehaviour
 
     public IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.2f);
 
         // pick an enemy card, apply effect, damage player etc.
         Debug.Log("Enemy action!");
@@ -102,6 +105,7 @@ public class BattleEnemyManager : MonoBehaviour
         {
             enemy.PlayAttackSound();
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
+            BattleManage.Instance.GetBattlePlayerController().SpawnBlood();
 
         }
 
@@ -110,6 +114,7 @@ public class BattleEnemyManager : MonoBehaviour
         BattleManage.Instance.StartNextTurn();
     }
 
+    
 
     public List<EnemyValue> GetEnemyValues()
     {

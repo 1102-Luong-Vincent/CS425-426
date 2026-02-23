@@ -17,7 +17,14 @@ public class InteractableNotification : MonoBehaviour
     [SerializeField] public Image pickupIcon;
     public void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         notificationText.gameObject.SetActive(false);
         pickupIcon.gameObject.SetActive(false);
     }

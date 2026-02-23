@@ -1,6 +1,6 @@
 ﻿// Author: Shawn Meng
-// Created by: Shawn Meng
-// Some code generated with assistance from ChatGPT.
+// Created by: Shawn Meng and Vincent Luong
+// No external sources were used
 
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -15,6 +15,10 @@ public class BattlePlayerValue : MonoBehaviour
     private WeaponValue weapon;
     private List<CardValue> HeldCards = new List<CardValue>();
     private List<CardValue> BattleCards = new List<CardValue>();
+
+    [Header("Visual Effects")]
+    [SerializeField] private ParticleSystem healEffectPrefab;
+    //[SerializeField] private Transform playerVisual;
 
     #region MaxHealth and Health
     private int maxHealth;
@@ -72,6 +76,18 @@ public class BattlePlayerValue : MonoBehaviour
     }
 
     public BattlePlayerUIManager BattlePlayerUIManager;
+
+    private BattlePlayerSnapshot startingBattleState;
+
+    [Serializable]
+    private class BattlePlayerSnapshot
+    {
+        public List<CardValue> HeldCards;
+        public List<CardValue> BattleCards;
+        public WeaponValue Weapon;
+        public int Health;
+        public int MaxHealth;
+    }
 
     private void Awake()
     {
@@ -145,6 +161,7 @@ public class BattlePlayerValue : MonoBehaviour
     {
         int HealthAmount = Mathf.Min(healthToAdd, MaxHealth - Health);
         Health += HealthAmount;
+        SpawnHealEffect();
         Health = Mathf.Clamp(Health, 0, MaxHealth);
     }
 
@@ -221,7 +238,10 @@ public class BattlePlayerValue : MonoBehaviour
             return result;
         }
 
-        float baseDamage = state.Attack * state.AttackBuff * multiplier;
+        //float baseDamage = state.Attack * state.AttackBuff * multiplier;
+        float baseDamage = state.Attack + multiplier;
+        baseDamage *= state.AttackBuff;
+
         result.IsCritical = UnityEngine.Random.value < state.CriticalChanceBuff;
         if (result.IsCritical)
         {
@@ -232,6 +252,48 @@ public class BattlePlayerValue : MonoBehaviour
         return result;
     }
 
+    private void SpawnHealEffect()
+    {
+        if (healEffectPrefab == null) return;
+
+        ParticleSystem effect = Instantiate(healEffectPrefab, transform.position, Quaternion.identity);
+
+        effect.Play();
+        Destroy(effect.gameObject, effect.main.duration + 0.5f);
+    }
+
+    public void CaptureStartingState()
+    {
+        startingBattleState = new BattlePlayerSnapshot()
+        {
+            HeldCards = new List<CardValue>(HeldCards),
+            BattleCards = new List<CardValue>(BattleCards),
+            Weapon = weapon,
+            Health = Health,
+            MaxHealth = MaxHealth
+        };
+    }
+
+    public void RestoreStartingState()
+    {
+        if (startingBattleState == null) return;
+
+        HeldCards = new List<CardValue>(startingBattleState.HeldCards);
+        BattleCards = new List<CardValue>(startingBattleState.BattleCards);
+        weapon = startingBattleState.Weapon;
+        Health = startingBattleState.Health;
+        MaxHealth = startingBattleState.MaxHealth;
+
+        // Clear and update UI
+        BattlePlayerUIManager.ClearAllCardUI();
+        foreach (var card in HeldCards)
+        {
+            BattlePlayerUIManager.AddNewCard(card);
+        }
+
+        // Update UI
+        BattlePlayerUIManager.SetPlayer(this);
+    }
     public List<CardValue> GetBattleCards() => HeldCards;
     public WeaponValue GetWeapon() => weapon;
 
