@@ -18,7 +18,7 @@ public class InventoryUIControl :  PanelControl
     public Transform EquipZone;
     public Transform CardZone;
     public GameObject MenuCardPrefab;
-    //public GameObject EmptySlotPrefab;
+    public GameObject EmptySlotPrefab;
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI EnergyText;
     public TextMeshProUGUI CardsText;
@@ -33,7 +33,7 @@ public class InventoryUIControl :  PanelControl
         public Button SortZAButton;
     }
 
-    PlayerValue playerValue;
+    public PlayerValue playerValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,6 +41,7 @@ public class InventoryUIControl :  PanelControl
         InitButtons();
     }
 
+    //display relevant playervalue info and populate inventory with menu cards based on playervalue when inventory is opened
     public void OnInventoryOpen()
     {
         if (playerValue == null) playerValue = GameValue.Instance.GetPlayerValue();
@@ -56,42 +57,17 @@ public class InventoryUIControl :  PanelControl
         weapon.transform.SetParent(WeaponZone);
         wmenucard.SetWeaponValue(wval);
 
-        int EquipCardCount = 0;
-        // populate card zone with starting hand
-        foreach (CardValue val in playerValue.EquipmentCards)
-        {
-            InstantiateCard(val, EquipZone);
-            EquipCardCount++;
-        }
-        // populate rest of equip zone with empty slots
-        //for (int i = EquipCardCount; i < 5; i++)
-        //{
-        //    GameObject emptySlot = Instantiate(EmptySlotPrefab);
-        //    emptySlot.transform.SetParent(EquipZone);
-        //    emptySlot.tag = "EquipCard";
-        //}
+        // display equipped deck
+        InstantiateDeck();
 
-        int BattleCardCount = 0;
-        // populate card zone with cards in PlayerValue
-        foreach (CardValue val in playerValue.battleCardsList)
-        {
-            if(BattleCardCount >= playerValue.GetMaxCards()-EquipCardCount - 1) // total = 1 weapon card + # of equip cards
-            {
-                break;
-            }
-            InstantiateCard(val, CardZone);
-            BattleCardCount++;
-        }
+        // display remainder of player's card library
+        InstantiateCardLibrary();
+        
 
-        //// populate rest of card zone with empty slots
-        //for(int i = BattleCardCount; i < playerValue.GetMaxCards()-6; i++)
-        //{
-        //        GameObject emptySlot = Instantiate(EmptySlotPrefab);
-        //        emptySlot.transform.SetParent(CardZone);
-        //        emptySlot.tag = "BattleCard";
-        //}
+
     }
 
+    //delete all menu cards from inventory to save memory and prepare for next time menu is opened
     public void OnInventoryClose()
     {
         // menu closed -- erase menu cards
@@ -118,7 +94,7 @@ public class InventoryUIControl :  PanelControl
     public override void ShowPanel()
     {
         base.ShowPanel();
-        OnInventoryOpen();
+        RefreshInventory(); // refreshing instead of opening to prevent duplicate cards if player opens inventory multiple times without closing
     }
 
     public override void HidePanel()
@@ -181,23 +157,59 @@ public class InventoryUIControl :  PanelControl
         }
     }
 
-
-    void InstantiateCard(CardValue val, Transform dest)
+    public void InstantiateDeck()
     {
-        GameObject card = Instantiate(MenuCardPrefab);
-        card.name = (val.CardName + " card");
-        MenuCardControl menucard = card.GetComponent<MenuCardControl>();
+
+        for (int i = 0; i < playerValue.GetMaxCards(); i++)
+        {
+            InstantiateMenuCard(playerValue.GetActiveDeck()[i], EquipZone, InventoryConstants.EquipCard);
+
+        }
+    }
+
+    //display the set of cards the player can add to their deck. this is the player's card library minus the cards currently in their deck.
+    public void InstantiateCardLibrary()
+    {
+        List<CardValue> temp = new List<CardValue>(playerValue.HadCardsLibrary); // create temp list to avoid modifying original library when removing cards to display equipped deck
+        foreach (CardValue val in playerValue.GetActiveDeck())
+        {
+            temp.Remove(val);
+        }
+
+        foreach (CardValue val in temp)
+        {
+            InstantiateMenuCard(val, CardZone, InventoryConstants.BattleCard);
+        }
+    }
+
+    // this method will instantiate a menu card prefab and parent it to the given transform.
+    // if the given card value is null, it will instantiate an empty slot prefab instead.
+    public void InstantiateMenuCard(CardValue val, Transform dest, string tag)
+    {
+        GameObject card;
+        if (val != null)
+        {
+            card = Instantiate(MenuCardPrefab);
+            card.name = (val.CardName + "menu card");
+            MenuCardControl menucard = card.GetComponent<MenuCardControl>();
+            if (menucard != null)
+            {
+                menucard.SetCardValue(val);
+            }
+        }
+        else
+        {
+            card = Instantiate(EmptySlotPrefab);
+            card.name = "empty card slot";
+
+        }
+
+
         card.transform.SetParent(dest);
-        menucard.SetCardValue(val);
-        
-        if(dest.gameObject == CardZone.gameObject)
-        {
-            card.tag = InventoryConstants.BattleCard;
-        }
-        else if(dest.gameObject == EquipZone.gameObject)
-        {
-            card.tag = InventoryConstants.EquipCard;
-        }
+
+        // tag card based on which zone it is in
+        card.tag = tag;
+
     }
 }
 

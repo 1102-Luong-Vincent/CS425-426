@@ -23,8 +23,15 @@ public class InventoryManager : MonoBehaviour
     public Button CardCancelButton;
     public Button WeaponLibraryButton;
     public Button WeaponCancelButton;
+    public Button DeckButton1;
+    public Button DeckButton2;
+    public Button DeckButton3;
     public static InventoryManager Instance;
     public InventoryUIControl control;
+
+    GameObject selectedCard = null; //card player has left clicked on
+
+
     GameObject targetCard; // card we want to replace
     bool replacingCard = false; // when we select a card, are we replacing it?
     void Awake()
@@ -45,33 +52,28 @@ public class InventoryManager : MonoBehaviour
         OnGameMenuButtonClick(WeaponLibraryButton, OnWeaponButtonClick);
         OnGameMenuButtonClick(CardCancelButton, OnCardCancelButtonClick);
         OnGameMenuButtonClick(WeaponCancelButton, OnWeaponCancelButtonClick);
+        OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0));
+        OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1));
+        OnGameMenuButtonClick(DeckButton3, () => OnDeckButtonClick(2));
     }
 
     void CardClicked(GameObject card)
     {
-        if(!replacingCard)
+        // check to see if we have already selected a card
+        if (selectedCard == null)
         {
-            targetCard = card;
-            OpenCardSelector();
+            selectedCard = card;
+            MenuCardControl cardControl = selectedCard.GetComponent<MenuCardControl>();
+            cardControl.ToggleSelected();
         }
         else
         {
-            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
-            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
-
-            if(targetCard.gameObject.tag == "EquipCard")
+            // if we have already selected a card, make sure we aren't swapping the same card with itself
+            if (selectedCard != card)
             {
-                playerValue.EquipmentCards.Remove(oldCard);
-                playerValue.EquipmentCards.Add(newCard);
-            }
-            else if (targetCard.gameObject.tag == "BattleCard")
-            {
-                playerValue.battleCardsList.Remove(oldCard);
-                playerValue.battleCardsList.Add(newCard);
+                SwapCards(selectedCard.GetComponent<CardValue>(), card.GetComponent<CardValue>());
             }
 
-                control.RefreshInventory();
-            CloseCardSelector();
         }
     }
 
@@ -216,5 +218,18 @@ public class InventoryManager : MonoBehaviour
             Destroy(menucard);
         }
         WeaponSelectorPanel.SetActive(false);
+    }
+
+    void OnDeckButtonClick(int index)
+    {
+        playerValue.setActiveDeck(index);
+        control.RefreshInventory();
+    }
+
+    void SwapCards(CardValue src, CardValue dst)
+    {
+        CardValue temp = src;
+        src = dst;
+        dst = temp;
     }
 }
