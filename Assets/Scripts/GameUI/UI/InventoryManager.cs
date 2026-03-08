@@ -63,18 +63,23 @@ public class InventoryManager : MonoBehaviour
         if (selectedCard == null)
         {
             selectedCard = card;
-            MenuCardControl cardControl = selectedCard.GetComponent<MenuCardControl>();
-            cardControl.ToggleSelected();
+            selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
         }
         else
         {
             // if we have already selected a card, make sure we aren't swapping the same card with itself
             if (selectedCard != card)
             {
-                SwapCards(selectedCard.GetComponent<CardValue>(), card.GetComponent<CardValue>());
+                Debug.Log("swapping " + selectedCard + " and " + card);
+                SwapCards(selectedCard.GetComponent<MenuCardControl>().GetCardValue(), card.GetComponent<MenuCardControl>().GetCardValue());
+                Debug.Log("swapped in theory");
+                selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
+                selectedCard = null;
+                control.RefreshInventory();
             }
 
         }
+
     }
 
     void CardRightClicked(GameObject card)
@@ -228,6 +233,7 @@ public class InventoryManager : MonoBehaviour
 
     void SwapCards(CardValue src, CardValue dst)
     {
+        Debug.Log("swappin " + src.CardName + " and " + dst.CardName);
         CardValue temp = src;
         src = dst;
         dst = temp;
