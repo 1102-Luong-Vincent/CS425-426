@@ -27,7 +27,7 @@ public enum SceneType
 
 }
 
-
+[Serializable]
 public class GameValue : MonoBehaviour
 {
     public static GameValue Instance;
@@ -38,7 +38,7 @@ public class GameValue : MonoBehaviour
     private String happendStoryName = string.Empty;
     [SerializeField] GameProcessManager gameProcessManager;
 
-    private BattleData battleData;
+    [SerializeField] private BattleData battleData;
     public GameValueTest gameValueTest;
     // new add for weapon upgrade
     private List<ExcelWeaponData> weaponExcelCache;

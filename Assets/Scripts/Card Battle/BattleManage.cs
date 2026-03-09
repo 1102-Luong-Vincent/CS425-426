@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class BattleManage : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class BattleManage : MonoBehaviour
     public BattleUIManager BattleUIManager;
 
     [SerializeField] BattlePlayerController player;
+
 
     private int turn = 1;
     private event Action<int> OnTurnChanged;
@@ -45,6 +47,7 @@ public class BattleManage : MonoBehaviour
 
     void Start()
     {
+        ResetBattle();
         battleData = GameValue.Instance.GetBattleData();
         BattleEnemyManager.Instance.SetEnemy(battleData);
         //BattleEnemyManager.Instance.SetEnemy();
@@ -120,6 +123,8 @@ public class BattleManage : MonoBehaviour
         Debug.Log($"going back to previous map {battleData.GetMapScene()}");
         GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
         GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
+        Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
+
     }
 
     public void ResetBattle()
@@ -128,6 +133,8 @@ public class BattleManage : MonoBehaviour
 
         // 1. Reset player to starting state
         BattlePlayerValue.Instance.RestoreStartingState();
+
+
 
         // 2. Reset all enemies
         foreach (var enemy in BattleEnemyManager.Instance.GetEnemyBattleControls())

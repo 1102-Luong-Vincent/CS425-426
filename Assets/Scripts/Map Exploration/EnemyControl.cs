@@ -30,7 +30,6 @@ public class EnemyControl : MonoBehaviour
         rb.freezeRotation = true;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        EnemyID = this.EnemyID - 1;
         enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
         previousPosition = transform.position;
         SetAnimator();
@@ -295,4 +294,15 @@ public class EnemyControl : MonoBehaviour
             animator.SetBool("TakeDamageSouthWest", false);
         }
     }
+
+    public EnemyValue GetEnemyValue() {
+        return enemyValue;
+    }
+
+    public int GetEnemyID() {
+
+        return EnemyID;
+    }
+
+
 }

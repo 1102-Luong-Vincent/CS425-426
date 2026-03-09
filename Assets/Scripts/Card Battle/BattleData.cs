@@ -2,11 +2,13 @@
 // Created by: Shawn Meng
 // Modified by: Shawn Meng
 // No external source was used
-
+using System;
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
+
+[Serializable]
 public class BattleData
 {
     public List<EnemyValue> battleEnemys = new List<EnemyValue>();

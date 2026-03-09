@@ -102,7 +102,6 @@ public class BattlePlayerValue : MonoBehaviour
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
         state = new State();
-
         HeldCards = playerValue.EquipmentCards;
         BattleCards = playerValue.battleCardsList;
         weapon = playerValue.EquipmentWeapon;
@@ -311,4 +310,6 @@ public class BattlePlayerValue : MonoBehaviour
         else OnMaxHealthChanged -= listener;
     }
     #endregion
+
+
 }
