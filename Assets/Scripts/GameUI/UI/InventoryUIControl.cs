@@ -162,7 +162,7 @@ public class InventoryUIControl :  PanelControl
 
         for (int i = 0; i < playerValue.GetMaxCards(); i++)
         {
-            InstantiateMenuCard(playerValue.GetActiveDeck()[i], EquipZone, InventoryConstants.EquipCard);
+            InstantiateMenuCard(playerValue.GetActiveDeck()[i], EquipZone, InventoryConstants.EquipCard, i);
 
         }
     }
@@ -176,15 +176,17 @@ public class InventoryUIControl :  PanelControl
             temp.Remove(val);
         }
 
+        int index = 0;
         foreach (CardValue val in temp)
         {
-            InstantiateMenuCard(val, CardZone, InventoryConstants.BattleCard);
+            InstantiateMenuCard(val, CardZone, InventoryConstants.BattleCard, index);
+            index++;
         }
     }
 
     // this method will instantiate a menu card prefab and parent it to the given transform.
     // if the given card value is null, it will instantiate an empty slot prefab instead.
-    public void InstantiateMenuCard(CardValue val, Transform dest, string tag)
+    public void InstantiateMenuCard(CardValue val, Transform dest, string tag, int index)
     {
         GameObject card;
         if (val != null)
@@ -210,6 +212,17 @@ public class InventoryUIControl :  PanelControl
         // tag card based on which zone it is in
         card.tag = tag;
 
+        switch(tag)
+        {
+            case InventoryConstants.EquipCard:
+                card.GetComponent<MenuCardControl>().location = MenuCardControl.CardLocation.Deck;
+                card.GetComponent<MenuCardControl>().index = index;
+                break;
+            case InventoryConstants.BattleCard:
+                card.GetComponent<MenuCardControl>().location = MenuCardControl.CardLocation.Library;
+                card.GetComponent<MenuCardControl>().index = index;
+                break;
+        }
     }
 }
 

@@ -36,9 +36,9 @@ public class InventoryTests
         CardValue testCard = new CardValue("test card", null, CardType.SupportItems, "test card", CardRarity.Rare, CardAbility.Healing, 0);
 
         // attempt to instantiate a menu card with separate transforms
-        ui.InstantiateMenuCard(testCard, CardZone.transform, InventoryConstants.EquipCard);
-        ui.InstantiateMenuCard(testCard, EquipZone.transform, InventoryConstants.EquipCard);
-        ui.InstantiateMenuCard(testCard, WeaponZone.transform, InventoryConstants.EquipCard);
+        ui.InstantiateMenuCard(testCard, CardZone.transform, InventoryConstants.EquipCard,0);
+        ui.InstantiateMenuCard(testCard, EquipZone.transform, InventoryConstants.EquipCard,0);
+        ui.InstantiateMenuCard(testCard, WeaponZone.transform, InventoryConstants.EquipCard, 0);
 
 
         Assert.AreEqual(CardZone.transform.childCount, 1);
@@ -74,7 +74,7 @@ public class InventoryTests
         // attempt to flood a transform with more than 20 cards. It should stop accepting cards after 20
         for(int i = 0; i < 25; i++)
         {
-            ui.InstantiateMenuCard(testCard, CardZone.transform, InventoryConstants.EquipCard);
+            ui.InstantiateMenuCard(testCard, CardZone.transform, InventoryConstants.EquipCard, 0);
         }
 
 

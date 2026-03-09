@@ -296,6 +296,11 @@ public class PlayerValue
         return Decks[activeDeckIndex];
     }
 
+    public int GetActiveDeckIndex()
+    {
+        return activeDeckIndex;
+    }
+
 }
 
 [System.Serializable]
@@ -339,4 +344,7 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
+
+
 }
+

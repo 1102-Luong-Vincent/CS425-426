@@ -70,8 +70,7 @@ public class InventoryManager : MonoBehaviour
             // if we have already selected a card, make sure we aren't swapping the same card with itself
             if (selectedCard != card)
             {
-                Debug.Log("swapping " + selectedCard + " and " + card);
-                SwapCards(selectedCard.GetComponent<MenuCardControl>().GetCardValue(), card.GetComponent<MenuCardControl>().GetCardValue());
+                SwapCards(selectedCard, card);
                 Debug.Log("swapped in theory");
                 selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
                 selectedCard = null;
@@ -231,11 +230,43 @@ public class InventoryManager : MonoBehaviour
         control.RefreshInventory();
     }
 
-    void SwapCards(CardValue src, CardValue dst)
+    void SwapCards(GameObject src, GameObject dst)
     {
-        Debug.Log("swappin " + src.CardName + " and " + dst.CardName);
-        CardValue temp = src;
-        src = dst;
-        dst = temp;
+        MenuCardControl srcControl = src.GetComponent<MenuCardControl>();
+        MenuCardControl dstControl = dst.GetComponent<MenuCardControl>();
+
+        CardValue temp = srcControl.GetCardValue();
+        CardValue temp2 = dstControl.GetCardValue();
+        int tmpIndex = srcControl.index;
+
+        Debug.Log("Swapping index " + srcControl.index + " from " + srcControl.location + "with index " + dstControl.index + " from " + dstControl.location);
+        if (srcControl.location == MenuCardControl.CardLocation.Deck)
+        {
+            if(dstControl.location == MenuCardControl.CardLocation.Deck)
+            {
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
+            }
+            else
+            {
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
+                playerValue.HadCardsLibrary[dstControl.index] = temp;
+            }
+        }
+        else
+        {
+            if (dstControl.location == MenuCardControl.CardLocation.Deck)
+            {
+                playerValue.HadCardsLibrary[srcControl.index] = temp2;
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
+            }
+            else
+            {
+                playerValue.HadCardsLibrary[srcControl.index] = temp2;
+                playerValue.HadCardsLibrary[dstControl.index] = temp;
+            }
+        }
+        srcControl.index = dstControl.index;
+        dstControl.index = tmpIndex;
     }
 }

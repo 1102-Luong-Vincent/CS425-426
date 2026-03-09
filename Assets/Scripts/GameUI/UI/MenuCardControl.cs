@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
@@ -27,6 +29,16 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     private bool isActive = true;
     private bool isCentered = false;
     private bool isSelected = false;
+
+    public enum CardLocation
+    {
+        Deck,
+        Library
+    }
+
+    public CardLocation location;
+    public int index;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
