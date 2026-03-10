@@ -38,6 +38,13 @@ public class PlayerValue
         Init();
     }
 
+    // just for test
+    public PlayerValue(bool skipInit)
+    {
+        HadWeaponsLibrary = new List<WeaponValue>();
+        EquipmentWeapon = null;
+    }
+
     public void Init()
     {
         InitPlayerEquipmentWeapons();
