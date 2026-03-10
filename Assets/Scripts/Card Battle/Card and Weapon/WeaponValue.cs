@@ -29,6 +29,7 @@ public class WeaponValue
     public string upgradeMaterialName;
     public int upgradeMaterialNeed;
 
+    public WeaponValue() { }
 
     public WeaponValue(ExcelWeaponData excelData) 
     {

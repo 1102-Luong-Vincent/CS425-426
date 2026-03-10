@@ -223,7 +223,7 @@ public class WeaponUpgradeUIController : PanelControl
         RefreshSelectUI();
     }
 
-    private WeaponValue FindPlayerWeapon(PlayerValue player, string weaponName)
+    public WeaponValue FindPlayerWeapon(PlayerValue player, string weaponName)
     {
         // 在玩家背包找最高等级的那把武器
         WeaponValue best = null;
@@ -238,7 +238,7 @@ public class WeaponUpgradeUIController : PanelControl
         return best;
     }
 
-    private void ReplacePlayerWeapon(PlayerValue player, WeaponValue current, WeaponValue next)
+    public void ReplacePlayerWeapon(PlayerValue player, WeaponValue current, WeaponValue next)
     {
         for (int i = 0; i < player.HadWeaponsLibrary.Count; i++)
         {
