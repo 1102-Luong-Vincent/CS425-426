@@ -112,7 +112,7 @@ public class BattlePlayerValue : MonoBehaviour
 
         weapon = playerValue.EquipmentWeapon;
 
-        MaxHealth = playerValue.GetHealth();
+        MaxHealth = playerValue.GetMaxHealth();
         Health = playerValue.GetHealth();
 
         BattlePlayerUIManager.SetPlayer(this);
@@ -340,6 +340,11 @@ public class BattlePlayerValue : MonoBehaviour
         else OnMaxHealthChanged -= listener;
     }
     #endregion
-
+    private void OnDestroy()
+    {
+        // set playervalue health after battle
+        PlayerValue playerValue = GameValue.Instance.GetPlayerValue();
+        playerValue.SetHealth(Health);
+    }
 
 }

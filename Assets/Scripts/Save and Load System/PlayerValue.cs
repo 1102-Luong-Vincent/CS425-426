@@ -28,6 +28,7 @@ public class PlayerValue
 
 
     int Health = 100;
+    int MaxHealth = 100;
     int energy = 10;
 
     const int MAX_CARDS = 20;
@@ -290,6 +291,11 @@ public class PlayerValue
         return Health;
     }
 
+    public int GetMaxHealth()
+    {
+        return MaxHealth;
+    }
+
     public int GetEnergy()
     {
         return energy;
@@ -308,6 +314,11 @@ public class PlayerValue
     public int GetActiveDeckIndex()
     {
         return activeDeckIndex;
+    }
+
+    public void SetHealth(int health)
+    {
+        Health = health;
     }
 
 }
@@ -353,6 +364,7 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
+
 
 
 }
