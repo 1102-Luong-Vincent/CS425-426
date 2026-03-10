@@ -236,7 +236,12 @@ public class ItemControl : MonoBehaviour
 
         if (!string.IsNullOrEmpty(itemName))
         {
+            if(pickupIcon == null)
+            {
+                Debug.Log("Where pickupicon at");
+            }
             InteractableNotification.Instance.ShowNotification(itemName, pickupIcon);
+            Debug.Log("grabbed? " + itemName);
         }
         // Destroy item
         Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
