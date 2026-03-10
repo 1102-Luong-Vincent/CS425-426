@@ -600,6 +600,7 @@ float SnapAngleToEightDirections(float angle)
 
                 else if (Input.GetKey(KeyCode.A))
                 {
+                    Debug.Log("left");
                     float leftAngle = GetPerpendicularAngle(Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg, true);
                     movementDirection = new Vector2(Mathf.Cos(leftAngle * Mathf.Deg2Rad), Mathf.Sin(leftAngle * Mathf.Deg2Rad));
 

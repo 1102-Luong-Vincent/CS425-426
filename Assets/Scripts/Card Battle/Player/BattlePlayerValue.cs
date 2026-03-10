@@ -101,6 +101,7 @@ public class BattlePlayerValue : MonoBehaviour
             return;
         }
         Instance = this;
+
     }
 
     public void SetBattlePlayerValue(PlayerValue playerValue)
@@ -114,7 +115,7 @@ public class BattlePlayerValue : MonoBehaviour
 
         MaxHealth = playerValue.GetMaxHealth();
         Health = playerValue.GetHealth();
-
+        CaptureStartingState();
         BattlePlayerUIManager.SetPlayer(this);
     }
 

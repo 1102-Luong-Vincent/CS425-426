@@ -271,7 +271,16 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (isDead) return;
 
             // --- Keyboard input ---
-            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+            //Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            Vector2 input = new Vector2(
+                horizontal,
+                vertical/2 // skew vertical axis so player moves aligned with grid
+            ).normalized;
+
 
             // Optional: apply crouch speed
             float moveSpeed = isCrouching ? speed * 0.5f : speed;
@@ -660,6 +669,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             if (Input.GetKey(KeyCode.W))
             {
+                Debug.Log("up");
                 return;
             }
             else if (!isCrouching) // Allow strafing only when not crouching, if desired
