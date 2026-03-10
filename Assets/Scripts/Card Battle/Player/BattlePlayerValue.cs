@@ -106,8 +106,7 @@ public class BattlePlayerValue : MonoBehaviour
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
         state = new State();
-        //HeldCards = playerValue.EquipmentCards;
-        //BattleCards = playerValue.battleCardsList;
+
         HeldCards = new List<CardValue>(playerValue.EquipmentCards);
         BattleCards = new List<CardValue>(playerValue.battleCardsList);
 

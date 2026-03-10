@@ -50,7 +50,7 @@ public class PlayerValue
         InitPlayerEquipmentWeapons();
         InitPlayerEquipmentCards();
         InitPlayerDecks();
-
+        setActiveDeck(activeDeckIndex);
         //≤‚ ‘≤ƒ¡œ
         AddMaterial("Whetstone", 999);
         //AddMaterial("Metal", 999);
@@ -161,19 +161,21 @@ public class PlayerValue
         activeDeckIndex = index;
         // set starting hand
         List<CardValue> temp = new List<CardValue>();
+
+        CardValue[] activeDeck = Decks[activeDeckIndex];
+
+        EquipmentCards = new List<CardValue>();
+        battleCardsList = new List<CardValue>();
+
         for (int i = 0; i < STARTING_HAND_SIZE; i++)
         {
-            temp.Add(Decks[activeDeckIndex][i]);
+            if(activeDeck[i] != null)   EquipmentCards.Add(activeDeck[i]);
         }
-        EquipmentCards = temp;
 
-        // set rest of deck
-        temp.Clear();
         for (int i = STARTING_HAND_SIZE; i < MAX_CARDS; i++)
         {
-            temp.Add(Decks[activeDeckIndex][i]);
+            if (activeDeck[i] != null) battleCardsList.Add(activeDeck[i]);
         }
-        battleCardsList = temp;
     }
     // function to add a card to the currently active deck.
     public void AddCardToDeck(CardValue card, int index)

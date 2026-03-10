@@ -287,5 +287,7 @@ public class InventoryManager : MonoBehaviour
         }
         srcControl.index = dstControl.index;
         dstControl.index = tmpIndex;
+        //refresh current deck
+        playerValue.setActiveDeck(playerValue.GetActiveDeckIndex());
     }
 }
