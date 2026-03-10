@@ -33,7 +33,7 @@ public class GameValue : MonoBehaviour
     public static GameValue Instance;
 
     private GameValueLibrary library;
-    private PlayerValue playerValue;
+    public PlayerValue playerValue;
     [SerializeField] SceneType CurrentScene = SceneType.None;
     private String happendStoryName = string.Empty;
     [SerializeField] GameProcessManager gameProcessManager;
