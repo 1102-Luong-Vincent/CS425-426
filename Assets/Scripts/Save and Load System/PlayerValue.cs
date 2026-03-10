@@ -14,9 +14,12 @@ using static ExcelReader;
 
 public class PlayerValue
 {
-    public List<CardValue> EquipmentCards = new List<CardValue>();
-    public List<CardValue> battleCardsList = new List<CardValue>();
+    public List<CardValue> EquipmentCards = new List<CardValue>(); // Starting hand for battle -- first 5 cards in your deck
+    public List<CardValue> battleCardsList = new List<CardValue>(); // remaining 15 cards in your deck, not including starting hand
     public List<CardValue> HadCardsLibrary = new List<CardValue>();
+
+    public List<CardValue[]> Decks = new List<CardValue[]>(); // New list to hold multiple decks
+    int activeDeckIndex = 0; // Index to track the active deck
 
     public WeaponValue EquipmentWeapon;
     public List<WeaponValue> HadWeaponsLibrary = new List<WeaponValue>();
@@ -27,7 +30,9 @@ public class PlayerValue
     int Health = 100;
     int energy = 10;
 
-    int MAX_CARDS = 30;
+    const int MAX_CARDS = 20;
+    const int STARTING_HAND_SIZE = 5;
+    const int MAX_DECKS = 3;
 
     public PlayerValue() {
         Init();
@@ -37,6 +42,7 @@ public class PlayerValue
     {
         InitPlayerEquipmentWeapons();
         InitPlayerEquipmentCards();
+        InitPlayerDecks();
 
         //≤‚ ‘≤ƒ¡œ
         AddMaterial("Whetstone", 999);
@@ -124,13 +130,69 @@ public class PlayerValue
         HadCardsLibrary.AddRange(battleCardsList);
     }
 
+    public void InitPlayerDecks()
+    {
+        Decks.Clear();
+        for (int i = 0; i < MAX_DECKS; i++)
+        {
+            CardValue[] newDeck = new CardValue[MAX_CARDS];
+            for (int j = 0; j < MAX_CARDS; j++)
+            {
+                newDeck[j] = null;  //instantiate empty deck with null values, will be populated when player adds cards to deck
+            }
+            Decks.Add(newDeck);
+        }
+    }
+
+    public void setActiveDeck(int index)
+    {
+            if (index< 0 || index >= Decks.Count)
+            {
+                Debug.LogWarning($"Invalid deck index: {index}");
+                return;
+            }
+        activeDeckIndex = index;
+        // set starting hand
+        List<CardValue> temp = new List<CardValue>();
+        for (int i = 0; i < STARTING_HAND_SIZE; i++)
+        {
+            temp.Add(Decks[activeDeckIndex][i]);
+        }
+        EquipmentCards = temp;
+
+        // set rest of deck
+        temp.Clear();
+        for (int i = STARTING_HAND_SIZE; i < MAX_CARDS; i++)
+        {
+            temp.Add(Decks[activeDeckIndex][i]);
+        }
+        battleCardsList = temp;
+    }
+    // function to add a card to the currently active deck.
+    public void AddCardToDeck(CardValue card, int index)
+    {
+        if(card != null)
+        {
+            if (index < 0 || index >= MAX_CARDS)
+            {
+                Debug.LogWarning($"Invalid card index: {index}");
+                return;
+            }
+            Decks[activeDeckIndex][index] = card;
+        }
+        else
+        {
+            Debug.LogWarning("Cannot add null card to deck!");
+            Decks[activeDeckIndex][index] = null;
+        }
+    }
     public void AddCard(string cardName)
     {
 
         CardValue foundCard = GameValue.Instance.GetInitCardValue(cardName);
         if (foundCard != null)
         {
-            EquipmentCards.Add(foundCard);
+            HadCardsLibrary.Add(foundCard);
         }
 
     }
@@ -229,6 +291,16 @@ public class PlayerValue
         return MAX_CARDS;
     }
 
+    public CardValue[] GetActiveDeck()
+    {
+        return Decks[activeDeckIndex];
+    }
+
+    public int GetActiveDeckIndex()
+    {
+        return activeDeckIndex;
+    }
+
 }
 
 [System.Serializable]
@@ -272,4 +344,7 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
+
+
 }
+

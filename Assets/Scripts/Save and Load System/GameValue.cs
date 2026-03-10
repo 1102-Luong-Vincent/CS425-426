@@ -82,7 +82,6 @@ public class GameValue : MonoBehaviour
 
     public void LoadSceneByEnum(SceneType scene)
     {
-        Debug.Log("hi");
         if (scene == SceneType.None) return;
 
         string sceneName = scene.ToString();

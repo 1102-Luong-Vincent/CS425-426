@@ -72,21 +72,24 @@ public class PauseControl : MonoBehaviour
     }
     void ResumeGame()
     {
-        pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
-        Time.timeScale = 1f; //game starts running again
-        isPaused = false;
-        audioSource.PlayOneShot(buttonClickSound);
-        SoundManage.Instance.StopBackgroundMusic(); // Stop any pause music first
-
-        string currentScene = SceneManager.GetActiveScene().name;
-
-        if (currentScene == "Level_1") //did this for now for testing the music. I know it's not the best way to do it.  
+        if (isPaused)
         {
-            SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
-        }
-        if(currentScene == "Level_1_Hospital") //did this for now for testing the music. I know it's not the best way to do it.
-        {
-            SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
+            pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
+            Time.timeScale = 1f; //game starts running again
+            isPaused = false;
+            audioSource.PlayOneShot(buttonClickSound);
+            SoundManage.Instance.StopBackgroundMusic(); // Stop any pause music first
+
+            string currentScene = SceneManager.GetActiveScene().name;
+
+            if (currentScene == "Level_1") //did this for now for testing the music. I know it's not the best way to do it.  
+            {
+                SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+            }
+            if (currentScene == "Level_1_Hospital") //did this for now for testing the music. I know it's not the best way to do it.
+            {
+                SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
+            }
         }
     }
 

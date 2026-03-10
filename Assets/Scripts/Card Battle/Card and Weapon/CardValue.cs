@@ -57,6 +57,17 @@ public class CardValue
         SetCardSprite();
     }
 
+    public CardValue(string cardname, Sprite sprite, CardType type, string discription, CardRarity rare, CardAbility abil, int id)
+    {
+        CardName = cardname;
+        CardSprite = sprite;
+        CardType = type;
+        CardDescribe= discription;
+        rarity = rare;
+        ability = abil;
+        ID = id;
+    }
+
     void SetCardSprite()
     {
         if (string.IsNullOrEmpty(CardName))

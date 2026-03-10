@@ -35,10 +35,10 @@ namespace TCG_CardMaker
             string pattern = string.Join("|", words);
             pattern = $@"\b\w*({pattern})\w*\b";
 
-            string color = "<color=#" + SpecialWords.Instance.specialColor.ToHexString() + ">";
-            string result = Regex.Replace(description, pattern, match => $"{color}{match.Value}</color>", RegexOptions.IgnoreCase);
+           // string color = "<color=#" + SpecialWords.Instance.specialColor.ToHexString() + ">";
+           // string result = Regex.Replace(description, pattern, match => $"{color}{match.Value}</color>", RegexOptions.IgnoreCase);
 
-            return result;
+            return "aaa";
         }
     }
 }

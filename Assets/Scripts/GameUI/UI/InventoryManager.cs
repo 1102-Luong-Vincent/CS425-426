@@ -23,8 +23,15 @@ public class InventoryManager : MonoBehaviour
     public Button CardCancelButton;
     public Button WeaponLibraryButton;
     public Button WeaponCancelButton;
+    public Button DeckButton1;
+    public Button DeckButton2;
+    public Button DeckButton3;
     public static InventoryManager Instance;
     public InventoryUIControl control;
+
+    GameObject selectedCard = null; //card player has left clicked on
+
+
     GameObject targetCard; // card we want to replace
     bool replacingCard = false; // when we select a card, are we replacing it?
     void Awake()
@@ -45,34 +52,33 @@ public class InventoryManager : MonoBehaviour
         OnGameMenuButtonClick(WeaponLibraryButton, OnWeaponButtonClick);
         OnGameMenuButtonClick(CardCancelButton, OnCardCancelButtonClick);
         OnGameMenuButtonClick(WeaponCancelButton, OnWeaponCancelButtonClick);
+        OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0));
+        OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1));
+        OnGameMenuButtonClick(DeckButton3, () => OnDeckButtonClick(2));
     }
 
     void CardClicked(GameObject card)
     {
-        if(!replacingCard)
+        // check to see if we have already selected a card
+        if (selectedCard == null)
         {
-            targetCard = card;
-            OpenCardSelector();
+            selectedCard = card;
+            selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
         }
         else
         {
-            CardValue newCard = card.GetComponent<MenuCardControl>().GetCardValue();
-            CardValue oldCard = targetCard.GetComponent<MenuCardControl>().GetCardValue();
-
-            if(targetCard.gameObject.tag == "EquipCard")
+            // if we have already selected a card, make sure we aren't swapping the same card with itself
+            if (selectedCard != card)
             {
-                playerValue.EquipmentCards.Remove(oldCard);
-                playerValue.EquipmentCards.Add(newCard);
-            }
-            else if (targetCard.gameObject.tag == "BattleCard")
-            {
-                playerValue.battleCardsList.Remove(oldCard);
-                playerValue.battleCardsList.Add(newCard);
-            }
-
+                SwapCards(selectedCard, card);
+                Debug.Log("swapped in theory");
+                selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
+                selectedCard = null;
                 control.RefreshInventory();
-            CloseCardSelector();
+            }
+
         }
+
     }
 
     void CardRightClicked(GameObject card)
@@ -216,5 +222,51 @@ public class InventoryManager : MonoBehaviour
             Destroy(menucard);
         }
         WeaponSelectorPanel.SetActive(false);
+    }
+
+    void OnDeckButtonClick(int index)
+    {
+        playerValue.setActiveDeck(index);
+        control.RefreshInventory();
+    }
+
+    void SwapCards(GameObject src, GameObject dst)
+    {
+        MenuCardControl srcControl = src.GetComponent<MenuCardControl>();
+        MenuCardControl dstControl = dst.GetComponent<MenuCardControl>();
+
+        CardValue temp = srcControl.GetCardValue();
+        CardValue temp2 = dstControl.GetCardValue();
+        int tmpIndex = srcControl.index;
+
+        Debug.Log("Swapping index " + srcControl.index + " from " + srcControl.location + "with index " + dstControl.index + " from " + dstControl.location);
+        if (srcControl.location == MenuCardControl.CardLocation.Deck)
+        {
+            if(dstControl.location == MenuCardControl.CardLocation.Deck)
+            {
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
+            }
+            else
+            {
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
+                playerValue.HadCardsLibrary[dstControl.index] = temp;
+            }
+        }
+        else
+        {
+            if (dstControl.location == MenuCardControl.CardLocation.Deck)
+            {
+                playerValue.HadCardsLibrary[srcControl.index] = temp2;
+                playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
+            }
+            else
+            {
+                playerValue.HadCardsLibrary[srcControl.index] = temp2;
+                playerValue.HadCardsLibrary[dstControl.index] = temp;
+            }
+        }
+        srcControl.index = dstControl.index;
+        dstControl.index = tmpIndex;
     }
 }
