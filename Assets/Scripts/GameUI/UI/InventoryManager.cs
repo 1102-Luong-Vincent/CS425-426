@@ -242,24 +242,43 @@ public class InventoryManager : MonoBehaviour
         Debug.Log("Swapping index " + srcControl.index + " from " + srcControl.location + "with index " + dstControl.index + " from " + dstControl.location);
         if (srcControl.location == MenuCardControl.CardLocation.Deck)
         {
+            // case 1: card 1 is in current deck, card 2 is in current deck
             if(dstControl.location == MenuCardControl.CardLocation.Deck)
             {
                 playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
                 playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
             }
+            //case 2: card 1 is in current deck, card 2 is in library
             else
-            {
+            {   
                 playerValue.Decks[playerValue.GetActiveDeckIndex()][srcControl.index] = temp2;
-                playerValue.HadCardsLibrary[dstControl.index] = temp;
+                if (temp != null)
+                {
+   
+                    playerValue.HadCardsLibrary[dstControl.index] = temp;
+                }
+                else
+                {
+                    Debug.Log("don't put null cards in library plz!");
+                }
             }
         }
         else
         {
+            //case 3 : card 1 is in library, card 2 is in deck
             if (dstControl.location == MenuCardControl.CardLocation.Deck)
             {
-                playerValue.HadCardsLibrary[srcControl.index] = temp2;
-                playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
+                if (temp2 != null)
+                {
+                    playerValue.HadCardsLibrary[srcControl.index] = temp2;
+                }
+                else
+                {
+                    Debug.Log("don't put null cards in library plz!");
+                }
+                    playerValue.Decks[playerValue.GetActiveDeckIndex()][dstControl.index] = temp;
             }
+            // case 4: card 1 is in library, card 2 is in library
             else
             {
                 playerValue.HadCardsLibrary[srcControl.index] = temp2;
