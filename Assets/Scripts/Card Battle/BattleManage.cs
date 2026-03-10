@@ -124,6 +124,7 @@ public class BattleManage : MonoBehaviour
         GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
         GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
         Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
+        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
 
     }
 

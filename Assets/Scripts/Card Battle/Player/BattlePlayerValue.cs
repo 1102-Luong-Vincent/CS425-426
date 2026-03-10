@@ -16,6 +16,10 @@ public class BattlePlayerValue : MonoBehaviour
     private List<CardValue> HeldCards = new List<CardValue>();
     private List<CardValue> BattleCards = new List<CardValue>();
 
+
+    private List<CardValue> startingHeldCards;
+    private List<CardValue> startingBattleCards;
+
     [Header("Visual Effects")]
     [SerializeField] private ParticleSystem healEffectPrefab;
     //[SerializeField] private Transform playerVisual;
@@ -102,8 +106,11 @@ public class BattlePlayerValue : MonoBehaviour
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
         state = new State();
-        HeldCards = playerValue.EquipmentCards;
-        BattleCards = playerValue.battleCardsList;
+        //HeldCards = playerValue.EquipmentCards;
+        //BattleCards = playerValue.battleCardsList;
+        HeldCards = new List<CardValue>(playerValue.EquipmentCards);
+        BattleCards = new List<CardValue>(playerValue.battleCardsList);
+
         weapon = playerValue.EquipmentWeapon;
 
         MaxHealth = playerValue.GetHealth();
@@ -114,7 +121,7 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void StartTurn()
     {
-        DrawCard();    
+        DrawCard();
     }
 
     public void DrawCard()
@@ -143,6 +150,29 @@ public class BattlePlayerValue : MonoBehaviour
         }
     }
 
+    #region Get
+
+    //public List<CardValue> GetBattleCards() => HeldCards;
+    //public WeaponValue GetWeapon() => weapon;
+
+    //#endregion
+
+    //#region Listener with bool control
+
+    //public void HealthListener(Action<int> listener, bool isAdd)
+    //{
+    //    if (isAdd) OnHealthChanged += listener;
+    //    else OnHealthChanged -= listener;
+    //}
+
+    //public void MaxHealthListener(Action<int> listener, bool isAdd)
+    //{
+    //    if (isAdd) OnMaxHealthChanged += listener;
+    //    else OnMaxHealthChanged -= listener;
+    //}
+
+    #endregion
+
     public void AddHealth(int healthToAdd)
     {
         if (health <= 0) return;
@@ -166,7 +196,7 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void IncreasesCriticalDamage(float IncreasesPercentage)
     {
-       state.CriticalChanceBuff += IncreasesPercentage;
+        state.CriticalChanceBuff += IncreasesPercentage;
     }
 
     public void IncreasesCriticalDamageChance(float IncreasesPercentage)
@@ -200,7 +230,7 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void ReduceDefense(int defenseAmount)
     {
-        AddDefense(-defenseAmount); 
+        AddDefense(-defenseAmount);
     }
 
     public void ReduceDefense(float decreasePercentage)
@@ -263,10 +293,11 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void CaptureStartingState()
     {
+        startingHeldCards = new List<CardValue>(HeldCards);
+        startingBattleCards = new List<CardValue>(BattleCards);
+
         startingBattleState = new BattlePlayerSnapshot()
         {
-            HeldCards = new List<CardValue>(HeldCards),
-            BattleCards = new List<CardValue>(BattleCards),
             Weapon = weapon,
             Health = Health,
             MaxHealth = MaxHealth
@@ -277,8 +308,8 @@ public class BattlePlayerValue : MonoBehaviour
     {
         if (startingBattleState == null) return;
 
-        HeldCards = new List<CardValue>(startingBattleState.HeldCards);
-        BattleCards = new List<CardValue>(startingBattleState.BattleCards);
+        HeldCards = new List<CardValue>(startingHeldCards);
+        BattleCards = new List<CardValue>(startingBattleCards);
         weapon = startingBattleState.Weapon;
         Health = startingBattleState.Health;
         MaxHealth = startingBattleState.MaxHealth;
