@@ -237,8 +237,25 @@ public class PlayerValue
     {
         ClearWeapons();
         ClearCard();
+        Materials.Clear();
+        Decks.Clear();
+
+        if (data == null)
+        {
+            Debug.LogWarning("SetPlayerSaveData called with null data.");
+            return;
+        }
+
+        // 重新加载基本数据，restore base stats
+        Health = data.health;
+        MaxHealth = data.maxHealth;
+        energy = data.energy;
+        activeDeckIndex = data.activeDeckIndex;
+
         foreach (string equipName in data.EquipmentSaveCards)
         {
+            if (string.IsNullOrEmpty(equipName)) continue;
+
             CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);
             if (foundCard != null)
             {
@@ -247,6 +264,8 @@ public class PlayerValue
         }
         foreach (string card in data.HadCardsSaveLibrary)
         {
+            if (string.IsNullOrEmpty(card)) continue;
+
             CardValue foundCard = GameValue.Instance.GetInitCardValue(card);
             if (foundCard != null)
             {
@@ -254,7 +273,10 @@ public class PlayerValue
             }
         }
 
-        EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(data.EquipmentWeapon);
+        if (!string.IsNullOrEmpty(data.EquipmentWeapon))
+        {
+            EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(data.EquipmentWeapon);
+        }
 
 
         //foreach (string card in data.HadWeaponsSaveLibrary)
@@ -267,13 +289,65 @@ public class PlayerValue
         //}
         foreach (string weaponName in data.HadWeaponsSaveLibrary)
         {
+            if (string.IsNullOrEmpty(weaponName)) continue;
+
             WeaponValue foundWeapon = GameValue.Instance.GetInitWeaponValue(weaponName);
             if (foundWeapon != null)
             {
                 HadWeaponsLibrary.Add(foundWeapon);
             }
         }
+        //重新加载材料
+        if (data.materials != null)
+        {
+            foreach (var material in data.materials)
+            {
+                if (material == null) continue;
+                if (string.IsNullOrEmpty(material.materialName)) continue;
 
+                Materials[material.materialName] = material.amount;
+            }
+        }
+        //重新加载deck
+        if (data.decks != null && data.decks.Count > 0)
+        {
+            foreach (var savedDeck in data.decks)
+            {
+                CardValue[] deckArray = new CardValue[MAX_CARDS];
+
+                for (int i = 0; i < MAX_CARDS; i++)
+                {
+                    if (savedDeck == null || savedDeck.cardNames == null || i >= savedDeck.cardNames.Count)
+                    {
+                        deckArray[i] = null;
+                        continue;
+                    }
+
+                    string cardName = savedDeck.cardNames[i];
+
+                    if (string.IsNullOrEmpty(cardName))
+                    {
+                        deckArray[i] = null;
+                    }
+                    else
+                    {
+                        deckArray[i] = GameValue.Instance.GetInitCardValue(cardName);
+                    }
+                }
+
+                Decks.Add(deckArray);
+            }
+        }
+        while (Decks.Count < MAX_DECKS)
+        {
+            Decks.Add(new CardValue[MAX_CARDS]);
+        }
+        if (activeDeckIndex < 0 || activeDeckIndex >= Decks.Count)
+        {
+            activeDeckIndex = 0;
+        }
+
+        setActiveDeck(activeDeckIndex);
 
         SetPlayerPosition(data);
     }
@@ -326,6 +400,15 @@ public class PlayerValue
 [System.Serializable]
 public class PlayerSaveData
 {
+    public int health;
+    public int maxHealth;
+    public int energy;
+
+    public int activeDeckIndex;
+    public List<DeckSaveData> decks = new List<DeckSaveData>(); // new add mark
+
+    public List<MaterialSaveData> materials = new List<MaterialSaveData>();
+
     public List<string> EquipmentSaveCards = new List<string>();
     public List<string> HadCardsSaveLibrary = new List<string>();
 
@@ -337,6 +420,25 @@ public class PlayerSaveData
 
     public PlayerSaveData(PlayerValue playerValue)
     {
+        //new
+        health = playerValue.GetHealth();
+        maxHealth = playerValue.GetMaxHealth();
+        energy = playerValue.GetEnergy();
+
+        activeDeckIndex = playerValue.GetActiveDeckIndex();
+
+        for (int i = 0; i < playerValue.Decks.Count; i++)
+        {
+            DeckSaveData deckData = new DeckSaveData();
+
+            foreach (var card in playerValue.Decks[i])
+            {
+                deckData.cardNames.Add(card != null ? card.CardName : "");
+            }
+
+            decks.Add(deckData);
+        }  // mark
+
         foreach (var equipmentCard in playerValue.EquipmentCards)
         {
             EquipmentSaveCards.Add(equipmentCard.CardName);
@@ -346,16 +448,29 @@ public class PlayerSaveData
             HadCardsSaveLibrary.Add(card.CardName);
         }
 
-        EquipmentWeapon = playerValue.EquipmentWeapon.WeaponName;
+        //EquipmentWeapon = playerValue.EquipmentWeapon.WeaponName;
+        EquipmentWeapon = playerValue.EquipmentWeapon != null ? playerValue.EquipmentWeapon.WeaponName : "";
 
         foreach (var weapon in playerValue.HadWeaponsLibrary)
         {
             HadWeaponsSaveLibrary.Add(weapon.WeaponName);
         }
 
+        // store material
+        foreach (var pair in playerValue.Materials)
+        {
+            materials.Add(new MaterialSaveData
+            {
+                materialName = pair.Key,
+                amount = pair.Value
+            });
+        }
+
         PlayerPositionX = playerValue.GetPlayerPosition().x;
         PlayerPositionY = playerValue.GetPlayerPosition().y;
         PlayerPositionZ = playerValue.GetPlayerPosition().z;
+
+
 
     }
 

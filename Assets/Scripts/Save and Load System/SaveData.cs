@@ -1,29 +1,98 @@
-// Author: Shawn Meng
-// Created by: Shawn Meng
-// Modified by: Shawn Meng
+// Author: Shawn Meng, Yuhan Tang
+// Created by: Shawn Meng, Yuhan Tang
+// Modified by: Shawn Meng, Yuhan Tang
 // No external source was used
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [System.Serializable]   
 public class SaveData
 {
-    public SceneType SceneType;
-    public PlayerSaveData playerSaveData;
-    public string SavePath;
-    public string SaveTime;   
+    public int saveVersion;
+    public string savePath;
+    public string saveTime;
+    public SceneType currentScene;
+    // public PlayerSaveData playerSaveData;
+
+    public PlayerSaveData player;
+    public WorldSaveData world;
+    public StorySaveData story;
+    public BattleSaveData battle;
 
     public SaveData(string savePath ,GameValue gameValue)
     {
-        this.SceneType = gameValue.GetCurrentScence();
-        SavePath = savePath;
-        playerSaveData = new PlayerSaveData(gameValue.GetPlayerValue());
-        SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        //this.SceneType = gameValue.GetCurrentScence();
+        //SavePath = savePath;
+        //playerSaveData = new PlayerSaveData(gameValue.GetPlayerValue());
+        //SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        this.saveVersion = 1;
+        this.saveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        this.savePath = savePath;
+        this.currentScene = gameValue.GetCurrentScence();
+
+        this.player = new PlayerSaveData(gameValue.GetPlayerValue());
+        this.world = new WorldSaveData(gameValue);
+        this.story = new StorySaveData(gameValue);
+        this.battle = new BattleSaveData(gameValue);
     }
 
     public bool IsEmpty()
     {
-        return string.IsNullOrEmpty(SavePath);
+        return string.IsNullOrEmpty(savePath);
     }
+}
+
+[System.Serializable]
+public class WorldSaveData
+{
+    public List<int> defeatedEnemyIds = new();
+
+    public WorldSaveData() { }
+
+    public WorldSaveData(GameValue gameValue)
+    {
+        
+    }
+}
+
+[System.Serializable]
+public class StorySaveData
+{
+    public string currentStoryName;
+    public List<string> finishedStoryIds = new();
+
+    public StorySaveData() { }
+
+    public StorySaveData(GameValue gameValue)
+    {
+        currentStoryName = gameValue.GetHappendStoryName();
+    }
+}
+
+[System.Serializable]
+public class BattleSaveData
+{
+    public bool isInBattle;
+
+    public BattleSaveData() { }
+
+    public BattleSaveData(GameValue gameValue)
+    {
+        isInBattle = gameValue.GetCurrentScence() == SceneType.BattleScene;
+    }
+}
+
+[System.Serializable]
+public class DeckSaveData
+{
+    public List<string> cardNames = new();
+}
+
+[System.Serializable]
+public class MaterialSaveData
+{
+    public string materialName;
+    public int amount;
 }

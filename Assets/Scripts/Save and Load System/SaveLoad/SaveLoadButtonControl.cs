@@ -26,7 +26,8 @@ public class SaveLoadButtonControl : MonoBehaviour
     public void SetSaveData(SaveData saveData)
     {
         this.saveData = saveData;
-        SaveLoadText.text = saveData.SaveTime.ToString();
+        //SaveLoadText.text = saveData.SaveTime.ToString();
+        SaveLoadText.text = saveData.saveTime;
     }
 
     void OnSaveLoadButtonClick()

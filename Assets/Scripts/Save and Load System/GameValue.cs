@@ -115,9 +115,12 @@ public class GameValue : MonoBehaviour
 
     public void SetSaveData(SaveData saveData)
     {
-        playerValue.SetPlayerSaveData(saveData.playerSaveData);
-        PlayerController.Instance.SetPlayerPosition(saveData.playerSaveData.GetPlayerPosition());
-        LoadSceneByEnum(saveData.SceneType);
+        //playerValue.SetPlayerSaveData(saveData.playerSaveData);
+        //PlayerController.Instance.SetPlayerPosition(saveData.playerSaveData.GetPlayerPosition());
+        //LoadSceneByEnum(saveData.SceneType);
+        playerValue.SetPlayerSaveData(saveData.player);
+        PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
+        LoadSceneByEnum(saveData.currentScene);
     }
 
     //new add Weapon upgrade
