@@ -1,6 +1,6 @@
 // Author: Shawn Meng
 // Created by: Shawn Meng
-// Modified by: Shawn Meng
+// Modified by: Shawn Meng, Yuhan Tang
 // No external source was used
 
 
@@ -19,6 +19,7 @@ public class SaveLoadPanelControl : MonoBehaviour
 {
     public static SaveLoadPanelControl Instance;
     public GameObject SaveLoadPanel;
+    public Button SaveButton;
     public Button CheckButton;
     public Button CancelButton;
 
@@ -55,6 +56,7 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     void InitButtons()
     {
+        SaveButton.onClick.AddListener(OnSaveButtonClick);
         CheckButton.onClick.AddListener(OnCheckButtonClick);
         CancelButton.onClick.AddListener(ClosePanel);
     }
@@ -95,11 +97,18 @@ public class SaveLoadPanelControl : MonoBehaviour
         Debug.Log($"Save to: {fullPath}");
     }
 
+    void OnSaveButtonClick()
+    {
+        NormalSaveGame();
+        LoadSaveButtons();
+    }
+
     void OnCheckButtonClick()
     {
         if (selSaveLoadButton == null) return;
         GameValue.Instance.SetSaveData(selSaveLoadButton.GetSaveData());
         audioSource.PlayOneShot(buttonClickSound);
+        ClosePanel();
     }
 
     public void SetSelSaveLoadButton(SaveLoadButtonControl saveLoadButtonControl)

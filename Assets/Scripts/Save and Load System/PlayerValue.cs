@@ -252,16 +252,16 @@ public class PlayerValue
         energy = data.energy;
         activeDeckIndex = data.activeDeckIndex;
 
-        foreach (string equipName in data.EquipmentSaveCards)
-        {
-            if (string.IsNullOrEmpty(equipName)) continue;
+        //foreach (string equipName in data.EquipmentSaveCards)
+        //{
+        //    if (string.IsNullOrEmpty(equipName)) continue;
 
-            CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);
-            if (foundCard != null)
-            {
-                EquipmentCards.Add(foundCard);
-            }
-        }
+        //    CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);
+        //    if (foundCard != null)
+        //    {
+        //        EquipmentCards.Add(foundCard);
+        //    }
+        //}
         foreach (string card in data.HadCardsSaveLibrary)
         {
             if (string.IsNullOrEmpty(card)) continue;
