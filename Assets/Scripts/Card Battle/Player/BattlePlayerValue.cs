@@ -24,6 +24,7 @@ public class BattlePlayerValue : MonoBehaviour
     [SerializeField] private ParticleSystem healEffectPrefab;
     //[SerializeField] private Transform playerVisual;
 
+    public List<ResourceValue> InventoryResources = new List<ResourceValue>();
     #region MaxHealth and Health
     private int maxHealth;
     private int health;
@@ -348,4 +349,22 @@ public class BattlePlayerValue : MonoBehaviour
         playerValue.SetHealth(Health);
     }
 
+    // Utility to add a resource
+    public void AddResource(ResourceValue resource)
+    {
+        if (resource == null) return;
+
+        // Check if player already has this resource type
+        ResourceValue existing = InventoryResources.Find(r => r.resourceName == resource.resourceName);
+        if (existing != null)
+        {
+            existing.amount += resource.amount;
+        }
+        else
+        {
+            InventoryResources.Add(new ResourceValue(resource.resourceName, resource.amount, resource.Type, resource.resourceIcon));
+        }
+
+        Debug.Log($"Added {resource.amount}x {resource.resourceName} to inventory!");
+    }
 }

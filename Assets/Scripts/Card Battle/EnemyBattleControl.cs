@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EnemyBattleControl : MonoBehaviour
@@ -44,6 +45,12 @@ public class EnemyBattleControl : MonoBehaviour
         this.enemyValue = enemyValue;
         enemyNameText.text = enemyValue.EnemyName;
         enemySprite.sprite = enemyValue.GetSprite();
+
+        if(enemyValue.GetID() == 4)
+        {
+            enemyValue.explodeOnDeath = true;
+            enemyValue.explosionDamage = 15;
+        }
 
         InitAnimator();
 
@@ -151,10 +158,34 @@ public class EnemyBattleControl : MonoBehaviour
         {
             Debug.Log("Enemy died!");
             TriggerDieAnimation();
-            BattleEnemyManager.Instance.currentEnemys.Remove(this);
+            
             StartCoroutine(DeathSequence());
+
+            if (enemyValue.explodeOnDeath)
+            {
+                //StartCoroutine(DeathSequenceWithExplosion());
+                Explode();
+            }
+            BattleEnemyManager.Instance.currentEnemys.Remove(this);
         }
     }
+
+    public void Explode()
+    {
+        Debug.Log("Enemy exploded!");
+
+        if (BattlePlayerValue.Instance == null)
+        {
+            Debug.LogError("Player instance is NULL!");
+            return;
+        }
+
+        int damage = enemyValue.explosionDamage;
+        BattlePlayerValue.Instance.Health -= damage;
+
+        Debug.Log($"Player took {damage} from explosion");
+    }
+
 
     //void ShowDamage(int damage, Transform targetTransform)
     //{
@@ -181,9 +212,27 @@ public class EnemyBattleControl : MonoBehaviour
         float animationLength = GetAnimationLength("dieWest");
         yield return new WaitForSeconds(animationLength);
 
+        yield return new WaitForSeconds(2.0f);
+
+        Explode(); //upon death, enemy explodes dealing additional damage to player
+
+        //yield return new WaitForSeconds(1.3f);
+
+        //DropResources();
+
         Destroy(gameObject);
     }
 
+    //private IEnumerator DeathSequenceWithExplosion(float delay)
+    //{
+    //    float animationLength = GetAnimationLength("dieWest");
+    //    yield return new WaitForSeconds(animationLength);
+
+    //    Explode(); //upon death, enemy explodes dealing additional damage to player
+
+    //    yield return new WaitForSeconds(animationLength);
+    //    Destroy(gameObject);
+    //}
     private float GetAnimationLength(string animationName)
     {
         if (animator == null) return 2f;
@@ -235,6 +284,39 @@ public class EnemyBattleControl : MonoBehaviour
         {
             audioSource.PlayOneShot(attackSound);
         }
+    }
+
+    public void DropResources()
+    {
+        if (enemyValue.ResourceDrops == null || enemyValue.ResourceDrops.Count == 0)
+            return;
+
+        string resourceText = "You Win! You have acquired ";
+
+        foreach(var resource in enemyValue.ResourceDrops) //counts each resource and directly adds the resource to the player's inventory
+        {
+            int dropAmount = UnityEngine.Random.Range(3, 7); 
+            resource.amount = dropAmount;
+            BattlePlayerValue.Instance.AddResource(resource);
+
+            resourceText += $"{resource.resourceName} x{dropAmount} ";
+
+            //if(InteractableNotification.Instance != null)
+            //{
+            //    InteractableNotification.Instance.ShowResourceNotification(
+            //        resource.resourceName,
+            //        resource.resourceIcon,
+            //        dropAmount
+            //    );
+            //}
+        }
+
+        if(BattleRewards.Instance != null)
+        {
+            BattleRewards.Instance.ShowReward(resourceText);
+        }
+
+        Debug.Log($"Dropped {enemyValue.ResourceDrops.Count} resources from {enemyValue.EnemyName}");
     }
 
     #region Saves enemy state upon restarting battle

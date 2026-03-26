@@ -1,7 +1,7 @@
 // Authors: Vincent Luong and Shawn Meng
 // Created by: Shawn Meng
 // Modified by: Vincent Luong
-// Some code generated with assistance from ChatGPT.
+// No external sources were used
 
 using NUnit.Framework;
 using UnityEngine;

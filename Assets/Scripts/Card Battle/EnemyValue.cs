@@ -65,15 +65,22 @@ public class EnemyValue
     public int attack;
     public int speed;
 
+    public bool explodeOnDeath;
+    public int explosionDamage = 15;
+
 
     //public WeaponValue defaultWeapon;
     string defaultWeaponName;
     public List<int> enemyDeckID = new List<int>();
+    public List<ResourceValue> ResourceDrops = new List<ResourceValue>();
 
     public EnemyValue(ExcelEnemyData excelEnemyData)
     {
         ID = excelEnemyData.ID;
         EnemyName = excelEnemyData.enemyName;
+
+        ResourceDrops.Add(new ResourceValue("Chemicals", 1, ResourceType.Chemical));
+
         if (string.IsNullOrEmpty(EnemyName))
         {
             Debug.LogError("[SetEnemySprite] EnemyName is null or empty, cannot load sprite.");

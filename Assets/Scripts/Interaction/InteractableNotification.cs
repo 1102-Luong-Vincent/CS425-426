@@ -17,6 +17,10 @@ public class InteractableNotification : MonoBehaviour
     [SerializeField] public Image pickupIcon;
     [SerializeField] public float fadeDuration = 2f;
 
+    [Header("Resource Drops")]
+    [SerializeField] public TextMeshProUGUI resourceText;
+    [SerializeField] public Image resourceIcon;
+
     private Coroutine Notification;
     public void Awake()
     {
@@ -30,6 +34,8 @@ public class InteractableNotification : MonoBehaviour
 
         notificationText.gameObject.SetActive(false);
         pickupIcon.gameObject.SetActive(false);
+        resourceText.gameObject.SetActive(false);
+        resourceIcon.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -62,6 +68,31 @@ public class InteractableNotification : MonoBehaviour
             Notification = StartCoroutine(HideAfterDuration());
     }
 
+    public void ShowResourceNotification(string resourceName, Sprite icon = null, int amount = 1)
+    {
+        if (Notification != null)
+            StopCoroutine(Notification);
+
+        resourceText.text = $"{resourceName} x{amount}";
+        resourceText.alpha = 1f;
+        resourceText.gameObject.SetActive(true);
+
+        if (icon != null)
+        {
+            resourceIcon.sprite = icon;
+            Color c = resourceIcon.color;
+            c.a = 1f;
+            resourceIcon.color = c;
+            resourceIcon.gameObject.SetActive(true);
+        }
+        else
+        {
+            resourceIcon.gameObject.SetActive(false);
+        }
+
+        Notification = StartCoroutine(HideResourceAfterDuration());
+    }
+
     private IEnumerator HideAfterDuration()
     {
         //yield return new WaitForSeconds(displayDuration);
@@ -92,5 +123,32 @@ public class InteractableNotification : MonoBehaviour
 
         notificationText.gameObject.SetActive(false);
         pickupIcon.gameObject.SetActive(false);
+    }
+
+    private IEnumerator HideResourceAfterDuration()
+    {
+        yield return new WaitForSeconds(displayDuration);
+
+        float elapsed = 0f;
+
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+
+            resourceText.alpha = alpha;
+
+            if (resourceIcon != null)
+            {
+                Color c = resourceIcon.color;
+                c.a = alpha;
+                resourceIcon.color = c;
+            }
+
+            yield return null;
+        }
+
+        resourceText.gameObject.SetActive(false);
+        resourceIcon.gameObject.SetActive(false);
     }
 }

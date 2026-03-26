@@ -118,13 +118,46 @@ public class BattleManage : MonoBehaviour
         return true;
     }
 
-    void EndBattle()
+    void EndBattle() //modified to display a win panel for the rewards. 
     {
-        Debug.Log($"going back to previous map {battleData.GetMapScene()}");
-        GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
-        GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
-        Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
-        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+
+        string rewardMessage = "You Win! You have acquired:\n";
+
+        foreach (var enemy in battleData.battleEnemys)
+        {
+            foreach (var resource in enemy.ResourceDrops)
+            {
+                int dropAmount = UnityEngine.Random.Range(3, 7);
+
+                resource.amount = dropAmount;
+                BattlePlayerValue.Instance.AddResource(resource);
+
+                rewardMessage += $"{resource.resourceName} x{dropAmount}\n";
+            }
+        }
+
+        if (BattleRewards.Instance != null)
+        {
+            Debug.Log("SHOWING PANEL");
+            BattleRewards.Instance.ShowReward(rewardMessage);
+        }
+        else
+        {
+            Debug.LogError("BattleRewards INSTANCE NULL");
+        }
+
+        //Debug.Log($"going back to previous map {battleData.GetMapScene()}");
+
+        //foreach (var enemy in BattleEnemyManager.Instance.GetEnemyBattleControls())
+        //{
+        //    enemy.DropResources();
+        //    break; // only call once
+        //}
+
+        //GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
+        //GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
+        //Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
+        //SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
 
     }
 
