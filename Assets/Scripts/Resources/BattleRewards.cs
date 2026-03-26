@@ -14,6 +14,8 @@ public class BattleRewards : MonoBehaviour
     [Header("UI References")]
     [SerializeField] public GameObject panel; // The main panel
     [SerializeField] public TextMeshProUGUI resourceText;
+    [SerializeField] public TextMeshProUGUI titleText;
+    [SerializeField] public TextMeshProUGUI SubtitleText; 
     [SerializeField] public Button continueButton;
 
     [SerializeField] public GameObject battleCanvas;
@@ -36,6 +38,16 @@ public class BattleRewards : MonoBehaviour
     public void ShowReward(string message)
     {
         resourceText.text = message;
+        titleText.text = "<color=#FFD700>YOU WIN!</color>\n";
+        SubtitleText.text = "You have acquired:\n";
+
+        //SubtitleText.color = Color.white;
+        //SubtitleText.fontSharedMaterial.EnableKeyword("OUTLINE_ON");
+        //SubtitleText.outlineColor = Color.black;
+        titleText.outlineColor = Color.white;
+        titleText.outlineWidth = 0.08f;
+        //SubtitleText.outlineWidth = 0.2f; // adjust thickness as desired
+
         panel.SetActive(true);
 
         if (battleCanvas != null)

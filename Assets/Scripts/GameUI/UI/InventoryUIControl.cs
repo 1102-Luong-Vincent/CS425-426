@@ -1,6 +1,6 @@
 // Author: Sean Mastereson
 // Created by: Sean Masterson
-// Modified by: Sean Masterson
+// Modified by: Sean Masterson and Vincent Luong
 // No external sources were used
 
 using System.Collections.Generic;
@@ -14,6 +14,8 @@ using static PlayerMenuManager;
 
 public class InventoryUIControl :  PanelControl
 {
+    [SerializeField] GameObject playerHUD; //controls the health bar in the map
+
     public Transform WeaponZone;
     public Transform EquipZone;
     public Transform CardZone;
@@ -39,6 +41,7 @@ public class InventoryUIControl :  PanelControl
     {
         OnInventoryOpen();
         InitButtons();
+        playerHUD.SetActive(true); //sets the player hud to true when game starts
     }
 
     //display relevant playervalue info and populate inventory with menu cards based on playervalue when inventory is opened
@@ -63,13 +66,15 @@ public class InventoryUIControl :  PanelControl
         // display remainder of player's card library
         InstantiateCardLibrary();
         
-
+        playerHUD.SetActive(false); //hides the player hud upon inventory opening
 
     }
 
     //delete all menu cards from inventory to save memory and prepare for next time menu is opened
     public void OnInventoryClose()
     {
+        playerHUD.SetActive(true); //displays the player hud once inventory closes
+
         // menu closed -- erase menu cards
         for (int i = WeaponZone.childCount - 1; i >= 0; i--)
         {

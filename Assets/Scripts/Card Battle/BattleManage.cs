@@ -97,7 +97,7 @@ public class BattleManage : MonoBehaviour
         DebugTest();
     }
 
-    bool IsPlayerTurn()
+    public bool IsPlayerTurn()
     {
         return Turn % 2 == 1;
     }
@@ -121,7 +121,7 @@ public class BattleManage : MonoBehaviour
     void EndBattle() //modified to display a win panel for the rewards. 
     {
 
-        string rewardMessage = "You Win! You have acquired:\n";
+        string rewardMessage = "";
 
         foreach (var enemy in battleData.battleEnemys)
         {
@@ -132,7 +132,21 @@ public class BattleManage : MonoBehaviour
                 resource.amount = dropAmount;
                 BattlePlayerValue.Instance.AddResource(resource);
 
-                rewardMessage += $"{resource.resourceName} x{dropAmount}\n";
+                //string color = "#FFFFFF";
+
+                //switch (resource.Type)
+                //{
+                //    case ResourceType.Chemical:
+                //        color = "#2EC4B6"; // green
+                //        break;
+
+                //    case ResourceType.Material:
+                //        color = "#FFD166"; // yellow
+                //        break;
+                //}
+
+                rewardMessage += $"• {resource.resourceName} x{dropAmount}\n";
+
             }
         }
 

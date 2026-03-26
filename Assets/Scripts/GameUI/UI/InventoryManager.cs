@@ -33,6 +33,7 @@ public class InventoryManager : MonoBehaviour
 
 
     GameObject targetCard; // card we want to replace
+
     bool replacingCard = false; // when we select a card, are we replacing it?
     void Awake()
     {

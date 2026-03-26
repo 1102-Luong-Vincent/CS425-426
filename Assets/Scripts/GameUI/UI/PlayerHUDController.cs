@@ -1,3 +1,8 @@
+// Author: Vincent Luong
+// Created by: Vincent Luong
+// Modified by: Vincent Luong
+// no external source was used.
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
