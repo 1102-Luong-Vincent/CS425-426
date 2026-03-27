@@ -17,6 +17,18 @@ public class BattleData
     private SceneType mapScene; // which map were we on before battle?
     private Vector3 mapPos; // where was player on the previous map?
     private GameObject fieldMonster; // who do we delete when the player wins?
+
+    public int worldEnemyID;
+
+    public void SetWorldEnemyID(int ID)
+    {
+        worldEnemyID = ID;
+    }
+
+    public int GetWorldEnemyID()
+    {
+        return worldEnemyID;
+    }
     public BattleData(List<EnemyValue> battleEnemys)
     {
         this.battleEnemys = battleEnemys;

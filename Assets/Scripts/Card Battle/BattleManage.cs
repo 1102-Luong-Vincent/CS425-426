@@ -121,6 +121,7 @@ public class BattleManage : MonoBehaviour
     void EndBattle() //modified to display a win panel for the rewards. 
     {
 
+        GameValue.Instance.DefeatedEnemies(battleData.worldEnemyID);
         string rewardMessage = "";
 
         foreach (var enemy in battleData.battleEnemys)
@@ -146,7 +147,6 @@ public class BattleManage : MonoBehaviour
                 //}
 
                 rewardMessage += $"• {resource.resourceName} x{dropAmount}\n";
-
             }
         }
 

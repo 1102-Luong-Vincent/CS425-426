@@ -43,6 +43,10 @@ public class GameValue : MonoBehaviour
     // new add for weapon upgrade
     private List<ExcelWeaponData> weaponExcelCache;
 
+    //record data for defeated enemies 
+    private HashSet<int> defeatedEnemies  = new HashSet<int>();
+    //private int nextEnemyID = 1;
+
 
     private void Awake()
     {
@@ -141,6 +145,21 @@ public class GameValue : MonoBehaviour
         return null;
     }
 
+    //data to record defeated enemies
+    public void DefeatedEnemies(int worldEnemyID)
+    {
+        defeatedEnemies.Add(worldEnemyID);
+    }
+
+    public bool IsEnemyDefeated(int worldEnemyID)
+    {
+        return defeatedEnemies.Contains(worldEnemyID);
+    }
+
+    //public int GetNextEnemyID()
+    //{
+    //    return nextEnemyID++;
+    //}
 
     #region Get
 

@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class EnemyControl : MonoBehaviour
 {
     [Header("Detection & Combat")]
     public CircleCollider2D searchRadius;
     [SerializeField] int EnemyID = 1;
+    [SerializeField] private int worldEnemyID; 
     EnemyValue enemyValue;
 
     [Header("Movement")]
@@ -24,6 +29,17 @@ public class EnemyControl : MonoBehaviour
     private float nextDirectionUpdateTime = 0f;
     void Start()
     {
+        //if(worldEnemyID == 0)
+        //{
+        //    worldEnemyID = GameValue.Instance.GetNextEnemyID();
+        //}
+
+        if (GameValue.Instance.IsEnemyDefeated(worldEnemyID))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -102,12 +118,15 @@ public class EnemyControl : MonoBehaviour
             Debug.Log("Enemy touched player -- Entering Battle");
             List<EnemyValue> enemyValues = new List<EnemyValue>() { enemyValue };
             BattleData battleData = new BattleData(enemyValues);
+
+            battleData.SetWorldEnemyID(worldEnemyID);
             battleData.SetMapScene(GameValue.Instance.GetCurrentScence());
             Debug.Log($"battleData Scene is {battleData.GetMapScene()}");
 
             battleData.SetMapPosition(GameValue.Instance.GetPlayerPosition());
             battleData.SetFieldMonster(gameObject);
-            Destroy(gameObject);
+            battleData.worldEnemyID = worldEnemyID;
+            //Destroy(gameObject);
             GameValue.Instance.SetBattleData(battleData);
             GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
         }
@@ -303,6 +322,4 @@ public class EnemyControl : MonoBehaviour
 
         return EnemyID;
     }
-
-
 }
