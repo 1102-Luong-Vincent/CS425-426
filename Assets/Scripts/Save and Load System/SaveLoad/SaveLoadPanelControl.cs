@@ -32,6 +32,8 @@ public class SaveLoadPanelControl : MonoBehaviour
     private string normalSavePath;
     private string autoSavePath;
 
+    private PauseControl pauseControlToCloseAfterLoad;
+
     [Header("Sound Effects")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip buttonClickSound;
@@ -109,6 +111,12 @@ public class SaveLoadPanelControl : MonoBehaviour
         GameValue.Instance.SetSaveData(selSaveLoadButton.GetSaveData());
         audioSource.PlayOneShot(buttonClickSound);
         ClosePanel();
+
+        if (pauseControlToCloseAfterLoad != null)
+        {
+            pauseControlToCloseAfterLoad.ClosePauseAfterLoad();
+            pauseControlToCloseAfterLoad = null;
+        }
     }
 
     public void SetSelSaveLoadButton(SaveLoadButtonControl saveLoadButtonControl)
@@ -145,5 +153,10 @@ public class SaveLoadPanelControl : MonoBehaviour
             SaveLoadButtonControl btn = Instantiate(saveLoadButtonPrefab, parent);
             btn.SetSaveData(saveData);
         }
+    }
+
+    public void SetPauseControlToCloseAfterLoad(PauseControl pauseControl)
+    {
+        pauseControlToCloseAfterLoad = pauseControl;
     }
 }

@@ -103,6 +103,7 @@ public class PauseControl : MonoBehaviour
     void LoadGame()
     {
         audioSource.PlayOneShot(buttonClickSound);
+        SaveLoadPanelControl.Instance.SetPauseControlToCloseAfterLoad(this); // close the pause panel after load game
         SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game
     }
 
@@ -128,5 +129,12 @@ public class PauseControl : MonoBehaviour
         audioSource.PlayOneShot(buttonClickSound);
         SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
         
+    }
+
+    public void ClosePauseAfterLoad()
+    {
+        pauseScreen.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
     }
 }
