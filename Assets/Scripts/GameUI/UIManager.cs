@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log($"UIManager Awake: {name}, instanceID={GetInstanceID()}, scene={gameObject.scene.name}");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);

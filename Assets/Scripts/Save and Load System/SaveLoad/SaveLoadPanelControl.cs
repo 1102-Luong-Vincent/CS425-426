@@ -50,6 +50,7 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log($"SaveLoadPanelControl Awake: {name}, instanceID={GetInstanceID()}");
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -209,9 +210,12 @@ public class SaveLoadPanelControl : MonoBehaviour
     {
         SetSelSaveLoadButton(null);
         LoadSaveButtonsForLoadPanel();
+
         SaveLoadRoot.SetActive(true);
         SavePanel.SetActive(false);
         LoadPanel.SetActive(true);
+        SaveLoadRoot.transform.SetAsLastSibling();
+        LoadPanel.transform.SetAsLastSibling();
     }
 
     void ClearChildren(Transform parent)
@@ -220,5 +224,9 @@ public class SaveLoadPanelControl : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+    public bool IsPanelOpen()
+    {
+        return SaveLoadRoot != null && SaveLoadRoot.activeSelf;
     }
 }

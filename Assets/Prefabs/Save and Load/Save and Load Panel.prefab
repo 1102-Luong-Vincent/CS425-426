@@ -122,13 +122,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bae52a240397f14598e902bb3081876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SaveLoadPanel: {fileID: 4525394043854971238}
-  SaveButton: {fileID: 7535391395399209987}
-  CheckButton: {fileID: 0}
-  CancelButton: {fileID: 2104312667376442235}
+  SaveLoadRoot: {fileID: 752628355113745991}
+  SavePanel: {fileID: 4525394043854971238}
+  LoadPanel: {fileID: 4509412101234588070}
+  SavePanelSaveButton: {fileID: 7535391395399209987}
+  SavePanelCancelButton: {fileID: 2104312667376442235}
+  LoadPanelLoadButton: {fileID: 2913890808808061804}
+  LoadPanelCancelButton: {fileID: 6408990062197102698}
   saveLoadButtonPrefab: {fileID: 2030439548447802912, guid: aef6338949cbbcb45922222dde65e0ae, type: 3}
-  NormalSaveTransform: {fileID: 1818023765676564233}
-  AutoSaveTransform: {fileID: 8884890243004964669}
+  SavePanelNormalSaveTransform: {fileID: 1818023765676564233}
+  SavePanelAutoSaveTransform: {fileID: 8884890243004964669}
+  LoadPanelNormalSaveTransform: {fileID: 4319522067389241930}
+  LoadPanelAutoSaveTransform: {fileID: 1930438890519992543}
   audioSource: {fileID: 4813791206117063931}
   buttonClickSound: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
 --- !u!82 &4813791206117063931

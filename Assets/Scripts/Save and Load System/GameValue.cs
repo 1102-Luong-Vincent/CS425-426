@@ -122,8 +122,14 @@ public class GameValue : MonoBehaviour
         //playerValue.SetPlayerSaveData(saveData.playerSaveData);
         //PlayerController.Instance.SetPlayerPosition(saveData.playerSaveData.GetPlayerPosition());
         //LoadSceneByEnum(saveData.SceneType);
+        if (saveData == null)
+        {
+            Debug.LogWarning("SaveData is null.");
+            return;
+        }
+        Debug.Log($"Loading save. currentScene = {saveData.currentScene}");
         playerValue.SetPlayerSaveData(saveData.player);
-        PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
+        //PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
         LoadSceneByEnum(saveData.currentScene);
     }
 

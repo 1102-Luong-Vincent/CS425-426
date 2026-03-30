@@ -44,7 +44,11 @@ public class PauseControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) //press escape to pause the game
         {
-            Debug.Log($"Escape detected by PauseControl: {name}, instanceID={GetInstanceID()}");
+            if (SaveLoadPanelControl.Instance != null && SaveLoadPanelControl.Instance.IsPanelOpen())
+            {
+                SaveLoadPanelControl.Instance.ClosePanel();
+                return;
+            }
             if (isPaused)
             {
                 ResumeGame();
@@ -110,6 +114,9 @@ public class PauseControl : MonoBehaviour
 
     void LoadGame()
     {
+        Debug.Log(SaveLoadPanelControl.Instance == null
+            ? "SaveLoadPanelControl.Instance is NULL"
+            : $"SaveLoadPanelControl.Instance found: {SaveLoadPanelControl.Instance.name}");
         audioSource.PlayOneShot(buttonClickSound);
         SaveLoadPanelControl.Instance.SetPauseControlToCloseAfterLoad(this); // close the pause panel after load game
         //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game

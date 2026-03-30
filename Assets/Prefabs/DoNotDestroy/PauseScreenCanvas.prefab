@@ -155,7 +155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2674220830799507745
 RectTransform:
   m_ObjectHideFlags: 0
@@ -172,7 +172,7 @@ RectTransform:
   - {fileID: 7253384787942665006}
   - {fileID: 7652090467685680960}
   - {fileID: 8162515972783371839}
-  m_Father: {fileID: 3754146476702648301}
+  m_Father: {fileID: 8828596610425855409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2723,8 +2723,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2674220830799507745}
+  m_Children: []
   m_Father: {fileID: 8828596610425855409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2739,7 +2738,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4044882521832935468}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 004a2d2e1dd9a9a4eab08e4cefe9896c, type: 3}
   m_Name: 
@@ -3523,6 +3522,7 @@ MonoBehaviour:
   VolumeButton: {fileID: 9073634020743689621}
   DisplayButton: {fileID: 4011652067774154360}
   LanguageButton: {fileID: 8132978649084343447}
+  ControlsButton: {fileID: 0}
   BackButton: {fileID: 5182797113803550783}
   audioSource: {fileID: 0}
   buttonClickSound: {fileID: 0}
@@ -3543,6 +3543,9 @@ MonoBehaviour:
     LanguageText: {fileID: 8763154410599449976}
     RightButton: {fileID: 4527176948021491943}
     BackButton: {fileID: 3609941283430293820}
+  controlsPanelControl:
+    ControlsPanel: {fileID: 0}
+    ControlsBackButton: {fileID: 0}
 --- !u!1 &5035225734311340441
 GameObject:
   m_ObjectHideFlags: 0
@@ -5891,6 +5894,7 @@ GameObject:
   - component: {fileID: 4574956565515193226}
   - component: {fileID: 4432446894544429841}
   - component: {fileID: 8319995298680619763}
+  - component: {fileID: 8702837474752483758}
   m_Layer: 5
   m_Name: PauseScreenCanvas
   m_TagString: Untagged
@@ -5910,8 +5914,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2674220830799507745}
+  - {fileID: 7092376394294046677}
   - {fileID: 3754146476702648301}
-  - {fileID: 5783556890982564951}
   - {fileID: 548249217831235159}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5996,7 +6001,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseControl: {fileID: 2365667471207343745}
-  saveLoadPanelControl: {fileID: 526873230823419587}
+  saveLoadPanelControl: {fileID: 0}
+--- !u!114 &8702837474752483758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7759497197147565558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 004a2d2e1dd9a9a4eab08e4cefe9896c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseScreen: {fileID: 118829571559431979}
+  ResumeButton: {fileID: 2361653933953912790}
+  SaveButton: {fileID: 4757699973997608896}
+  LoadButton: {fileID: 6933650495365394810}
+  RestartButton: {fileID: 0}
+  OptionsButton: {fileID: 1484706373453741591}
+  ExitGameButton: {fileID: 3125488777380920857}
+  MainMenuButton: {fileID: 3397188447733305975}
+  OptionPanelControl: {fileID: 2261085073182090722}
+  audioSource: {fileID: 0}
+  buttonClickSound: {fileID: 0}
 --- !u!1 &8015474365500198936
 GameObject:
   m_ObjectHideFlags: 0
@@ -6819,6 +6847,7 @@ MonoBehaviour:
   VolumeButton: {fileID: 9073634020743689621}
   DisplayButton: {fileID: 4011652067774154360}
   LanguageButton: {fileID: 8132978649084343447}
+  ControlsButton: {fileID: 0}
   BackButton: {fileID: 5182797113803550783}
   audioSource: {fileID: 0}
   buttonClickSound: {fileID: 0}
@@ -6839,6 +6868,9 @@ MonoBehaviour:
     LanguageText: {fileID: 8763154410599449976}
     RightButton: {fileID: 4527176948021491943}
     BackButton: {fileID: 3609941283430293820}
+  controlsPanelControl:
+    ControlsPanel: {fileID: 0}
+    ControlsBackButton: {fileID: 0}
 --- !u!1 &8863200167073208771
 GameObject:
   m_ObjectHideFlags: 0
@@ -7277,7 +7309,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1001 &8577483530517799559
+--- !u!1001 &4982999110429870341
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -7288,22 +7320,6 @@ PrefabInstance:
     - target: {fileID: 752628355113745991, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
       propertyPath: m_Name
       value: Save and Load Panel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2223428170486069558, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: a007191e44323004aae5256785c4e6bc, type: 3}
-    - target: {fileID: 2223428170486069558, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.b
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 2223428170486069558, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.g
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 2223428170486069558, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.r
-      value: 0.87058824
       objectReference: {fileID: 0}
     - target: {fileID: 2831081409744053968, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
       propertyPath: m_Pivot.x
@@ -7385,100 +7401,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3280918049916397535, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 3280918049916397535, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 3280918049916397535, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4525394043854971238, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4596943051326038356, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 4596943051326038356, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 4596943051326038356, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597252457326917928, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 6597252457326917928, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 6597252457326917928, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6725315796362221906, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.b
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 6725315796362221906, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.g
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 6725315796362221906, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.r
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 7243084732797003498, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.b
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 7243084732797003498, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.g
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 7243084732797003498, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_Color.r
-      value: 0.87058824
-      objectReference: {fileID: 0}
-    - target: {fileID: 9068935615269880247, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 9068935615269880247, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
-    - target: {fileID: 9068935615269880247, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
---- !u!114 &526873230823419587 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8090298616102685764, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-  m_PrefabInstance: {fileID: 8577483530517799559}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bae52a240397f14598e902bb3081876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!224 &5783556890982564951 stripped
+--- !u!224 &7092376394294046677 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2831081409744053968, guid: 3a4522623f81ee44296e3d09d20e2b8b, type: 3}
-  m_PrefabInstance: {fileID: 8577483530517799559}
+  m_PrefabInstance: {fileID: 4982999110429870341}
   m_PrefabAsset: {fileID: 0}
