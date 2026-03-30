@@ -25,7 +25,7 @@ public class PlayerUIControl : MonoBehaviour
 
     void OnLoadButtonClick()
     {
-        SaveLoadPanelControl.Instance.ShowPanel();
+        SaveLoadPanelControl.Instance.ShowLoadPanel();
     }
 
 

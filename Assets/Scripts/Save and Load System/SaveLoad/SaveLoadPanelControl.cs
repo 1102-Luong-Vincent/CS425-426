@@ -18,14 +18,24 @@ public static class SaveLoadPath
 public class SaveLoadPanelControl : MonoBehaviour
 {
     public static SaveLoadPanelControl Instance;
-    public GameObject SaveLoadPanel;
-    public Button SaveButton;
-    public Button CheckButton;
-    public Button CancelButton;
+
+    public GameObject SaveLoadRoot;
+    public GameObject SavePanel;
+    public GameObject LoadPanel;
+
+    public Button SavePanelSaveButton;
+    public Button SavePanelCancelButton;
+
+    public Button LoadPanelLoadButton;
+    public Button LoadPanelCancelButton;
 
     public SaveLoadButtonControl saveLoadButtonPrefab;
-    public Transform NormalSaveTransform;
-    public Transform AutoSaveTransform;
+
+    public Transform SavePanelNormalSaveTransform;
+    public Transform SavePanelAutoSaveTransform;
+
+    public Transform LoadPanelNormalSaveTransform;
+    public Transform LoadPanelAutoSaveTransform;
 
     private SaveLoadButtonControl selSaveLoadButton;
 
@@ -58,24 +68,31 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     void InitButtons()
     {
-        SaveButton.onClick.AddListener(OnSaveButtonClick);
-        CheckButton.onClick.AddListener(OnCheckButtonClick);
-        CancelButton.onClick.AddListener(ClosePanel);
+        //SaveButton.onClick.AddListener(OnSaveButtonClick);
+        //CheckButton.onClick.AddListener(OnCheckButtonClick);
+        //CancelButton.onClick.AddListener(ClosePanel);
+        SavePanelSaveButton.onClick.AddListener(OnSaveButtonClick);
+        SavePanelCancelButton.onClick.AddListener(ClosePanel);
+
+        LoadPanelLoadButton.onClick.AddListener(OnCheckButtonClick);
+        LoadPanelCancelButton.onClick.AddListener(ClosePanel);
     }
 
 
-    public void ShowPanel()
-    {
-        LoadSaveButtons();
-        SetSelSaveLoadButton(null);
-        SaveLoadPanel.SetActive(true);
+    //public void ShowPanel()
+    //{
+    //    LoadSaveButtons();
+    //    SetSelSaveLoadButton(null);
+    //    SaveLoadPanel.SetActive(true);
 
-    }
+    //}
 
     public void ClosePanel()
     {
         SetSelSaveLoadButton(null);
-        SaveLoadPanel.SetActive(false);
+        SavePanel.SetActive(false);
+        LoadPanel.SetActive(false);
+        SaveLoadRoot.SetActive(false);
     }
 
 
@@ -102,7 +119,8 @@ public class SaveLoadPanelControl : MonoBehaviour
     void OnSaveButtonClick()
     {
         NormalSaveGame();
-        LoadSaveButtons();
+        //LoadSaveButtons();
+        LoadSaveButtonsForSavePanel();
     }
 
     void OnCheckButtonClick()
@@ -110,13 +128,13 @@ public class SaveLoadPanelControl : MonoBehaviour
         if (selSaveLoadButton == null) return;
         GameValue.Instance.SetSaveData(selSaveLoadButton.GetSaveData());
         audioSource.PlayOneShot(buttonClickSound);
-        ClosePanel();
 
         if (pauseControlToCloseAfterLoad != null)
         {
             pauseControlToCloseAfterLoad.ClosePauseAfterLoad();
             pauseControlToCloseAfterLoad = null;
         }
+        ClosePanel();
     }
 
     public void SetSelSaveLoadButton(SaveLoadButtonControl saveLoadButtonControl)
@@ -128,19 +146,37 @@ public class SaveLoadPanelControl : MonoBehaviour
         selSaveLoadButton = saveLoadButtonControl;
     }
 
-    void LoadSaveButtons()
-    {
-        foreach (Transform child in NormalSaveTransform)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (Transform child in AutoSaveTransform)
-        {
-            Destroy(child.gameObject);
-        }
+    //void LoadSaveButtons()
+    //{
+    //    foreach (Transform child in NormalSaveTransform)
+    //    {
+    //        Destroy(child.gameObject);
+    //    }
+    //    foreach (Transform child in AutoSaveTransform)
+    //    {
+    //        Destroy(child.gameObject);
+    //    }
 
-        CreateButtonsFromPath(normalSavePath, NormalSaveTransform);
-        CreateButtonsFromPath(autoSavePath, AutoSaveTransform);
+    //    CreateButtonsFromPath(normalSavePath, NormalSaveTransform);
+    //    CreateButtonsFromPath(autoSavePath, AutoSaveTransform);
+    //}
+
+    void LoadSaveButtonsForSavePanel()
+    {
+        ClearChildren(SavePanelNormalSaveTransform);
+        ClearChildren(SavePanelAutoSaveTransform);
+
+        CreateButtonsFromPath(normalSavePath, SavePanelNormalSaveTransform);
+        CreateButtonsFromPath(autoSavePath, SavePanelAutoSaveTransform);
+    }
+
+    void LoadSaveButtonsForLoadPanel()
+    {
+        ClearChildren(LoadPanelNormalSaveTransform);
+        ClearChildren(LoadPanelAutoSaveTransform);
+
+        CreateButtonsFromPath(normalSavePath, LoadPanelNormalSaveTransform);
+        CreateButtonsFromPath(autoSavePath, LoadPanelAutoSaveTransform);
     }
 
     void CreateButtonsFromPath(string folderPath, Transform parent)
@@ -158,5 +194,31 @@ public class SaveLoadPanelControl : MonoBehaviour
     public void SetPauseControlToCloseAfterLoad(PauseControl pauseControl)
     {
         pauseControlToCloseAfterLoad = pauseControl;
+    }
+
+    public void ShowSavePanel()
+    {
+        SetSelSaveLoadButton(null);
+        LoadSaveButtonsForSavePanel();
+        SaveLoadRoot.SetActive(true);
+        SavePanel.SetActive(true);
+        LoadPanel.SetActive(false);
+    }
+
+    public void ShowLoadPanel()
+    {
+        SetSelSaveLoadButton(null);
+        LoadSaveButtonsForLoadPanel();
+        SaveLoadRoot.SetActive(true);
+        SavePanel.SetActive(false);
+        LoadPanel.SetActive(true);
+    }
+
+    void ClearChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

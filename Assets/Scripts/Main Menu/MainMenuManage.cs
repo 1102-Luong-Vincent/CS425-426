@@ -90,7 +90,7 @@ public class MainMenuManage : MonoBehaviour
     void OnLoadButtonClick()
     {
         audioSource.PlayOneShot(buttonClickSound);
-        SaveLoadPanelControl.Instance.ShowPanel();
+        SaveLoadPanelControl.Instance.ShowLoadPanel();
     }
 
     void OnOptionButtonClick()

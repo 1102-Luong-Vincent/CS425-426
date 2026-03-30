@@ -1,6 +1,6 @@
 //Author: Vincent Luong
 //Created by: Vincent Luong
-//Modified by: Shawn Meng
+//Modified by: Shawn Meng, Yuhan Tang
 //no external source was used
 
 using UnityEngine;
@@ -30,7 +30,8 @@ public class PauseControl : MonoBehaviour
 
     private void Start()
     {
-      if (ResumeButton != null)  ResumeButton.onClick.AddListener(ResumeGame); //resume game on button click
+        Debug.Log($"PauseControl Start: {name}, instanceID={GetInstanceID()}");
+        if (ResumeButton != null)  ResumeButton.onClick.AddListener(ResumeGame); //resume game on button click
         if (SaveButton != null) SaveButton.onClick.AddListener(SaveGame); //goes to save scene on button click
         if (LoadButton != null) LoadButton.onClick.AddListener(LoadGame); //goes to load scene on button click
         if (RestartButton != null) RestartButton.onClick.AddListener(RestartGame); //restarts the current level on button click
@@ -43,6 +44,7 @@ public class PauseControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape)) //press escape to pause the game
         {
+            Debug.Log($"Escape detected by PauseControl: {name}, instanceID={GetInstanceID()}");
             if (isPaused)
             {
                 ResumeGame();
@@ -56,6 +58,11 @@ public class PauseControl : MonoBehaviour
 
     void PauseGame()
     {
+        Debug.Log($"PauseGame called by: {name}, instanceID={GetInstanceID()}");
+        Debug.Log($"pauseScreen before active = {pauseScreen.activeSelf}");
+        pauseScreen.SetActive(true);
+        Debug.Log($"pauseScreen after active = {pauseScreen.activeSelf}");
+
         pauseScreen.SetActive(true); //activates the pauseScreen and pauses the screen
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
@@ -96,7 +103,8 @@ public class PauseControl : MonoBehaviour
     void SaveGame()
     {
         audioSource.PlayOneShot(buttonClickSound);
-        SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel to save your game
+        //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel to save your game
+        SaveLoadPanelControl.Instance.ShowSavePanel();
 
     }
 
@@ -104,7 +112,8 @@ public class PauseControl : MonoBehaviour
     {
         audioSource.PlayOneShot(buttonClickSound);
         SaveLoadPanelControl.Instance.SetPauseControlToCloseAfterLoad(this); // close the pause panel after load game
-        SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game
+        //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game
+        SaveLoadPanelControl.Instance.ShowLoadPanel();
     }
 
     void RestartGame()
