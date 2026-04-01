@@ -12,15 +12,25 @@ public class SceneTransitionUI : MonoBehaviour
     public SceneType sceneToLoad;
     [SerializeField] Vector3 PlayerTransitionPosition;
     bool playerInRange = false;
+    public static SceneTransitionUI Instance;
 
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            confirmationPanel.SetActive(true);
-            Time.timeScale = 0f;
+            ShowConfirmation();
         }
     }
 
@@ -36,5 +46,11 @@ public class SceneTransitionUI : MonoBehaviour
         confirmationPanel.SetActive(false);
         Time.timeScale = 1f;
         playerInRange = false;
+    }
+
+    public void ShowConfirmation()
+    {
+        confirmationPanel.SetActive(true);
+        Time.timeScale = 0f;
     }
 }

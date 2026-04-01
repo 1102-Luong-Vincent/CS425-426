@@ -25,7 +25,7 @@ public class Interactable : MonoBehaviour
     {
         float distance = Vector3.Distance(player.position, transform.position);
 
-        if(distance <= interactionRadius)
+        if (distance <= interactionRadius)
         {
             if (!isInteractable)
                 isInteractable = true;
@@ -46,7 +46,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    void Interact()
+    protected virtual void Interact()
     {
         Debug.Log($"You interacted with {gameObject.name}");
     }

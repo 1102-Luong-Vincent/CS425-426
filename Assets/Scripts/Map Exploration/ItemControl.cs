@@ -15,7 +15,8 @@ public enum ItemInteractionType
     SceneTransition,    // Scene transition
     Pickup,            // Pickup item
     Dialogue,          // Start dialogue
-    Custom             // Custom effect
+    Custom,             // Custom effect
+    KeyPickup
 }
 
 public class ItemControl : MonoBehaviour
@@ -41,6 +42,9 @@ public class ItemControl : MonoBehaviour
     [Header("Item Pick Up ID")]
     [SerializeField] int ItemID = 1;
 
+    [Header("Key Settings")]
+    [SerializeField] private bool isKeyPickup = false;
+
 
     [Header("Weapon Pick Up ID")]
     //[SerializeField] private WeaponInteractionType weaponType = WeaponInteractionType.Card;
@@ -51,6 +55,7 @@ public class ItemControl : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip interactionSound;
     [SerializeField] AudioClip pickupSound;
+    [SerializeField] AudioClip keyPickupSound;
 
     [Header("Pickup Icon")]
     [SerializeField] private Sprite pickupIcon;
@@ -63,7 +68,7 @@ public class ItemControl : MonoBehaviour
     {
         HideUI();
         windowPanel.SetActive(false);
-        backButton.onClick.AddListener(() =>
+        backButton.onClick.AddListener(() => //want to add where if interaction key E is pressed, it can also be used to back out of the dialogue
         {
             windowPanel.SetActive(false);
             Time.timeScale = 1f; // Resume the game
@@ -79,11 +84,18 @@ public class ItemControl : MonoBehaviour
         {
             TriggerInteraction();
 
-            if (interactionType != ItemInteractionType.Pickup && interactionSound != null)
+            //if (interactionType != ItemInteractionType.Pickup || interactionType != ItemInteractionType.KeyPickup && interactionSound != null)
+            //{
+            //    audioSource.PlayOneShot(interactionSound);
+            //    windowPanel.SetActive(true);
+            //    Time.timeScale = 0f; //pause the game
+            //}
+
+            if ((interactionType == ItemInteractionType.Dialogue || interactionType == ItemInteractionType.Custom || interactionType == ItemInteractionType.SceneTransition) && interactionSound != null)
             {
                 audioSource.PlayOneShot(interactionSound);
                 windowPanel.SetActive(true);
-                Time.timeScale = 0f; //pause the game
+                Time.timeScale = 0f;
             }
         }
     }
@@ -155,6 +167,10 @@ public class ItemControl : MonoBehaviour
 
             case ItemInteractionType.Custom:
                 ExecuteCustomEffect();
+                break;
+
+            case ItemInteractionType.KeyPickup:
+                PickupKeyItem();
                 break;
         }
 
@@ -254,6 +270,8 @@ public class ItemControl : MonoBehaviour
     {
         Debug.Log($"Starting dialogue: {gameObject.name}");
 
+        //Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
+
         // Example: Trigger dialogue system
         // DialogueManager.Instance.StartDialogue(dialogueData);
     }
@@ -269,6 +287,39 @@ public class ItemControl : MonoBehaviour
         // Examples: Open chest, activate mechanism, heal player, etc.
     }
 
+    public void PickupKeyItem()
+    {
+        Debug.Log($"Picked up key: {ItemID}");
+
+        if (keyPickupSound != null)
+        {
+            audioSource.PlayOneShot(pickupSound);
+        }
+
+        PlayerValue player = GameValue.Instance.GetPlayerValue();
+        CardValue keyItem = GameValue.Instance.GetGameValueLibrary().GetInitCard(ItemID);
+
+        string itemName = "";
+
+        if (keyItem != null)
+        {
+            player.HadCardsLibrary.Add(keyItem);
+            itemName = keyItem.CardName;
+
+            if (pickupIcon != null)
+            {
+                InteractableNotification.Instance.ShowNotification(itemName, pickupIcon);
+            }
+
+            Debug.Log($"Key {ItemID} added to inventory");
+
+            Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
+        }
+        else
+        {
+            Debug.LogWarning($"Key ID {ItemID} not found in library!");
+        }
+    }
     // ================= Public Methods: For External Calls =================
 
     /// <summary>

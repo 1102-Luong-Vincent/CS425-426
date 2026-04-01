@@ -95,10 +95,6 @@ public class InteractableNotification : MonoBehaviour
 
     private IEnumerator HideAfterDuration()
     {
-        //yield return new WaitForSeconds(displayDuration);
-        //notificationText.gameObject.SetActive(false);
-        //pickupIcon.gameObject.SetActive(false);
-
         yield return new WaitForSeconds(displayDuration);
 
         float elapsed = 0f;

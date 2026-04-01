@@ -125,7 +125,7 @@ public class StoryManage : MonoBehaviour
 
 
 
-    void SetStory(string fileName)
+    public void SetStory(string fileName)
     {
         StopStoryCoroutines();
 

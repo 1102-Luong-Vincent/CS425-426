@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7177733708982807187}
   - component: {fileID: 1606297017596563937}
   - component: {fileID: 105409371532791564}
+  - component: {fileID: 6523777684969038024}
   - component: {fileID: 8743344105781874655}
   - component: {fileID: 313156410930487335}
   m_Layer: 0
@@ -119,6 +120,24 @@ MonoBehaviour:
   audioSource: {fileID: 313156410930487335}
   interactionSound: {fileID: 8300000, guid: 2ae6c9b74c2900a4990a38b83b3c5a3f, type: 3}
   pickupSound: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+  pickupIcon: {fileID: 0}
+--- !u!114 &6523777684969038024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844078144919458876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f112dac6957164db00ab72cdc5f64c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionRadius: 1
+  isInteractable: 1
+  interactKey: E
+  interact: {fileID: 0}
+  keyID: 
 --- !u!70 &8743344105781874655
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

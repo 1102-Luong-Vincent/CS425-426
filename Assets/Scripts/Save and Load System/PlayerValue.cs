@@ -7,6 +7,7 @@ using NUnit.Framework;
 using SmallScaleInc.TopDownPixelCharactersPack1;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -25,6 +26,7 @@ public class PlayerValue
     public List<WeaponValue> HadWeaponsLibrary = new List<WeaponValue>();
 
     public Dictionary<string, int> Materials = new Dictionary<string, int>();
+    public HashSet<string> keyInteractable = new HashSet<string>();
 
 
     int Health = 100;
@@ -395,6 +397,20 @@ public class PlayerValue
         Health = health;
     }
 
+    public void AddKeyInteractable(string keyID)
+    {
+        keyInteractable.Add(keyID);
+    }
+
+    public bool HasKey(string keyID)
+    {
+        return keyInteractable.Contains(keyID);
+    }
+
+    public void RemoveKey(string keyID)
+    {
+        keyInteractable.Remove(keyID);
+    }
 }
 
 [System.Serializable]
@@ -416,7 +432,7 @@ public class PlayerSaveData
     public List<string> HadWeaponsSaveLibrary = new List<string>();
 
 
-    public float PlayerPositionX, PlayerPositionY,PlayerPositionZ;
+    public float PlayerPositionX, PlayerPositionY, PlayerPositionZ;
 
     public PlayerSaveData(PlayerValue playerValue)
     {
@@ -479,8 +495,4 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
-
-
-
 }
-
