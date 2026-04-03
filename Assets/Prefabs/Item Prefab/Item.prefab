@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6523777684969038024}
   - component: {fileID: 8743344105781874655}
   - component: {fileID: 313156410930487335}
+  - component: {fileID: 1503958606818858315}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -115,11 +116,13 @@ MonoBehaviour:
   windowPanel: {fileID: 8743917328937754648}
   backButton: {fileID: 5287615695322312662}
   ItemID: 1
+  isKeyPickup: 0
   weaponID: 0
   isWeaponPickup: 0
   audioSource: {fileID: 313156410930487335}
   interactionSound: {fileID: 8300000, guid: 2ae6c9b74c2900a4990a38b83b3c5a3f, type: 3}
   pickupSound: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+  keyPickupSound: {fileID: 0}
   pickupIcon: {fileID: 0}
 --- !u!114 &6523777684969038024
 MonoBehaviour:
@@ -198,7 +201,7 @@ AudioSource:
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
-  Pan2D: 0
+  Pan2D: -0.6
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
@@ -272,6 +275,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1503958606818858315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2844078144919458876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6291e2a075afffa4eb7f998abcc8fd6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endingText: {fileID: 0}
+  endingPanel: {fileID: 0}
+  continueButton: {fileID: 0}
+  playerInRange: 0
+  isTriggered: 0
+  isTyping: 0
+  timeBetweenLines: 1
+  typingSpeed: 0.05
 --- !u!1 &4152983976587609998
 GameObject:
   m_ObjectHideFlags: 0
