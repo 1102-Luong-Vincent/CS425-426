@@ -24,7 +24,7 @@ public class LockedInteractable : MonoBehaviour
     {
         playerValue = GameValue.Instance.GetPlayerValue();
         doorLockedText.gameObject.SetActive(false);
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void OpenDoor()
