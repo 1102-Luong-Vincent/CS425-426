@@ -164,10 +164,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8822865217239493256}
   - component: {fileID: 1604492117741652125}
-  - component: {fileID: 8110144756289831132}
   - component: {fileID: 1098832480487625739}
   - component: {fileID: 3141436374871886834}
-  - component: {fileID: 776879117348452138}
+  - component: {fileID: 450147366604557127}
+  - component: {fileID: 8633608009243209153}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d73210ef833024bb44ad7c5ddc4638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationController: {fileID: 8110144756289831132}
+  animationController: {fileID: 0}
   speed: 1
   runningSpeed: 2
   isCrouching: 0
@@ -240,38 +240,6 @@ MonoBehaviour:
   zombieKillCount: 0
   killCountText: {fileID: 0}
   FootstepsAudioSource: {fileID: 4693929582588146565}
---- !u!114 &8110144756289831132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6292912555311769697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbfa38304d47c864d8315b1ec8603a99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  muzzleAnimator: {fileID: 6357097204801831813}
-  muzzleFlashRenderer: {fileID: 4979757567251795114}
-  currentDirection: isEast
-  isCurrentlyRunning: 0
-  isCrouching: 0
-  isDying: 0
-  bloodPrefabs:
-  - {fileID: 7832956911143034944, guid: c051dadcfc9b4544a98f31f2bcb4d123, type: 3}
-  - {fileID: 761505443441836314, guid: 970b07054abf04a45879ac5a2d2d22b7, type: 3}
-  - {fileID: 9188630017558119653, guid: 9d4c6729d0b04784b91e23f506b3504c, type: 3}
-  - {fileID: 6343985419048066051, guid: 127bb08943a784b4c8f86a0ea861517e, type: 3}
-  - {fileID: 7506781129403749045, guid: e72105ea03bf96147a0221aa668d59fd, type: 3}
-  radiatedPrefabs: []
-  isRadiated: 0
-  rollTime: 0.5
-  isRunning: 0
-  isRunningBackwards: 0
-  isStrafingLeft: 0
-  isStrafingRight: 0
-  isAttacking: 0
 --- !u!212 &1098832480487625739
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -316,7 +284,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -1714931905976054233, guid: 3850b4fb91ec3f24199bbc06680fe870, type: 3}
+  m_Sprite: {fileID: 876899767, guid: 9f7e46546eff8c446842cabef5edbc70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -337,7 +305,7 @@ Animator:
   m_GameObject: {fileID: 6292912555311769697}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 97deb7ffce0ac0f47bb4c94bad38945f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 30c1991996c1c2d4a85bac2590069260, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -349,7 +317,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &776879117348452138
+--- !u!50 &450147366604557127
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -364,7 +332,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -375,7 +343,43 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!58 &8633608009243209153
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6292912555311769697}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.01
 --- !u!1 &6639226915705052425
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +502,7 @@ Transform:
   m_GameObject: {fileID: 6680211341883172021}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

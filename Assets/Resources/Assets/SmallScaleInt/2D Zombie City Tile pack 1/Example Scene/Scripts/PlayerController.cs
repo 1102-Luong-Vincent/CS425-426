@@ -17,10 +17,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
     {
         public static PlayerController Instance;
         public AnimationController animationController;
+        Animator anim;
 
         // for 2d movement
         private CircleCollider2D circleCollider;
         private Rigidbody2D rb;
+        private float xdir;
+        private float ydir;
 
         //for 2d move
         //private CircleCollider2D circleCollider;
@@ -122,8 +125,12 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             rb = GetComponent<Rigidbody2D>();
 
+            xdir = 1;
+            ydir = 0;
+
             spriteRenderer = GetComponent<SpriteRenderer>();
             animationController = GetComponent<AnimationController>();
+            anim = GetComponent<Animator>();
             circleCollider = GetComponent<CircleCollider2D>();
             originalColor = spriteRenderer.color;
 
@@ -147,119 +154,10 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             // Existing movement and input code...
             if (isDead) return;
 
-            // --- Aiming ---
-            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
-            //float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-            //lastAngle = SnapAngleToEightDirections(angle);
-
-            //HandleCrouching();
-            //HandleShooting();
-            //if(isDead)
-            //{
-            //    return;
-            //}
-            //Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Vector2 directionToMouse = (mousePosition - (Vector2)transform.position).normalized;
-
-            //float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg;
-            //lastAngle = SnapAngleToEightDirections(angle);
-
-            //movementDirection = new Vector2(Mathf.Cos(lastAngle * Mathf.Deg2Rad), Mathf.Sin(lastAngle * Mathf.Deg2Rad));
-
-            //HandleMovement();
-            //HandleZombieDamage();
-            //HandleShooting(); // for playing sound
-
-            //bool isMoving = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) ||
-            //                 Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-
-            //if (isMoving && !isRunning)
-            //{
-            //    isRunning = true;
-            //}
-            //else if (!isMoving && isRunning)
-            //{
-            //    isRunning = false;
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.C))
-            //{
-            //    if (isShapeShifter && isActive)
-            //    {
-            //        StartCoroutine(ShapeShiftDelayed());
-            //    }
-            //    HandleCrouching();
-            //}
-
-            //if (isActive)
-            //{
-            //    // Check for missing prefabs (projectile, AoE, etc.)
-            //    if (projectilePrefab == null || AoEPrefab == null ||
-            //        Special1Prefab == null || HookPrefab == null)
-            //    {
-            //        return;
-            //    }
-
-            //    if (isRanged)
-            //    {
-            //        if (Input.GetMouseButtonDown(1))
-            //        {
-            //            Invoke(nameof(DelayedShoot), shootDelay);
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha1))
-            //        {
-            //            StartCoroutine(DeploySpecial1Delayed());
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha3))
-            //        {
-            //            StartCoroutine(DeployAoEDelayed());
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha5))
-            //        {
-            //            if (isSummoner)
-            //            {
-            //                StartCoroutine(DeployHookDelayed());
-            //            }
-            //            else
-            //            {
-            //                StartCoroutine(Quickshot());
-            //            }
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha6))
-            //        {
-            //            StartCoroutine(CircleShot());
-            //        }
-            //    }
-
-            //    if (isMelee)
-            //    {
-            //        if (Input.GetKeyDown(KeyCode.Alpha1))
-            //        {
-            //            StartCoroutine(DeployAoEDelayed());
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha5))
-            //        {
-            //            StartCoroutine(DeployHookDelayed());
-            //        }
-            //        if (Input.GetKeyDown(KeyCode.Alpha6))
-            //        {
-            //            Invoke(nameof(DelayedShoot), shootDelay);
-            //        }
-            //    }
-            //    else if (Input.GetKeyDown(KeyCode.LeftControl) && isRunning)
-            //    {
-            //        if (isShapeShifter && isActive)
-            //        {
-            //            StartCoroutine(ShapeShiftDelayed());
-            //        }
-            //    }
-            //}
         }
 
         void FixedUpdate()
         {
-            //TwoDMover();
             TwoDMove();
             RunSpeed();
         }
@@ -275,6 +173,22 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
+
+            
+
+
+            if(horizontal == 0 && vertical == 0)
+            {
+                anim.SetBool("IsMoving", false);
+            }
+            else
+            {
+                xdir = horizontal;
+                ydir = vertical;
+                anim.SetBool("IsMoving", true);
+            }
+                anim.SetFloat("MoveX", xdir);
+            anim.SetFloat("MoveY", ydir);
 
             Vector2 input = new Vector2(
                 horizontal,
@@ -971,11 +885,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 speed = runningSpeed;
+                anim.SetBool("isRunning", true);
             }
 
             else
             {
                 speed = 1.0f;
+                anim.SetBool("isRunning", false);
             }
         }
     }
