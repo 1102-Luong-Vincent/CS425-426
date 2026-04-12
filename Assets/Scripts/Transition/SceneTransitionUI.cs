@@ -22,7 +22,7 @@ public class SceneTransitionUI : MonoBehaviour
         //    Destroy(gameObject);
         //    return;
         //}
-        //Instance = this;
+        Instance = this;
     }
 
     public void OnTriggerEnter2D(Collider2D other)
