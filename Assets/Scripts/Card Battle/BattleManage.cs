@@ -5,8 +5,6 @@
 
 using UnityEngine;
 using System;
-using System.Collections.Generic;
-using DG.Tweening;
 
 public class BattleManage : MonoBehaviour
 {
@@ -16,7 +14,6 @@ public class BattleManage : MonoBehaviour
     public BattleUIManager BattleUIManager;
 
     [SerializeField] BattlePlayerController player;
-
 
     private int turn = 1;
     private event Action<int> OnTurnChanged;
