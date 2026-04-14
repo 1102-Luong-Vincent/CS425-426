@@ -91,6 +91,10 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         public TextMeshProUGUI killCountText; // Assign this in the Inspector with your score UI element
         [SerializeField] AudioSource FootstepsAudioSource;
 
+        [Header("Camera")]
+        [SerializeField] private Camera playerCamera;
+        public Camera PlayerCamera => playerCamera;
+
         private void Awake()
         {
             Init();
@@ -139,6 +143,11 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (killCountText != null)
             {
                 originalScale = killCountText.transform.localScale; // Save the original size
+            }
+
+            if (playerCamera == null)
+            {
+                playerCamera = GetComponentInChildren<Camera>(true);
             }
         }
 
