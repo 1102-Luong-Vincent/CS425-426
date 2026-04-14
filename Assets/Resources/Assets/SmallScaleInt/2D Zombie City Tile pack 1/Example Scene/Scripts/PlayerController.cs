@@ -977,7 +977,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
         public void RunSpeed()
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 speed = runningSpeed;
             }
