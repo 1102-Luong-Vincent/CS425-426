@@ -24240,6 +24240,7 @@ Transform:
   - {fileID: 1815978398}
   - {fileID: 185117227}
   - {fileID: 1539057315}
+  - {fileID: 1162139191}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1035730904
@@ -24481,6 +24482,264 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 219464462056448219, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
   m_PrefabInstance: {fileID: 1123893977}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1162139190
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1035730903}
+    m_Modifications:
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: targetScene
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: interactionType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1162139192}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 313156410930487335, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503958606818858315, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1606297017596563937, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 407bda4cd28dfaa49bf65aa3ab74bb8b, type: 3}
+    - target: {fileID: 1606297017596563937, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1606297017596563937, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1606297017596563937, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_text
+      value: 'I have been searching for information about the government''s involvement
+        in "Project REBIRTH". I have not found a single clue. This whole city has
+        been picked clean.
+
+
+        However, It seems the government has come through
+        here. I saw some military personnel transporting a prisoner towards the hospital.
+        From what I heard, the prisoner has information regarding the location of
+        the cure.
+
+
+        I wanted to help the prisoner, but there were at least
+        five soldiers armed with machine guns. I wouldn''t stand a chance. I will
+        try to clear a path to the hospital and follow them once the coast is clear.
+
+
+        -
+        Trevor
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSize
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Name
+      value: Note
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723987702922010495, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSize
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723987702922010495, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723987702922010495, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523777684969038024, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalScale.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.325
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743344105781874655, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Size.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743344105781874655, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Size.y
+      value: 16.58
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743344105781874655, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743344105781874655, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743917328937754648, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+--- !u!4 &1162139191 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 1162139190}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1162139192 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 1162139190}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1169787618
 PrefabInstance:
@@ -54050,23 +54309,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_text
-      value: "If you're looking for the cure, it is beyond the hospital, at the Military
-        Quarantine Zone. Unfortunately, I was attacked by a horde of zombies and
-        I most likely won't make it out of here. \n\nI locked the hospital door to
-        prevent more zombies from breaking through.  I hid the key in a dumpster
-        by an alleyway, between the hospital and the store. \n\nUse the key to get
-        into the hospital and head towards the Military Quarantine Zone. I wish I
-        could provide more assistance for whoever is reading this, but it seems this
-        is as far as I will go.\n\nGo and retrieve the cure.    \n\t\t\t\t\t\t\t\t\t\t-
-        Trevor"
+      value: "I hav found more information. The government plans on destroying the
+        cure. They had no intention of saving humanity. I overheard one of the soldiers
+        revealing the cure's location from the prisoner they were transporting. \n\nThe
+        cure is at the Military Quarantine Zone, past the hospital. Unfortunately,
+        I was attacked by a horde of zombies and I do not think I will survive.\n\nI
+        locked the hospital door to prevent more zombies from breaking through. 
+        I hid the key in a dumpster by an alleyway, between the hospital and the
+        store. \n\nUse the key to get into the hospital and head towards the Military
+        Quarantine Zone. I wish I could provide more assistance for whoever is reading
+        this, but it seems this is as far as I will go.\n\nGo and retrieve the cure.   
+        \n\t\t\t\t\t\t\t- Trevor"
       objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
-      value: 55
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSizeBase
-      value: 55
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Name

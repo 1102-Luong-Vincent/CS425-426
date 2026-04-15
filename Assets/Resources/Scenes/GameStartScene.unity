@@ -8429,19 +8429,32 @@ PrefabInstance:
         project called \"Project REBIRTH\", which they plan on using to seize research
         across the city. This includes the cure that you and I have been working
         on. \n\nThe government has no intention of using the cure to save humanity.
-        Before my capture, I have hidden the cure in the closet within your bedroom.
-        You must keep it safe with you. With the cure, you must head to the hospital.
-        That is where we can mass produce it and save humanity. You are humanity's
-        last hope.\n\nBe wary, the journey to the lab will be dangerous. You will
-        encounter all sorts of creatures and people that might stop you. \n\nBe sure
-        to explore to find weapons and items along the way that will make your journey
-        easier to traverse. \n\n- Isaac \n"
+        Before my capture, I have hidden some items for you within the house. Find
+        them. They will be useful. Once you are ready, head to the city. Find information
+        that pertains to the government and the cure if you can. This is crucial
+        for humanity's survival. Without the cure, this world is doomed. \n\nBe wary,
+        this journey will be dangerous. You will encounter all sorts of creatures
+        that might stop you.  Make sure you are well prepared before heading out.
+        \n\nBe sure to explore to find weapons and items along the way that will
+        make your journey easier to traverse.  Good luck my friend.\n\n- Isaac \n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSize
+      value: 41.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 41.5
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Name
       value: Note Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152983976587609998, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -8607,10 +8620,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5603882917180965530, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: highlightColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603882917180965530, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: highlightColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5603882917180965530, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: highlightColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6523777684969038024, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6964129359764668948, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: targetTilemap
+      value: 
+      objectReference: {fileID: 627899612}
     - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.035
