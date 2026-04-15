@@ -103,7 +103,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             {
                 TriggerDie();
             }
-            else if (Input.GetKey(KeyCode.LeftShift) && isCurrentlyRunning)
+            else if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isCurrentlyRunning)
             {
                 TriggerFlipAnimation();
             }

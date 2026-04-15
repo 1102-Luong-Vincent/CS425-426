@@ -38,6 +38,9 @@ public class PlayerMenuManager : MonoBehaviour
 
     private MenuState currentState = MenuState.Closed;
 
+    [SerializeField] GameObject playerHUD;
+    [SerializeField] GameObject playerMiniMap;
+
     #region Unity Lifecycle
 
     private void Awake()
@@ -65,9 +68,11 @@ public class PlayerMenuManager : MonoBehaviour
             if (currentState == MenuState.Closed)
             {
                 OpenSpecificMenu(MenuState.Deck);
+                playerMiniMap.SetActive(false);
             } else
             {
                 CloseAllMenus();
+                playerMiniMap.SetActive(true);
             }
         }
     }
@@ -94,21 +99,29 @@ public class PlayerMenuManager : MonoBehaviour
     void OnDeckButtonClick()
     {
         OpenSpecificMenu(MenuState.Deck);
+        playerHUD.SetActive(false);
+        playerMiniMap.SetActive(false);
     }
 
     void OnCombineButtonClick()
     {
         OpenSpecificMenu(MenuState.Combine);
+        playerHUD.SetActive(false);
+        playerMiniMap.SetActive(false);
     }
 
     void OnUpgradeButtonClick()
     {
         OpenSpecificMenu(MenuState.Upgrade);
+        playerHUD.SetActive(false);
+        playerMiniMap.SetActive(false);
     }
 
     void OnOptionButtonClick()
     {
         OpenSpecificMenu(MenuState.Options);
+        playerHUD.SetActive(false);
+        playerMiniMap.SetActive(false);
     }
 
     #endregion

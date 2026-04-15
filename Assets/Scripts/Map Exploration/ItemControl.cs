@@ -306,11 +306,9 @@ public class ItemControl : MonoBehaviour
             player.HadCardsLibrary.Add(keyItem);
             itemName = keyItem.CardName;
 
-            if (pickupIcon != null)
-            {
-                InteractableNotification.Instance.ShowNotification(itemName, pickupIcon);
-            }
-
+            
+            InteractableNotification.Instance.ShowNotification(itemName);
+            
             Debug.Log($"Key {ItemID} added to inventory");
 
             Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
