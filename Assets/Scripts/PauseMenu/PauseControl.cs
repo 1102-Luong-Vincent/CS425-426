@@ -28,6 +28,9 @@ public class PauseControl : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip buttonClickSound;
 
+    [SerializeField] GameObject playerHUD;
+    [SerializeField] GameObject MiniMap;
+
     private void Start()
     {
         Debug.Log($"PauseControl Start: {name}, instanceID={GetInstanceID()}");
@@ -64,14 +67,17 @@ public class PauseControl : MonoBehaviour
     {
         Debug.Log($"PauseGame called by: {name}, instanceID={GetInstanceID()}");
         Debug.Log($"pauseScreen before active = {pauseScreen.activeSelf}");
-        pauseScreen.SetActive(true);
         Debug.Log($"pauseScreen after active = {pauseScreen.activeSelf}");
 
         pauseScreen.SetActive(true); //activates the pauseScreen and pauses the screen
+
+        SetGameplayUIActive(false);
+
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
 
         SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.PauseScreenMusic);
+
         //if(gameplayMusic != null && gameplayMusic.isPlaying)
         //{
         //    gameplayMusic.Pause();
@@ -86,6 +92,7 @@ public class PauseControl : MonoBehaviour
         if (isPaused)
         {
             pauseScreen.SetActive(false); //deactivates the pauseScreen and unpauses the screen
+            SetGameplayUIActive(true);
             Time.timeScale = 1f; //game starts running again
             isPaused = false;
             audioSource.PlayOneShot(buttonClickSound);
@@ -101,6 +108,7 @@ public class PauseControl : MonoBehaviour
             {
                 SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
             }
+
         }
     }
 
@@ -109,6 +117,8 @@ public class PauseControl : MonoBehaviour
         audioSource.PlayOneShot(buttonClickSound);
         //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel to save your game
         SaveLoadPanelControl.Instance.ShowSavePanel();
+
+        SetGameplayUIActive(false);
 
     }
 
@@ -121,6 +131,8 @@ public class PauseControl : MonoBehaviour
         SaveLoadPanelControl.Instance.SetPauseControlToCloseAfterLoad(this); // close the pause panel after load game
         //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game
         SaveLoadPanelControl.Instance.ShowLoadPanel();
+
+        SetGameplayUIActive(false);
     }
 
     void RestartGame()
@@ -128,10 +140,14 @@ public class PauseControl : MonoBehaviour
         Time.timeScale = 1f; // Resume time scale
         audioSource.PlayOneShot(buttonClickSound);
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+
+        SetGameplayUIActive(false);
     }
     void Options()
     {
         OptionPanelControl.SetOptionPanelActive(true); //shows the panel to adjust settings
+
+        SetGameplayUIActive(false);
     }
 
     void ExitGame()
@@ -144,7 +160,9 @@ public class PauseControl : MonoBehaviour
         Time.timeScale = 1f; //make sure time scale is back to normal before going to main menu
         audioSource.PlayOneShot(buttonClickSound);
         SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
-        
+
+        SetGameplayUIActive(false);
+
     }
 
     public void ClosePauseAfterLoad()
@@ -152,5 +170,40 @@ public class PauseControl : MonoBehaviour
         pauseScreen.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+
+
+        SetGameplayUIActive(true);
+    }
+
+    private void SetGameplayUIActive(bool isActive)
+    {
+        SetObjectActive(ref playerHUD, isActive, "PlayerHUD");
+        SetObjectActive(ref MiniMap, isActive, "MiniMapController");
+    }
+
+    private void SetObjectActive(ref GameObject target, bool isActive, string fallbackName)
+    {
+        if (target == null)
+        {
+            target = FindSceneObject(fallbackName);
+        }
+
+        if (target == null)
+        {
+            return;
+        }
+
+        target.SetActive(isActive);
+    }
+
+    private GameObject FindSceneObject(string objectName)
+    {
+        GameObject foundObject = GameObject.Find(objectName);
+        if (foundObject == null)
+        {
+            Debug.LogWarning($"[PauseControl] Could not find scene object named '{objectName}'.");
+        }
+
+        return foundObject;
     }
 }

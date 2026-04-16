@@ -212,6 +212,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseScreenCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: MiniMap
+      value: 
+      objectReference: {fileID: 2101519061}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: playerHUD
+      value: 
+      objectReference: {fileID: 2101519062}
     - target: {fileID: 8828596610425855409, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -13375,6 +13383,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7739423696879002727, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_Color.b
       value: 1
@@ -13387,11 +13411,22 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5093183963877371992, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+--- !u!1 &2101519061 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3445296233971996233, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+  m_PrefabInstance: {fileID: 2101519060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2101519062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1656631866271578976, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+  m_PrefabInstance: {fileID: 2101519060}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

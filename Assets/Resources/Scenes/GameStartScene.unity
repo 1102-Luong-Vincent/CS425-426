@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -29.800049
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7682953253773367791, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.y
@@ -525,6 +525,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyControls: []
+--- !u!1 &353809299 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1656631866271578976, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+  m_PrefabInstance: {fileID: 97731064}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &360104268
 GameObject:
   m_ObjectHideFlags: 0
@@ -8177,6 +8182,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
   m_PrefabInstance: {fileID: 2009039618}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1486298719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3445296233971996233, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+  m_PrefabInstance: {fileID: 97731064}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1887253141
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12418,6 +12428,18 @@ PrefabInstance:
     - target: {fileID: 7928809658533952468, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: MiniMap
+      value: 
+      objectReference: {fileID: 1486298719}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: playerHUD
+      value: 
+      objectReference: {fileID: 353809299}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: buttonClickSound
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8828596610425855409, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
       propertyPath: m_Pivot.x
