@@ -22,6 +22,12 @@ public class GameProcessManager : MonoBehaviour
 
     public void PlayMusic(SceneType sceneType)
     {
+        if (SoundManage.Instance == null)
+        {
+            Debug.LogWarning($"[GameProcessManager] SoundManage.Instance is null while trying to play music for scene {sceneType}.");
+            return;
+        }
+
         switch (sceneType)
         {
             case SceneType.GameStartScene: SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic); break;

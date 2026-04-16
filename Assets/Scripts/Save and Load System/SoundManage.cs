@@ -53,11 +53,22 @@ public class SoundManage : MonoBehaviour
         {
             PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
         }
+
+        if(currentScene == "BattleScene")
+        {
+            PlayBackgroundMusic(SoundManagerConstants.BattleMusic);
+        }
     }
 
     #region Background
     public void SetBackgroundVolume(float volume)  // make sure only setting Value use it , other mean only 1 reference form SettingValue;
     {
+        if (backgroundMusic == null)
+        {
+            Debug.LogWarning("[SoundManage] Background AudioSource is not assigned.");
+            return;
+        }
+
         backgroundMusic.volume = Mathf.Clamp01(volume);
     }
 
@@ -70,6 +81,12 @@ public class SoundManage : MonoBehaviour
 
     public void PlayBackgroundMusic(AudioClip clip = null, bool loop = true)
     {
+        if (backgroundMusic == null)
+        {
+            Debug.LogWarning("[SoundManage] Background AudioSource is not assigned.");
+            return;
+        }
+
         if (clip != null) backgroundMusic.clip = clip;
         if (backgroundMusic.clip == null) return;
 
@@ -81,6 +98,12 @@ public class SoundManage : MonoBehaviour
 
     public void StopBackgroundMusic()
     {
+        if (backgroundMusic == null)
+        {
+            Debug.LogWarning("[SoundManage] Background AudioSource is not assigned.");
+            return;
+        }
+
         if (backgroundMusic.isPlaying) backgroundMusic.Stop();
     }
 
@@ -90,6 +113,12 @@ public class SoundManage : MonoBehaviour
     #region SoundEffect
     public void SetSoundEffectVolume(float volume) // make sure only setting Value use it , other mean only 1 reference form SettingValue;
     {
+        if (soundEffect == null)
+        {
+            Debug.LogWarning("[SoundManage] Sound effect AudioSource is not assigned.");
+            return;
+        }
+
         soundEffect.volume = Mathf.Clamp01(volume);
     }
 
@@ -103,6 +132,12 @@ public class SoundManage : MonoBehaviour
 
     public void PlaySoundEffect(AudioClip clip = null,bool loop = false)
     {
+        if (soundEffect == null)
+        {
+            Debug.LogWarning("[SoundManage] Sound effect AudioSource is not assigned.");
+            return;
+        }
+
         if (clip != null) soundEffect.clip = clip;
         if (soundEffect.clip == null) return;
         soundEffect.Play();
@@ -110,6 +145,12 @@ public class SoundManage : MonoBehaviour
 
     public void StopSoundEffect()
     {
+        if (soundEffect == null)
+        {
+            Debug.LogWarning("[SoundManage] Sound effect AudioSource is not assigned.");
+            return;
+        }
+
         if (soundEffect.isPlaying) soundEffect.Stop();
     }
 

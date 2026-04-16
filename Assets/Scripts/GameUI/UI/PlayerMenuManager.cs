@@ -68,10 +68,12 @@ public class PlayerMenuManager : MonoBehaviour
             if (currentState == MenuState.Closed)
             {
                 OpenSpecificMenu(MenuState.Deck);
+                playerHUD.SetActive(false);
                 playerMiniMap.SetActive(false);
             } else
             {
                 CloseAllMenus();
+                playerHUD.SetActive(true);
                 playerMiniMap.SetActive(true);
             }
         }
