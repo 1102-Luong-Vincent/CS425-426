@@ -59,6 +59,14 @@ public class ItemControl : MonoBehaviour
 
     [Header("Pickup Icon")]
     [SerializeField] private Sprite pickupIcon;
+
+    [Header("Objective Update")]
+    [SerializeField] private bool updateObjectiveOnPickup = false;
+    [SerializeField, TextArea(2, 3)] private string objectiveAfterPickup = string.Empty;
+    [SerializeField] private bool updateObjectiveOnInteract = false;
+    [SerializeField, TextArea(2, 3)] private string objectiveAfterInteract = string.Empty;
+    [SerializeField, TextArea(2, 3)] private string requiredCurrentObjectiveForObjectiveUpdate = string.Empty;
+    [SerializeField] private bool allowReturningToCompletedObjective = false;
     // Whether player is in interaction range
     private bool playerInRange = false;
     private PlayerController currentPlayer = null;
@@ -174,6 +182,8 @@ public class ItemControl : MonoBehaviour
                 break;
         }
 
+        UpdateObjectiveAfterInteract();
+
         // Invoke custom event (triggered regardless of interaction type)
         onInteract?.Invoke();
     }
@@ -259,6 +269,9 @@ public class ItemControl : MonoBehaviour
             InteractableNotification.Instance.ShowNotification(itemName, pickupIcon);
             Debug.Log("grabbed? " + itemName);
         }
+
+        UpdateObjectiveAfterPickup();
+
         // Destroy item
         Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
     }
@@ -311,12 +324,59 @@ public class ItemControl : MonoBehaviour
             
             Debug.Log($"Key {ItemID} added to inventory");
 
+            UpdateObjectiveAfterPickup();
+
             Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
         }
         else
         {
             Debug.LogWarning($"Key ID {ItemID} not found in library!");
         }
+    }
+
+    private void UpdateObjectiveAfterPickup()
+    {
+        if (updateObjectiveOnPickup &&
+            !string.IsNullOrWhiteSpace(objectiveAfterPickup) &&
+            CanUpdateObjective(objectiveAfterPickup))
+        {
+            GameValue.Instance.SetCurrentObjective(objectiveAfterPickup);
+        }
+    }
+
+    private void UpdateObjectiveAfterInteract()
+    {
+        if (updateObjectiveOnInteract &&
+            !string.IsNullOrWhiteSpace(objectiveAfterInteract) &&
+            CanUpdateObjective(objectiveAfterInteract))
+        {
+            GameValue.Instance.SetCurrentObjective(objectiveAfterInteract);
+        }
+    }
+
+    private bool CanUpdateObjective(string nextObjective)
+    {
+        if (string.IsNullOrWhiteSpace(requiredCurrentObjectiveForObjectiveUpdate))
+        {
+            if (!allowReturningToCompletedObjective &&
+                GameValue.Instance.GetCompletedObjectives().Contains(nextObjective))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        if (!string.Equals(
+            GameValue.Instance.GetCurrentObjective(),
+            requiredCurrentObjectiveForObjectiveUpdate,
+            System.StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        return allowReturningToCompletedObjective ||
+               !GameValue.Instance.GetCompletedObjectives().Contains(nextObjective);
     }
     // ================= Public Methods: For External Calls =================
 

@@ -82,7 +82,9 @@ public class MainMenuManage : MonoBehaviour
     {
         Debug.Log("Remember to initialize GameValue");
         audioSource.PlayOneShot(buttonClickSound);
+        GameValue.Instance.ClearObjectiveProgress();
         GameValue.Instance.SetHappendStoryName(StoryName.Prologue);
+        GameValue.Instance.SetCurrentObjective(ObjectiveConstants.CompletePrologue, false, false);
        GameValue.Instance.LoadSceneByEnum(SceneType.StoryScene);
     //    GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
     }

@@ -12,6 +12,7 @@ public static class FunctionName
 {
     public const string LoadSceneByEnum = "LoadSceneByEnum";
     public const string SetStory = "SetStory";
+    public const string SetObjective = "SetObjective";
     public const string Wait = "Wait";
 }
 
@@ -116,6 +117,9 @@ public static class CommandExecutor
                 break;
             case FunctionName.SetStory:
                 break;
+            case FunctionName.SetObjective:
+                ExecuteSetObjective(args);
+                break;
             default:
                 Debug.LogWarning($"Unknown effect: {functionName}");
                 break;
@@ -148,6 +152,17 @@ public static class CommandExecutor
         float delay = Convert.ToSingle(args[0]);
         string nestedEffect = args[1].ToString();
         runner.StartCoroutine(WaitCoroutine(runner, delay, nestedEffect));
+    }
+
+    private static void ExecuteSetObjective(object[] args)
+    {
+        if (args.Length < 1)
+        {
+            Debug.LogWarning("SetObjective requires 1 argument: objective text");
+            return;
+        }
+
+        GameValue.Instance.SetCurrentObjective(args[0]?.ToString());
     }
 
     private static IEnumerator WaitCoroutine(MonoBehaviour runner, float delay, string nestedEffect)

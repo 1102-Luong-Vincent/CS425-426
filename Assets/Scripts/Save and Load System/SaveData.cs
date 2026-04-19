@@ -61,6 +61,8 @@ public class WorldSaveData
 public class StorySaveData
 {
     public string currentStoryName;
+    public string currentObjective;
+    public List<string> completedObjectives = new();
     public List<string> finishedStoryIds = new();
 
     public StorySaveData() { }
@@ -68,6 +70,8 @@ public class StorySaveData
     public StorySaveData(GameValue gameValue)
     {
         currentStoryName = gameValue.GetHappendStoryName();
+        currentObjective = gameValue.GetCurrentObjective();
+        completedObjectives = gameValue.GetCompletedObjectives();
     }
 }
 

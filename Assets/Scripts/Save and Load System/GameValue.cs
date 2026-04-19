@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ExcelReader;
@@ -27,6 +28,16 @@ public enum SceneType
 
 }
 
+public static class ObjectiveConstants
+{
+    public const string CompletePrologue = "Complete the prologue.";
+    public const string ExploreStartRoom = "Explore the room and pick up an item.";
+    public const string LeaveStartRoom = "Go to the door and enter the next map.";
+    public const string Level1FindGovernmentInfo = "Find information about the government and the whereabouts of the cure.";
+    public const string Level1HeadToHospital = "Head to the hospital.";
+    public const string Level1FindHospitalKey = "Find the key to the hospital.";
+}
+
 [Serializable]
 public class GameValue : MonoBehaviour
 {
@@ -36,6 +47,8 @@ public class GameValue : MonoBehaviour
     public PlayerValue playerValue;
     [SerializeField] SceneType CurrentScene = SceneType.None;
     private String happendStoryName = string.Empty;
+    private string currentObjective = string.Empty;
+    private readonly List<string> completedObjectives = new List<string>();
     [SerializeField] GameProcessManager gameProcessManager;
 
     [SerializeField] private BattleData battleData;
@@ -67,6 +80,8 @@ public class GameValue : MonoBehaviour
     {
         library = new GameValueLibrary();   
         playerValue = new PlayerValue();
+        currentObjective = string.Empty;
+        completedObjectives.Clear();
         
         weaponExcelCache = ExcelReader.GetWeaponsData();
     }
@@ -92,6 +107,7 @@ public class GameValue : MonoBehaviour
 
         if (IsSceneInBuild(sceneName))
         {
+            ApplySceneObjectiveOverrides(scene);
             CurrentScene = scene;
             //SetSetPlayerPosition(true);
             SceneManager.LoadScene(sceneName);
@@ -101,6 +117,32 @@ public class GameValue : MonoBehaviour
             Debug.LogWarning($"Scene {sceneName} not found in Build Settings!");
         }
         gameProcessManager.PlayMusic(scene);
+    }
+
+    private void ApplySceneObjectiveOverrides(SceneType scene)
+    {
+        if (scene == SceneType.GameStartScene &&
+            (string.IsNullOrWhiteSpace(currentObjective) || currentObjective == ObjectiveConstants.CompletePrologue))
+        {
+            SetCurrentObjective(ObjectiveConstants.ExploreStartRoom, false, true);
+            return;
+        }
+
+        if (scene == SceneType.Level_1 &&
+            (string.IsNullOrWhiteSpace(currentObjective) ||
+             currentObjective == ObjectiveConstants.CompletePrologue ||
+             currentObjective == ObjectiveConstants.ExploreStartRoom ||
+             currentObjective == ObjectiveConstants.LeaveStartRoom))
+        {
+            SetCurrentObjective(ObjectiveConstants.Level1FindGovernmentInfo, false, true);
+            return;
+        }
+
+        if (scene == SceneType.Level_2 &&
+            currentObjective == ObjectiveConstants.Level1HeadToHospital)
+        {
+            SetCurrentObjective(string.Empty);
+        }
     }
     
     private bool IsSceneInBuild(string sceneName)
@@ -129,6 +171,23 @@ public class GameValue : MonoBehaviour
         }
         Debug.Log($"Loading save. currentScene = {saveData.currentScene}");
         playerValue.SetPlayerSaveData(saveData.player);
+        if (saveData.story != null)
+        {
+            happendStoryName = saveData.story.currentStoryName ?? string.Empty;
+            currentObjective = saveData.story.currentObjective ?? string.Empty;
+            completedObjectives.Clear();
+
+            if (saveData.story.completedObjectives != null)
+            {
+                completedObjectives.AddRange(saveData.story.completedObjectives.Where(objective => !string.IsNullOrWhiteSpace(objective)));
+            }
+        }
+        else
+        {
+            happendStoryName = string.Empty;
+            currentObjective = string.Empty;
+            completedObjectives.Clear();
+        }
         //PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
         LoadSceneByEnum(saveData.currentScene);
     }
@@ -225,6 +284,16 @@ public class GameValue : MonoBehaviour
         return happendStoryName;
     }
 
+    public string GetCurrentObjective()
+    {
+        return currentObjective;
+    }
+
+    public List<string> GetCompletedObjectives()
+    {
+        return new List<string>(completedObjectives);
+    }
+
     #endregion
 
     #region Set
@@ -244,6 +313,37 @@ public class GameValue : MonoBehaviour
     public void SetHappendStoryName(string happendStoryName)
     {
       this.happendStoryName = happendStoryName;
+    }
+
+    public void SetCurrentObjective(string objective)
+    {
+        SetCurrentObjective(objective, true, false);
+    }
+
+    public void SetCurrentObjective(string objective, bool completePrevious, bool resetCompletedObjectives)
+    {
+        string nextObjective = objective ?? string.Empty;
+
+        if (resetCompletedObjectives)
+        {
+            completedObjectives.Clear();
+        }
+
+        if (completePrevious &&
+            !string.IsNullOrWhiteSpace(currentObjective) &&
+            currentObjective != nextObjective &&
+            (completedObjectives.Count == 0 || completedObjectives[completedObjectives.Count - 1] != currentObjective))
+        {
+            completedObjectives.Add(currentObjective);
+        }
+
+        currentObjective = nextObjective;
+    }
+
+    public void ClearObjectiveProgress()
+    {
+        currentObjective = string.Empty;
+        completedObjectives.Clear();
     }
     #endregion
 }

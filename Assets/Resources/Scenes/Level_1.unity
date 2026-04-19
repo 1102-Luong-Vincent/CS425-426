@@ -22437,6 +22437,22 @@ PrefabInstance:
       propertyPath: interactionType
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnPickup
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: objectiveAfterPickup
+      value: Head to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Find the key to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: allowReturningToCompletedObjective
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
       value: 7
@@ -24565,6 +24581,18 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnInteract
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: objectiveAfterInteract
+      value: Head to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Find information about the government and the whereabouts of the cure.
       objectReference: {fileID: 0}
     - target: {fileID: 313156410930487335, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_PlayOnAwake
@@ -54294,6 +54322,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnInteract
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: objectiveAfterInteract
+      value: Find the key to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Head to the hospital.
+      objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_text
       value: "I hav found more information. The government plans on destroying the
@@ -56118,6 +56158,18 @@ PrefabInstance:
     - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: isInteractable
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: updateObjectiveWhenLocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: objectiveWhenLocked
+      value: Find the key to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: requiredCurrentObjectiveForLockedUpdate
+      value: Head to the hospital.
       objectReference: {fileID: 0}
     - target: {fileID: 1339652607056951652, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_Name

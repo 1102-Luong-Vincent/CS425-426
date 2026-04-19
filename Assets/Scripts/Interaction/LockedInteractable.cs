@@ -14,6 +14,10 @@ public class LockedInteractable : MonoBehaviour
     public bool keyUsed = false;
     public bool isUnlocked = false;
     public TextMeshProUGUI doorLockedText;
+    [Header("Objective Update")]
+    [SerializeField] private bool updateObjectiveWhenLocked = false;
+    [SerializeField, TextArea(2, 3)] private string objectiveWhenLocked = string.Empty;
+    [SerializeField, TextArea(2, 3)] private string requiredCurrentObjectiveForLockedUpdate = string.Empty;
 
     private bool playerInRange = false;
     private bool triggered = false;
@@ -77,6 +81,7 @@ public class LockedInteractable : MonoBehaviour
                 }
             }
         Debug.Log("Door Locked. Missing key: " + keyID);
+        UpdateObjectiveWhenLocked();
         doorLockedText.text = "Door Locked. Needs a key";
 
         SceneTransitionUI.Instance.confirmationPanel.SetActive(false);
@@ -89,5 +94,29 @@ public class LockedInteractable : MonoBehaviour
             playerInRange = false;
             doorLockedText.gameObject.SetActive(false);
         }
+    }
+
+    private void UpdateObjectiveWhenLocked()
+    {
+        if (!updateObjectiveWhenLocked || string.IsNullOrWhiteSpace(objectiveWhenLocked))
+        {
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(requiredCurrentObjectiveForLockedUpdate) &&
+            !string.Equals(
+                GameValue.Instance.GetCurrentObjective(),
+                requiredCurrentObjectiveForLockedUpdate,
+                System.StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        if (GameValue.Instance.GetCompletedObjectives().Contains(objectiveWhenLocked))
+        {
+            return;
+        }
+
+        GameValue.Instance.SetCurrentObjective(objectiveWhenLocked);
     }
 }
