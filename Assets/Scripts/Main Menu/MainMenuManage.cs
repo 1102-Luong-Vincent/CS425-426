@@ -56,7 +56,7 @@ public class MainMenuManage : MonoBehaviour
     {
            
         OnMainMenuButtonClick(buttons.ContinueButton, OnContinueButtonClick);
-        buttons.ContinueButton.gameObject.SetActive(!SettingValue.Instance.GetSettingData().saveData.IsEmpty());
+        buttons.ContinueButton.gameObject.SetActive(HasContinueSave());
 
         OnMainMenuButtonClick(buttons.StartButton, OnStarButtonClick);
         OnMainMenuButtonClick(buttons.LoadButton, OnLoadButtonClick);
@@ -66,7 +66,7 @@ public class MainMenuManage : MonoBehaviour
 
     public void SetMainMenuButtons(bool isActive)
     {
-        buttons.ContinueButton.gameObject.SetActive(isActive && !SettingValue.Instance.GetSettingData().saveData.IsEmpty());
+        buttons.ContinueButton.gameObject.SetActive(isActive && HasContinueSave());
         buttons.StartButton.gameObject.SetActive(isActive);
         buttons.LoadButton.gameObject.SetActive(isActive);
         buttons.OptionButton.gameObject.SetActive(isActive);
@@ -74,6 +74,11 @@ public class MainMenuManage : MonoBehaviour
     }
     void OnContinueButtonClick()
     {
+        if (!HasContinueSave())
+        {
+            return;
+        }
+
         audioSource.PlayOneShot(buttonClickSound);
         GameValue.Instance.SetSaveData(SettingValue.Instance.GetSettingData().saveData);
     }
@@ -82,6 +87,7 @@ public class MainMenuManage : MonoBehaviour
     {
         Debug.Log("Remember to initialize GameValue");
         audioSource.PlayOneShot(buttonClickSound);
+        GameValue.Instance.ResetGameState();
         GameValue.Instance.ClearObjectiveProgress();
         GameValue.Instance.SetHappendStoryName(StoryName.Prologue);
         GameValue.Instance.SetCurrentObjective(ObjectiveConstants.CompletePrologue, false, false);
@@ -109,5 +115,11 @@ public class MainMenuManage : MonoBehaviour
             Application.Quit(); // ????????
 #endif
         audioSource.PlayOneShot(buttonClickSound);
+    }
+
+    private bool HasContinueSave()
+    {
+        SaveData continueSave = SettingValue.Instance?.GetSettingData()?.saveData;
+        return continueSave != null && !continueSave.IsEmpty();
     }
 }

@@ -14,6 +14,7 @@ public class LockedInteractable : MonoBehaviour
     public bool keyUsed = false;
     public bool isUnlocked = false;
     public TextMeshProUGUI doorLockedText;
+    [SerializeField] private bool keepKeyAfterUnlock = false;
     [Header("Objective Update")]
     [SerializeField] private bool updateObjectiveWhenLocked = false;
     [SerializeField, TextArea(2, 3)] private string objectiveWhenLocked = string.Empty;
@@ -65,8 +66,9 @@ public class LockedInteractable : MonoBehaviour
                 if (player.HadCardsLibrary[i].ID == keyID)
                 {
                     isUnlocked = true;
+                    bool shouldConsumeKey = keyUsed && !keepKeyAfterUnlock;
 
-                    if (keyUsed)
+                    if (shouldConsumeKey)
                     {
                         player.HadCardsLibrary.RemoveAt(i);
                     }
@@ -74,7 +76,7 @@ public class LockedInteractable : MonoBehaviour
 
                     if (InteractableNotification.Instance != null)
                     {
-                        InteractableNotification.Instance.ShowNotification("Used Key");
+                        InteractableNotification.Instance.ShowNotification(shouldConsumeKey ? "Used Key" : "Door Unlocked");
                     }
                     SceneTransitionUI.Instance.ShowConfirmation();
                     return;

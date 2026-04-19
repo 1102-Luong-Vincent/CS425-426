@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [System.Serializable]   
 public class SaveData
@@ -20,6 +21,18 @@ public class SaveData
     public WorldSaveData world;
     public StorySaveData story;
     public BattleSaveData battle;
+
+    public SaveData()
+    {
+        saveVersion = 1;
+        savePath = string.Empty;
+        saveTime = string.Empty;
+        currentScene = SceneType.None;
+        player = null;
+        world = new WorldSaveData();
+        story = new StorySaveData();
+        battle = new BattleSaveData();
+    }
 
     public SaveData(string savePath ,GameValue gameValue)
     {
@@ -40,7 +53,7 @@ public class SaveData
 
     public bool IsEmpty()
     {
-        return string.IsNullOrEmpty(savePath);
+        return currentScene == SceneType.None || string.IsNullOrEmpty(savePath);
     }
 }
 
@@ -48,12 +61,16 @@ public class SaveData
 public class WorldSaveData
 {
     public List<int> defeatedEnemyIds = new();
+    public List<string> collectedInteractableIds = new();
+    public List<string> keyInteractableIds = new();
 
     public WorldSaveData() { }
 
     public WorldSaveData(GameValue gameValue)
     {
-        
+        defeatedEnemyIds = gameValue.GetDefeatedEnemyIds();
+        collectedInteractableIds = gameValue.GetCollectedInteractableIds();
+        keyInteractableIds = gameValue.GetPlayerValue().keyInteractable.ToList();
     }
 }
 

@@ -62,6 +62,7 @@ public class SaveLoadPanelControl : MonoBehaviour
         autoSavePath = Path.Combine(Application.persistentDataPath, SaveLoadPath.AutoPath);
         if (!Directory.Exists(normalSavePath)) Directory.CreateDirectory(normalSavePath);
         if (!Directory.Exists(autoSavePath)) Directory.CreateDirectory(autoSavePath);
+        EnsurePanelContentParents();
         InitButtons();
 
         ClosePanel();
@@ -183,10 +184,16 @@ public class SaveLoadPanelControl : MonoBehaviour
     void CreateButtonsFromPath(string folderPath, Transform parent)
     {
         string[] files = Directory.GetFiles(folderPath, "*.json");
+        System.Array.Sort(files, (left, right) => File.GetLastWriteTime(right).CompareTo(File.GetLastWriteTime(left)));
+
         foreach (string file in files)
         {
             string json = File.ReadAllText(file);
             SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+            if (saveData == null || saveData.IsEmpty())
+            {
+                continue;
+            }
             SaveLoadButtonControl btn = Instantiate(saveLoadButtonPrefab, parent);
             btn.SetSaveData(saveData);
         }
@@ -199,6 +206,7 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     public void ShowSavePanel()
     {
+        EnsurePanelContentParents();
         SetSelSaveLoadButton(null);
         LoadSaveButtonsForSavePanel();
         SaveLoadRoot.SetActive(true);
@@ -208,6 +216,7 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     public void ShowLoadPanel()
     {
+        EnsurePanelContentParents();
         SetSelSaveLoadButton(null);
         LoadSaveButtonsForLoadPanel();
 
@@ -228,5 +237,23 @@ public class SaveLoadPanelControl : MonoBehaviour
     public bool IsPanelOpen()
     {
         return SaveLoadRoot != null && SaveLoadRoot.activeSelf;
+    }
+
+    private void EnsurePanelContentParents()
+    {
+        ReparentIfNeeded(SavePanelNormalSaveTransform, SavePanel != null ? SavePanel.transform : null);
+        ReparentIfNeeded(SavePanelAutoSaveTransform, SavePanel != null ? SavePanel.transform : null);
+        ReparentIfNeeded(LoadPanelNormalSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
+        ReparentIfNeeded(LoadPanelAutoSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
+    }
+
+    private void ReparentIfNeeded(Transform contentTransform, Transform expectedParent)
+    {
+        if (contentTransform == null || expectedParent == null || contentTransform.parent == expectedParent)
+        {
+            return;
+        }
+
+        contentTransform.SetParent(expectedParent, false);
     }
 }

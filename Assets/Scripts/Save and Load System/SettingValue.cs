@@ -9,7 +9,7 @@ using System;
 [System.Serializable]
 public class SettingData
 {
-    public SaveData saveData = null;
+    public SaveData saveData = new SaveData();
     public float backgroundVolume = 0.7f;
     public float soundEffectsVolume = 0.7f;
     public ScreenType screenType = ScreenType.Full;
@@ -78,6 +78,7 @@ public class SettingValue : MonoBehaviour
 
     void SaveCurrentGameValue()
     {
+        if (GameValue.Instance == null) return;
         if (GameValue.Instance.GetCurrentScence() == SceneType.None) return;
         settingData.saveData = new SaveData(savePath, GameValue.Instance);
     }

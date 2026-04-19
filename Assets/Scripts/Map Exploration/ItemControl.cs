@@ -60,6 +60,10 @@ public class ItemControl : MonoBehaviour
     [Header("Pickup Icon")]
     [SerializeField] private Sprite pickupIcon;
 
+    [Header("Save Persistence")]
+    [SerializeField] private bool persistCollectedState = true;
+    [SerializeField] private string persistentSaveId = string.Empty;
+
     [Header("Objective Update")]
     [SerializeField] private bool updateObjectiveOnPickup = false;
     [SerializeField, TextArea(2, 3)] private string objectiveAfterPickup = string.Empty;
@@ -74,13 +78,29 @@ public class ItemControl : MonoBehaviour
 
     private void Start()
     {
+        if (ShouldHideAsCollected())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         HideUI();
-        windowPanel.SetActive(false);
-        backButton.onClick.AddListener(() => //want to add where if interaction key E is pressed, it can also be used to back out of the dialogue
+        if (windowPanel != null)
         {
             windowPanel.SetActive(false);
-            Time.timeScale = 1f; // Resume the game
-        });
+        }
+
+        if (backButton != null)
+        {
+            backButton.onClick.AddListener(() => //want to add where if interaction key E is pressed, it can also be used to back out of the dialogue
+            {
+                if (windowPanel != null)
+                {
+                    windowPanel.SetActive(false);
+                }
+                Time.timeScale = 1f; // Resume the game
+            });
+        }
 
         //ItemID = CardValue.Instance.itemID;
     }
@@ -271,6 +291,7 @@ public class ItemControl : MonoBehaviour
         }
 
         UpdateObjectiveAfterPickup();
+        MarkCollectedForSave();
 
         // Destroy item
         Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
@@ -325,6 +346,7 @@ public class ItemControl : MonoBehaviour
             Debug.Log($"Key {ItemID} added to inventory");
 
             UpdateObjectiveAfterPickup();
+            MarkCollectedForSave();
 
             Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
         }
@@ -377,6 +399,38 @@ public class ItemControl : MonoBehaviour
 
         return allowReturningToCompletedObjective ||
                !GameValue.Instance.GetCompletedObjectives().Contains(nextObjective);
+    }
+
+    private bool ShouldHideAsCollected()
+    {
+        return ShouldPersistCollectedState() &&
+               GameValue.Instance != null &&
+               GameValue.Instance.IsCollectedInteractable(GetPersistentSaveId());
+    }
+
+    private void MarkCollectedForSave()
+    {
+        if (ShouldPersistCollectedState() && GameValue.Instance != null)
+        {
+            GameValue.Instance.MarkCollectedInteractable(GetPersistentSaveId());
+        }
+    }
+
+    private bool ShouldPersistCollectedState()
+    {
+        return persistCollectedState &&
+               (interactionType == ItemInteractionType.Pickup || interactionType == ItemInteractionType.KeyPickup);
+    }
+
+    private string GetPersistentSaveId()
+    {
+        if (!string.IsNullOrWhiteSpace(persistentSaveId))
+        {
+            return persistentSaveId;
+        }
+
+        Vector3 position = transform.position;
+        return $"{SceneManager.GetActiveScene().name}:{gameObject.name}:{interactionType}:{ItemID}:{weaponID}:{Mathf.RoundToInt(position.x * 100f)}:{Mathf.RoundToInt(position.y * 100f)}:{Mathf.RoundToInt(position.z * 100f)}";
     }
     // ================= Public Methods: For External Calls =================
 

@@ -58,6 +58,9 @@ public class GameValue : MonoBehaviour
 
     //record data for defeated enemies 
     private HashSet<int> defeatedEnemies  = new HashSet<int>();
+    private readonly HashSet<string> collectedInteractableIds = new HashSet<string>();
+    private bool hasPendingPlayerPosition = false;
+    private Vector3 pendingPlayerPosition = Vector3.zero;
     //private int nextEnemyID = 1;
 
 
@@ -75,15 +78,37 @@ public class GameValue : MonoBehaviour
         if (gameValueTest != null) gameValueTest.SetTestValue(this);
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
 
     public void Init()
     {
         library = new GameValueLibrary();   
         playerValue = new PlayerValue();
+        CurrentScene = SceneType.None;
+        happendStoryName = string.Empty;
         currentObjective = string.Empty;
         completedObjectives.Clear();
+        battleData = null;
+        defeatedEnemies.Clear();
+        collectedInteractableIds.Clear();
+        hasPendingPlayerPosition = false;
+        pendingPlayerPosition = Vector3.zero;
         
         weaponExcelCache = ExcelReader.GetWeaponsData();
+    }
+
+    public void ResetGameState()
+    {
+        Init();
     }
 
 
@@ -97,6 +122,11 @@ public class GameValue : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ApplyPendingPlayerPositionIfPossible();
     }
 
     public void LoadSceneByEnum(SceneType scene)
@@ -171,6 +201,32 @@ public class GameValue : MonoBehaviour
         }
         Debug.Log($"Loading save. currentScene = {saveData.currentScene}");
         playerValue.SetPlayerSaveData(saveData.player);
+        QueuePlayerPositionForNextScene(saveData.player != null ? saveData.player.GetPlayerPosition() : Vector3.zero);
+
+        if (saveData.world != null)
+        {
+            SetDefeatedEnemyIds(saveData.world.defeatedEnemyIds);
+            SetCollectedInteractableIds(saveData.world.collectedInteractableIds);
+            playerValue.keyInteractable.Clear();
+
+            if (saveData.world.keyInteractableIds != null)
+            {
+                foreach (string keyId in saveData.world.keyInteractableIds)
+                {
+                    if (!string.IsNullOrWhiteSpace(keyId))
+                    {
+                        playerValue.keyInteractable.Add(keyId);
+                    }
+                }
+            }
+        }
+        else
+        {
+            SetDefeatedEnemyIds(null);
+            SetCollectedInteractableIds(null);
+            playerValue.keyInteractable.Clear();
+        }
+
         if (saveData.story != null)
         {
             happendStoryName = saveData.story.currentStoryName ?? string.Empty;
@@ -188,6 +244,7 @@ public class GameValue : MonoBehaviour
             currentObjective = string.Empty;
             completedObjectives.Clear();
         }
+        battleData = null;
         //PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
         LoadSceneByEnum(saveData.currentScene);
     }
@@ -219,6 +276,62 @@ public class GameValue : MonoBehaviour
     public bool IsEnemyDefeated(int worldEnemyID)
     {
         return defeatedEnemies.Contains(worldEnemyID);
+    }
+
+    public void MarkCollectedInteractable(string persistentId)
+    {
+        if (!string.IsNullOrWhiteSpace(persistentId))
+        {
+            collectedInteractableIds.Add(persistentId);
+        }
+    }
+
+    public bool IsCollectedInteractable(string persistentId)
+    {
+        return !string.IsNullOrWhiteSpace(persistentId) && collectedInteractableIds.Contains(persistentId);
+    }
+
+    public List<int> GetDefeatedEnemyIds()
+    {
+        return defeatedEnemies.OrderBy(id => id).ToList();
+    }
+
+    public List<string> GetCollectedInteractableIds()
+    {
+        return collectedInteractableIds.OrderBy(id => id).ToList();
+    }
+
+    public void SetDefeatedEnemyIds(IEnumerable<int> enemyIds)
+    {
+        defeatedEnemies.Clear();
+
+        if (enemyIds == null)
+        {
+            return;
+        }
+
+        foreach (int enemyId in enemyIds)
+        {
+            defeatedEnemies.Add(enemyId);
+        }
+    }
+
+    public void SetCollectedInteractableIds(IEnumerable<string> interactableIds)
+    {
+        collectedInteractableIds.Clear();
+
+        if (interactableIds == null)
+        {
+            return;
+        }
+
+        foreach (string interactableId in interactableIds)
+        {
+            if (!string.IsNullOrWhiteSpace(interactableId))
+            {
+                collectedInteractableIds.Add(interactableId);
+            }
+        }
     }
 
     //public int GetNextEnemyID()
@@ -266,7 +379,17 @@ public class GameValue : MonoBehaviour
     }
     public Vector3 GetPlayerPosition()
     {
-        return PlayerController.Instance.GetPlayerCurrentPosition();  
+        if (PlayerController.Instance != null)
+        {
+            return PlayerController.Instance.GetPlayerCurrentPosition();
+        }
+
+        if (hasPendingPlayerPosition)
+        {
+            return pendingPlayerPosition;
+        }
+
+        return Vector3.zero;
     }
 
     public SceneType GetCurrentScence()
@@ -300,7 +423,15 @@ public class GameValue : MonoBehaviour
 
     public void SetPlayerPosition(Vector3 pos)
     {
-        PlayerController.Instance.SetPlayerPosition(pos);
+        pendingPlayerPosition = pos;
+        hasPendingPlayerPosition = true;
+        ApplyPendingPlayerPositionIfPossible();
+    }
+
+    public void QueuePlayerPositionForNextScene(Vector3 pos)
+    {
+        pendingPlayerPosition = pos;
+        hasPendingPlayerPosition = true;
     }
 
 
@@ -344,6 +475,17 @@ public class GameValue : MonoBehaviour
     {
         currentObjective = string.Empty;
         completedObjectives.Clear();
+    }
+
+    private void ApplyPendingPlayerPositionIfPossible()
+    {
+        if (!hasPendingPlayerPosition || PlayerController.Instance == null)
+        {
+            return;
+        }
+
+        PlayerController.Instance.SetPlayerPosition(pendingPlayerPosition);
+        hasPendingPlayerPosition = false;
     }
     #endregion
 }
