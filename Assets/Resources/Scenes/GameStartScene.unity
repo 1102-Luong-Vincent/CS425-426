@@ -304,6 +304,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 37.69995
       objectReference: {fileID: 0}
+    - target: {fileID: 3899539806999063337, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 700
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899539806999063337, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 47
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899539806999063337, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -110
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899539806999063339, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3899539806999063339, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3914836634477117874, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -11642,12 +11662,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: updateObjectiveOnPickup
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterPickup
       value: Go to the door and enter the next map.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnPickup
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
@@ -12204,12 +12224,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: updateObjectiveOnPickup
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterPickup
       value: Go to the door and enter the next map.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnPickup
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
