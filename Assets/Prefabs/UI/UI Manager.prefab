@@ -5375,21 +5375,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MenuCardPrefab: {fileID: 4327445152566037095, guid: 02076edb694ca3747ab6d2a7d8466b5d, type: 3}
-  CardSelectorPanel: {fileID: 701363992585316820}
-  CardViewerPanel: {fileID: 9002308083264267544}
   WeaponSelectorPanel: {fileID: 5400890993719033945}
-  SelectorCardZone: {fileID: 8225306351838676098}
-  AllCardZone: {fileID: 7176999229829008266}
   WeaponZone: {fileID: 2903227899911530643}
-  CancelButton: {fileID: 6377100953896190309}
-  CardLibraryButton: {fileID: 8654161256500622434}
-  CardCancelButton: {fileID: 838275100091300008}
   WeaponLibraryButton: {fileID: 7815010856384672236}
   WeaponCancelButton: {fileID: 123081856615125730}
   DeckButton1: {fileID: 3366511816183483816}
   DeckButton2: {fileID: 7350233559646210360}
   DeckButton3: {fileID: 2867300381713829950}
   control: {fileID: 958481684397477133}
+  unarmedImage: {fileID: 0}
+  knifeImage: {fileID: 0}
+  pistolImage: {fileID: 0}
+  shotgunImage: {fileID: 0}
+  playerPortrait: {fileID: 0}
 --- !u!1 &5186478566048134771
 GameObject:
   m_ObjectHideFlags: 0
@@ -12167,7 +12165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3785846562391832286, guid: 0021a5499d1fc62498c3c44bdca77fb2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -15504.303
+      value: -20446.701
       objectReference: {fileID: 0}
     - target: {fileID: 7177281644672866191, guid: 0021a5499d1fc62498c3c44bdca77fb2, type: 3}
       propertyPath: m_Name
@@ -12351,6 +12349,26 @@ PrefabInstance:
     - target: {fileID: 2409074600394890845, guid: 80dad0f3bf591b345838d41513045947, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843836717571811384, guid: 80dad0f3bf591b345838d41513045947, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843836717571811384, guid: 80dad0f3bf591b345838d41513045947, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ddb2065e085f4ce9b6723eb1860f8ac, type: 3}
+    - target: {fileID: 5843836717571811384, guid: 80dad0f3bf591b345838d41513045947, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843836717571811384, guid: 80dad0f3bf591b345838d41513045947, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5843836717571811384, guid: 80dad0f3bf591b345838d41513045947, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

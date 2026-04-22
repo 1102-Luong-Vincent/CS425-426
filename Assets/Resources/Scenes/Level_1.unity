@@ -12636,6 +12636,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 151481544756770307, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 151481544756770307, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 151481544756770307, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00008457589
+      objectReference: {fileID: 0}
     - target: {fileID: 1945364313981863642, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -12917,7 +12929,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupIcon
       value: 
-      objectReference: {fileID: 21300000, guid: a540d436dd4134942b85ba5b468a44de, type: 3}
+      objectReference: {fileID: 21300000, guid: f89e360a5675f6042a0d9a7e5cd89dbd, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 1
@@ -22416,7 +22428,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupIcon
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: 837fb8afb48da452b86afc109c512ec7, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isKeyPickup
       value: 1
@@ -22438,20 +22450,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: updateObjectiveOnPickup
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterPickup
       value: Head to the hospital.
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
-      value: Find the key to the hospital.
+      propertyPath: updateObjectiveOnPickup
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: allowReturningToCompletedObjective
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Find the key to the hospital.
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
@@ -24571,6 +24583,18 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: objectiveAfterInteract
+      value: Head to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnInteract
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Find information about the government and the whereabouts of the cure.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -24581,18 +24605,6 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: updateObjectiveOnInteract
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: objectiveAfterInteract
-      value: Head to the hospital.
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
-      value: Find information about the government and the whereabouts of the cure.
       objectReference: {fileID: 0}
     - target: {fileID: 313156410930487335, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_PlayOnAwake
@@ -24617,6 +24629,22 @@ PrefabInstance:
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 66a17fbb011954d938023198c9e305a5, type: 3}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Color.b
+      value: 0.47843137
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Color.r
+      value: 0.25882354
       objectReference: {fileID: 0}
     - target: {fileID: 1503958606818858315, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Enabled
@@ -54223,6 +54251,18 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: objectiveAfterInteract
+      value: Find the key to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: updateObjectiveOnInteract
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
+      value: Head to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -54257,6 +54297,22 @@ PrefabInstance:
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 66a17fbb011954d938023198c9e305a5, type: 3}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Color.b
+      value: 0.47843137
+      objectReference: {fileID: 0}
+    - target: {fileID: 1237779317598274220, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Color.r
+      value: 0.25882354
       objectReference: {fileID: 0}
     - target: {fileID: 1503958606818858315, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Enabled
@@ -54321,18 +54377,6 @@ PrefabInstance:
     - target: {fileID: 2075477402983653317, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: updateObjectiveOnInteract
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: objectiveAfterInteract
-      value: Find the key to the hospital.
-      objectReference: {fileID: 0}
-    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
-      propertyPath: requiredCurrentObjectiveForObjectiveUpdate
-      value: Head to the hospital.
       objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_text
@@ -55926,7 +55970,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupIcon
       value: 
-      objectReference: {fileID: 21300000, guid: a540d436dd4134942b85ba5b468a44de, type: 3}
+      objectReference: {fileID: 21300000, guid: 4718fb2fd55b748a4bf48bb54a511f1a, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 0
@@ -56164,12 +56208,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
-      propertyPath: updateObjectiveWhenLocked
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: objectiveWhenLocked
       value: Find the key to the hospital.
+      objectReference: {fileID: 0}
+    - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: updateObjectiveWhenLocked
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: requiredCurrentObjectiveForLockedUpdate
