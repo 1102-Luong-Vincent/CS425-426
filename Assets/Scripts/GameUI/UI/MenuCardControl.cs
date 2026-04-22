@@ -100,7 +100,7 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(!isWeapon() && isActive)
+        if(isActive)
             CardHoverHighlight.SetActive(true);
     }
 
@@ -118,9 +118,17 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left && !isWeapon() && isActive) // don't allow player to select weapon from inventory menu
+        if (eventData.button == PointerEventData.InputButton.Left && isActive) // don't allow player to select weapon from inventory menu
         {
-            SendMessageUpwards("CardClicked", this.gameObject);
+            if (isWeapon())
+            {
+                SendMessageUpwards("WeaponClicked", this.gameObject);
+            }
+            else
+            {
+                SendMessageUpwards("CardClicked", this.gameObject);
+            }
+
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -152,6 +160,10 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
         return cardValue;
     }    
 
+    public WeaponValue GetWeaponValue()
+    {
+        return weaponValue;
+    }
     public bool isWeapon()
     {
         return this.weaponValue != null;

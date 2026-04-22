@@ -12,15 +12,8 @@ public class InventoryManager : MonoBehaviour
 
     PlayerValue playerValue;
     public GameObject MenuCardPrefab;
-    public GameObject CardSelectorPanel;
-    public GameObject CardViewerPanel;
     public GameObject WeaponSelectorPanel;
-    public Transform SelectorCardZone;
-    public Transform AllCardZone;
     public Transform WeaponZone;
-    public Button CancelButton;
-    public Button CardLibraryButton;
-    public Button CardCancelButton;
     public Button WeaponLibraryButton;
     public Button WeaponCancelButton;
     public Button DeckButton1;
@@ -28,6 +21,13 @@ public class InventoryManager : MonoBehaviour
     public Button DeckButton3;
     public static InventoryManager Instance;
     public InventoryUIControl control;
+
+    public Sprite unarmedImage;
+    public Sprite knifeImage;
+    public Sprite pistolImage;
+    public Sprite shotgunImage;
+
+    public Image playerPortrait;
 
     GameObject selectedCard = null; //card player has left clicked on
 
@@ -48,10 +48,7 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
-        OnGameMenuButtonClick(CancelButton, OnCancelButtonClick);
-        OnGameMenuButtonClick(CardLibraryButton, OnCardsButtonClick);
         OnGameMenuButtonClick(WeaponLibraryButton, OnWeaponButtonClick);
-        OnGameMenuButtonClick(CardCancelButton, OnCardCancelButtonClick);
         OnGameMenuButtonClick(WeaponCancelButton, OnWeaponCancelButtonClick);
         OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0));
         OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1));
@@ -72,7 +69,6 @@ public class InventoryManager : MonoBehaviour
             if (selectedCard != card)
             {
                 SwapCards(selectedCard, card);
-                Debug.Log("swapped in theory");
                 selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
                 selectedCard = null;
                 control.RefreshInventory();
@@ -80,6 +76,26 @@ public class InventoryManager : MonoBehaviour
 
         }
 
+    }
+
+    void WeaponClicked(GameObject weapon)
+    {
+        GameValue.Instance.GetPlayerValue().EquipmentWeapon = (weapon.GetComponent<MenuCardControl>().GetWeaponValue());
+        switch (GameValue.Instance.GetPlayerValue().EquipmentWeapon.WeaponName)
+        {
+            case "Knife":
+                playerPortrait.sprite = knifeImage;
+                break;
+            case "Pistol":
+                playerPortrait.sprite = pistolImage;
+                break;
+            case "Shotgun":
+                playerPortrait.sprite = shotgunImage;
+                break;
+            default:
+                playerPortrait.sprite = unarmedImage;
+                break;
+        }
     }
 
     void CardRightClicked(GameObject card)
@@ -113,67 +129,22 @@ public class InventoryManager : MonoBehaviour
             }
 
             control.RefreshInventory();
-            CloseCardSelector();
+
         }
     }
 
-    void OpenCardSelector()
-    {
-        replacingCard = true;
-        CardSelectorPanel.SetActive(true);
 
-        //make list of cards not already equipped
-        List<CardValue> AvailableCards = new List<CardValue>(playerValue.HadCardsLibrary);
-        foreach(CardValue val in playerValue.battleCardsList)
-        {
-            AvailableCards.Remove(val);
-        }
-        foreach(CardValue val in playerValue.EquipmentCards)
-        {
-            AvailableCards.Remove(val);
-        }
 
-        // populate card zone with cards in PlayerValue
-        foreach (CardValue val in AvailableCards)
-        {
-            GameObject card = Instantiate(MenuCardPrefab);
-            card.name = (val.CardName + " card");
-            MenuCardControl menucard = card.GetComponent<MenuCardControl>();
-            card.transform.SetParent(SelectorCardZone);
-            menucard.SetCardValue(val);
-        }
-    }
-    void CloseCardSelector()
-    {
-        targetCard = null;
-        replacingCard = false;
-        // menu closed -- erase menu cards
-        for (int i = SelectorCardZone.childCount - 1; i >= 0; i--)
-        {
-            GameObject menucard = SelectorCardZone.GetChild(i).gameObject;
-
-            Destroy(menucard);
-        }
-        CardSelectorPanel.SetActive(false);
-    }
-
-    void OnCancelButtonClick()
-    {
-        CloseCardSelector();
-    }
 
     public void CloseInventory()
     {
-        CloseCardSelector();
+
         control.OnInventoryClose();
         if(WeaponSelectorPanel.activeInHierarchy == true)
         {
             OnWeaponCancelButtonClick();
         }
-        if (CardViewerPanel.activeInHierarchy == true)
-        {
-            OnCardCancelButtonClick();
-        }
+
     }
 
 
@@ -190,30 +161,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void OnCardsButtonClick()
-    {
-        CardViewerPanel.SetActive(true);
-        foreach (CardValue val in playerValue.HadCardsLibrary)
-        {
-            GameObject card = Instantiate(MenuCardPrefab);
-            card.name = (val.CardName + " card");
-            MenuCardControl menucard = card.GetComponent<MenuCardControl>();
-            card.transform.SetParent(AllCardZone);
-            menucard.Deactivate();
-            menucard.SetCardValue(val);
-        }
-    }
 
-    void OnCardCancelButtonClick()
-    {
-        for (int i = AllCardZone.childCount - 1; i >= 0; i--)
-        {
-            GameObject menucard = AllCardZone.GetChild(i).gameObject;
 
-            Destroy(menucard);
-        }
-        CardViewerPanel.SetActive(false);
-    }
+
     void OnWeaponCancelButtonClick()
     {
         for (int i = WeaponZone.childCount - 1; i >= 0; i--)

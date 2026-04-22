@@ -58,8 +58,8 @@ public class CardCombineManager : PanelControl
 
         if (ClearButton != null)
             ClearButton.onClick.AddListener(ClearAllSlots);
-
-        HidePanel();
+        CombineButton.interactable = false;
+        // HidePanel();
     }
 
 
@@ -87,8 +87,7 @@ public class CardCombineManager : PanelControl
     {
         List<CardValue> cardList = GameValue.Instance.GetPlayerValue().HadCardsLibrary;
 
-        ownedText.text = $"{GetChemicalAmount()}";
-        requiredText.text = "0";
+        refreshText();
 
         foreach (var card in cardList)
         {
@@ -190,7 +189,7 @@ public class CardCombineManager : PanelControl
             return;
         }
 
-        
+        DeductChemicals();
 
         CardValue first = FirstSlot.GetCardValue();
         CardValue second = SecondSlot.GetCardValue();
@@ -211,7 +210,7 @@ public class CardCombineManager : PanelControl
             ResultCard.SetCardUI(result);
             ClearAllSlots();
             RefreshSlotList();
-
+            
         }
         else
         {
@@ -223,6 +222,7 @@ public class CardCombineManager : PanelControl
             ClearAllSlots();
             RefreshSlotList();
         }
+
     }
 
 
@@ -254,6 +254,16 @@ public class CardCombineManager : PanelControl
         }
 
         combineCost = FirstSlot.GetCardValue().GetCombineCost() + SecondSlot.GetCardValue().GetCombineCost();
+        if(combineCost > ownedChemicals)
+        {
+            requiredText.color = Color.red;
+            CombineButton.interactable = false;
+        }
+        else
+        {
+            requiredText.color = Color.white;
+            CombineButton.interactable = true;
+        }
         requiredText.text = $"{combineCost}";
         Debug.Log($"[UpdateResult] Calculated combine cost: {combineCost}");
 
@@ -271,6 +281,9 @@ public class CardCombineManager : PanelControl
         ClearFirstCard();
         ClearSecondCard();
         ResultCard.Clear();
+        combineCost = 0;
+        refreshText();
+        CombineButton.interactable = false;
     }
 
 
@@ -297,5 +310,24 @@ public class CardCombineManager : PanelControl
             ownedChemicals = 0;
         }
         return ownedChemicals;
+    }
+
+    void DeductChemicals()
+    {
+        ownedChemicals -= combineCost;
+        Debug.Log($"[DeductChemicals] Deducting {combineCost} chemicals. Remaining before deduction: {ownedChemicals + combineCost}, after deduction: {ownedChemicals}");
+        ResourceValue chemicals = GameValue.Instance.GetPlayerValue().InventoryResources.Find(r => r.Type == ResourceType.Chemical);
+        if (chemicals != null)
+        {
+            chemicals.amount -= combineCost;
+            Debug.Log($"[DeductChemicals] Deducted {combineCost} chemicals. Remaining: {chemicals.amount}");
+        }
+    }
+
+    void refreshText()
+    {
+        ownedText.text = $"{GetChemicalAmount()}";
+        requiredText.text = $"{combineCost}";
+        requiredText.color = Color.white;
     }
 }

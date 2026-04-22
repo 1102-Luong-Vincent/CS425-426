@@ -169,6 +169,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             TwoDMove();
             RunSpeed();
+            CheckWeapon();
         }
 
 
@@ -901,6 +902,38 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             {
                 speed = 1.0f;
                 anim.SetBool("isRunning", false);
+            }
+        }
+
+        public void CheckWeapon()
+        {
+            WeaponValue currentWeapon = GameValue.Instance.GetPlayerValue().EquipmentWeapon;
+            string weaponName;
+            if (currentWeapon != null)
+            {
+                weaponName = currentWeapon.WeaponName;
+                if(weaponName == "Knife")
+                {
+
+                    anim.SetInteger("WeaponEquipped", 1); // Set to knife animation
+                }
+                else if(weaponName == "Pistol")
+                {
+                    anim.SetInteger("WeaponEquipped", 2); // Set to pistol animation
+                }
+                else if (weaponName == "Shotgun")
+                {
+                    anim.SetInteger("WeaponEquipped", 3); // Set to shotgun animation
+                }
+                else
+                {
+                    anim.SetInteger("WeaponEquipped", 0); // Default to unarmed animation
+                }
+            }
+            else
+            {
+                Debug.Log("No weapon equipped, defaulting to unarmed animation.");
+                anim.SetInteger("WeaponEquipped", 0); // Default to unarmed animation
             }
         }
     }

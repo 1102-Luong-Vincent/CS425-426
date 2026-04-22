@@ -35,6 +35,9 @@ public class InventoryUIControl :  PanelControl
         public Button SortZAButton;
     }
 
+
+
+
     public PlayerValue playerValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,13 +55,8 @@ public class InventoryUIControl :  PanelControl
         EnergyText.text = playerValue.GetEnergy().ToString();
         CardsText.text = playerValue.HadCardsLibrary.Count.ToString();
 
-        //put weapon card in card zone
-        GameObject weapon = Instantiate(MenuCardPrefab);
-        WeaponValue wval = playerValue.EquipmentWeapon;
-        weapon.name = (wval.WeaponName + " card");
-        MenuCardControl wmenucard = weapon.GetComponent<MenuCardControl>();
-        weapon.transform.SetParent(WeaponZone);
-        wmenucard.SetWeaponValue(wval);
+        //display available weapons
+        InstantiateWeaponCards();
 
         // display equipped deck
         InstantiateDeck();
@@ -162,6 +160,24 @@ public class InventoryUIControl :  PanelControl
         }
     }
 
+    public void InstantiateWeaponCards()
+    {
+
+
+        foreach (WeaponValue val in playerValue.HadWeaponsLibrary)
+        {
+            GameObject card = Instantiate(MenuCardPrefab);
+            card.name = (val.WeaponName + " card");
+            card.tag = InventoryConstants.WeaponCard;
+            MenuCardControl menucard = card.GetComponent<MenuCardControl>();
+            card.transform.SetParent(WeaponZone);
+            menucard.SetWeaponValue(val);
+            if(val != playerValue.EquipmentWeapon)
+            {
+                //card.GetComponent<Button>().interactable = false;
+            }
+        }
+    }
     public void InstantiateDeck()
     {
 
@@ -238,5 +254,6 @@ public static class InventoryConstants
     public const string Descending = "Descending";
     public const string BattleCard = "BattleCard";
     public const string EquipCard = "EquipCard";
+    public const string WeaponCard = "WeaponCard";
 
 }

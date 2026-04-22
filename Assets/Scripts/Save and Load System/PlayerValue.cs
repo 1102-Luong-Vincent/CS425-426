@@ -94,11 +94,11 @@ public class PlayerValue
     void InitPlayerEquipmentWeapons()
     {
         ClearWeapons();
-        string starterEquipment = "Knife";
-        EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(starterEquipment);// mad be change by id
+        //string starterEquipment = "Knife";
+       // EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(starterEquipment);// mad be change by id
 
         // Need to add player init Had Weapon
-        HadWeaponsLibrary.Add(EquipmentWeapon);
+       // HadWeaponsLibrary.Add(EquipmentWeapon);
     }
 
 
