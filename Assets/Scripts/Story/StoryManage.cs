@@ -59,6 +59,8 @@ public class StoryManage : MonoBehaviour
         SkipButton.onClick.AddListener(OnSkipButtonClick);
         SetStory(GameValue.Instance.GetHappendStoryName());
         GameValue.Instance.SetHappendStoryName(string.Empty);
+        storyText.enableAutoSizing = false;
+        storyText.fontSize = 72f; 
     }
 
     private void Update()
@@ -228,18 +230,35 @@ public class StoryManage : MonoBehaviour
 
     private IEnumerator LineSpeed(ExcelStoryData ExcelStoryline)
     {
-        storyText.text = "";
+        storyText.text = ExcelStoryline.Content;
+        storyText.maxVisibleCharacters = 0;
+
+        //storyText.text = "";
+
         isTyping = true;
         isSkipTypingRequested = false;
 
-        foreach (char letter in ExcelStoryline.Content.ToCharArray())
+        //foreach (char letter in ExcelStoryline.Content.ToCharArray())
+        //{
+        //    storyText.text += letter;
+        //    yield return new WaitForSeconds(typingSpeed);
+
+        //    if (isSkipTypingRequested)
+        //    {
+        //        storyText.text = ExcelStoryline.Content;
+        //        break;
+        //    }
+        //}
+
+        //prevents the text from moving when characters are being displayed
+        for (int i = 0; i < ExcelStoryline.Content.Length; i++)
         {
-            storyText.text += letter;
+            storyText.maxVisibleCharacters++;
             yield return new WaitForSeconds(typingSpeed);
 
             if (isSkipTypingRequested)
             {
-                storyText.text = ExcelStoryline.Content;
+                storyText.maxVisibleCharacters = ExcelStoryline.Content.Length;
                 break;
             }
         }

@@ -25,6 +25,8 @@ public class InteractableEnding : MonoBehaviour
         endingPanel.SetActive(false);
         continueButton.onClick.AddListener(Continue);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        endingText.enableAutoSizing = false;
+        endingText.fontSize = 41.65f;
     }
 
     public void Continue()
@@ -71,17 +73,31 @@ public class InteractableEnding : MonoBehaviour
 
     private IEnumerator LineSpeed(string line)
     {
-        endingText.text = "";
+        //endingText.text = "";
+        endingText.text = line; //set the full line of text once
+        endingText.ForceMeshUpdate(); //locks the text from moving
+        endingText.maxVisibleCharacters = 0; //hide all the characters
+
         isTyping = true;
 
-        foreach(char letter in line)
+        //foreach(char letter in line)
+        //{
+        //    endingText.text += letter;
+        //    yield return new WaitForSecondsRealtime(typingSpeed);
+        //}
+
+        for (int i = 0; i < line.Length; i++)
         {
-            endingText.text += letter;
+            endingText.maxVisibleCharacters++;
             yield return new WaitForSecondsRealtime(typingSpeed);
         }
-
         isTyping = false;
-        continueButton.interactable = false;
+
+        if (isTyping)
+        {
+            yield break;
+        }
+        //continueButton.interactable = false;
     }
 
     public IEnumerator PlayEnding()
