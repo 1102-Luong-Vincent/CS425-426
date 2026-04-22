@@ -16,10 +16,13 @@ public class InteractableNotification : MonoBehaviour
     [SerializeField] public float displayDuration = 3f; //displays for 3 seconds before fading out
     [SerializeField] public Image pickupIcon;
     [SerializeField] public float fadeDuration = 2f;
+    [SerializeField] public Image backgroundImage;
 
     private Coroutine Notification;
     public void Awake()
     {
+        backgroundImage = GetComponent<Image>();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -30,6 +33,7 @@ public class InteractableNotification : MonoBehaviour
 
         notificationText.gameObject.SetActive(false);
         pickupIcon.gameObject.SetActive(false);
+        backgroundImage.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,7 +48,15 @@ public class InteractableNotification : MonoBehaviour
         notificationText.alpha = 1f;
         notificationText.gameObject.SetActive(true);
 
-        if (icon != null)
+        if (backgroundImage != null)
+        {
+            backgroundImage.gameObject.SetActive(true);
+            Color bg = backgroundImage.color;
+            bg.a = 1f;
+            backgroundImage.color = bg;
+        }
+
+            if (icon != null)
         {
             pickupIcon.sprite = icon;
 
@@ -93,5 +105,6 @@ public class InteractableNotification : MonoBehaviour
 
         notificationText.gameObject.SetActive(false);
         pickupIcon.gameObject.SetActive(false);
+        backgroundImage.gameObject.SetActive(false);
     }
 }
