@@ -28,7 +28,7 @@ public class PlayerValue
     public Dictionary<string, int> Materials = new Dictionary<string, int>();
     public HashSet<string> keyInteractable = new HashSet<string>();
 
-    List<ResourceValue> InventoryResources = new List<ResourceValue>();
+    public List<ResourceValue> InventoryResources = new List<ResourceValue>();
 
     int Health = 100;
     int MaxHealth = 100;

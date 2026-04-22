@@ -3,7 +3,9 @@
 // Modified by: Shawn Meng
 // Some code generated with assistance from ChatGPT.
 
+using Mono.Cecil;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,12 +26,17 @@ public class CardCombineManager : PanelControl
     [SerializeField] Button ClearButton;
 
 
+    [Header("Values")]
+    [SerializeField] TextMeshProUGUI ownedText;
+    [SerializeField] TextMeshProUGUI requiredText;
+
     [SerializeField] CardSlotUI slotPrefab;
 
     List<CardSlotUI> spawnedSlots = new List<CardSlotUI>();
     [SerializeField] ScrollRect slotList;
 
-
+    private int combineCost = 0;
+    private int ownedChemicals = 0;
 
     private void Awake()
     {
@@ -59,7 +66,7 @@ public class CardCombineManager : PanelControl
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) SwitchPanel();
+        //if (Input.GetKeyDown(KeyCode.Q)) SwitchPanel();
     }
 
 
@@ -79,6 +86,9 @@ public class CardCombineManager : PanelControl
     public override void ShowPanel()
     {
         List<CardValue> cardList = GameValue.Instance.GetPlayerValue().HadCardsLibrary;
+
+        ownedText.text = $"{GetChemicalAmount()}";
+        requiredText.text = "0";
 
         foreach (var card in cardList)
         {
@@ -180,6 +190,8 @@ public class CardCombineManager : PanelControl
             return;
         }
 
+        
+
         CardValue first = FirstSlot.GetCardValue();
         CardValue second = SecondSlot.GetCardValue();
 
@@ -241,6 +253,10 @@ public class CardCombineManager : PanelControl
             return;
         }
 
+        combineCost = FirstSlot.GetCardValue().GetCombineCost() + SecondSlot.GetCardValue().GetCombineCost();
+        requiredText.text = $"{combineCost}";
+        Debug.Log($"[UpdateResult] Calculated combine cost: {combineCost}");
+
         CardValue result = CardCombinations.Instance.GetResultCard(
             FirstSlot.GetCardValue(),
             SecondSlot.GetCardValue()
@@ -269,4 +285,17 @@ public class CardCombineManager : PanelControl
         SecondCard.Clear(); SecondSlot = null;
     }
 
+    int GetChemicalAmount()
+    {
+        ResourceValue chemicals = GameValue.Instance.GetPlayerValue().InventoryResources.Find(r => r.Type == ResourceType.Chemical);
+        if (chemicals != null)
+        {
+            ownedChemicals = chemicals.amount;
+        }
+        else
+        {
+            ownedChemicals = 0;
+        }
+        return ownedChemicals;
+    }
 }

@@ -93,4 +93,8 @@ public class CardValue
         return ID;
     }
 
+    public int GetCombineCost()
+    {
+        return (int)(rarity + 1)* 5;
+    }
 }
