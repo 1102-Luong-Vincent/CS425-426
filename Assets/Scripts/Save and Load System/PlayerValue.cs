@@ -28,6 +28,7 @@ public class PlayerValue
     public Dictionary<string, int> Materials = new Dictionary<string, int>();
     public HashSet<string> keyInteractable = new HashSet<string>();
 
+    List<ResourceValue> InventoryResources = new List<ResourceValue>();
 
     int Health = 100;
     int MaxHealth = 100;
@@ -411,6 +412,24 @@ public class PlayerValue
     {
         keyInteractable.Remove(keyID);
     }
+
+    public void AddResource(ResourceValue resource)
+    {
+        if (resource == null) return;
+
+        // Check if player already has this resource type
+        ResourceValue existing = InventoryResources.Find(r => r.resourceName == resource.resourceName);
+        if (existing != null)
+        {
+            existing.amount += resource.amount;
+        }
+        else
+        {
+            InventoryResources.Add(new ResourceValue(resource.resourceName, resource.amount, resource.Type, resource.resourceIcon));
+        }
+
+        Debug.Log($"Added {resource.amount}x {resource.resourceName} to inventory!");
+    }
 }
 
 [System.Serializable]
@@ -495,4 +514,6 @@ public class PlayerSaveData
         Vector3 playerPosition = new Vector3(PlayerPositionX, PlayerPositionY, PlayerPositionZ);
         return playerPosition;
     }
+
+
 }

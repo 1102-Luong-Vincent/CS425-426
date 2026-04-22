@@ -270,7 +270,25 @@ public class ItemControl : MonoBehaviour
 
             if (AddCard != null)
             {
-                GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
+                // roll for rarity
+                int rarityRoll = Random.Range(0, 100);
+                if(rarityRoll > 0 && rarityRoll < 70)
+                {
+                    AddCard.rarity = CardRarity.Common;
+                }
+                else if(rarityRoll >= 70 && rarityRoll < 85)
+                {
+                    AddCard.rarity = CardRarity.Rare;
+                }
+                else if (rarityRoll >= 85 && rarityRoll < 95)
+                {
+                    AddCard.rarity = CardRarity.VeryRare;
+                }
+                else
+                {
+                    AddCard.rarity = CardRarity.Epic;
+                }
+                    GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(AddCard);
                 itemName = AddCard.CardName;
                 Debug.Log($"Added card ID {ItemID} to inventory.");
             }

@@ -13,11 +13,16 @@ using System.Collections.Generic;
 public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public Image CardImage;
+    public Image CardBackground;
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardDescription;
     public GameObject CardHoverHighlight;
     public GameObject CardSelectHighlight;
 
+    public Sprite commonBorder;
+    public Sprite rareBorder;
+    public Sprite veryRareBorder;
+    public Sprite epicBorder;
 
     private WeaponValue weaponValue;
     private CardValue cardValue;
@@ -66,6 +71,24 @@ public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExit
             CardName.text = cardValue.CardName;
             CardImage.sprite = cardValue.CardSprite;
             CardDescription.text = cardValue.CardDescribe;
+            switch(cardValue.rarity)
+            {
+                case CardRarity.Common:
+                    CardBackground.sprite = commonBorder;
+                    break;
+                case CardRarity.Rare:
+                    CardBackground.sprite = rareBorder;
+                    break;
+                case CardRarity.VeryRare:
+                    CardBackground.sprite = veryRareBorder;
+                    break;
+                case CardRarity.Epic:
+                    CardBackground.sprite = epicBorder;
+                    break;
+                default:
+                    Debug.LogWarning($"[MenuCardControl] Unhandled card rarity: {cardValue.rarity}");
+                    break;
+            }
         }
         else if (weaponValue != null)
         {

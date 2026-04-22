@@ -353,7 +353,7 @@ public class BattlePlayerValue : MonoBehaviour
     public void AddResource(ResourceValue resource)
     {
         if (resource == null) return;
-
+        GameValue.Instance.GetPlayerValue().AddResource(resource);
         // Check if player already has this resource type
         ResourceValue existing = InventoryResources.Find(r => r.resourceName == resource.resourceName);
         if (existing != null)
