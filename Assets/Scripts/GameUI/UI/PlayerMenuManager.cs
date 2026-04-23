@@ -3,7 +3,7 @@
 // Modified by: Sean Masterson and Shawn Meng, Yuhan Tang
 // no external source was used.
 
-using TCG_CardMaker;
+//using TCG_CardMaker;
 using UnityEngine;
 using UnityEngine.UI;
 using System;

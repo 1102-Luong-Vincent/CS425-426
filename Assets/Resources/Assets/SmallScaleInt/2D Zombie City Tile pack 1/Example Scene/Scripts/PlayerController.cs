@@ -932,7 +932,6 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             }
             else
             {
-                Debug.Log("No weapon equipped, defaulting to unarmed animation.");
                 anim.SetInteger("WeaponEquipped", 0); // Default to unarmed animation
             }
         }
