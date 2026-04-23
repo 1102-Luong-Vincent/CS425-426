@@ -153,6 +153,16 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         //BattlePlayerValue.Instance.RemoveCard(cardValue);
         //BattleManage.Instance.StartNextTurn();
 
+        if (!BattleManage.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+
+        if (BattleManage.Instance.IsPlayerActionLocked())
+        {
+            return;
+        }
+
         if (cardValue != null)
             Debug.Log($"Used card: {cardValue.CardName}");
 
@@ -170,6 +180,8 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             return;
         }
 
+        BattleManage.Instance.SetPlayerActionLocked(true);
+
         // 2. Check if this card is an attack card (Knife)
         if (weaponValue != null)
         {
@@ -181,14 +193,13 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
             audioSource.PlayOneShot(cardUseSound);
         }
-
+        audioSource.PlayOneShot(cardUseSound);
 
         // 3. Remove card from player's hand
         BattlePlayerValue.Instance.RemoveCard(cardValue);
 
         // 4. Next turn
         BattleManage.Instance.StartNextTurn();
-
     }
 
     

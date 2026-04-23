@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] FadeTransition fadeTransition;
     [SerializeField] MiniMapController miniMapController;
+    [SerializeField] GameObject playerHealthHUD;
 
 
     private void Awake()
@@ -50,6 +51,15 @@ public class UIManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ApplyMiniMapVisibility(scene.name);
+
+        if (scene.name == "BattleScene")
+        {
+            playerHealthHUD.SetActive(false);
+        }
+        else
+        {
+            playerHealthHUD.SetActive(true);
+        }
     }
 
     private void InitMiniMapController()

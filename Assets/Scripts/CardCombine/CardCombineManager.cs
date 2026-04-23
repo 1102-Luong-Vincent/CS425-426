@@ -1,9 +1,8 @@
 ﻿// Author: Shawn Meng
 // Created by: Shawn Meng
 // Modified by: Shawn Meng
-// Some code generated with assistance from ChatGPT.
+// No external sources were used.
 
-using Mono.Cecil;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;

@@ -17,6 +17,8 @@ public class BattleManage : MonoBehaviour
 
     private int turn = 1;
     private event Action<int> OnTurnChanged;
+    bool isPlayerAttacking = false;
+    private bool playerActionLocked = false;
 
     public int Turn
     {
@@ -66,6 +68,9 @@ public class BattleManage : MonoBehaviour
     public void StartNextTurn()
     {
         Turn++;
+
+        SetPlayerActionLocked(false);
+
         if (IsPlayerTurn())
         {
             if (BattlePlayerValue.Instance.Health > 0)
@@ -202,6 +207,27 @@ public class BattleManage : MonoBehaviour
         return player;
     }
 
+    public void IsPlayerAttackingDone()
+    {
+        if (!IsPlayerTurn())
+        {
+            return;
+        }
+
+        isPlayerAttacking = false;
+        StartNextTurn();
+    }
+
+
+    public bool IsPlayerActionLocked()
+    {
+        return playerActionLocked;
+    }
+
+    public void SetPlayerActionLocked(bool value)
+    {
+        playerActionLocked = value;
+    }
 
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)

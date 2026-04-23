@@ -92,14 +92,7 @@ public class ItemControl : MonoBehaviour
 
         if (backButton != null)
         {
-            backButton.onClick.AddListener(() => //want to add where if interaction key E is pressed, it can also be used to back out of the dialogue
-            {
-                if (windowPanel != null)
-                {
-                    windowPanel.SetActive(false);
-                }
-                Time.timeScale = 1f; // Resume the game
-            });
+            backButton.onClick.AddListener(CloseWindow);
         }
 
         //ItemID = CardValue.Instance.itemID;
@@ -107,6 +100,14 @@ public class ItemControl : MonoBehaviour
 
     private void Update()
     {
+        if(windowPanel != null && windowPanel.activeSelf)
+        {
+            if(Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(interactionKey))
+            {
+                CloseWindow();
+                return;
+            }
+        }
         // Player in range and pressed interaction key
         if (playerInRange && Input.GetKeyDown(interactionKey))
         {
@@ -127,7 +128,15 @@ public class ItemControl : MonoBehaviour
             }
         }
     }
+    public void CloseWindow()
+    {
+        if (windowPanel != null)
+        {
+            windowPanel.SetActive(false);
+        }
 
+        Time.timeScale = 1f; // Resume the game
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("On trigger Enter");
