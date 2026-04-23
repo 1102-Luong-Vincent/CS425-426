@@ -193,7 +193,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
             audioSource.PlayOneShot(cardUseSound);
         }
-
+        audioSource.PlayOneShot(cardUseSound);
 
         // 3. Remove card from player's hand
         BattlePlayerValue.Instance.RemoveCard(cardValue);
