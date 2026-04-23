@@ -226,4 +226,21 @@ public class BattlePlayerUIManager : MonoBehaviour
         }
 
     }
+    public void HideAllCards()
+    {
+        if (CardZone != null)
+        {
+            CardZone.gameObject.SetActive(false);
+        }
+
+        if (WeaponCardControl != null)
+        {
+            WeaponCardControl.gameObject.SetActive(false);
+        }
+
+        foreach(var card in FindObjectsOfType<BattleCardControl>())
+        {
+            card.gameObject.SetActive(false);
+        }
+    }
 }

@@ -163,6 +163,11 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             return;
         }
 
+        if (BattleManage.Instance.BattleOver())
+        {
+            return;
+        }
+
         if (cardValue != null)
             Debug.Log($"Used card: {cardValue.CardName}");
 

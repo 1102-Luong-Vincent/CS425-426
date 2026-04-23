@@ -19,6 +19,7 @@ public class BattleManage : MonoBehaviour
     private event Action<int> OnTurnChanged;
     bool isPlayerAttacking = false;
     private bool playerActionLocked = false;
+    public bool isBattleOver = false;
 
     public int Turn
     {
@@ -79,6 +80,8 @@ public class BattleManage : MonoBehaviour
             }
             else
             {
+                SetBattleOver(true);
+                BattlePlayerUIManager.Instance.HideAllCards();
                 BattleUIManager.DisplayGameOver();
             }
         } else
@@ -229,6 +232,15 @@ public class BattleManage : MonoBehaviour
         playerActionLocked = value;
     }
 
+    public bool BattleOver()
+    {
+        return isBattleOver;
+    }
+
+    public void SetBattleOver(bool value)
+    {
+        isBattleOver = value;
+    }
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
     {
