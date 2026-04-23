@@ -4,7 +4,6 @@
 // No external source was used
 
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,6 +58,4 @@ public abstract class CardUIBase : MonoBehaviour
         cardDescriptionText.text = "";
         cardImage.color = new Color(1, 1, 1, 0.2f); // faded
     }
-
-
 }

@@ -116,6 +116,10 @@ MonoBehaviour:
   interactKey: E
   interact: {fileID: 0}
   keyID: 1
+  persistCollectedState: 1
+  persistentSaveId: 
+  updateObjectiveOnPickup: 0
+  objectiveAfterPickup: 
 --- !u!114 &87786472300962072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +136,10 @@ MonoBehaviour:
   keyUsed: 0
   isUnlocked: 0
   doorLockedText: {fileID: 0}
+  keepKeyAfterUnlock: 0
+  updateObjectiveWhenLocked: 0
+  objectiveWhenLocked: 
+  requiredCurrentObjectiveForLockedUpdate: 
 --- !u!1 &2170273671089758197
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Are you sure you want to leave?
+  m_text: Are you sure you want to move on?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
   m_sharedMaterial: {fileID: 4357768984194887506, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
