@@ -117,8 +117,8 @@ public class PlayerValue
         }
 
         string[] allCards = {
-        "Bandage", "Syringe", "Medkit", "Revival Serum", "Pills", "Rage Pill",
-        "Drugs", "Beer", "Health Potion", "Energy Potion", "Antidote Potion",
+        "Bandage", "Syringe", "Medkit", "Revival Serum",
+        "Health Potion", "Energy Potion", "Antidote Potion",
         "Field Surgery Kit", "Adrenal Medkit", "Combat Patch", "Berserker Wrap",
         "Stimulant Wrap", "Liquid Courage Kit", "Rapid Recovery Injector",
         "Phoenix Shot", "Boosted Buzz"

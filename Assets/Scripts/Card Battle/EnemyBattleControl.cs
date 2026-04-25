@@ -267,6 +267,10 @@ public class EnemyBattleControl : MonoBehaviour
         StartCoroutine(ResetTakeDamageParameters());
     }
 
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
     private System.Collections.IEnumerator ResetTakeDamageParameters()
     {
         yield return new WaitForSeconds(0.5f);

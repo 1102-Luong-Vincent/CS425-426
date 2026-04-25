@@ -191,10 +191,15 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         // 2. Check if this card is an attack card (Knife)
         if (weaponValue != null)
         {
+            Animator anim = BattlePlayerValue.Instance.getAnimator();
+            anim.SetTrigger("Attack");
+            yield return new WaitForSeconds(0.7f);
             UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
         }
         else
         {
+            BattleAnimation ba = BattleManage.Instance.GetBattleAnimation();
+            yield return StartCoroutine(ba.PlayCardAnimation(cardValue.CardName, BattlePlayerValue.Instance.getAnimator(), target.GetAnimator()));
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
         }
         audioSource.PlayOneShot(cardUseSound);

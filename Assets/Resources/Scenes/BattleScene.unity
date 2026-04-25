@@ -2908,6 +2908,7 @@ GameObject:
   - component: {fileID: 863715298}
   - component: {fileID: 863715299}
   - component: {fileID: 863715300}
+  - component: {fileID: 863715301}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3013,7 +3014,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BattleUIManager: {fileID: 863715298}
+  battleAnimation: {fileID: 863715301}
   player: {fileID: 297217723}
+  isBattleOver: 0
 --- !u!114 &863715298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3063,6 +3066,18 @@ MonoBehaviour:
   SubtitleText: {fileID: 1733068176}
   continueButton: {fileID: 211019061}
   battleCanvas: {fileID: 1385514408}
+--- !u!114 &863715301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 863715292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d170e50817ffcb64cb21c27639fd2b67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &894418418
 PrefabInstance:
   m_ObjectHideFlags: 0

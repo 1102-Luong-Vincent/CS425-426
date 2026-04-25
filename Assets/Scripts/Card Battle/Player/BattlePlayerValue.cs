@@ -15,7 +15,8 @@ public class BattlePlayerValue : MonoBehaviour
     private WeaponValue weapon;
     private List<CardValue> HeldCards = new List<CardValue>();
     private List<CardValue> BattleCards = new List<CardValue>();
-
+    Animator anim;
+    int weaponEqupped = 0;
 
     private List<CardValue> startingHeldCards;
     private List<CardValue> startingBattleCards;
@@ -104,6 +105,18 @@ public class BattlePlayerValue : MonoBehaviour
         Instance = this;
 
     }
+
+    private void Start()
+    {
+        Transform child = transform.Find("DummyPlayer");
+
+        if (child != null)
+        {
+            anim = child.GetComponent<Animator>();
+        }
+        SetWeaponAnimation();
+
+     }
 
     public void SetBattlePlayerValue(PlayerValue playerValue)
     {
@@ -367,5 +380,36 @@ public class BattlePlayerValue : MonoBehaviour
         }
 
         Debug.Log($"Added {resource.amount}x {resource.resourceName} to inventory!");
+    }
+
+    public Animator getAnimator()
+    {
+        return anim;
+    }
+
+    public void SetWeaponAnimation()
+    {
+        WeaponValue currentWeapon = GameValue.Instance.GetPlayerValue().EquipmentWeapon;
+        string weaponName;
+        if (currentWeapon != null)
+        {
+            weaponName = currentWeapon.WeaponName;
+            if (weaponName == "Knife")
+            {
+
+                anim.SetInteger("WeaponEquipped", 1); // Set to knife animation
+                weaponEqupped = 1;
+            }
+            else if (weaponName == "Pistol")
+            {
+                anim.SetInteger("WeaponEquipped", 2); // Set to pistol animation
+                weaponEqupped = 2;
+            }
+            else
+            {
+                anim.SetInteger("WeaponEquipped", 3); // Set to shotgun animation
+                weaponEqupped = 3;
+            }
+        }
     }
 }

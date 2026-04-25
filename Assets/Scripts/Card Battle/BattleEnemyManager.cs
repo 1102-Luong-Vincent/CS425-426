@@ -124,7 +124,9 @@ public class BattleEnemyManager : MonoBehaviour
         BattleManage.Instance.StartNextTurn();
     }
 
-    
+
+
+
 
     public List<EnemyValue> GetEnemyValues()
     {

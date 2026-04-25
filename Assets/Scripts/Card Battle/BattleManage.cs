@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class BattleManage : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class BattleManage : MonoBehaviour
 
     private BattleData battleData;
     public BattleUIManager BattleUIManager;
+    [SerializeField] private BattleAnimation battleAnimation;
+
 
     [SerializeField] BattlePlayerController player;
 
@@ -95,7 +98,7 @@ public class BattleManage : MonoBehaviour
             else
             {
                 Debug.Log("enemies dead");
-                EndBattle();
+                StartCoroutine(BattleVictory());
             }
         }
 
@@ -123,6 +126,11 @@ public class BattleManage : MonoBehaviour
         return true;
     }
 
+    public IEnumerator BattleVictory()
+    {
+        yield return new WaitForSeconds(1);
+        EndBattle();
+    }
     void EndBattle() //modified to display a win panel for the rewards. 
     {
 
@@ -240,6 +248,11 @@ public class BattleManage : MonoBehaviour
     public void SetBattleOver(bool value)
     {
         isBattleOver = value;
+    }
+
+    public BattleAnimation GetBattleAnimation()
+    {
+        return battleAnimation;
     }
     #region Turn Function Interface
     public void TurnListener(Action<int> listener, bool isAdd)
