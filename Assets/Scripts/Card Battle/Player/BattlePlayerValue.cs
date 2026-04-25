@@ -2,7 +2,6 @@
 // Created by: Shawn Meng and Vincent Luong
 // No external sources were used
 
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

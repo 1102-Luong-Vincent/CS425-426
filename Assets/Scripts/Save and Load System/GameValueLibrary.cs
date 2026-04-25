@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static ExcelReader;
 
-public class GameValueLibrary 
+public class GameValueLibrary : MonoBehaviour
 {
     private List<ExcelWeaponData> AllWeapons = new List<ExcelWeaponData>();
     private List<ExcelCardData> AllCards = new List<ExcelCardData>();

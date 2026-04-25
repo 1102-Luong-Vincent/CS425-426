@@ -4,9 +4,6 @@
 // no external source was used.
 
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnityEngine.UI;
 using static ButtonEffect;
 public class InventoryTest : MonoBehaviour

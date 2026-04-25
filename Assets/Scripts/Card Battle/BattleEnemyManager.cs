@@ -3,7 +3,6 @@
 // Modified by: Vincent Luong
 // No external sources were used
 
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
