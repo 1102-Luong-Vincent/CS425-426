@@ -113,10 +113,11 @@ public class BattleEnemyManager : MonoBehaviour
             anim = enemy.gameObject.GetComponent<Animator>();
             anim.SetBool("Attack2West", true);
             anim.SetBool("isAttackAttacking", true);
+            BattleManage.Instance.GetBattlePlayerController().GetComponent<Animator>().SetTrigger("Damage");
             yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("Attack2West") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
             anim.SetBool("isAttackAttacking", false);
             anim.SetBool("Attack2West", false);
-
+            
         }
 
         //yield return new WaitForSeconds(0.5f);
