@@ -412,4 +412,15 @@ public class BattlePlayerValue : MonoBehaviour
             }
         }
     }
+
+    public void AddCard(CardValue card)
+    {
+        if(card == null)
+        {
+            return;
+        }
+        
+        GameValue.Instance.GetPlayerValue().battleCardsList.Add(card);
+        Debug.Log($"Added card to inventory: {card.CardName} ");
+    }
 }

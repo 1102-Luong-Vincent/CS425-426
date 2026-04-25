@@ -15,7 +15,8 @@ public class BattleRewards : MonoBehaviour
     [SerializeField] public GameObject panel; // The main panel
     [SerializeField] public TextMeshProUGUI resourceText;
     [SerializeField] public TextMeshProUGUI titleText;
-    [SerializeField] public TextMeshProUGUI SubtitleText; 
+    [SerializeField] public TextMeshProUGUI SubtitleText;
+    [SerializeField] public TextMeshProUGUI BonusText;
     [SerializeField] public Button continueButton;
 
     [SerializeField] public GameObject battleCanvas;
@@ -35,7 +36,7 @@ public class BattleRewards : MonoBehaviour
         continueButton.onClick.AddListener(HidePanel);
     }
 
-    public void ShowReward(string message)
+    public void ShowReward(string message, string bonusMessage = "")
     {
         resourceText.text = message;
         titleText.text = "<color=#FFD700>YOU WIN!</color>\n";
@@ -47,6 +48,19 @@ public class BattleRewards : MonoBehaviour
         titleText.outlineColor = Color.white;
         titleText.outlineWidth = 0.08f;
         //SubtitleText.outlineWidth = 0.2f; // adjust thickness as desired
+
+        BonusText.text = bonusMessage;
+        BonusText.fontSize = resourceText.fontSize;
+
+        if (!string.IsNullOrEmpty(bonusMessage))
+        {
+            BonusText.gameObject.SetActive(true);
+            BonusText.text = bonusMessage;
+        }
+        else
+        {
+            BonusText.gameObject.SetActive(false);
+        }
 
         panel.SetActive(true);
 

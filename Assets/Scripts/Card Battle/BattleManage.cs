@@ -6,6 +6,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BattleManage : MonoBehaviour
 {
@@ -136,6 +137,7 @@ public class BattleManage : MonoBehaviour
 
         GameValue.Instance.DefeatedEnemies(battleData.worldEnemyID);
         string rewardMessage = "";
+        string bonusRewardMessage = "";
 
         foreach (var enemy in battleData.battleEnemys)
         {
@@ -163,10 +165,27 @@ public class BattleManage : MonoBehaviour
             }
         }
 
+        //added additional rewards for defeating enemy
+
+        float itemDropChance = 0.15f; //15% chance enemy will drop card
+
+        if (UnityEngine.Random.value <= itemDropChance)
+        {
+            CardValue randomItemCard = GetRandomItemCardReward();
+
+            if (randomItemCard != null)
+            {
+                BattlePlayerValue.Instance.AddCard(randomItemCard);
+                bonusRewardMessage +=
+                    $"\n<color=#FF0000> Bonus Reward:</color>\n" + //red color
+                    $"• Card: {randomItemCard.CardName}\n";
+            }
+        }
+
         if (BattleRewards.Instance != null)
         {
             Debug.Log("SHOWING PANEL");
-            BattleRewards.Instance.ShowReward(rewardMessage);
+            BattleRewards.Instance.ShowReward(rewardMessage,  bonusRewardMessage);
         }
         else
         {
@@ -188,14 +207,46 @@ public class BattleManage : MonoBehaviour
 
     }
 
+    CardValue GetRandomItemCardReward()
+    {
+        List<CardValue> possibleItemCards = new List<CardValue>()
+        {
+            GameValue.Instance.GetInitCardValue("Adrenal Medkit"),
+            GameValue.Instance.GetInitCardValue("Antidote Potion"),
+            GameValue.Instance.GetInitCardValue("Bandage"),
+            GameValue.Instance.GetInitCardValue("Reflex Tonic"),
+            GameValue.Instance.GetInitCardValue("Berserker Wrap"),
+            GameValue.Instance.GetInitCardValue("Boosted Buzz"),
+            GameValue.Instance.GetInitCardValue("Combat Patch"),
+            GameValue.Instance.GetInitCardValue("Stamina Capsule"),
+            GameValue.Instance.GetInitCardValue("Energy Potion"),
+            GameValue.Instance.GetInitCardValue("Field Surgery Kit"),
+            GameValue.Instance.GetInitCardValue("Health Potion"),
+            GameValue.Instance.GetInitCardValue("Liquid Courage Kit"),
+            GameValue.Instance.GetInitCardValue("Medkit"),
+            GameValue.Instance.GetInitCardValue("Phoenix Shot"),
+            GameValue.Instance.GetInitCardValue("Emergency Capsule"),
+            GameValue.Instance.GetInitCardValue("Fury Catalyst"),
+            GameValue.Instance.GetInitCardValue("Rapid Recovery Injector"),
+            GameValue.Instance.GetInitCardValue("Revival Serum"),
+            GameValue.Instance.GetInitCardValue("Stimulant Wrap"),
+            GameValue.Instance.GetInitCardValue("Syringe")
+        };
+
+        // Remove nulls just in case
+        possibleItemCards.RemoveAll(card => card == null);
+
+        if (possibleItemCards.Count == 0) return null;
+
+        int index = UnityEngine.Random.Range(0, possibleItemCards.Count);
+        return possibleItemCards[index];
+    }
     public void ResetBattle()
     {
         Debug.Log("Resetting battle...");
 
         // 1. Reset player to starting state
         BattlePlayerValue.Instance.RestoreStartingState();
-
-
 
         // 2. Reset all enemies
         foreach (var enemy in BattleEnemyManager.Instance.GetEnemyBattleControls())
