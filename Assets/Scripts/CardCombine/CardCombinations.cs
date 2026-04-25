@@ -101,7 +101,23 @@ public class CardCombinations : MonoBehaviour
             Debug.Log($"[Combine] Different cards: {a.CardName}(ID:{idA}) + {b.CardName}(ID:{idB}) → ID:{resultID}");
         }
 
-        return GameValue.Instance.GetInitCardValue(resultID);
+        CardValue returnCard = GameValue.Instance.GetInitCardValue(resultID);
+
+        // check for the highest level of rarity in the pair of cards. If both cards have the same rarity, upgrade the rarity by 1 level.
+        if (a.rarity > b.rarity)
+        {
+            returnCard.rarity = a.rarity;
+        }
+        else
+        {
+            returnCard.rarity = b.rarity;
+        }
+        if (returnCard.rarity != CardRarity.Epic && a.rarity == b.rarity) // if both cards have the same rarity, upgrade the rarity
+        {
+            returnCard.rarity += 1;
+        }
+
+        return returnCard;
     }
 
 
