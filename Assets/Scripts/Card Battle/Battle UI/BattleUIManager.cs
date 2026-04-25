@@ -40,12 +40,12 @@ public class BattleUIManager : MonoBehaviour
 
         if (BattleManage.Instance.IsPlayerTurn())
         {
-            TurnText.text = "Player's Turn";
+            TurnText.text = "Player's Turn!";
             TurnText.color = Color.cyan; // player's turn
         }
         else
         {
-            TurnText.text = "Enemy's Turn";
+            TurnText.text = "Enemy's Turn!";
             TurnText.color = new Color(1f, 0.65f, 0f); // enemy turn = orange
         }
     }

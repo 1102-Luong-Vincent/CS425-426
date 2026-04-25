@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BattleAnimation : MonoBehaviour
 {
+    [SerializeField] private GameObject playerEffectPrefab;
+    Vector3 offset = new Vector3(1.0f, 1.5f, 0);
     BattleAnimation Instance { get; set; }
     private void Awake()
     {
@@ -15,6 +17,18 @@ public class BattleAnimation : MonoBehaviour
     }
     public IEnumerator PlayCardAnimation(string cardName, Animator playerAnim, Animator enemyAnim)
     {
+        playerAnim.SetTrigger("UseItem");
+        yield return new WaitForSeconds(0.5f); // delay before effect starts
+        if (playerEffectPrefab != null)
+        {
+            GameObject effect = Instantiate(playerEffectPrefab, playerAnim.transform.position+offset, Quaternion.identity);
+            BattleItemSpriteEffect spriteEffect = effect.GetComponent<BattleItemSpriteEffect>();
+            if (spriteEffect != null)
+            {
+                string path = $"Sprite/Card/SupportItems/{cardName}/{cardName}";
+                spriteEffect.sprite = Resources.Load<Sprite>(path);
+            }
+        }
         switch (cardName)
         {
             case "Adrenal Medkit":
@@ -84,6 +98,7 @@ public class BattleAnimation : MonoBehaviour
     }
     public IEnumerator AdrenalMedkitAnimation(Animator playerAnim, Animator enemyAnim)
     {
+        
         Debug.Log("Playing Adrenal Medkit animation");
         yield return new WaitForSeconds(0.5f); // delay before animation starts
     }

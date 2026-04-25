@@ -288,6 +288,7 @@ public class BattlePlayerValue : MonoBehaviour
         result.IsCritical = UnityEngine.Random.value < state.CriticalChanceBuff;
         if (result.IsCritical)
         {
+            Debug.Log("Critical Hit!");
             baseDamage *= state.CriticalDamageBuff;
         }
 
