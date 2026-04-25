@@ -3,8 +3,6 @@
 // Modified by: Shawn Meng
 // No external source was used
 
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;

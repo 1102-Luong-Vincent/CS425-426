@@ -1,16 +1,12 @@
 //Authors: Vincent Luong, Shawn Meng, Yuhan Tang, and Sean Masterson
 //Created by: Team 4
 //Modified by: Shawn Meng, Yuhan Tang
-//Some code generated with assistance from ChatGPT.
+//No external sources were used
 
-using NUnit.Framework;
 using SmallScaleInc.TopDownPixelCharactersPack1;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TestTools;
 using static ExcelReader;
 
 public class PlayerValue

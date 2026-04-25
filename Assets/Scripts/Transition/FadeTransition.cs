@@ -4,7 +4,6 @@
 // No external source was used.
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using SmallScaleInc.ZombieRural;

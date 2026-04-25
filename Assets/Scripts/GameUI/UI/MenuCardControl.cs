@@ -7,8 +7,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using NUnit.Framework;
-using System.Collections.Generic;
 
 public class MenuCardControl : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
