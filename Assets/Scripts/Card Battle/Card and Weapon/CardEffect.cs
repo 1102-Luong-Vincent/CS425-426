@@ -3,7 +3,8 @@ using UnityEngine;
 
 public static class CardEffect
 {
-    public static void UseEffect(string CardName, BattlePlayerValue player, List<EnemyValue> enemys)
+    
+    public static void UseEffect(string CardName, BattlePlayerValue player, List<EnemyValue> enemys, CardRarity rarity)
     {
         switch (CardName)
         {
