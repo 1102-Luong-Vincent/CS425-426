@@ -3,6 +3,7 @@
 // Modified by: Vincent Luong
 // Some code generated with assistance from ChatGPT.
 
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -98,7 +99,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            UseCard();
+            StartCoroutine(UseCard());
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
@@ -146,7 +147,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         isCentered = false;
     }
 
-    void UseCard()
+    public IEnumerator UseCard()
     {
         //Debug.Log($"Used card: {cardValue.CardName}");
         //cardValue.UseEffect(BattlePlayerValue.Instance);
@@ -155,17 +156,17 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
         if (!BattleManage.Instance.IsPlayerTurn())
         {
-            return;
+            yield break;
         }
 
         if (BattleManage.Instance.IsPlayerActionLocked())
         {
-            return;
+            yield break;
         }
 
         if (BattleManage.Instance.BattleOver())
         {
-            return;
+            yield break;
         }
 
         if (cardValue != null)
@@ -182,7 +183,7 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         if (target == null)
         {
             Debug.LogWarning("No enemy to target.");
-            return;
+            yield break;
         }
 
         BattleManage.Instance.SetPlayerActionLocked(true);
@@ -191,12 +192,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         if (weaponValue != null)
         {
             UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
-            audioSource.PlayOneShot(cardUseSound);
         }
         else
         {
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
-            audioSource.PlayOneShot(cardUseSound);
         }
         audioSource.PlayOneShot(cardUseSound);
 
@@ -205,6 +204,8 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
 
         // 4. Next turn
         BattleManage.Instance.StartNextTurn();
+
+        yield return new WaitForSeconds(0.5f);
     }
 
     

@@ -13,7 +13,7 @@ public class BattleEnemyManager : MonoBehaviour
     public static BattleEnemyManager Instance { get; private set; }
     public EnemyBattleControl EnemyControlPrefab;
     public List<EnemyBattleControl> currentEnemys = new List<EnemyBattleControl>();
-
+    Animator anim;
 
     private Vector2 rangeSize = new Vector2(2f, 2f); 
     public float minDistance = 1.5f;
@@ -31,6 +31,10 @@ public class BattleEnemyManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
     public void SetEnemy(BattleData data)
     {
         foreach (var enemy in currentEnemys)
@@ -106,10 +110,16 @@ public class BattleEnemyManager : MonoBehaviour
             enemy.PlayAttackSound();
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
             BattleManage.Instance.GetBattlePlayerController().SpawnBlood();
+            anim = enemy.gameObject.GetComponent<Animator>();
+            anim.SetBool("Attack2West", true);
+            anim.SetBool("isAttackAttacking", true);
+            yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("Attack2West") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+            anim.SetBool("isAttackAttacking", false);
+            anim.SetBool("Attack2West", false);
 
         }
 
-        yield return new WaitForSeconds(0.5f);
+        //yield return new WaitForSeconds(0.5f);
 
         BattleManage.Instance.StartNextTurn();
     }

@@ -76,7 +76,7 @@ public class BattleManage : MonoBehaviour
         {
             if (BattlePlayerValue.Instance.Health > 0)
             {
-                BattlePlayerValue.Instance.StartTurn();
+                BattlePlayerValue.Instance.StartTurn(Turn);
             }
             else
             {
@@ -199,7 +199,7 @@ public class BattleManage : MonoBehaviour
         Turn = 0;
 
         // 4. Start player turn
-        BattlePlayerValue.Instance.StartTurn();
+        BattlePlayerValue.Instance.StartTurn(Turn);
 
         // 5. Update UI
         BattleUIManager.SetTurnText(Turn);

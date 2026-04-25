@@ -120,9 +120,10 @@ public class BattlePlayerValue : MonoBehaviour
         BattlePlayerUIManager.SetPlayer(this);
     }
 
-    public void StartTurn()
+    public void StartTurn(int turnNumber)
     {
-        DrawCard();
+        if(turnNumber > 1)
+            DrawCard();
     }
 
     public void DrawCard()
