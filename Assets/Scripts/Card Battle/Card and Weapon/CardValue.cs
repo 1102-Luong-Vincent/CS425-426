@@ -85,7 +85,7 @@ public class CardValue
 
     public void UseEffect(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        CardEffect.UseEffect(CardName,player, enemys);
+        CardEffect.UseEffect(CardName,player, enemys, rarity);
     }
 
     public int GetID()
