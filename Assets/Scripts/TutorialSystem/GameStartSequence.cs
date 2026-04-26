@@ -42,13 +42,7 @@ public class GameStartSequence : MonoBehaviour
 
     private void Awake()
     {
-        if (SkipSequence || GameValue.Instance.GetCurrentScence()!= SceneType.GameStartScene)
-        {
-            bedroomDoorClosed.SetActive(false);
-            bedroomDoorOpened.SetActive(true);
-            Destroy(this);
-            return;
-        }
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -58,7 +52,13 @@ public class GameStartSequence : MonoBehaviour
     }
     void Start()
     {
-
+        if (SkipSequence || GameValue.Instance.GetCurrentScence() != SceneType.GameStartScene)
+        {
+            bedroomDoorClosed.SetActive(false);
+            bedroomDoorOpened.SetActive(true);
+            Destroy(this);
+            return;
+        }
         StartCoroutine(PlayGameStartSequence());
     }
 
