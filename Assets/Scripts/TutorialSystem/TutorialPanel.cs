@@ -26,8 +26,11 @@ public class TutorialPanel : MonoBehaviour
     // Update is called once per frame
     public void SetColor(Color color)
     {
-        panel.color = color;
-        image.color = color;
-        text.color = color;
+        if(panel!= null)
+            panel.color = color;
+        if(image != null)
+            image.color = color;
+        if (text != null)   
+            text.color = color;
     }
 }

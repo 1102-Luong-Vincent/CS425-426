@@ -43,6 +43,8 @@ public class PlayerMenuManager : MonoBehaviour
 
     #region Unity Lifecycle
 
+    public bool menuToggleEnabled = true;
+    private bool menuOpen = false;
     private void Awake()
     {
         // Singleton pattern
@@ -63,22 +65,29 @@ public class PlayerMenuManager : MonoBehaviour
     private void Update()
     {
         // Toggle menu with Tab or Escape key
-        if (Input.GetKeyDown(KeyCode.Tab) )
+        if (Input.GetKeyDown(KeyCode.Tab) && menuToggleEnabled)
         {
-            if (currentState == MenuState.Closed)
+            if (currentState == MenuState.Closed && GameValue.Instance.GetCurrentScence() != SceneType.BattleScene)
             {
                 OpenSpecificMenu(MenuState.Deck);
                 playerHUD.SetActive(false);
                 playerMiniMap.SetActive(false);
+                menuOpen = true;
             } else
             {
+                menuOpen = false;
                 CloseAllMenus();
                 playerHUD.SetActive(true);
                 playerMiniMap.SetActive(true);
+
             }
         }
     }
 
+    public bool IsMenuOpen()
+    {
+        return menuOpen;
+    }   
     #endregion
 
     #region Initialization

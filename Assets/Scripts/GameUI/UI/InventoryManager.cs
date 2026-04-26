@@ -12,10 +12,7 @@ public class InventoryManager : MonoBehaviour
 
     PlayerValue playerValue;
     public GameObject MenuCardPrefab;
-    public GameObject WeaponSelectorPanel;
     public Transform WeaponZone;
-    public Button WeaponLibraryButton;
-    public Button WeaponCancelButton;
     public Button DeckButton1;
     public Button DeckButton2;
     public Button DeckButton3;
@@ -48,8 +45,6 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
-        OnGameMenuButtonClick(WeaponLibraryButton, OnWeaponButtonClick);
-        OnGameMenuButtonClick(WeaponCancelButton, OnWeaponCancelButtonClick);
         OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0));
         OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1));
         OnGameMenuButtonClick(DeckButton3, () => OnDeckButtonClick(2));
@@ -140,40 +135,10 @@ public class InventoryManager : MonoBehaviour
     {
 
         control.OnInventoryClose();
-        if(WeaponSelectorPanel.activeInHierarchy == true)
-        {
-            OnWeaponCancelButtonClick();
-        }
+
 
     }
 
-
-    void OnWeaponButtonClick()
-    {
-        WeaponSelectorPanel.SetActive(true);
-        foreach (WeaponValue val in playerValue.HadWeaponsLibrary)
-        {
-            GameObject card = Instantiate(MenuCardPrefab);
-            card.name = (val.WeaponName + " card");
-            MenuCardControl menucard = card.GetComponent<MenuCardControl>();
-            card.transform.SetParent(WeaponZone);
-            menucard.SetWeaponValue(val);
-        }
-    }
-
-
-
-
-    void OnWeaponCancelButtonClick()
-    {
-        for (int i = WeaponZone.childCount - 1; i >= 0; i--)
-        {
-            GameObject menucard = WeaponZone.GetChild(i).gameObject;
-
-            Destroy(menucard);
-        }
-        WeaponSelectorPanel.SetActive(false);
-    }
 
     void OnDeckButtonClick(int index)
     {

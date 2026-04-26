@@ -5143,6 +5143,8 @@ MonoBehaviour:
   fader: {fileID: 7153815893395799354}
   DoorTrigger: {fileID: 0}
   playercontroller: {fileID: 0}
+  bedroomDoorOpened: {fileID: 0}
+  bedroomDoorClosed: {fileID: 0}
 --- !u!1 &6475271299271077354
 GameObject:
   m_ObjectHideFlags: 0
@@ -6568,16 +6570,16 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4190525267132531434}
-  - {fileID: 1338760806490674985}
-  - {fileID: 6618729181277661006}
   - {fileID: 1945364313981863642}
   - {fileID: 4143009705135244906}
   - {fileID: 5713111807203886989}
-  - {fileID: 3304629306583705068}
   - {fileID: 6887229051309472907}
-  - {fileID: 8875836550879520574}
   - {fileID: 4557213842257968975}
+  - {fileID: 6618729181277661006}
+  - {fileID: 4190525267132531434}
+  - {fileID: 3304629306583705068}
+  - {fileID: 8875836550879520574}
+  - {fileID: 1338760806490674985}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6627,6 +6629,7 @@ MonoBehaviour:
     panel: {fileID: 7997429304708905833}
   playerHUD: {fileID: 1656631866271578976}
   playerMiniMap: {fileID: 3445296233971996233}
+  menuToggleEnabled: 1
 --- !u!114 &5093183963877371992
 MonoBehaviour:
   m_ObjectHideFlags: 0
