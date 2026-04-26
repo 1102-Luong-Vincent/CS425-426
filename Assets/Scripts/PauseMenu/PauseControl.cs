@@ -95,7 +95,7 @@ public class PauseControl : MonoBehaviour
             SetGameplayUIActive(true);
             Time.timeScale = 1f; //game starts running again
             isPaused = false;
-            audioSource.PlayOneShot(buttonClickSound);
+            PlayButtonClickSound();
             SoundManage.Instance.StopBackgroundMusic(); // Stop any pause music first
 
             string currentScene = SceneManager.GetActiveScene().name;
@@ -114,7 +114,7 @@ public class PauseControl : MonoBehaviour
 
     void SaveGame()
     {
-        audioSource.PlayOneShot(buttonClickSound);
+        PlayButtonClickSound();
         //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel to save your game
         SaveLoadPanelControl.Instance.ShowSavePanel();
 
@@ -127,7 +127,7 @@ public class PauseControl : MonoBehaviour
         Debug.Log(SaveLoadPanelControl.Instance == null
             ? "SaveLoadPanelControl.Instance is NULL"
             : $"SaveLoadPanelControl.Instance found: {SaveLoadPanelControl.Instance.name}");
-        audioSource.PlayOneShot(buttonClickSound);
+        PlayButtonClickSound();
         SaveLoadPanelControl.Instance.SetPauseControlToCloseAfterLoad(this); // close the pause panel after load game
         //SaveLoadPanelControl.Instance.ShowPanel(); //shows the panel that allows you to load your game
         SaveLoadPanelControl.Instance.ShowLoadPanel();
@@ -138,7 +138,7 @@ public class PauseControl : MonoBehaviour
     void RestartGame()
     {
         Time.timeScale = 1f; // Resume time scale
-        audioSource.PlayOneShot(buttonClickSound);
+        PlayButtonClickSound();
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
         SetGameplayUIActive(false);
@@ -158,10 +158,7 @@ public class PauseControl : MonoBehaviour
     void MainMenu()
     {
         Time.timeScale = 1f; //make sure time scale is back to normal before going to main menu
-        if (audioSource != null && buttonClickSound != null)
-        {
-            audioSource.PlayOneShot(buttonClickSound);
-        }
+        PlayButtonClickSound();
         SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
 
         SetGameplayUIActive(false);
@@ -182,6 +179,14 @@ public class PauseControl : MonoBehaviour
     {
         SetObjectActive(ref playerHUD, isActive, "PlayerHUD");
         SetObjectActive(ref MiniMap, isActive, "MiniMapController");
+    }
+
+    private void PlayButtonClickSound()
+    {
+        if (audioSource != null && buttonClickSound != null)
+        {
+            audioSource.PlayOneShot(buttonClickSound);
+        }
     }
 
     private void SetObjectActive(ref GameObject target, bool isActive, string fallbackName)

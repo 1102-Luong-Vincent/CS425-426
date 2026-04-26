@@ -27,6 +27,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     public Button SavePanelCancelButton;
 
     public Button LoadPanelLoadButton;
+    public Button LoadPanelDeleteButton;
     public Button LoadPanelCancelButton;
 
     public SaveLoadButtonControl saveLoadButtonPrefab;
@@ -43,6 +44,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     private string autoSavePath;
 
     private PauseControl pauseControlToCloseAfterLoad;
+    private bool isShowingLoadPanel;
 
     [Header("Sound Effects")]
     [SerializeField] AudioSource audioSource;
@@ -77,7 +79,12 @@ public class SaveLoadPanelControl : MonoBehaviour
         SavePanelCancelButton.onClick.AddListener(ClosePanel);
 
         LoadPanelLoadButton.onClick.AddListener(OnCheckButtonClick);
+        if (LoadPanelDeleteButton != null)
+        {
+            LoadPanelDeleteButton.onClick.AddListener(OnDeleteButtonClick);
+        }
         LoadPanelCancelButton.onClick.AddListener(ClosePanel);
+        UpdateLoadPanelButtonStates();
     }
 
 
@@ -110,10 +117,10 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     private void SaveGame(string folderPath)
     {
-        SaveData saveData = new SaveData(folderPath, GameValue.Instance);
-        string json = JsonUtility.ToJson(saveData, true);
         string fileName = $"save_{System.DateTime.Now:yyyyMMdd_HHmmss}.json";
         string fullPath = Path.Combine(folderPath, fileName);
+        SaveData saveData = new SaveData(fullPath, GameValue.Instance);
+        string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(fullPath, json);
         Debug.Log($"Save to: {fullPath}");
     }
@@ -146,6 +153,7 @@ public class SaveLoadPanelControl : MonoBehaviour
             selSaveLoadButton.CancelSelSaveLoadButton();
         }
         selSaveLoadButton = saveLoadButtonControl;
+        UpdateLoadPanelButtonStates();
     }
 
     //void LoadSaveButtons()
@@ -195,7 +203,79 @@ public class SaveLoadPanelControl : MonoBehaviour
                 continue;
             }
             SaveLoadButtonControl btn = Instantiate(saveLoadButtonPrefab, parent);
-            btn.SetSaveData(saveData);
+            btn.SetSaveData(saveData, file);
+        }
+    }
+
+    void OnDeleteButtonClick()
+    {
+        DeleteSelectedSave();
+    }
+
+    public void DeleteSelectedSave()
+    {
+        if (selSaveLoadButton == null) return;
+
+        string saveFilePath = selSaveLoadButton.GetSaveFilePath();
+        if (!IsDeletableSaveFile(saveFilePath))
+        {
+            Debug.LogWarning($"Cannot delete invalid save file: {saveFilePath}");
+            return;
+        }
+
+        SetSelSaveLoadButton(null);
+        File.Delete(saveFilePath);
+
+        if (audioSource != null && buttonClickSound != null)
+        {
+            audioSource.PlayOneShot(buttonClickSound);
+        }
+
+        if (isShowingLoadPanel)
+        {
+            LoadSaveButtonsForLoadPanel();
+        }
+        else
+        {
+            LoadSaveButtonsForSavePanel();
+        }
+
+        UpdateLoadPanelButtonStates();
+    }
+
+    private bool IsDeletableSaveFile(string saveFilePath)
+    {
+        if (string.IsNullOrWhiteSpace(saveFilePath) || !File.Exists(saveFilePath))
+        {
+            return false;
+        }
+
+        string fullPath = Path.GetFullPath(saveFilePath);
+        string normalPath = Path.GetFullPath(normalSavePath);
+        string autoPath = Path.GetFullPath(autoSavePath);
+
+        return Path.GetExtension(fullPath).Equals(".json", System.StringComparison.OrdinalIgnoreCase) &&
+               (IsPathInsideFolder(fullPath, normalPath) || IsPathInsideFolder(fullPath, autoPath));
+    }
+
+    private bool IsPathInsideFolder(string filePath, string folderPath)
+    {
+        string normalizedFolder = folderPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+        return filePath.StartsWith(normalizedFolder, System.StringComparison.OrdinalIgnoreCase);
+    }
+
+    private void UpdateLoadPanelButtonStates()
+    {
+        bool hasSelection = selSaveLoadButton != null;
+
+        if (LoadPanelLoadButton != null)
+        {
+            LoadPanelLoadButton.interactable = hasSelection;
+        }
+
+        if (LoadPanelDeleteButton != null)
+        {
+            LoadPanelDeleteButton.interactable = hasSelection;
         }
     }
 
@@ -208,6 +288,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     {
         EnsurePanelContentParents();
         SetSelSaveLoadButton(null);
+        isShowingLoadPanel = false;
         LoadSaveButtonsForSavePanel();
         SaveLoadRoot.SetActive(true);
         SavePanel.SetActive(true);
@@ -218,6 +299,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     {
         EnsurePanelContentParents();
         SetSelSaveLoadButton(null);
+        isShowingLoadPanel = true;
         LoadSaveButtonsForLoadPanel();
 
         SaveLoadRoot.SetActive(true);
