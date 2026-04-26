@@ -45,7 +45,7 @@ public class GameValue : MonoBehaviour
 
     private GameValueLibrary library;
     public PlayerValue playerValue;
-    [SerializeField] SceneType CurrentScene = SceneType.None;
+    [SerializeField] SceneType CurrentScene;
     private String happendStoryName = string.Empty;
     private string currentObjective = string.Empty;
     private readonly List<string> completedObjectives = new List<string>();
@@ -93,7 +93,8 @@ public class GameValue : MonoBehaviour
     {
         library = new GameValueLibrary();   
         playerValue = new PlayerValue();
-        CurrentScene = SceneType.None;
+        //CurrentScene = SceneType.None;
+        CurrentScene = GetCurrentScence();
         happendStoryName = string.Empty;
         currentObjective = string.Empty;
         completedObjectives.Clear();
