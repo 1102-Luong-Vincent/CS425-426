@@ -56,6 +56,7 @@ public class GameStartSequence : MonoBehaviour
         {
             bedroomDoorClosed.SetActive(false);
             bedroomDoorOpened.SetActive(true);
+            fader.SetColor(new Color(0f, 0f, 0f, 0f)); 
             Destroy(this);
             return;
         }
@@ -70,6 +71,7 @@ public class GameStartSequence : MonoBehaviour
     public IEnumerator PlayGameStartSequence()
     {
         // initilalize the room
+        fader.SetColor(new Color(0f, 0f, 0f, 1f)); //start with a black screen
         DoorTrigger.SetActive(false);
         playercontroller.enabled = false;
         PlayerMenuManager.Instance.menuToggleEnabled = false;

@@ -75,4 +75,9 @@ public class FadeTransition : MonoBehaviour
 
         yield return StartCoroutine(FadeIn());
     }
+
+    public void SetColor(Color color)
+    {
+        fadeImage.color = color;
+    }
 }
