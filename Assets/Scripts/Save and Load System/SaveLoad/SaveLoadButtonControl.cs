@@ -12,6 +12,7 @@ public class SaveLoadButtonControl : MonoBehaviour
     public Button SaveLoadButton;
     public TextMeshProUGUI SaveLoadText;
     private SaveData saveData;
+    private string saveFilePath;
 
     private void Awake()
     {
@@ -22,10 +23,16 @@ public class SaveLoadButtonControl : MonoBehaviour
     {
         return saveData;
     }
+
+    public string GetSaveFilePath()
+    {
+        return saveFilePath;
+    }
    
-    public void SetSaveData(SaveData saveData)
+    public void SetSaveData(SaveData saveData, string saveFilePath)
     {
         this.saveData = saveData;
+        this.saveFilePath = saveFilePath;
         //SaveLoadText.text = saveData.SaveTime.ToString();
         SaveLoadText.text = saveData.saveTime;
     }
