@@ -158,7 +158,10 @@ public class PauseControl : MonoBehaviour
     void MainMenu()
     {
         Time.timeScale = 1f; //make sure time scale is back to normal before going to main menu
-        audioSource.PlayOneShot(buttonClickSound);
+        if (audioSource != null && buttonClickSound != null)
+        {
+            audioSource.PlayOneShot(buttonClickSound);
+        }
         SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
 
         SetGameplayUIActive(false);

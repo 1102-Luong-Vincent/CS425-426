@@ -57,7 +57,14 @@ public class StoryManage : MonoBehaviour
     void Start()
     {
         SkipButton.onClick.AddListener(OnSkipButtonClick);
-        SetStory(GameValue.Instance.GetHappendStoryName());
+        string storyName = GameValue.Instance.GetHappendStoryName();
+        if (string.IsNullOrWhiteSpace(storyName))
+        {
+            Debug.LogWarning("Story file name was empty. Falling back to Prologue.");
+            storyName = StoryName.Prologue;
+        }
+
+        SetStory(storyName);
         GameValue.Instance.SetHappendStoryName(string.Empty);
         storyText.enableAutoSizing = false;
         storyText.fontSize = 72f; 
@@ -129,6 +136,12 @@ public class StoryManage : MonoBehaviour
 
     public void SetStory(string fileName)
     {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            Debug.LogWarning("Story file name was empty. Falling back to Prologue.");
+            fileName = StoryName.Prologue;
+        }
+
         StopStoryCoroutines();
 
         isTyping = false;
