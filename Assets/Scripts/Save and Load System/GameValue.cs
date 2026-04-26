@@ -26,7 +26,10 @@ public enum SceneType
     Level_1_Hospital,
     Level_2,
     LV2_Dormitory,
-    LV2_Restaurant
+    LV2_Restaurant,
+    Level1_Library_1,
+    Level1_Library_2,
+    Level1_Store
 }
 
 public static class ObjectiveConstants
