@@ -35,6 +35,7 @@ public enum SceneType
 public static class ObjectiveConstants
 {
     public const string CompletePrologue = "Complete the prologue.";
+    public const string CompleteTutorial = "Follow the tutorial guide and complete the task.";
     public const string ExploreStartRoom = "Explore the room and pick up an item.";
     public const string LeaveStartRoom = "Go to the door and enter the next map.";
     public const string Level1FindGovernmentInfo = "Find information about the government and the whereabouts of the cure.";
@@ -159,7 +160,7 @@ public class GameValue : MonoBehaviour
         if (scene == SceneType.GameStartScene &&
             (string.IsNullOrWhiteSpace(currentObjective) || currentObjective == ObjectiveConstants.CompletePrologue))
         {
-            SetCurrentObjective(ObjectiveConstants.ExploreStartRoom, false, true);
+            SetCurrentObjective(ObjectiveConstants.CompleteTutorial, false, true);
             return;
         }
 

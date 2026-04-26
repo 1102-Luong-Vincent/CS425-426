@@ -110,6 +110,10 @@ public class GameStartSequence : MonoBehaviour
         //start combat tutorial
         yield return StartCoroutine(CombatTutorial());
 
+        CombineButton.interactable = true;
+        UpgradeButton.interactable = true;
+        OptionsButton.interactable = true;
+
         yield return null;
         Destroy(this);
     }
