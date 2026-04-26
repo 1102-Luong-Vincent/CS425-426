@@ -102,7 +102,7 @@ public class PlayerValue
     {
         ClearCard();
 
-        string[] starterEquipment = { "Bandage", "Syringe" };
+        string[] starterEquipment = { }; //"Bandage", "Syringe" };
         foreach (string equipName in starterEquipment)
         {
             CardValue foundCard = GameValue.Instance.GetInitCardValue(equipName);
@@ -113,11 +113,11 @@ public class PlayerValue
         }
 
         string[] allCards = {
-        "Bandage", "Syringe", "Medkit", "Revival Serum",
-        "Health Potion", "Energy Potion", "Antidote Potion",
-        "Field Surgery Kit", "Adrenal Medkit", "Combat Patch", "Berserker Wrap",
-        "Stimulant Wrap", "Liquid Courage Kit", "Rapid Recovery Injector",
-        "Phoenix Shot", "Boosted Buzz"
+        //"Bandage", "Syringe", "Medkit", "Revival Serum",
+        //"Health Potion", "Energy Potion", "Antidote Potion",
+        //"Field Surgery Kit", "Adrenal Medkit", "Combat Patch", "Berserker Wrap",
+        //"Stimulant Wrap", "Liquid Courage Kit", "Rapid Recovery Injector",
+        //"Phoenix Shot", "Boosted Buzz"
         };
 
         foreach (string cardName in allCards)
@@ -374,6 +374,20 @@ public class PlayerValue
         return energy;
     }
 
+    public int GetCardCount()
+    {
+        return HadCardsLibrary.Count;
+    }
+
+    public int GetDeckCardCount(int deckIndex)
+    {
+        int count = 0;
+        for(int i = 0; i < MAX_CARDS; i++)
+        {
+            if (Decks[deckIndex][i] != null) count++;
+        }
+        return count;
+    }
     public int GetMaxCards()
     {
         return MAX_CARDS;

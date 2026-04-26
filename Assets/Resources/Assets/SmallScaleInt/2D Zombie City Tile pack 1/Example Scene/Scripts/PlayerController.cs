@@ -32,13 +32,13 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         public float speed = 1.0f; // the movement speed of the player
         public float runningSpeed = 3.0f; //the running speed of the player
 
-
+        public bool isMoving = false;
+        public bool isRunning = false;
         private Vector2 movementDirection;
         private bool isOnStairs = false; // when on stairs, the player moves in a different angle.
         public bool isCrouching = false; // when crouching, the player moves slower
         private SpriteRenderer spriteRenderer;
         private float lastAngle;  // Store the last calculated angle
-        private bool isRunning = false;
         private Color originalColor;
 
         // Add this field at the top where other variables are declared
@@ -189,12 +189,14 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
             if(horizontal == 0 && vertical == 0)
             {
+                isMoving = false;
                 anim.SetBool("IsMoving", false);
             }
             else
             {
                 xdir = horizontal;
                 ydir = vertical;
+                isMoving = true;
                 anim.SetBool("IsMoving", true);
             }
                 anim.SetFloat("MoveX", xdir);
@@ -895,12 +897,14 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 speed = runningSpeed;
+                isRunning = true;
                 anim.SetBool("isRunning", true);
             }
 
             else
             {
                 speed = 1.0f;
+                isRunning = false;
                 anim.SetBool("isRunning", false);
             }
         }

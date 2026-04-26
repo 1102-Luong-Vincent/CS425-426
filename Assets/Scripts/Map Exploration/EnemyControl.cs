@@ -10,9 +10,11 @@ public class EnemyControl : MonoBehaviour
 {
     [Header("Detection & Combat")]
     public CircleCollider2D searchRadius;
+    PolygonCollider2D col;
     [SerializeField] int EnemyID = 1;
     [SerializeField] private int worldEnemyID; 
     EnemyValue enemyValue;
+    public bool overRideControl = false;
 
     [Header("Movement")]
     Rigidbody2D rb;
@@ -28,6 +30,7 @@ public class EnemyControl : MonoBehaviour
     private float nextDirectionUpdateTime = 0f;
     void Start()
     {
+        col = gameObject.GetComponent<PolygonCollider2D>();
         //if(worldEnemyID == 0)
         //{
         //    worldEnemyID = GameValue.Instance.GetNextEnemyID();
@@ -77,6 +80,11 @@ public class EnemyControl : MonoBehaviour
 
     void Update()
     {
+        if (overRideControl)
+        {
+            HandleMovementAnimation();
+            return;
+        }
         if (target != null)
         {
             Vector2 moveDir = Vector2.Lerp(rb.position, target.position, Time.fixedDeltaTime * speed);
@@ -321,4 +329,6 @@ public class EnemyControl : MonoBehaviour
 
         return EnemyID;
     }
+
+
 }
