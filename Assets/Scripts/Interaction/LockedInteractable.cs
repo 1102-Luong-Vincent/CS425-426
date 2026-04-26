@@ -15,85 +15,97 @@ public class LockedInteractable : MonoBehaviour
     public bool isUnlocked = false;
     public TextMeshProUGUI doorLockedText;
     [SerializeField] private bool keepKeyAfterUnlock = false;
+    [SerializeField] private SceneTransitionUI sceneTransitionUI;
     [Header("Objective Update")]
     [SerializeField] private bool updateObjectiveWhenLocked = false;
     [SerializeField, TextArea(2, 3)] private string objectiveWhenLocked = string.Empty;
     [SerializeField, TextArea(2, 3)] private string requiredCurrentObjectiveForLockedUpdate = string.Empty;
-
-    private bool playerInRange = false;
-    private bool triggered = false;
 
     public PlayerValue playerValue;
 
     public void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
-        doorLockedText.gameObject.SetActive(false);
-        //DontDestroyOnLoad(gameObject);
+        ResolveSceneTransitionUI();
+
+        if (doorLockedText != null)
+        {
+            doorLockedText.gameObject.SetActive(false);
+        }
     }
 
     public void OpenDoor()
     {
-        SceneTransitionUI.Instance.ShowConfirmation();
+        if (sceneTransitionUI != null)
+        {
+            sceneTransitionUI.ShowConfirmation();
+            return;
+        }
+
+        Debug.LogWarning($"No {nameof(SceneTransitionUI)} reference found for locked door {gameObject.name}.");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.GetComponent<PlayerController>() != null)
+        if (other.GetComponentInParent<PlayerController>() == null)
         {
-            SceneTransitionUI.Instance.confirmationPanel.SetActive(false);
-            Time.timeScale = 1f;
-            doorLockedText.gameObject.SetActive(true);
-
-            if (triggered)
-            {
-                triggered = true;
-            }
             return;
         }
 
-        PlayerValue player = GameValue.Instance.GetPlayerValue();
+        playerValue ??= GameValue.Instance.GetPlayerValue();
+        ResolveSceneTransitionUI();
 
-            if (isUnlocked)
+        if (doorLockedText != null)
+        {
+            doorLockedText.gameObject.SetActive(false);
+        }
+
+        sceneTransitionUI?.HideConfirmation();
+
+        if (isUnlocked)
+        {
+            OpenDoor();
+            return;
+        }
+
+        for (int i = 0; i < playerValue.HadCardsLibrary.Count; i++)
+        {
+            if (playerValue.HadCardsLibrary[i].ID == keyID)
             {
-                //OpenDoor();
-                SceneTransitionUI.Instance.ShowConfirmation();
+                isUnlocked = true;
+                bool shouldConsumeKey = keyUsed && !keepKeyAfterUnlock;
+
+                if (shouldConsumeKey)
+                {
+                    playerValue.HadCardsLibrary.RemoveAt(i);
+                }
+
+                Debug.Log("Door unlocked with key");
+
+                if (InteractableNotification.Instance != null)
+                {
+                    InteractableNotification.Instance.ShowNotification(shouldConsumeKey ? "Used Key" : "Door Unlocked");
+                }
+
+                OpenDoor();
                 return;
             }
+        }
 
-            for (int i = 0; i < player.HadCardsLibrary.Count; i++)
-            {
-                if (player.HadCardsLibrary[i].ID == keyID)
-                {
-                    isUnlocked = true;
-                    bool shouldConsumeKey = keyUsed && !keepKeyAfterUnlock;
-
-                    if (shouldConsumeKey)
-                    {
-                        player.HadCardsLibrary.RemoveAt(i);
-                    }
-                    Debug.Log("Door unlocked with key");
-
-                    if (InteractableNotification.Instance != null)
-                    {
-                        InteractableNotification.Instance.ShowNotification(shouldConsumeKey ? "Used Key" : "Door Unlocked");
-                    }
-                    SceneTransitionUI.Instance.ShowConfirmation();
-                    return;
-                }
-            }
         Debug.Log("Door Locked. Missing key: " + keyID);
         UpdateObjectiveWhenLocked();
-        doorLockedText.text = "Door Locked. Needs a key";
 
-        SceneTransitionUI.Instance.confirmationPanel.SetActive(false);
+        if (doorLockedText != null)
+        {
+            doorLockedText.text = "Door Locked. Needs a key";
+            doorLockedText.gameObject.SetActive(true);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if(other.GetComponent<PlayerController>() != null)
-        { 
-            playerInRange = false;
+        if (other.GetComponentInParent<PlayerController>() != null && doorLockedText != null)
+        {
             doorLockedText.gameObject.SetActive(false);
         }
     }
@@ -120,5 +132,12 @@ public class LockedInteractable : MonoBehaviour
         }
 
         GameValue.Instance.SetCurrentObjective(objectiveWhenLocked);
+    }
+
+    private void ResolveSceneTransitionUI()
+    {
+        sceneTransitionUI ??= GetComponent<SceneTransitionUI>();
+        sceneTransitionUI ??= GetComponentInChildren<SceneTransitionUI>();
+        sceneTransitionUI ??= GetComponentInParent<SceneTransitionUI>();
     }
 }

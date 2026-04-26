@@ -140,7 +140,7 @@ public class ItemControl : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("On trigger Enter");
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerController player = other.GetComponentInParent<PlayerController>();
         if (player != null)
         {
             playerInRange = true;
@@ -151,7 +151,7 @@ public class ItemControl : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerController player = other.GetComponentInParent<PlayerController>();
         if (player != null)
         {
             playerInRange = false;
@@ -354,7 +354,7 @@ public class ItemControl : MonoBehaviour
 
         if (keyPickupSound != null)
         {
-            audioSource.PlayOneShot(pickupSound);
+            audioSource.PlayOneShot(keyPickupSound);
         }
 
         PlayerValue player = GameValue.Instance.GetPlayerValue();
@@ -375,7 +375,7 @@ public class ItemControl : MonoBehaviour
             UpdateObjectiveAfterPickup();
             MarkCollectedForSave();
 
-            Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
+            Destroy(gameObject, keyPickupSound != null ? keyPickupSound.length : 0f);
         }
         else
         {
