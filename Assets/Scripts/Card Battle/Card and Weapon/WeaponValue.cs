@@ -29,6 +29,8 @@ public class WeaponValue
     public string upgradeMaterialName;
     public int upgradeMaterialNeed;
 
+    public AudioClip weaponSFX;
+
     public WeaponValue() { }
 
     public WeaponValue(ExcelWeaponData excelData) 
@@ -45,7 +47,7 @@ public class WeaponValue
         upgradeMaterialNeed = excelData.materialNeed;
 
         WeaponSprite = GetWeaponSprite();
-
+        weaponSFX = GetWeaponSFX();
     }
     Sprite GetWeaponSprite()
     {
@@ -55,8 +57,17 @@ public class WeaponValue
         return cardSprite;
     }
 
+    AudioClip GetWeaponSFX()
+    {
+        string path = $"Sound/SFX/{WeaponName}"; //loads audio automatically based on weapon name 
+        AudioClip sound = Resources.Load<AudioClip>(path);
+
+        return sound;
+    }
     public void UseWeaponEffect(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
+        SoundManage.Instance.PlaySoundEffect(weaponSFX);
+
         switch (WeaponName)
         {
             case "Knife": UseKnife(player, enemys); break;
@@ -79,13 +90,48 @@ public class WeaponValue
 
     void UseShotgun(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
+        if (enemys == null || enemys.Count == 0 || enemys[0] == null) return;
 
-        foreach (var enemy in enemys)
+        EnemyBattleControl target = enemys[0];
+        const int pelletCount = 3;
+        const float pelletHitChance = 0.7f;
+
+        for (int i = 0; i < pelletCount; i++)
         {
-            DamageResult damageResult = player.GetDamageDetailed(damage, 0.8f);
-            enemy.DealDamage(damageResult.Damage);
+            if (target.EnemyValueReference.Health <= 0) break;
+
+            DamageResult damageResult = GetShotgunDamageDetailed(player, pelletHitChance);
+            if (damageResult.IsHit)
+            {
+                target.DealDamage(damageResult.Damage);
+            }
         }
     }
 
+    DamageResult GetShotgunDamageDetailed(BattlePlayerValue player, float hitChance)
+    {
+        DamageResult result = new DamageResult();
+
+        result.IsHit = UnityEngine.Random.value < hitChance;
+        if (!result.IsHit)
+        {
+            result.Damage = 0;
+            result.IsCritical = false;
+            return result;
+        }
+
+        float baseDamage = (player.state.Attack * 0.5f) + damage;
+        baseDamage *= player.state.AttackBuff;
+
+        result.IsCritical = UnityEngine.Random.value < player.state.CriticalChanceBuff;
+        if (result.IsCritical)
+        {
+            Debug.Log("Critical Hit!");
+            baseDamage *= player.state.CriticalDamageBuff;
+        }
+
+        result.Damage = Mathf.RoundToInt(baseDamage);
+        return result;
+    }
 
 }

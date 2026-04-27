@@ -124,6 +124,7 @@ public class ItemControl : MonoBehaviour
             {
                 audioSource.PlayOneShot(interactionSound);
                 windowPanel.SetActive(true);
+                SetObjectiveVisible(false);
                 Time.timeScale = 0f;
             }
         }
@@ -135,7 +136,17 @@ public class ItemControl : MonoBehaviour
             windowPanel.SetActive(false);
         }
 
+        SetObjectiveVisible(true);
         Time.timeScale = 1f; // Resume the game
+    }
+
+    private void SetObjectiveVisible(bool visible)
+    {
+        PlayerHUDController hud = FindFirstObjectByType<PlayerHUDController>();
+        if (hud != null)
+        {
+            hud.SetObjectiveVisible(visible);
+        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
