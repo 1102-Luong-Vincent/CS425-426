@@ -40,8 +40,8 @@ public static class ObjectiveConstants
     public const string ExploreStartRoom = "Explore the room and pick up an item.";
     public const string LeaveStartRoom = "Go to the door and enter the next map.";
     public const string Level1FindGovernmentInfo = "Head east and search for information about the government and the whereabouts of the antidote in the abandoned cars.";
-    public const string Level1HeadToHospital = "Head to the hospital.";
-    public const string Level1FindHospitalKey = "Find the key to the hospital.";
+    public const string Level1HeadToHospital = "Head west to the hospital.";
+    public const string Level1FindHospitalKey = "Head to the library in the north to look for the key to the hospital.";
 }
 
 [Serializable]
