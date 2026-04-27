@@ -16,6 +16,7 @@ public class PlayerHUDController : MonoBehaviour
     public TMP_Text objectiveText;  // current objective text
 
     private const string ObjectiveHeader = "Objectives:";
+    private bool showObjective = true;
     PlayerValue player;
 
     void Start()
@@ -50,9 +51,14 @@ public class PlayerHUDController : MonoBehaviour
             bool hasObjective = !string.IsNullOrWhiteSpace(objective);
             bool hasCompletedObjectives = GameValue.Instance != null && GameValue.Instance.GetCompletedObjectives().Count > 0;
 
-            objectiveText.gameObject.SetActive(hasObjective || hasCompletedObjectives);
+            objectiveText.gameObject.SetActive(showObjective && (hasObjective || hasCompletedObjectives));
             objectiveText.text = BuildObjectiveText();
         }
+    }
+
+    public void SetObjectiveVisible(bool visible)
+    {
+        showObjective = visible;
     }
 
     private string BuildObjectiveText()
