@@ -328,11 +328,22 @@ public class ItemControl : MonoBehaviour
             Debug.Log("grabbed? " + itemName);
         }
 
+        if (TryTriggerEndingOnPickup())
+        {
+            return;
+        }
+
         UpdateObjectiveAfterPickup();
         MarkCollectedForSave();
 
         // Destroy item
         Destroy(gameObject, pickupSound != null ? pickupSound.length : 0f);
+    }
+
+    private bool TryTriggerEndingOnPickup()
+    {
+        InteractableEnding ending = GetComponent<InteractableEnding>();
+        return ending != null && ending.TryTriggerEnding();
     }
 
     /// <summary>
