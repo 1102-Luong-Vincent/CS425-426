@@ -25,6 +25,9 @@ public class SoundManage : MonoBehaviour
 
     public AudioSource backgroundMusic;
     public AudioSource soundEffect;
+    public AudioSource playerSoundEffect;
+
+    public string currentMusic;
 
     private void Awake()
     {
@@ -35,29 +38,18 @@ public class SoundManage : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void Start()
     {
-        string currentScene = SceneManager.GetActiveScene().name;
+        ForceSceneMusic(SceneManager.GetActiveScene().name);
+    }
 
-        if (currentScene == "GameStartScene")
-        {
-            StopBackgroundMusic(); // Disable background music in this scene
-        }
-        else
-        {
-            PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
-        }
-
-        if(currentScene == "Level_1_Hospital") //did this for now for testing the music. i know it's not the best way to do it.
-        {
-            PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
-        }
-
-        if(currentScene == "BattleScene")
-        {
-            PlayBackgroundMusic(SoundManagerConstants.BattleMusic);
-        }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ForceSceneMusic(scene.name);
+        StopFootSteps();
     }
 
     #region Background
@@ -74,26 +66,39 @@ public class SoundManage : MonoBehaviour
 
     public void PlayBackgroundMusic(string fileName, bool loop = true)
     {
-        string path = SoundManagerConstants.BackgroundPath + fileName;
-        AudioClip clip = Resources.Load<AudioClip>(path);
-        PlayBackgroundMusic(clip, loop);
-    }
 
-    public void PlayBackgroundMusic(AudioClip clip = null, bool loop = true)
-    {
-        if (backgroundMusic == null)
+        // prevent restarting same music repeatedly
+        if (backgroundMusic.clip != null && currentMusic == fileName && backgroundMusic.isPlaying)
         {
-            Debug.LogWarning("[SoundManage] Background AudioSource is not assigned.");
             return;
         }
 
-        if (clip != null) backgroundMusic.clip = clip;
-        if (backgroundMusic.clip == null) return;
+        currentMusic = fileName;
 
+        string path = SoundManagerConstants.BackgroundPath + fileName;
+        AudioClip clip = Resources.Load<AudioClip>(path);
+        //PlayBackgroundMusic(clip, loop);
+
+        backgroundMusic.clip = clip;
         backgroundMusic.loop = loop;
-
-        if (!backgroundMusic.isPlaying) backgroundMusic.Play();
+        backgroundMusic.Play();
     }
+
+    //public void PlayBackgroundMusic(AudioClip clip = null, bool loop = true)
+    //{
+    //    if (backgroundMusic == null)
+    //    {
+    //        Debug.LogWarning("[SoundManage] Background AudioSource is not assigned.");
+    //        return;
+    //    }
+
+    //    if (clip != null) backgroundMusic.clip = clip;
+    //    if (backgroundMusic.clip == null) return;
+
+    //    backgroundMusic.loop = loop;
+
+    //    if (!backgroundMusic.isPlaying) backgroundMusic.Play();
+    //}
 
 
     public void StopBackgroundMusic()
@@ -107,6 +112,59 @@ public class SoundManage : MonoBehaviour
         if (backgroundMusic.isPlaying) backgroundMusic.Stop();
     }
 
+    public void ForceSceneMusic(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "MainMenuScene":
+                PlayBackgroundMusic(SoundManagerConstants.MainMenuMusicName);
+                break;
+
+            case "StoryScene":
+                StopBackgroundMusic();
+                break;
+
+            case "GameStartScene":
+                StopBackgroundMusic();
+                break;
+
+            case "Level_1":
+                PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
+                break;
+
+            case "Level1_Store":
+                StopBackgroundMusic();
+                break;
+
+            case "Level1_Library_1":
+                StopBackgroundMusic();
+                break;
+
+            case "Level1_Library_2":
+                StopBackgroundMusic();
+                break;
+
+            case "Level_1_Hospital":
+                PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
+                break;
+
+            case "Level_2":
+                StopBackgroundMusic(); //find music first. haven't found it yet.
+                break;
+
+            case "LV2_Dormitory":
+                StopBackgroundMusic();
+                break;
+
+            case "LV2_Restaurant":
+                StopBackgroundMusic();
+                break;
+
+            case "BattleScene":
+                PlayBackgroundMusic(SoundManagerConstants.BattleMusic);
+                break;
+        }
+    }
     #endregion
 
 
@@ -154,6 +212,46 @@ public class SoundManage : MonoBehaviour
         if (soundEffect.isPlaying) soundEffect.Stop();
     }
 
+    #endregion
+
+    #region Player Footsteps
+
+    public void PlayFootSteps()
+    {
+        if(playerSoundEffect == null)
+        {
+            return;
+        }
+
+        if (playerSoundEffect.isPlaying)
+        {
+            return;
+        }
+
+        string path = SoundManagerConstants.SoundEffectPath + SoundManagerConstants.FootstepsSound;
+        AudioClip clip = Resources.Load<AudioClip>(path);
+
+        if(clip == null)
+        {
+            return;
+        }
+
+        playerSoundEffect.clip = clip;
+        playerSoundEffect.loop = true;
+        playerSoundEffect.Play();
+    }
+
+    public void StopFootSteps()
+    {
+        if(playerSoundEffect == null)
+        {
+            return;
+        }
+        if (playerSoundEffect.isPlaying)
+        {
+            playerSoundEffect.Stop();
+        }
+    }
     #endregion
 
 }
