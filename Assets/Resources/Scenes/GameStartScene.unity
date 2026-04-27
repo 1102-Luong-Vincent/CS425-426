@@ -533,6 +533,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2200914046058395736, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 173
+      objectReference: {fileID: 0}
     - target: {fileID: 2353628932804459885, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -686,6 +690,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7337798971860611617, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7337798971860611617, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
@@ -705,8 +713,7 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8685796900292042328, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4190525267132531434, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
@@ -12727,7 +12734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: updateObjectiveOnPickup
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
@@ -13173,7 +13180,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: ItemID
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupID
@@ -13181,7 +13188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: weaponID
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupIcon
@@ -13201,7 +13208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: updateObjectiveOnPickup
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
@@ -13352,7 +13359,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupIcon
       value: 
-      objectReference: {fileID: 21300000, guid: 1640338d5d7738f4fba3524d2c3f843b, type: 3}
+      objectReference: {fileID: 21300000, guid: 58a1d4e7099a85f43a06f1545c31f9e9, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupSound
       value: 
@@ -13363,7 +13370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: updateObjectiveOnPickup
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontSize
@@ -13407,7 +13414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Name
-      value: Bandage Interactable
+      value: Syringe Interactable
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_IsActive
@@ -13858,9 +13865,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: 2c2cf131c687ab842ad5670a4798db38, type: 2}
+    - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 440810716258027877, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_sharedMaterial
       value: 
@@ -13904,6 +13919,10 @@ PrefabInstance:
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6523777684969038024, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_LocalScale.x
