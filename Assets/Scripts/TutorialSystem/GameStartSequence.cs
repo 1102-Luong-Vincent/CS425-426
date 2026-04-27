@@ -85,9 +85,10 @@ public class GameStartSequence : BaseSequence
         //start combat tutorial
         yield return StartCoroutine(CombatTutorial());
 
-        CombineButton.interactable = true;
-        UpgradeButton.interactable = true;
-        OptionsButton.interactable = true;
+        //start combine tutorial
+        yield return StartCoroutine(CardCombineTutorial());
+
+        Cleanup();
 
         yield return null;
         Destroy(this);
