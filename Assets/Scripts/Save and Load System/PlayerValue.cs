@@ -91,10 +91,18 @@ public class PlayerValue
     {
         ClearWeapons();
         //string starterEquipment = "Knife";
-       // EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(starterEquipment);// mad be change by id
+        // EquipmentWeapon = GameValue.Instance.GetInitWeaponValue(starterEquipment);// mad be change by id
 
         // Need to add player init Had Weapon
-       // HadWeaponsLibrary.Add(EquipmentWeapon);
+        // HadWeaponsLibrary.Add(EquipmentWeapon);
+        // test for shotgun
+        //WeaponValue shotgun = GameValue.Instance.GetWeaponByNameAndLevel("Shotgun", 1);
+        //if (shotgun != null)
+        //{
+        //    HadWeaponsLibrary.Add(shotgun);
+
+        //    // EquipmentWeapon = shotgun;
+        //}
     }
 
 
