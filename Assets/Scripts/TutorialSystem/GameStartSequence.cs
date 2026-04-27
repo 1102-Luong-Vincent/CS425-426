@@ -353,6 +353,11 @@ public class GameStartSequence : BaseSequence
         yield return StartCoroutine(FadePanelIn("CombineTutorialPanel3"));
 
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetCardCount() < originalCardCount);
+        if (GameValue.Instance.GetCurrentObjective() == ObjectiveConstants.CompleteTutorial)
+        {
+            GameValue.Instance.SetCurrentObjective(ObjectiveConstants.LeaveStartRoom);
+        }
+
         yield return StartCoroutine(FadePanelOut("CombineTutorialPanel3", true));
 
         yield return null;

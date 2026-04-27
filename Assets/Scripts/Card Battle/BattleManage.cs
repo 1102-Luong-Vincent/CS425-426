@@ -136,7 +136,6 @@ public class BattleManage : MonoBehaviour
     {
 
         GameValue.Instance.DefeatedEnemies(battleData.worldEnemyID);
-        CompleteTutorialObjectiveIfNeeded();
         string rewardMessage = "";
         string bonusRewardMessage = "";
 
@@ -252,16 +251,6 @@ public class BattleManage : MonoBehaviour
         //Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
         //SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
 
-    }
-
-    private void CompleteTutorialObjectiveIfNeeded()
-    {
-        if (battleData.GetMapScene() == SceneType.GameStartScene &&
-            battleData.worldEnemyID == 1 &&
-            GameValue.Instance.GetCurrentObjective() == ObjectiveConstants.CompleteTutorial)
-        {
-            GameValue.Instance.SetCurrentObjective(ObjectiveConstants.LeaveStartRoom);
-        }
     }
 
     CardValue GetRandomItemCardReward() //lists all cards
