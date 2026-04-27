@@ -3,38 +3,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameStartSequence : MonoBehaviour
+public class GameStartSequence : BaseSequence
 {
 
-    public bool SkipSequence = false;
+    //public bool SkipSequence = false;
     GameStartSequence Instance { get; set; }
 
     //outside objects necessary for sequence
-    [SerializeField] private FadeTransition fader;
     [SerializeField] private GameObject DoorTrigger;
-    [SerializeField] private PlayerController playercontroller;
     [SerializeField] private GameObject tutorialZombie;
     [SerializeField] private GameObject bedroomDoorOpened;
     [SerializeField] private GameObject bedroomDoorClosed;
     [SerializeField] private GameObject frontDoorOpened;
     [SerializeField] private GameObject frontDoorClosed;
-    [SerializeField] private Button Button1;
-    [SerializeField] private Button Button2;
-    [SerializeField] private Button Button3;
-    [SerializeField] private Button SortButton1;
-    [SerializeField] private Button SortButton2;
-    [SerializeField] private Button DeckButton;
-    [SerializeField] private Button CombineButton;
-    [SerializeField] private Button UpgradeButton;
-    [SerializeField] private Button OptionsButton;
-    [SerializeField] private GameObject Camera;
+
 
     //sequence flags
-    private bool playerMoved = false;
-    private bool playerSprinted = false;
-    private bool gotWeapon = false;
-    private bool gotItem = false;
-    private bool openedMenu = false;
+
 
     private Vector3 zombieSpawnPoint;
     private EnemyControl zombieController;
@@ -56,11 +41,12 @@ public class GameStartSequence : MonoBehaviour
         {
             bedroomDoorClosed.SetActive(false);
             bedroomDoorOpened.SetActive(true);
-            fader.SetColor(new Color(0f, 0f, 0f, 0f)); 
+            SequenceManager.Instance.fader.SetColor(new Color(0f, 0f, 0f, 0f));
+            Cleanup();
             Destroy(this);
             return;
         }
-        StartCoroutine(PlayGameStartSequence());
+        //StartCoroutine(PlayGameStartSequence());
     }
 
     private void Update()
@@ -68,22 +54,11 @@ public class GameStartSequence : MonoBehaviour
 
     }
 
-    public IEnumerator PlayGameStartSequence()
+    public override IEnumerator RunSequence()
     {
         // initilalize the room
-        fader.SetColor(new Color(0f, 0f, 0f, 1f)); //start with a black screen
+        SequenceManager.Instance.fader.SetColor(new Color(0f, 0f, 0f, 1f)); //start with a black screen
         DoorTrigger.SetActive(false);
-        playercontroller.enabled = false;
-        PlayerMenuManager.Instance.menuToggleEnabled = false;
-        Button1.interactable = false;
-        Button2.interactable = false;
-        Button3.interactable = false;
-        SortButton1.interactable = false;
-        SortButton2.interactable = false;
-        DeckButton.interactable = false;
-        CombineButton.interactable = false;
-        UpgradeButton.interactable = false;
-        OptionsButton.interactable = false;
         zombieSpawnPoint = new Vector3(8.14f, -0.45f, 0f);
         zombieWayPoint = new Vector3(6.7f, 0.5f, 0f);
         zombieController = tutorialZombie.GetComponent<EnemyControl>();
@@ -92,7 +67,7 @@ public class GameStartSequence : MonoBehaviour
 
         // begin sequence
         yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(fader.FadeIn());
+        yield return StartCoroutine(SequenceManager.Instance.fader.FadeIn());
         yield return new WaitForSeconds(1f);
 
         //start movement tutorial
@@ -122,11 +97,11 @@ public class GameStartSequence : MonoBehaviour
     {
         // walking tutorial -- prompt user to move with WASD
         yield return StartCoroutine(FadePanelIn("MoveTutorialPanel"));
-        playercontroller.enabled = true;
+        SequenceManager.Instance.playercontroller.enabled = true;
 
         //wait until player moves
-        yield return new WaitUntil(() => playercontroller.isMoving == true);
-        yield return StartCoroutine(FadePanelOut("MoveTutorialPanel"));
+        yield return new WaitUntil(() => SequenceManager.Instance.playercontroller.isMoving == true);
+        yield return StartCoroutine(FadePanelOut("MoveTutorialPanel", true));
         yield return new WaitForSeconds(1f);
 
 
@@ -134,8 +109,8 @@ public class GameStartSequence : MonoBehaviour
         yield return StartCoroutine(FadePanelIn("SprintTutorialPanel"));
 
         //wait until player sprints
-        yield return new WaitUntil(() => playercontroller.isRunning == true);
-        yield return StartCoroutine(FadePanelOut("SprintTutorialPanel"));
+        yield return new WaitUntil(() => SequenceManager.Instance.playercontroller.isRunning == true);
+        yield return StartCoroutine(FadePanelOut("SprintTutorialPanel", true));
         yield return new WaitForSeconds(1f);
     }
 
@@ -147,8 +122,12 @@ public class GameStartSequence : MonoBehaviour
 
         // wait until player picks up 2 cards
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetCardCount() >= 2);
-        StartCoroutine(FadePanelOut("InteractTutorialPanel"));
-        yield return StartCoroutine(FadePanelOut("InteractTooltipPanel"));
+        StartCoroutine(FadePanelOut("InteractTutorialPanel", true));
+        yield return StartCoroutine(FadePanelOut("InteractTooltipPanel", true));
+
+        //set card values to common for crafting tutorial
+        GameValue.Instance.GetPlayerValue().HadCardsLibrary[0].rarity = CardRarity.Common;
+        GameValue.Instance.GetPlayerValue().HadCardsLibrary[1].rarity = CardRarity.Common;
         yield return new WaitForSeconds(1f);
     }
     public IEnumerator inventoryTutorial()
@@ -163,7 +142,7 @@ public class GameStartSequence : MonoBehaviour
         //override menu freezing timescale so tutorial can continue while menu is open
         Time.timeScale = 1f;
         //prevent player from moving while in tutorial
-        playercontroller.enabled = false;
+        SequenceManager.Instance.playercontroller.enabled = false;
 
         //open bedroom door while player isn't looking
         bedroomDoorClosed.SetActive(false);
@@ -173,16 +152,16 @@ public class GameStartSequence : MonoBehaviour
         PlayerMenuManager.Instance.menuToggleEnabled = false;
 
         // prompt user to swap cards in inventory and wait until they have 2 cards in their deck to continue with the tutorial
-        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel"));
+        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel", false));
         StartCoroutine(FadePanelIn("InventoryTooltipPanel"));
         StartCoroutine(FadePanelIn("CardSwapTutorialPanel1"));
         yield return StartCoroutine(FadePanelIn("CardSwapTutorialPanel2"));
 
         //wait for user to equip 2 cards in their deck
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetDeckCardCount(0) >= 2);
-        StartCoroutine(FadePanelOut("InventoryTooltipPanel"));
-        StartCoroutine(FadePanelOut("CardSwapTutorialPanel1"));
-        yield return StartCoroutine(FadePanelOut("CardSwapTutorialPanel2"));
+        StartCoroutine(FadePanelOut("InventoryTooltipPanel", true));
+        StartCoroutine(FadePanelOut("CardSwapTutorialPanel1", true));
+        yield return StartCoroutine(FadePanelOut("CardSwapTutorialPanel2", true));
 
         //prompt user to close inventory
         yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel2"));
@@ -190,18 +169,12 @@ public class GameStartSequence : MonoBehaviour
 
         //wait for player to close inventory
         yield return new WaitUntil(() => PlayerMenuManager.Instance.IsMenuOpen() == false);
-        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel2"));
+        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel2", false));
 
-        //enable all buttons on inventory menu
-        Button1.interactable = true;
-        Button2.interactable = true;
-        Button3.interactable = true;
-        SortButton1.interactable = true;
-        SortButton2.interactable = true;
-        DeckButton.interactable = true;
+
 
         //return control to player
-        playercontroller.enabled = true;
+        SequenceManager.Instance.playercontroller.enabled = true;
         yield return new WaitForSeconds(1f);
     }
 
@@ -212,14 +185,14 @@ public class GameStartSequence : MonoBehaviour
 
         //wait until player finds a weapon in the room
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().HadWeaponsLibrary.Count > 0);
-
+        PlayerMenuManager.Instance.menuToggleEnabled = false;
         //don't let player move from spot until they have equipped their weapon
-        playercontroller.enabled = false;
-        yield return StartCoroutine(FadePanelOut("WeaponTooltipPanel"));
+        SequenceManager.Instance.playercontroller.enabled = false;
+        yield return StartCoroutine(FadePanelOut("WeaponTooltipPanel", true));
 
         //prompt user to open inventory again to show them how to equip their weapon
-        PlayerMenuManager.Instance.menuToggleEnabled = false;
-        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel3"));
+
+        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel"));
         PlayerMenuManager.Instance.menuToggleEnabled = true;
 
         //wait for user to open inventory
@@ -230,22 +203,22 @@ public class GameStartSequence : MonoBehaviour
 
         //prevent user from closing menu until they equip their weapon
         PlayerMenuManager.Instance.menuToggleEnabled = false;
-        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel3"));
+        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel", false));
 
         //promt user to equip weapon
         yield return StartCoroutine(FadePanelIn("WeaponTutorialPanel"));
 
         //wait until player equips a weapon
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().EquipmentWeapon != null);
-        yield return StartCoroutine(FadePanelOut("WeaponTutorialPanel"));
+        yield return StartCoroutine(FadePanelOut("WeaponTutorialPanel", true));
 
         //prompt user to close inventory
-        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel4"));
+        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel2"));
         PlayerMenuManager.Instance.menuToggleEnabled = true;
 
         //wait for player to close inventory
         yield return new WaitUntil(() => PlayerMenuManager.Instance.IsMenuOpen() == false);
-        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel4"));
+        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel2", false));
         PlayerMenuManager.Instance.menuToggleEnabled = false;
 
         yield return null;
@@ -260,11 +233,11 @@ public class GameStartSequence : MonoBehaviour
         //move zombie into the room
         tutorialZombie.transform.position = zombieSpawnPoint;
 
-        Transform originalParent = Camera.transform.parent;
+        Transform originalParent = SequenceManager.Instance.camera.transform.parent;
         //lerp camera to zombie
-        Vector3 originalCameraPosition = Camera.transform.position;
+        Vector3 originalCameraPosition = SequenceManager.Instance.camera.transform.position;
 
-        yield return StartCoroutine(LerpTransform(Camera.transform, originalCameraPosition, 
+        yield return StartCoroutine(LerpTransform(SequenceManager.Instance.camera.transform, originalCameraPosition, 
                                                     new Vector3(tutorialZombie.transform.position.x,
                                                         tutorialZombie.transform.position.y,
                                                             originalCameraPosition.z), 0.5f));
@@ -275,62 +248,129 @@ public class GameStartSequence : MonoBehaviour
 
 
         //move camera back to original position
-        StartCoroutine(LerpTransform(Camera.transform, Camera.transform.position, originalCameraPosition, 1));
+        StartCoroutine(LerpTransform(SequenceManager.Instance.camera.transform, 
+                                    SequenceManager.Instance.camera.transform.position, originalCameraPosition, 1));
 
         //move zombie to player
-        yield return StartCoroutine(LerpTransform(tutorialZombie.transform, zombieWayPoint, playercontroller.transform.position, 2f));
+        yield return StartCoroutine(LerpTransform(tutorialZombie.transform, zombieWayPoint, 
+                                                    SequenceManager.Instance.playercontroller.transform.position, 2f));
+
+        //wait for battle scene to load
+        yield return new WaitUntil(() => GameValue.Instance.GetCurrentScence() == SceneType.BattleScene);
+
+        GameObject battleCanvas = GameObject.Find("BattleCanvas");
+        SequenceManager.Instance.WeaponBlocker.transform.SetParent(battleCanvas.transform, true);
+        SequenceManager.Instance.ItemBlocker.transform.SetParent(battleCanvas.transform, true);
+        SequenceManager.Instance.WeaponBlocker.SetActive(true);
+        SequenceManager.Instance.ItemBlocker.SetActive(true);
         yield return new WaitForSeconds(1f);
+        //wait for player turn to start
+        yield return new WaitUntil(() => BattleManage.Instance.Turn == 1);
+        StartCoroutine(FadePanelIn("CombatTutorialPanel"));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadePanelIn("CombatTooltipPanel1"));
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(FadePanelIn("CombatTooltipPanel2"));
+
+        //allow player to click on weapon
+        SequenceManager.Instance.WeaponBlocker.SetActive(false);
+
+        //wait for player to click on weapon
+        yield return new WaitUntil(() => BattleManage.Instance.Turn == 2);
+        //block weapon again
+        SequenceManager.Instance.WeaponBlocker.SetActive(true);
+        StartCoroutine(FadePanelOut("CombatTutorialPanel", false));
+        StartCoroutine(FadePanelOut("CombatTooltipPanel1", true));
+        yield return StartCoroutine(FadePanelOut("CombatTooltipPanel2", true));
+
+        //wait for player's turn again
+        yield return new WaitUntil(() => BattleManage.Instance.Turn == 3);
+        yield return new WaitForSeconds(1f);
+        // prompt user to click an item
+        StartCoroutine(FadePanelIn("CombatTutorialPanel"));
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(FadePanelIn("CombatTooltipPanel3"));
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(FadePanelIn("CombatTooltipPanel4"));
+        SequenceManager.Instance.ItemBlocker.SetActive(false);
+
+        //wait for player to click an item
+        yield return new WaitUntil(() => BattleManage.Instance.Turn == 4);
+        StartCoroutine(FadePanelOut("CombatTutorialPanel", true));
+        StartCoroutine(FadePanelOut("CombatTooltipPanel3", true));
+        yield return StartCoroutine(FadePanelOut("CombatTooltipPanel4", true));
+        //unlock the rest of the combat system
+        Destroy(SequenceManager.Instance.WeaponBlocker);
+        Destroy(SequenceManager.Instance.ItemBlocker);
+
+
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    public IEnumerator CardCombineTutorial()
+    {
+        int originalCardCount = GameValue.Instance.GetPlayerValue().GetCardCount();
+        // wait for battle scene to finish
+        yield return new WaitUntil(() => GameValue.Instance.GetCurrentScence() == SceneType.GameStartScene);
+        yield return new WaitForSeconds(1f);
+
+        //prompt user to open inventory
+        StartCoroutine(FadePanelIn("CombineTooltipPanel1"));
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel"));
         PlayerMenuManager.Instance.menuToggleEnabled = true;
-        playercontroller.enabled = true;
+
+        //wait for user to open inventory
+        yield return new WaitUntil(() => PlayerMenuManager.Instance.IsMenuOpen() == true);
+        PlayerMenuManager.Instance.menuToggleEnabled = false;
+
+        //override timescale freezing so tutorial can continue while inventory is open
+        Time.timeScale = 1f;
+
+        StartCoroutine(FadePanelOut("InventoryTutorialPanel", false));
+        yield return StartCoroutine(FadePanelOut("CombineTooltipPanel1", true));
+        yield return StartCoroutine(FadePanelIn("CombineTutorialPanel1"));
 
 
+
+        //enable combine button
+        SequenceManager.Instance.CombineButton.interactable = true;
+
+        //wait for user to open combine menu
+        yield return new WaitUntil(() => PlayerMenuManager.Instance.GetCurrentState() == PlayerMenuManager.MenuState.Combine);
+        SequenceManager.Instance.CombineButton.interactable = false;
+        CardCombineManager.Instance.AddChemicals(10);
+        yield return StartCoroutine(FadePanelOut("CombineTutorialPanel1", true));
+
+        //prompt user to select 2 cards
+        yield return StartCoroutine(FadePanelIn("CombineTutorialPanel2"));
+        yield return new WaitUntil(() => CardCombineManager.Instance.BothSlotsOccupied() == true);
+
+        //prompt user to click combine and wait for result
+        yield return StartCoroutine(FadePanelOut("CombineTutorialPanel2", true));
+        yield return StartCoroutine(FadePanelIn("CombineTutorialPanel3"));
+
+        yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetCardCount() < originalCardCount);
+        yield return StartCoroutine(FadePanelOut("CombineTutorialPanel3", true));
 
         yield return null;
     }
 
-    public IEnumerator FadePanelIn(string PanelName)
-    {
-        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
-        float alpha = 0f;
-        while (alpha < 1f)
-        {
-            alpha += Time.deltaTime * fader.fadeSpeed;
-            panel.SetColor(new Color(1f, 1f, 1f, alpha));
-            yield return null;
-        }
-        yield return null;
-    }
 
-    public IEnumerator FadePanelOut(string PanelName)
+    public void Cleanup()
     {
-        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
-        float alpha = 1f;
-        while (alpha > 0f)
-        {
-            alpha -= Time.deltaTime * fader.fadeSpeed;
-            panel.SetColor(new Color(1f, 1f, 1f, alpha));
-            yield return null;
-        }
-        Destroy(panel.gameObject);
-        yield return null;
-    }
-
-    public IEnumerator LerpTransform(Transform T, Vector3 src, Vector3 dest, float eventTime)
-    {
-        float elapsedTime = 0f;
-        while(elapsedTime < eventTime && T != null)
-        {
-            T.position = Vector3.Lerp(src, dest, elapsedTime / eventTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-    }
-
-    public IEnumerator RefreshScene()
-    {
-        // This is a workaround to ensure that all objects in the scene are properly initialized before the sequence starts.
-        // It forces a frame to pass, allowing all Start() methods to run.
-        yield return null;
-        GameValue.Instance.LoadSceneByEnum(SceneType.GameStartScene);
+        SequenceManager.Instance.playercontroller.enabled = true;
+        SequenceManager.Instance.Button1.interactable = true;
+        SequenceManager.Instance.Button2.interactable = true;
+        SequenceManager.Instance.Button3.interactable = true;
+        SequenceManager.Instance.SortButton1.interactable = true;
+        SequenceManager.Instance.SortButton2.interactable = true;
+        SequenceManager.Instance.DeckButton.interactable = true;
+        SequenceManager.Instance.CombineButton.interactable = true;
+        SequenceManager.Instance.UpgradeButton.interactable = true;
+        SequenceManager.Instance.OptionsButton.interactable = true;
+        PlayerMenuManager.Instance.menuToggleEnabled = true;
+        DoorTrigger.SetActive(true);
     }
 }

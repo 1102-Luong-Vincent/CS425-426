@@ -21,6 +21,18 @@ public class TutorialPanel : MonoBehaviour
         {
             text = transform.Find("Text").GetComponent<TextMeshProUGUI>();
         }
+        if(panel != null)
+        {
+            panel.raycastTarget = false;
+        }
+        if(image != null)
+        {
+            image.raycastTarget = false;
+        }
+        if(text != null)
+        {
+            text.raycastTarget = false;
+        }
     }
 
     // Update is called once per frame
