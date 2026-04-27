@@ -6,6 +6,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using static ButtonEffect;
+using System.IO;
 
 public class MainMenuManage : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class MainMenuManage : MonoBehaviour
     {
            
         OnMainMenuButtonClick(buttons.ContinueButton, OnContinueButtonClick);
-        buttons.ContinueButton.gameObject.SetActive(HasContinueSave());
+        UpdateContinueButtonState();
 
         OnMainMenuButtonClick(buttons.StartButton, OnStarButtonClick);
         OnMainMenuButtonClick(buttons.LoadButton, OnLoadButtonClick);
@@ -66,7 +67,12 @@ public class MainMenuManage : MonoBehaviour
 
     public void SetMainMenuButtons(bool isActive)
     {
-        buttons.ContinueButton.gameObject.SetActive(isActive && HasContinueSave());
+        buttons.ContinueButton.gameObject.SetActive(isActive);
+        if (isActive)
+        {
+            UpdateContinueButtonState();
+        }
+
         buttons.StartButton.gameObject.SetActive(isActive);
         buttons.LoadButton.gameObject.SetActive(isActive);
         buttons.OptionButton.gameObject.SetActive(isActive);
@@ -74,13 +80,15 @@ public class MainMenuManage : MonoBehaviour
     }
     void OnContinueButtonClick()
     {
-        if (!HasContinueSave())
+        SaveData continueSave = GetLatestContinueSave();
+        if (continueSave == null)
         {
+            UpdateContinueButtonState();
             return;
         }
 
         audioSource.PlayOneShot(buttonClickSound);
-        GameValue.Instance.SetSaveData(SettingValue.Instance.GetSettingData().saveData);
+        GameValue.Instance.SetSaveData(continueSave);
     }
 
     void OnStarButtonClick()
@@ -119,7 +127,54 @@ public class MainMenuManage : MonoBehaviour
 
     private bool HasContinueSave()
     {
-        SaveData continueSave = SettingValue.Instance?.GetSettingData()?.saveData;
-        return continueSave != null && !continueSave.IsEmpty();
+        return GetLatestContinueSave() != null;
+    }
+
+    private void UpdateContinueButtonState()
+    {
+        if (buttons.ContinueButton == null)
+        {
+            return;
+        }
+
+        buttons.ContinueButton.gameObject.SetActive(true);
+        buttons.ContinueButton.interactable = HasContinueSave();
+    }
+
+    private SaveData GetLatestContinueSave()
+    {
+        SaveData latestSave = null;
+        System.DateTime latestWriteTime = System.DateTime.MinValue;
+
+        string normalSavePath = Path.Combine(Application.persistentDataPath, SaveLoadPath.NormalPath);
+        string autoSavePath = Path.Combine(Application.persistentDataPath, SaveLoadPath.AutoPath);
+        string[] saveFolders = { normalSavePath, autoSavePath };
+
+        foreach (string folder in saveFolders)
+        {
+            if (!Directory.Exists(folder))
+            {
+                continue;
+            }
+
+            foreach (string file in Directory.GetFiles(folder, "*.json"))
+            {
+                string json = File.ReadAllText(file);
+                SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+                if (saveData == null || saveData.IsEmpty())
+                {
+                    continue;
+                }
+
+                System.DateTime writeTime = File.GetLastWriteTime(file);
+                if (writeTime > latestWriteTime)
+                {
+                    latestWriteTime = writeTime;
+                    latestSave = saveData;
+                }
+            }
+        }
+
+        return latestSave;
     }
 }

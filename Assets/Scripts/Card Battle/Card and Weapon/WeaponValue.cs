@@ -93,10 +93,22 @@ public class WeaponValue
         if (enemys == null || enemys.Count == 0 || enemys[0] == null) return;
 
         EnemyBattleControl target = enemys[0];
-        const int pelletCount = 3;
-        const float pelletHitChance = 0.7f;
+        //const int pelletCount = 3;
+        //const float pelletHitChance = 0.7f;
 
-        for (int i = 0; i < pelletCount; i++)
+        //for (int i = 0; i < pelletCount; i++)
+        //{
+        //    if (target.EnemyValueReference.Health <= 0) break;
+
+        //    DamageResult damageResult = GetShotgunDamageDetailed(player, pelletHitChance);
+        //    if (damageResult.IsHit)
+        //    {
+        //        target.DealDamage(damageResult.Damage);
+        //    }
+        //}
+        float[] pelletHitChances = { 0.7f, 0.6f, 0.5f, 0.4f, 0.3f };
+
+        foreach (float pelletHitChance in pelletHitChances)
         {
             if (target.EnemyValueReference.Health <= 0) break;
 

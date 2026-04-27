@@ -22,6 +22,7 @@ public class EnemyBattleControl : MonoBehaviour
     [Header("Sound Effects")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip attackSound;
+    [SerializeField] AudioClip zombieDeathSound;
 
     [SerializeField] private DamageText damageText;
 
@@ -151,7 +152,9 @@ public class EnemyBattleControl : MonoBehaviour
 
         Debug.Log($"Enemy took {amount} damage! has {enemyValue.Health} health left");
         //damageText.ShowDamage(amount, transform);
+
         TriggerTakeDamageAnimation();
+
         if (enemyValue.Health <= 0)
         {
             Debug.Log("Enemy died!");
@@ -251,6 +254,11 @@ public class EnemyBattleControl : MonoBehaviour
         if (animator == null || !gameObject.activeInHierarchy) return;
         animator.SetBool("isWalking", false);
         animator.SetBool("isRunning", false);
+
+        if(audioSource != null && zombieDeathSound != null)
+        {
+            audioSource.PlayOneShot(zombieDeathSound);
+        }
         animator.SetTrigger("dieWest");
     }
 
@@ -262,6 +270,11 @@ public class EnemyBattleControl : MonoBehaviour
 
         animator.SetBool("TakeDamageWest", true);
 
+        //if (audioSource != null && zombieHitSound != null)
+        //{
+        //    audioSource.PlayOneShot(zombieHitSound);
+        //}
+        
         StartCoroutine(ResetTakeDamageParameters());
     }
 
