@@ -162,34 +162,39 @@ public class BattleManage : MonoBehaviour
                 //        break;
                 //}
 
-                rewardMessage += $"?{resource.resourceName} x{dropAmount}\n";
+                rewardMessage += $"• {resource.resourceName} x{dropAmount}\n";
             }
         }
 
         //added additional rewards for defeating enemy
 
-        float itemDropChance = 0.15f; //15% chance enemy will drop card
+        float itemDropChance = 0.15f; //15% chance enemy will drop card as a bonus reward
         float whetstoneDropChance = 0.5f; //50% chance enemy will drop whetstone as a bonus reward
         bool hasBonusReward = false;
+        bool isBoss = battleData.battleEnemys.Exists(boss => boss.GetID() == 4 || boss.GetID() == 5 || boss.GetID() == 6); //if Id = 4, ID = 5 or ID = 6, considered to be boss or miniboss
 
-        if (UnityEngine.Random.value <= itemDropChance)
+        //random card bonus reward drop
+        if (UnityEngine.Random.value <= itemDropChance && !isBoss) //only targets regular enemies
         {
-            CardValue randomItemCard = GetRandomItemCardReward();
+            CardValue randomItemCard = GetRandomItemCardReward(); //references the first set of random cards (targets common and rare cards)
 
             if (randomItemCard != null)
             {
-                BattlePlayerValue.Instance.AddCard(randomItemCard);
+                //BattlePlayerValue.Instance.AddCard(randomItemCard);
+                GameValue.Instance.GetPlayerValue().AddCard(randomItemCard.CardName); //after obtaining card as bonus reward, adds to inventory
+
                 if (!hasBonusReward)
                 {
                     bonusRewardMessage += $"\n<color=#FF0000> Bonus Reward:</color>\n"; //red color
                     hasBonusReward = true;
                 }
 
-                bonusRewardMessage += $"?Card: {randomItemCard.CardName}\n";
+                bonusRewardMessage += $"• Card: {randomItemCard.CardName}\n";
             }
         }
 
-        if (UnityEngine.Random.value <= whetstoneDropChance)
+        //whetstone bonus reward drop
+        if (UnityEngine.Random.value <= whetstoneDropChance && !isBoss) //only targets regular enemies
         {
             int whetstoneDropAmount = UnityEngine.Random.Range(3, 7);
             ResourceValue whetstoneReward = new ResourceValue("Whetstone", whetstoneDropAmount, ResourceType.Material);
@@ -201,7 +206,28 @@ public class BattleManage : MonoBehaviour
                 hasBonusReward = true;
             }
 
-            bonusRewardMessage += $"?Whetstone x{whetstoneDropAmount}\n";
+            bonusRewardMessage += $"• Whetstone x{whetstoneDropAmount}\n";
+        }
+
+        //boss and miniboss battle
+
+        if (isBoss) //boss gives guaranteed rewards
+        {
+            CardValue randomItemCard = GetRandomItemCardReward2(); //refernces the second set of random cards (targets rare cards)
+
+            if (randomItemCard != null) { }
+            {
+                BattlePlayerValue.Instance.AddCard(randomItemCard);
+                bonusRewardMessage += $"• Card: {randomItemCard.CardName}\n";
+            }
+
+            int whetstoneDropAmount = UnityEngine.Random.Range(10, 12);
+
+            ResourceValue whetstoneReward = new ResourceValue("Whetstone", whetstoneDropAmount, ResourceType.Material);
+            BattlePlayerValue.Instance.AddResource(whetstoneReward);
+
+            bonusRewardMessage += $"• Whetstone x{whetstoneDropAmount}\n";
+
         }
         if (BattleRewards.Instance != null)
         {
@@ -238,7 +264,7 @@ public class BattleManage : MonoBehaviour
         }
     }
 
-    CardValue GetRandomItemCardReward()
+    CardValue GetRandomItemCardReward() //lists all cards
     {
         List<CardValue> possibleItemCards = new List<CardValue>()
         {
@@ -272,6 +298,33 @@ public class BattleManage : MonoBehaviour
         int index = UnityEngine.Random.Range(0, possibleItemCards.Count);
         return possibleItemCards[index];
     }
+
+    CardValue GetRandomItemCardReward2() //only lists the rare cards (more than one stat)
+    {
+        List<CardValue> possibleItemCards = new List<CardValue>()
+        {
+            GameValue.Instance.GetInitCardValue("Boosted Buzz"),
+            GameValue.Instance.GetInitCardValue("Combat Patch"),
+            GameValue.Instance.GetInitCardValue("Energy Potion"),
+            GameValue.Instance.GetInitCardValue("Health Potion"),
+            GameValue.Instance.GetInitCardValue("Liquid Courage Kit"),
+            GameValue.Instance.GetInitCardValue("Phoenix Shot"),
+            GameValue.Instance.GetInitCardValue("Fury Catalyst"),
+            GameValue.Instance.GetInitCardValue("Rapid Recovery Injector"),
+            GameValue.Instance.GetInitCardValue("Revival Serum"),
+            GameValue.Instance.GetInitCardValue("Stimulant Wrap"),
+            GameValue.Instance.GetInitCardValue("Syringe")
+        };
+
+        // Remove nulls just in case
+        possibleItemCards.RemoveAll(card => card == null);
+
+        if (possibleItemCards.Count == 0) return null;
+
+        int index = UnityEngine.Random.Range(0, possibleItemCards.Count);
+        return possibleItemCards[index];
+    }
+
     public void ResetBattle()
     {
         Debug.Log("Resetting battle...");
