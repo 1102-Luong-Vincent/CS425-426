@@ -4,6 +4,7 @@
 // No external source was used
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -66,6 +67,7 @@ public class GameValue : MonoBehaviour
     private readonly HashSet<string> collectedInteractableIds = new HashSet<string>();
     private bool hasPendingPlayerPosition = false;
     private Vector3 pendingPlayerPosition = Vector3.zero;
+    private bool suppressAutoSaveForNextSceneLoad = false;
     //private int nextEnemyID = 1;
 
 
@@ -108,6 +110,7 @@ public class GameValue : MonoBehaviour
         collectedInteractableIds.Clear();
         hasPendingPlayerPosition = false;
         pendingPlayerPosition = Vector3.zero;
+        suppressAutoSaveForNextSceneLoad = false;
         
         weaponExcelCache = ExcelReader.GetWeaponsData();
     }
@@ -133,6 +136,17 @@ public class GameValue : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ApplyPendingPlayerPositionIfPossible();
+
+        if (suppressAutoSaveForNextSceneLoad)
+        {
+            suppressAutoSaveForNextSceneLoad = false;
+            return;
+        }
+
+        if (ShouldAutoSaveScene(CurrentScene))
+        {
+            StartCoroutine(AutoSaveAfterSceneReady());
+        }
     }
 
     public void LoadSceneByEnum(SceneType scene)
@@ -252,7 +266,34 @@ public class GameValue : MonoBehaviour
         }
         battleData = null;
         //PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
+        suppressAutoSaveForNextSceneLoad = true;
         LoadSceneByEnum(saveData.currentScene);
+    }
+
+    private IEnumerator AutoSaveAfterSceneReady()
+    {
+        yield return null;
+        yield return null;
+
+        ApplyPendingPlayerPositionIfPossible();
+
+        if (SaveLoadPanelControl.Instance != null)
+        {
+            SaveLoadPanelControl.Instance.AutoSaveGame();
+        }
+    }
+
+    private bool ShouldAutoSaveScene(SceneType scene)
+    {
+        return scene == SceneType.GameStartScene ||
+               scene == SceneType.Level_1 ||
+               scene == SceneType.Level_1_Hospital ||
+               scene == SceneType.Level_2 ||
+               scene == SceneType.LV2_Dormitory ||
+               scene == SceneType.LV2_Restaurant ||
+               scene == SceneType.Level1_Library_1 ||
+               scene == SceneType.Level1_Library_2 ||
+               scene == SceneType.Level1_Store;
     }
 
     //new add Weapon upgrade

@@ -18,6 +18,7 @@ public static class SaveLoadPath
 public class SaveLoadPanelControl : MonoBehaviour
 {
     public static SaveLoadPanelControl Instance;
+    private const string AutoSaveFileName = "autosave.json";
 
     public GameObject SaveLoadRoot;
     public GameObject SavePanel;
@@ -112,17 +113,33 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     public void AutoSaveGame()
     {
-        SaveGame(autoSavePath);
+        ClearOldAutoSaveFiles();
+        SaveGame(autoSavePath, AutoSaveFileName);
     }
 
-    private void SaveGame(string folderPath)
+    private void SaveGame(string folderPath, string fileName = null)
     {
-        string fileName = $"save_{System.DateTime.Now:yyyyMMdd_HHmmss}.json";
+        if (string.IsNullOrEmpty(fileName))
+        {
+            fileName = $"save_{System.DateTime.Now:yyyyMMdd_HHmmss}.json";
+        }
+
         string fullPath = Path.Combine(folderPath, fileName);
         SaveData saveData = new SaveData(fullPath, GameValue.Instance);
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(fullPath, json);
         Debug.Log($"Save to: {fullPath}");
+    }
+
+    private void ClearOldAutoSaveFiles()
+    {
+        foreach (string file in Directory.GetFiles(autoSavePath, "*.json"))
+        {
+            if (!Path.GetFileName(file).Equals(AutoSaveFileName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                File.Delete(file);
+            }
+        }
     }
 
     void OnSaveButtonClick()
