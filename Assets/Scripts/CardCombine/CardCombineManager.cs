@@ -35,7 +35,7 @@ public class CardCombineManager : PanelControl
     [SerializeField] ScrollRect slotList;
 
     private int combineCost = 0;
-    private int ownedChemicals = 0;
+    public int ownedChemicals = 0;
 
     private void Awake()
     {
@@ -311,6 +311,18 @@ public class CardCombineManager : PanelControl
         return ownedChemicals;
     }
 
+    public void AddChemicals(int amount)
+    {
+        ownedChemicals += amount;
+        Debug.Log($"[AddChemicals] Adding {amount} chemicals. Total before addition: {ownedChemicals - amount}, after addition: {ownedChemicals}");
+        ResourceValue chemicals = GameValue.Instance.GetPlayerValue().InventoryResources.Find(r => r.Type == ResourceType.Chemical);
+        if (chemicals != null)
+        {
+            chemicals.amount += amount;
+            Debug.Log($"[AddChemicals] Added {amount} chemicals. Total: {chemicals.amount}");
+        }
+        refreshText();
+    }
     void DeductChemicals()
     {
         ownedChemicals -= combineCost;
@@ -328,5 +340,10 @@ public class CardCombineManager : PanelControl
         ownedText.text = $"{GetChemicalAmount()}";
         requiredText.text = $"{combineCost}";
         requiredText.color = Color.white;
+    }
+
+    public bool BothSlotsOccupied()
+    {
+        return FirstSlot != null && SecondSlot != null;
     }
 }

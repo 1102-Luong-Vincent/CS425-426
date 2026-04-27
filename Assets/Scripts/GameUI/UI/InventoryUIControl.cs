@@ -21,7 +21,7 @@ public class InventoryUIControl :  PanelControl
     public GameObject MenuCardPrefab;
     public GameObject EmptySlotPrefab;
     public TextMeshProUGUI HealthText;
-    public TextMeshProUGUI EnergyText;
+    //public TextMeshProUGUI EnergyText;
     public TextMeshProUGUI CardsText;
 
     [Header("Buttons")]
@@ -51,7 +51,7 @@ public class InventoryUIControl :  PanelControl
     {
         if (playerValue == null) playerValue = GameValue.Instance.GetPlayerValue();
         HealthText.text = playerValue.GetHealth().ToString();
-        EnergyText.text = playerValue.GetEnergy().ToString();
+        //EnergyText.text = playerValue.GetEnergy().ToString();
         CardsText.text = playerValue.HadCardsLibrary.Count.ToString();
 
         //display available weapons
