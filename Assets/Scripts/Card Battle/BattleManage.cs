@@ -1,6 +1,6 @@
 // Authors: Vincent Luong and Shawn Meng
 // Created by: Shawn Meng
-// Modified by: Vincent Luong
+// Modified by: Vincent Luong, Yuhan Tang
 // No external source was used
 
 using UnityEngine;
@@ -162,13 +162,15 @@ public class BattleManage : MonoBehaviour
                 //        break;
                 //}
 
-                rewardMessage += $"• {resource.resourceName} x{dropAmount}\n";
+                rewardMessage += $"?{resource.resourceName} x{dropAmount}\n";
             }
         }
 
         //added additional rewards for defeating enemy
 
         float itemDropChance = 0.15f; //15% chance enemy will drop card
+        float whetstoneDropChance = 0.5f; //50% chance enemy will drop whetstone as a bonus reward
+        bool hasBonusReward = false;
 
         if (UnityEngine.Random.value <= itemDropChance)
         {
@@ -177,12 +179,30 @@ public class BattleManage : MonoBehaviour
             if (randomItemCard != null)
             {
                 BattlePlayerValue.Instance.AddCard(randomItemCard);
-                bonusRewardMessage +=
-                    $"\n<color=#FF0000> Bonus Reward:</color>\n" + //red color
-                    $"• Card: {randomItemCard.CardName}\n";
+                if (!hasBonusReward)
+                {
+                    bonusRewardMessage += $"\n<color=#FF0000> Bonus Reward:</color>\n"; //red color
+                    hasBonusReward = true;
+                }
+
+                bonusRewardMessage += $"?Card: {randomItemCard.CardName}\n";
             }
         }
 
+        if (UnityEngine.Random.value <= whetstoneDropChance)
+        {
+            int whetstoneDropAmount = UnityEngine.Random.Range(3, 7);
+            ResourceValue whetstoneReward = new ResourceValue("Whetstone", whetstoneDropAmount, ResourceType.Material);
+            BattlePlayerValue.Instance.AddResource(whetstoneReward);
+
+            if (!hasBonusReward)
+            {
+                bonusRewardMessage += $"\n<color=#FF0000> Bonus Reward:</color>\n"; //red color
+                hasBonusReward = true;
+            }
+
+            bonusRewardMessage += $"?Whetstone x{whetstoneDropAmount}\n";
+        }
         if (BattleRewards.Instance != null)
         {
             Debug.Log("SHOWING PANEL");

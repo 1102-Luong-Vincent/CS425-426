@@ -427,6 +427,11 @@ public class PlayerValue
     {
         if (resource == null) return;
 
+        if (resource.Type == ResourceType.Material)
+        {
+            AddMaterial(resource.resourceName, resource.amount);
+        }
+
         // Check if player already has this resource type
         ResourceValue existing = InventoryResources.Find(r => r.resourceName == resource.resourceName);
         if (existing != null)

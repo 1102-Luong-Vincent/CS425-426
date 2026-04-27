@@ -38,7 +38,7 @@ public static class ObjectiveConstants
     public const string CompleteTutorial = "Follow the tutorial guide and complete the task.";
     public const string ExploreStartRoom = "Explore the room and pick up an item.";
     public const string LeaveStartRoom = "Go to the door and enter the next map.";
-    public const string Level1FindGovernmentInfo = "Find information about the government and the whereabouts of the cure.";
+    public const string Level1FindGovernmentInfo = "Head east and search for information about the government and the whereabouts of the antidote in the abandoned cars.";
     public const string Level1HeadToHospital = "Head to the hospital.";
     public const string Level1FindHospitalKey = "Find the key to the hospital.";
 }

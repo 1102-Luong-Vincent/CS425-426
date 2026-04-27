@@ -135,7 +135,7 @@ public class WeaponUpgradeUIController : PanelControl
         int need = next.upgradeMaterialNeed;
         int have = player.GetMaterialCount(mat);
 
-        SetMaterialUI(mat, $"x{need}");
+        SetMaterialUI(mat, $"{need}/{have}");
 
         if (confirmButton != null)
         {
