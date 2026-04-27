@@ -42,6 +42,12 @@ public static class ObjectiveConstants
     public const string Level1FindGovernmentInfo = "Head east and search for information about the government and the whereabouts of the antidote in the abandoned cars.";
     public const string Level1HeadToHospital = "Head west to the hospital.";
     public const string Level1FindHospitalKey = "Head to the library in the north to look for the key to the hospital.";
+    public const string HospitalFindTrevorLastNote = "Find Trevor's Last Note on the table.";
+    public const string HospitalFindPassageToQuarantineZone = "Go to the left of the hospital to find the passage leading to the Military Quarantine Zone.";
+    public const string HospitalOptionalFindTrevor = "Optional: Find out what happened to Trevor";
+    public const string TrevorMinibossEnemyName = "Trevor";
+    public const string TrevorMinibossSceneName = "Trevor (Miniboss)";
+    public const int TrevorMinibossWorldEnemyID = 4;
 }
 
 [Serializable]
@@ -55,6 +61,8 @@ public class GameValue : MonoBehaviour
     private String happendStoryName = string.Empty;
     private string currentObjective = string.Empty;
     private readonly List<string> completedObjectives = new List<string>();
+    private string currentOptionalObjective = string.Empty;
+    private readonly List<string> completedOptionalObjectives = new List<string>();
     [SerializeField] GameProcessManager gameProcessManager;
 
     [SerializeField] private BattleData battleData;
@@ -105,6 +113,8 @@ public class GameValue : MonoBehaviour
         happendStoryName = string.Empty;
         currentObjective = string.Empty;
         completedObjectives.Clear();
+        currentOptionalObjective = string.Empty;
+        completedOptionalObjectives.Clear();
         battleData = null;
         defeatedEnemies.Clear();
         collectedInteractableIds.Clear();
@@ -188,11 +198,29 @@ public class GameValue : MonoBehaviour
             return;
         }
 
-        if (scene == SceneType.Level_2 &&
-            currentObjective == ObjectiveConstants.Level1HeadToHospital)
+        if (scene == SceneType.Level_1_Hospital &&
+            ShouldStartHospitalObjectives())
         {
+            ClearOptionalObjective();
+            SetCurrentObjective(ObjectiveConstants.HospitalFindTrevorLastNote, false, true);
+            return;
+        }
+
+        if (scene == SceneType.Level_2 &&
+            (currentObjective == ObjectiveConstants.Level1HeadToHospital ||
+             currentObjective == ObjectiveConstants.HospitalFindPassageToQuarantineZone))
+        {
+            ClearOptionalObjective();
             SetCurrentObjective(string.Empty);
         }
+    }
+
+    private bool ShouldStartHospitalObjectives()
+    {
+        return string.IsNullOrWhiteSpace(currentObjective) ||
+               currentObjective == ObjectiveConstants.Level1HeadToHospital ||
+               currentObjective == ObjectiveConstants.Level1FindHospitalKey ||
+               currentObjective == ObjectiveConstants.Level1FindGovernmentInfo;
     }
     
     private bool IsSceneInBuild(string sceneName)
@@ -251,11 +279,18 @@ public class GameValue : MonoBehaviour
         {
             happendStoryName = saveData.story.currentStoryName ?? string.Empty;
             currentObjective = saveData.story.currentObjective ?? string.Empty;
+            currentOptionalObjective = saveData.story.currentOptionalObjective ?? string.Empty;
             completedObjectives.Clear();
+            completedOptionalObjectives.Clear();
 
             if (saveData.story.completedObjectives != null)
             {
                 completedObjectives.AddRange(saveData.story.completedObjectives.Where(objective => !string.IsNullOrWhiteSpace(objective)));
+            }
+
+            if (saveData.story.completedOptionalObjectives != null)
+            {
+                completedOptionalObjectives.AddRange(saveData.story.completedOptionalObjectives.Where(objective => !string.IsNullOrWhiteSpace(objective)));
             }
         }
         else
@@ -263,6 +298,8 @@ public class GameValue : MonoBehaviour
             happendStoryName = string.Empty;
             currentObjective = string.Empty;
             completedObjectives.Clear();
+            currentOptionalObjective = string.Empty;
+            completedOptionalObjectives.Clear();
         }
         battleData = null;
         //PlayerController.Instance.SetPlayerPosition(saveData.player.GetPlayerPosition());
@@ -464,6 +501,16 @@ public class GameValue : MonoBehaviour
         return new List<string>(completedObjectives);
     }
 
+    public string GetCurrentOptionalObjective()
+    {
+        return currentOptionalObjective;
+    }
+
+    public List<string> GetCompletedOptionalObjectives()
+    {
+        return new List<string>(completedOptionalObjectives);
+    }
+
     #endregion
 
     #region Set
@@ -516,12 +563,53 @@ public class GameValue : MonoBehaviour
         }
 
         currentObjective = nextObjective;
+        ApplyObjectiveSideEffects(nextObjective);
+    }
+
+    private void ApplyObjectiveSideEffects(string objective)
+    {
+        if (objective == ObjectiveConstants.HospitalFindPassageToQuarantineZone &&
+            string.IsNullOrWhiteSpace(currentOptionalObjective) &&
+            !completedOptionalObjectives.Contains(ObjectiveConstants.HospitalOptionalFindTrevor))
+        {
+            SetOptionalObjective(ObjectiveConstants.HospitalOptionalFindTrevor);
+        }
+    }
+
+    public void SetOptionalObjective(string objective)
+    {
+        currentOptionalObjective = objective ?? string.Empty;
+    }
+
+    public void CompleteOptionalObjective(string objective)
+    {
+        if (string.IsNullOrWhiteSpace(objective))
+        {
+            return;
+        }
+
+        if (currentOptionalObjective == objective)
+        {
+            currentOptionalObjective = string.Empty;
+        }
+
+        if (!completedOptionalObjectives.Contains(objective))
+        {
+            completedOptionalObjectives.Add(objective);
+        }
+    }
+
+    public void ClearOptionalObjective()
+    {
+        currentOptionalObjective = string.Empty;
+        completedOptionalObjectives.Clear();
     }
 
     public void ClearObjectiveProgress()
     {
         currentObjective = string.Empty;
         completedObjectives.Clear();
+        ClearOptionalObjective();
     }
 
     private void ApplyPendingPlayerPositionIfPossible()

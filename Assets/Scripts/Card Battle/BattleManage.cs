@@ -136,6 +136,7 @@ public class BattleManage : MonoBehaviour
     {
 
         GameValue.Instance.DefeatedEnemies(battleData.worldEnemyID);
+        CompleteTrevorOptionalObjectiveIfNeeded();
         string rewardMessage = "";
         string bonusRewardMessage = "";
 
@@ -251,6 +252,32 @@ public class BattleManage : MonoBehaviour
         //Debug.Log($"End Battle, and battleData enemys conut is {battleData.battleEnemys.Count}");
         //SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic);
 
+    }
+
+    private void CompleteTrevorOptionalObjectiveIfNeeded()
+    {
+        if (battleData == null || battleData.battleEnemys == null)
+        {
+            return;
+        }
+
+        if (battleData.GetMapScene() == SceneType.Level_1_Hospital &&
+            battleData.GetWorldEnemyID() == ObjectiveConstants.TrevorMinibossWorldEnemyID)
+        {
+            GameValue.Instance.CompleteOptionalObjective(ObjectiveConstants.HospitalOptionalFindTrevor);
+            return;
+        }
+
+        foreach (var enemy in battleData.battleEnemys)
+        {
+            if (enemy != null &&
+                (string.Equals(enemy.EnemyName, ObjectiveConstants.TrevorMinibossEnemyName, StringComparison.Ordinal) ||
+                 string.Equals(enemy.EnemyName, ObjectiveConstants.TrevorMinibossSceneName, StringComparison.Ordinal)))
+            {
+                GameValue.Instance.CompleteOptionalObjective(ObjectiveConstants.HospitalOptionalFindTrevor);
+                return;
+            }
+        }
     }
 
     CardValue GetRandomItemCardReward() //lists all cards

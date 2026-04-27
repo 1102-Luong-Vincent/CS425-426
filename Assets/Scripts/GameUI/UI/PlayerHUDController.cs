@@ -48,10 +48,13 @@ public class PlayerHUDController : MonoBehaviour
         if (objectiveText != null)
         {
             string objective = GameValue.Instance != null ? GameValue.Instance.GetCurrentObjective() : string.Empty;
+            string optionalObjective = GameValue.Instance != null ? GameValue.Instance.GetCurrentOptionalObjective() : string.Empty;
             bool hasObjective = !string.IsNullOrWhiteSpace(objective);
             bool hasCompletedObjectives = GameValue.Instance != null && GameValue.Instance.GetCompletedObjectives().Count > 0;
+            bool hasOptionalObjective = !string.IsNullOrWhiteSpace(optionalObjective);
+            bool hasCompletedOptionalObjectives = GameValue.Instance != null && GameValue.Instance.GetCompletedOptionalObjectives().Count > 0;
 
-            objectiveText.gameObject.SetActive(showObjective && (hasObjective || hasCompletedObjectives));
+            objectiveText.gameObject.SetActive(showObjective && (hasObjective || hasCompletedObjectives || hasOptionalObjective || hasCompletedOptionalObjectives));
             objectiveText.text = BuildObjectiveText();
         }
     }
@@ -71,8 +74,13 @@ public class PlayerHUDController : MonoBehaviour
         var builder = new StringBuilder();
         var completed = GameValue.Instance.GetCompletedObjectives();
         string current = GameValue.Instance.GetCurrentObjective();
+        var completedOptional = GameValue.Instance.GetCompletedOptionalObjectives();
+        string currentOptional = GameValue.Instance.GetCurrentOptionalObjective();
 
-        if (completed.Count == 0 && string.IsNullOrWhiteSpace(current))
+        if (completed.Count == 0 &&
+            completedOptional.Count == 0 &&
+            string.IsNullOrWhiteSpace(current) &&
+            string.IsNullOrWhiteSpace(currentOptional))
         {
             return string.Empty;
         }
@@ -91,6 +99,22 @@ public class PlayerHUDController : MonoBehaviour
         {
             builder.Append("\n");
             builder.Append(current);
+        }
+
+        foreach (string optionalObjective in completedOptional)
+        {
+            builder.Append("\n");
+            builder.Append("<color=#BDBDBD><s>");
+            builder.Append(optionalObjective);
+            builder.Append("</s></color>");
+        }
+
+        if (!string.IsNullOrWhiteSpace(currentOptional))
+        {
+            builder.Append("\n");
+            builder.Append("<color=#FFD166>");
+            builder.Append(currentOptional);
+            builder.Append("</color>");
         }
 
         return builder.ToString();

@@ -79,7 +79,9 @@ public class StorySaveData
 {
     public string currentStoryName;
     public string currentObjective;
+    public string currentOptionalObjective;
     public List<string> completedObjectives = new();
+    public List<string> completedOptionalObjectives = new();
     public List<string> finishedStoryIds = new();
 
     public StorySaveData() { }
@@ -88,7 +90,9 @@ public class StorySaveData
     {
         currentStoryName = gameValue.GetHappendStoryName();
         currentObjective = gameValue.GetCurrentObjective();
+        currentOptionalObjective = gameValue.GetCurrentOptionalObjective();
         completedObjectives = gameValue.GetCompletedObjectives();
+        completedOptionalObjectives = gameValue.GetCompletedOptionalObjectives();
     }
 }
 
