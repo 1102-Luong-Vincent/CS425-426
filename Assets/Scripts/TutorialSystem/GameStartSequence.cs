@@ -377,6 +377,7 @@ public class GameStartSequence : BaseSequence
         SequenceManager.Instance.UpgradeButton.interactable = true;
         SequenceManager.Instance.OptionsButton.interactable = true;
         PlayerMenuManager.Instance.menuToggleEnabled = true;
-        DoorTrigger.SetActive(true);
+        if(DoorTrigger != null)
+            DoorTrigger.SetActive(true);
     }
 }
