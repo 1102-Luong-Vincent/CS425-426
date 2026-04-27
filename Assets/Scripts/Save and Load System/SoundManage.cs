@@ -15,7 +15,9 @@ public static class SoundManagerConstants
     public const string GameplayMusic_Hospital = "thevoid";
     public const string PauseScreenMusic = "enigma horror sound";
     public const string BattleMusic = "silent-escape-survival-thriller";
-    public const string FootstepsSound = "Footsteps_Tile_Walk_03";
+    public const string Mini_BossMusic = "Mini_Boss";
+    public const string Final_BossMusic = "Final_Boss";
+    public const string FootstepsSound = "Footsteps_Walking";
 }
 
 

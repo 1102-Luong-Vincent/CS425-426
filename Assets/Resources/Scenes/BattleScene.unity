@@ -423,6 +423,8 @@ MonoBehaviour:
   currentEnemys: []
   minDistance: 1.5
   bloodEffect: {fileID: 0}
+  audioSource: {fileID: 62250102}
+  playerHitSound: {fileID: 8300000, guid: 89eff84ff82286b47bf9e3bfd0e27700, type: 3}
 --- !u!82 &62250102
 AudioSource:
   m_ObjectHideFlags: 0

@@ -20,6 +20,10 @@ public class BattleEnemyManager : MonoBehaviour
     [Header("Visual Effects")]
     [SerializeField] public ParticleSystem bloodEffect;
 
+    [Header("Sound Effects")]
+    [SerializeField] public AudioSource audioSource;
+    [SerializeField] public AudioClip playerHitSound;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -113,6 +117,12 @@ public class BattleEnemyManager : MonoBehaviour
             anim.SetBool("Attack2West", true);
             anim.SetBool("isAttackAttacking", true);
             BattleManage.Instance.GetBattlePlayerController().GetComponent<Animator>().SetTrigger("Damage");
+
+            if (audioSource != null && playerHitSound != null)
+            {
+                audioSource.PlayOneShot(playerHitSound);
+            }
+
             yield return new WaitUntil(() => anim.GetCurrentAnimatorStateInfo(0).IsName("Attack2West") && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
             anim.SetBool("isAttackAttacking", false);
             anim.SetBool("Attack2West", false);
@@ -123,10 +133,6 @@ public class BattleEnemyManager : MonoBehaviour
 
         BattleManage.Instance.StartNextTurn();
     }
-
-
-
-
 
     public List<EnemyValue> GetEnemyValues()
     {

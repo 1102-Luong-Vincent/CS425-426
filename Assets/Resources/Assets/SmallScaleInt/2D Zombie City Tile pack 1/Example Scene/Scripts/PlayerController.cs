@@ -44,12 +44,6 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         // Add this field at the top where other variables are declared
         private AudioSource gunfireAudioSource;
 
-        //footstep sound effects
-        private float footstepTimer = 0f;
-        public float footstepInterval = 0.1f; // Time between footsteps
-
-
-
         // Archer specifics
         public bool isActive; // If the character is active
         public bool isRanged; // If the character is an archer OR caster character
@@ -92,7 +86,6 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         // --- Score / Kill Count ---
         public int zombieKillCount = 0;
         public TextMeshProUGUI killCountText; // Assign this in the Inspector with your score UI element
-        [SerializeField] AudioSource FootstepsAudioSource;
 
         [Header("Camera")]
         [SerializeField] private Camera playerCamera;
@@ -118,10 +111,6 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             }
 
 
-
-            string path = SoundManagerConstants.SoundEffectPath + SoundManagerConstants.FootstepsSound;
-            AudioClip footStepClip = Resources.Load<AudioClip>(path);
-            FootstepsAudioSource.clip = footStepClip;
 
         }
 
@@ -215,6 +204,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             Vector2 newPosition = rb.position + input * moveSpeed * Time.fixedDeltaTime;
 
             rb.MovePosition(newPosition);
+            UpdateFootstepAudio();
 
         }
 
@@ -236,21 +226,22 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
 
             //rb.MovePosition(rb.position + input * moveSpeed * Time.fixedDeltaTime);
 
-            // Handle footstep sounds
-            if (input.magnitude > 0.1f) // Player is moving
-            {
-                footstepTimer += Time.fixedDeltaTime;
+        }
 
-                if (footstepTimer >= footstepInterval)
-                {
-                    if (FootstepsAudioSource.isPlaying) return;
-                    FootstepsAudioSource.Play();
-                    footstepTimer = 0f;
-                }
+        private void UpdateFootstepAudio()
+        {
+            if (SoundManage.Instance == null)
+            {
+                return;
+            }
+
+            if (isMoving && !isDead)
+            {
+                SoundManage.Instance.PlayFootSteps();
             }
             else
             {
-                footstepTimer = 0f; // reset if player stops
+                SoundManage.Instance.StopFootSteps();
             }
         }
 
@@ -329,6 +320,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         {
             // Debug.Log("Player died!");
             isDead = true;
+            SoundManage.Instance?.StopFootSteps();
 
             /* if (circleCollider != null)
              {
@@ -907,6 +899,11 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
                 isRunning = false;
                 anim.SetBool("isRunning", false);
             }
+        }
+
+        private void OnDisable()
+        {
+            SoundManage.Instance?.StopFootSteps();
         }
 
         public void CheckWeapon()
