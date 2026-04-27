@@ -48,6 +48,11 @@ public static class ObjectiveConstants
     public const string TrevorMinibossEnemyName = "Trevor";
     public const string TrevorMinibossSceneName = "Trevor (Miniboss)";
     public const int TrevorMinibossWorldEnemyID = 4;
+    public const string Level2FindCure = "Find the cure.";
+    public const string Level2OptionalFindIsaac = "Optional: Find Isaac";
+    public const string IsaacFinalBossEnemyName = "Isaac";
+    public const string IsaacFinalBossSceneName = "Isaac (Final Boss)";
+    public const int IsaacFinalBossWorldEnemyID = 9;
 }
 
 [Serializable]
@@ -211,7 +216,24 @@ public class GameValue : MonoBehaviour
              currentObjective == ObjectiveConstants.HospitalFindPassageToQuarantineZone))
         {
             ClearOptionalObjective();
-            SetCurrentObjective(string.Empty);
+            SetCurrentObjective(ObjectiveConstants.Level2FindCure, false, true);
+            return;
+        }
+
+        if (scene == SceneType.Level_2 &&
+            string.IsNullOrWhiteSpace(currentObjective))
+        {
+            ClearOptionalObjective();
+            SetCurrentObjective(ObjectiveConstants.Level2FindCure, false, true);
+            return;
+        }
+
+        if (scene == SceneType.Level_2 &&
+            currentObjective == ObjectiveConstants.Level2FindCure &&
+            string.IsNullOrWhiteSpace(currentOptionalObjective) &&
+            !completedOptionalObjectives.Contains(ObjectiveConstants.Level2OptionalFindIsaac))
+        {
+            SetOptionalObjective(ObjectiveConstants.Level2OptionalFindIsaac);
         }
     }
 
@@ -573,6 +595,13 @@ public class GameValue : MonoBehaviour
             !completedOptionalObjectives.Contains(ObjectiveConstants.HospitalOptionalFindTrevor))
         {
             SetOptionalObjective(ObjectiveConstants.HospitalOptionalFindTrevor);
+        }
+
+        if (objective == ObjectiveConstants.Level2FindCure &&
+            string.IsNullOrWhiteSpace(currentOptionalObjective) &&
+            !completedOptionalObjectives.Contains(ObjectiveConstants.Level2OptionalFindIsaac))
+        {
+            SetOptionalObjective(ObjectiveConstants.Level2OptionalFindIsaac);
         }
     }
 

@@ -22,9 +22,15 @@ public class InteractableEnding : MonoBehaviour
 
     private void Start()
     {
+        if (!HasEndingReferences())
+        {
+            enabled = false;
+            return;
+        }
+
         endingPanel.SetActive(false);
         continueButton.onClick.AddListener(Continue);
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        FindPlayerIfNeeded();
         endingText.enableAutoSizing = false;
         endingText.fontSize = 41.65f;
     }
@@ -41,7 +47,7 @@ public class InteractableEnding : MonoBehaviour
         if(playerInRange && Input.GetKeyDown(KeyCode.E) && !isTriggered)
         {
             Debug.Log("Interact pressed and player is in range");
-            Ending();
+            TryTriggerEnding();
         }
     }
     public void OnTriggerEnter2D(Collider2D other)
@@ -60,11 +66,52 @@ public class InteractableEnding : MonoBehaviour
         }
     }
 
+    public bool TryTriggerEnding()
+    {
+        if (!HasEndingReferences())
+        {
+            return false;
+        }
+
+        if (isTriggered)
+        {
+            return true;
+        }
+
+        Ending();
+        return true;
+    }
+
+    private bool HasEndingReferences()
+    {
+        return endingText != null && endingPanel != null && continueButton != null;
+    }
+
+    private void FindPlayerIfNeeded()
+    {
+        if (player != null)
+        {
+            return;
+        }
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.GetComponent<PlayerController>();
+        }
+    }
+
     private void Ending()
     {
         isTriggered = true;
         endingPanel.SetActive(true);
-        player.enabled = false;
+        FindPlayerIfNeeded();
+
+        if (player != null)
+        {
+            player.enabled = false;
+        }
+
         continueButton.gameObject.SetActive(false);
         Time.timeScale = 0f;
 
