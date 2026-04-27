@@ -162,7 +162,7 @@ public class BattleManage : MonoBehaviour
                 //        break;
                 //}
 
-                rewardMessage += $"?{resource.resourceName} x{dropAmount}\n";
+                rewardMessage += $" {resource.resourceName} x{dropAmount}\n";
             }
         }
 
@@ -189,7 +189,7 @@ public class BattleManage : MonoBehaviour
                     hasBonusReward = true;
                 }
 
-                bonusRewardMessage += $"?Card: {randomItemCard.CardName}\n";
+                bonusRewardMessage += $" Card: {randomItemCard.CardName}\n";
             }
         }
 
@@ -206,7 +206,7 @@ public class BattleManage : MonoBehaviour
                 hasBonusReward = true;
             }
 
-            bonusRewardMessage += $"?Whetstone x{whetstoneDropAmount}\n";
+            bonusRewardMessage += $" Whetstone x{whetstoneDropAmount}\n";
         }
 
         //boss and miniboss battle
@@ -218,7 +218,7 @@ public class BattleManage : MonoBehaviour
             if (randomItemCard != null) { }
             {
                 BattlePlayerValue.Instance.AddCard(randomItemCard);
-                bonusRewardMessage += $"?Card: {randomItemCard.CardName}\n";
+                bonusRewardMessage += $" Card: {randomItemCard.CardName}\n";
             }
 
             int whetstoneDropAmount = UnityEngine.Random.Range(10, 12);
@@ -226,7 +226,7 @@ public class BattleManage : MonoBehaviour
             ResourceValue whetstoneReward = new ResourceValue("Whetstone", whetstoneDropAmount, ResourceType.Material);
             BattlePlayerValue.Instance.AddResource(whetstoneReward);
 
-            bonusRewardMessage += $"?Whetstone x{whetstoneDropAmount}\n";
+            bonusRewardMessage += $" Whetstone x{whetstoneDropAmount}\n";
 
         }
         if (BattleRewards.Instance != null)

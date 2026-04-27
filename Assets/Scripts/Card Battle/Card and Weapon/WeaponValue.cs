@@ -29,6 +29,8 @@ public class WeaponValue
     public string upgradeMaterialName;
     public int upgradeMaterialNeed;
 
+    public AudioClip weaponSFX;
+
     public WeaponValue() { }
 
     public WeaponValue(ExcelWeaponData excelData) 
@@ -45,7 +47,7 @@ public class WeaponValue
         upgradeMaterialNeed = excelData.materialNeed;
 
         WeaponSprite = GetWeaponSprite();
-
+        weaponSFX = GetWeaponSFX();
     }
     Sprite GetWeaponSprite()
     {
@@ -55,8 +57,17 @@ public class WeaponValue
         return cardSprite;
     }
 
+    AudioClip GetWeaponSFX()
+    {
+        string path = $"Sound/SFX/{WeaponName}"; //loads audio automatically based on weapon name 
+        AudioClip sound = Resources.Load<AudioClip>(path);
+
+        return sound;
+    }
     public void UseWeaponEffect(BattlePlayerValue player, List<EnemyBattleControl> enemys)
     {
+        SoundManage.Instance.PlaySoundEffect(weaponSFX);
+
         switch (WeaponName)
         {
             case "Knife": UseKnife(player, enemys); break;

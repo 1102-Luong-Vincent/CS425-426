@@ -194,7 +194,8 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             Animator anim = BattlePlayerValue.Instance.getAnimator();
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(0.7f);
-            UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
+            //UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls());
+            weaponValue.UseWeaponEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyBattleControls()); //applies sound effect for all weapons.
         }
         else
         {
