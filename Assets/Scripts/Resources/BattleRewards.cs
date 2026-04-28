@@ -79,6 +79,11 @@ public class BattleRewards : MonoBehaviour
 
         var battleData = GameValue.Instance.GetBattleData();
 
+        if (BattlePlayerValue.Instance != null)
+        {
+            BattlePlayerValue.Instance.SaveBattleResultToPlayerValue();
+        }
+
         GameValue.Instance.LoadSceneByEnum(battleData.GetMapScene());
         GameValue.Instance.SetPlayerPosition(battleData.GetMapPosition());
 

@@ -28,6 +28,8 @@ public class EnemyControl : MonoBehaviour
     private string currentDirection = "isSouth";
     [SerializeField] private float directionUpdateInterval = 0.2f;
     private float nextDirectionUpdateTime = 0f;
+    private const float PositionSaveThreshold = 0.01f;
+    private Vector3 lastRecordedPosition;
     void Start()
     {
         col = gameObject.GetComponent<PolygonCollider2D>();
@@ -42,6 +44,7 @@ public class EnemyControl : MonoBehaviour
             return;
         }
 
+        RestoreSavedPosition();
         rb = gameObject.GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -50,6 +53,8 @@ public class EnemyControl : MonoBehaviour
 
         enemyValue = GameValue.Instance.GetInitEnemyValue(EnemyID);
         previousPosition = transform.position;
+        lastRecordedPosition = transform.position;
+        RecordCurrentPositionIfNeeded(true);
         SetAnimator();
     }
 
@@ -83,6 +88,7 @@ public class EnemyControl : MonoBehaviour
         if (overRideControl)
         {
             HandleMovementAnimation();
+            RecordCurrentPositionIfNeeded();
             return;
         }
         if (target != null)
@@ -98,6 +104,8 @@ public class EnemyControl : MonoBehaviour
             animator.SetBool(currentDirection, true);
             animator.SetBool("isWalking", false);
         }
+
+        RecordCurrentPositionIfNeeded();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -123,6 +131,7 @@ public class EnemyControl : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Enemy touched player -- Entering Battle");
+            RecordCurrentPositionIfNeeded(true);
             List<EnemyValue> enemyValues = new List<EnemyValue>() { enemyValue };
             BattleData battleData = new BattleData(enemyValues);
 
@@ -162,6 +171,33 @@ public class EnemyControl : MonoBehaviour
         camera.fieldOfView = originalFOV;
         GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
     }
+    private void RestoreSavedPosition()
+    {
+        if (GameValue.Instance != null &&
+            GameValue.Instance.TryGetEnemyPosition(worldEnemyID, out Vector3 savedPosition))
+        {
+            transform.position = savedPosition;
+        }
+    }
+
+    private void RecordCurrentPositionIfNeeded(bool force = false)
+    {
+        if (GameValue.Instance == null)
+        {
+            return;
+        }
+
+        Vector3 currentPosition = transform.position;
+        if (!force &&
+            (currentPosition - lastRecordedPosition).sqrMagnitude < PositionSaveThreshold * PositionSaveThreshold)
+        {
+            return;
+        }
+
+        lastRecordedPosition = currentPosition;
+        GameValue.Instance.SetEnemyPosition(worldEnemyID, currentPosition);
+    }
+
     private void HandleMovementAnimation()
     {
         if (animator == null) return;
