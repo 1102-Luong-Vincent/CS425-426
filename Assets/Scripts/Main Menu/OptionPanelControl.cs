@@ -85,7 +85,8 @@ public class OptionPanelControl : PanelControl
     void SetOptionButtonsActive(bool isActive)
     {
         foreach (var btn in optionButtons)
-            btn.gameObject.SetActive(isActive);
+            if(btn != null)
+                btn.gameObject.SetActive(isActive);
     }
     void OpenSubPanel(PanelType key)
     {
@@ -267,7 +268,8 @@ public class OptionPanelControl : PanelControl
     void CloseAllPanels()
     {
         foreach (var panel in panels.Values)
-            panel.SetActive(false);
+            if(panel != null)
+                panel.SetActive(false);
     }
 
     #endregion
