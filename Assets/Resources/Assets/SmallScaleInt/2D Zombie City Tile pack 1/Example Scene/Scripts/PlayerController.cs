@@ -208,7 +208,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             UpdateFootstepAudio();
 
             //cheat to give cards
-            if(Input.GetKey(KeyCode.RightControl) && Input.GetKeyDown(KeyCode.P))
+            if(Input.GetKeyDown(KeyCode.P))
             {
                 CardCheat();
             }
