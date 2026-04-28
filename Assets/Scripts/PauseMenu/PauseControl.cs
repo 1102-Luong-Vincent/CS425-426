@@ -55,6 +55,8 @@ public class PauseControl : MonoBehaviour
             if (isPaused)
             {
                 ResumeGame();
+
+                
             }
             else
             {
@@ -76,7 +78,7 @@ public class PauseControl : MonoBehaviour
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
 
-        SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.PauseScreenMusic);
+        SoundManage.Instance.PauseBackgroundMusic();
 
         //if(gameplayMusic != null && gameplayMusic.isPlaying)
         //{
@@ -96,7 +98,7 @@ public class PauseControl : MonoBehaviour
             Time.timeScale = 1f; //game starts running again
             isPaused = false;
             PlayButtonClickSound();
-            SoundManage.Instance.StopBackgroundMusic(); // Stop any pause music first
+            SoundManage.Instance.ResumeBackgroundMusic(); // Stop any pause music first
 
             string currentScene = SceneManager.GetActiveScene().name;
 
@@ -107,6 +109,11 @@ public class PauseControl : MonoBehaviour
             if (currentScene == "Level_1_Hospital") //did this for now for testing the music. I know it's not the best way to do it.
             {
                 SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic_Hospital);
+            }
+
+            if (currentScene == "BattleScene")
+            {
+                SoundManage.Instance.RefreshCurrentSceneMusic();
             }
 
         }
@@ -139,9 +146,16 @@ public class PauseControl : MonoBehaviour
     {
         Time.timeScale = 1f; // Resume time scale
         PlayButtonClickSound();
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
-        SetGameplayUIActive(false);
+        if (SceneManager.GetActiveScene().name == "BattleScene")
+        {
+            BattleManage.Instance.ResetBattle();
+            pauseScreen.SetActive(false);
+            isPaused = false;
+            SetGameplayUIActive(false);
+        }
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     void Options()
     {
