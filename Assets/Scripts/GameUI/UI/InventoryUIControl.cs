@@ -69,6 +69,7 @@ public class InventoryUIControl :  PanelControl
         InstantiateCardLibrary();
         
         playerHUD.SetActive(false); //hides the player hud upon inventory opening
+        SoundManage.Instance.StopFootSteps();
 
     }
 

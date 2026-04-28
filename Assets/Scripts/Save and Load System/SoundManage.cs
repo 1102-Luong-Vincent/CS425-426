@@ -4,6 +4,7 @@
 // No external source was used.
 
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public static class SoundManagerConstants
@@ -119,6 +120,22 @@ public class SoundManage : MonoBehaviour
         if (backgroundMusic.isPlaying) backgroundMusic.Stop();
     }
 
+    public void PauseBackgroundMusic()
+    {
+        if (backgroundMusic != null && backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Pause();
+        }
+    }
+
+    public void ResumeBackgroundMusic()
+    {
+        if (backgroundMusic != null && !backgroundMusic.isPlaying)
+        {
+            backgroundMusic.UnPause();
+        }
+    }
+
     public void ForceSceneMusic(string sceneName)
     {
         switch (sceneName)
@@ -197,6 +214,11 @@ public class SoundManage : MonoBehaviour
         }
 
         return SoundManagerConstants.BattleMusic;
+    }
+
+    public void RefreshCurrentSceneMusic()
+    {
+        ForceSceneMusic(SceneManager.GetActiveScene().name);
     }
 
     private bool BattleContainsEnemy(BattleData battleData, int enemyId)

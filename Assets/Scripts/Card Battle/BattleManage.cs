@@ -176,7 +176,7 @@ public class BattleManage : MonoBehaviour
 
         //added additional rewards for defeating enemy
 
-        float itemDropChance = 0.15f; //15% chance enemy will drop card as a bonus reward
+        float itemDropChance = 0.2f; //20% chance enemy will drop card as a bonus reward
         float whetstoneDropChance = 0.5f; //50% chance enemy will drop whetstone as a bonus reward
         bool hasBonusReward = false;
         bool isBoss = battleData.battleEnemys.Exists(boss => boss.GetID() == 4 || boss.GetID() == 5 || boss.GetID() == 6); //if Id = 4, ID = 5 or ID = 6, considered to be boss or miniboss

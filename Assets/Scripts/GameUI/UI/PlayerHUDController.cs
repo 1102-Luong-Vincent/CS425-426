@@ -16,7 +16,15 @@ public class PlayerHUDController : MonoBehaviour
     public TMP_Text objectiveText;  // current objective text
 
     private const string ObjectiveHeader = "Objectives:";
+    private static readonly Color ObjectivePanelColor = new Color(0f, 0f, 0f, 0.72f);
+    private static readonly Vector2 ObjectivePanelPadding = new Vector2(18f, 14f);
+    private const float ObjectivePanelMinWidth = 520f;
+    private const float ObjectivePanelMinHeight = 160f;
     private bool showObjective = true;
+    private bool isObjectivePanelOpen = false;
+    private GameObject objectivePanel;
+    private RectTransform objectivePanelRect;
+    private RectTransform objectiveTextRect;
     PlayerValue player;
 
     void Start()
@@ -24,11 +32,17 @@ public class PlayerHUDController : MonoBehaviour
         player = GameValue.Instance.playerValue;
 
         healthBar.maxValue = player.GetMaxHealth();
+        SetupObjectivePanel();
         UpdateHUD();
     }
 
     void Update()
     {
+        if (showObjective && Time.timeScale > 0f && Input.GetKeyDown(KeyCode.T))
+        {
+            isObjectivePanelOpen = !isObjectivePanelOpen;
+        }
+
         UpdateHUD();
     }
 
@@ -47,21 +61,94 @@ public class PlayerHUDController : MonoBehaviour
 
         if (objectiveText != null)
         {
-            string objective = GameValue.Instance != null ? GameValue.Instance.GetCurrentObjective() : string.Empty;
-            string optionalObjective = GameValue.Instance != null ? GameValue.Instance.GetCurrentOptionalObjective() : string.Empty;
-            bool hasObjective = !string.IsNullOrWhiteSpace(objective);
-            bool hasCompletedObjectives = GameValue.Instance != null && GameValue.Instance.GetCompletedObjectives().Count > 0;
-            bool hasOptionalObjective = !string.IsNullOrWhiteSpace(optionalObjective);
-            bool hasCompletedOptionalObjectives = GameValue.Instance != null && GameValue.Instance.GetCompletedOptionalObjectives().Count > 0;
+            string objectiveDisplayText = BuildObjectiveText();
+            bool hasObjectiveContent = !string.IsNullOrWhiteSpace(objectiveDisplayText);
 
-            objectiveText.gameObject.SetActive(showObjective && (hasObjective || hasCompletedObjectives || hasOptionalObjective || hasCompletedOptionalObjectives));
-            objectiveText.text = BuildObjectiveText();
+            objectiveText.text = objectiveDisplayText;
+            ResizeObjectivePanel();
+            SetObjectivePanelActive(showObjective && isObjectivePanelOpen && hasObjectiveContent);
         }
     }
 
     public void SetObjectiveVisible(bool visible)
     {
         showObjective = visible;
+        SetObjectivePanelActive(showObjective && isObjectivePanelOpen && !string.IsNullOrWhiteSpace(BuildObjectiveText()));
+    }
+
+    private void SetupObjectivePanel()
+    {
+        if (objectiveText == null || objectivePanel != null)
+        {
+            return;
+        }
+
+        objectiveTextRect = objectiveText.rectTransform;
+        RectTransform originalParent = objectiveTextRect.parent as RectTransform;
+        if (originalParent == null)
+        {
+            return;
+        }
+
+        Vector2 originalAnchoredPosition = objectiveTextRect.anchoredPosition;
+        Vector2 originalSize = objectiveTextRect.sizeDelta;
+        Vector2 originalAnchorMin = objectiveTextRect.anchorMin;
+        Vector2 originalAnchorMax = objectiveTextRect.anchorMax;
+        Vector2 originalPivot = objectiveTextRect.pivot;
+        int originalSiblingIndex = objectiveTextRect.GetSiblingIndex();
+
+        objectivePanel = new GameObject("ObjectivePanel", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
+        objectivePanelRect = objectivePanel.GetComponent<RectTransform>();
+        objectivePanelRect.SetParent(originalParent, false);
+        objectivePanelRect.SetSiblingIndex(originalSiblingIndex);
+        objectivePanelRect.anchorMin = originalAnchorMin;
+        objectivePanelRect.anchorMax = originalAnchorMax;
+        objectivePanelRect.pivot = originalPivot;
+        objectivePanelRect.anchoredPosition = originalAnchoredPosition + new Vector2(-ObjectivePanelPadding.x, ObjectivePanelPadding.y);
+        objectivePanelRect.sizeDelta = new Vector2(
+            Mathf.Max(originalSize.x + ObjectivePanelPadding.x * 2f, ObjectivePanelMinWidth),
+            Mathf.Max(originalSize.y + ObjectivePanelPadding.y * 2f, ObjectivePanelMinHeight));
+
+        Image panelImage = objectivePanel.GetComponent<Image>();
+        panelImage.color = ObjectivePanelColor;
+        panelImage.raycastTarget = false;
+
+        objectiveTextRect.SetParent(objectivePanelRect, false);
+        objectiveTextRect.anchorMin = Vector2.zero;
+        objectiveTextRect.anchorMax = Vector2.one;
+        objectiveTextRect.pivot = new Vector2(0f, 1f);
+        objectiveTextRect.anchoredPosition = new Vector2(ObjectivePanelPadding.x, -ObjectivePanelPadding.y);
+        objectiveTextRect.sizeDelta = new Vector2(-ObjectivePanelPadding.x * 2f, -ObjectivePanelPadding.y * 2f);
+        objectiveText.textWrappingMode = TextWrappingModes.Normal;
+        objectiveText.raycastTarget = false;
+
+        SetObjectivePanelActive(false);
+    }
+
+    private void ResizeObjectivePanel()
+    {
+        if (objectivePanelRect == null || objectiveText == null)
+        {
+            return;
+        }
+
+        objectiveText.ForceMeshUpdate(true);
+        float preferredHeight = objectiveText.preferredHeight + ObjectivePanelPadding.y * 2f;
+        Vector2 size = objectivePanelRect.sizeDelta;
+        size.y = Mathf.Max(preferredHeight, ObjectivePanelMinHeight);
+        objectivePanelRect.sizeDelta = size;
+    }
+
+    private void SetObjectivePanelActive(bool active)
+    {
+        if (objectivePanel != null)
+        {
+            objectivePanel.SetActive(active);
+        }
+        else if (objectiveText != null)
+        {
+            objectiveText.gameObject.SetActive(active);
+        }
     }
 
     private string BuildObjectiveText()
