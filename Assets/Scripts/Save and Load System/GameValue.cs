@@ -82,6 +82,11 @@ public class GameValue : MonoBehaviour
     private bool hasPendingPlayerPosition = false;
     private Vector3 pendingPlayerPosition = Vector3.zero;
     private bool suppressAutoSaveForNextSceneLoad = false;
+    private const KeyCode DebugRewardKey = KeyCode.O;
+    private const float DebugRewardKeyWindow = 1.5f;
+    private const int DebugRewardRequiredPresses = 3;
+    private int debugRewardKeyPressCount = 0;
+    private float lastDebugRewardKeyPressTime = -999f;
     //private int nextEnemyID = 1;
     public bool FirstUpgradeFlag = false;
     private void Awake()
@@ -146,7 +151,49 @@ public class GameValue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        CheckDebugRewardCheat();
+    }
+
+    private void CheckDebugRewardCheat()
+    {
+        if (!Input.GetKeyDown(DebugRewardKey))
+        {
+            return;
+        }
+
+        if (Time.unscaledTime - lastDebugRewardKeyPressTime > DebugRewardKeyWindow)
+        {
+            debugRewardKeyPressCount = 0;
+        }
+
+        lastDebugRewardKeyPressTime = Time.unscaledTime;
+        debugRewardKeyPressCount++;
+
+        if (debugRewardKeyPressCount < DebugRewardRequiredPresses)
+        {
+            return;
+        }
+
+        debugRewardKeyPressCount = 0;
+        GiveDebugReward();
+    }
+
+    private void GiveDebugReward()
+    {
+        if (playerValue == null)
+        {
+            return;
+        }
+
+        playerValue.AddMaterial("Whetstone", 100);
+
+        WeaponValue shotgun = GetWeaponByNameAndLevel("Shotgun", 1);
+        if (shotgun != null)
+        {
+            playerValue.HadWeaponsLibrary.Add(shotgun);
+        }
+
+        Debug.Log("[Cheat] Added Whetstone x100 and Shotgun Lv1.");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
