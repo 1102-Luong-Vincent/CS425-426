@@ -30,7 +30,7 @@ public class ItemControl : MonoBehaviour
     [SerializeField] private string interactionHint = "Press E to interact";
 
     [Header("Interaction Type")]
-    [SerializeField] private ItemInteractionType interactionType = ItemInteractionType.SceneTransition;
+    [SerializeField] public ItemInteractionType interactionType = ItemInteractionType.SceneTransition;
 
     [Header("Custom Effects")]
     [SerializeField] private UnityEvent onInteract; // Configurable event in Unity Inspector
@@ -123,11 +123,21 @@ public class ItemControl : MonoBehaviour
             if ((interactionType == ItemInteractionType.Dialogue || interactionType == ItemInteractionType.Custom || interactionType == ItemInteractionType.SceneTransition) && interactionSound != null)
             {
                 audioSource.PlayOneShot(interactionSound);
-                windowPanel.SetActive(true);
+                OpenWindow();
                 SetObjectiveVisible(false);
                 Time.timeScale = 0f;
             }
         }
+    }
+
+    public void OpenWindow()
+    {
+        windowPanel.SetActive(true);
+
+        RectTransform rt = windowPanel.GetComponent<RectTransform>();
+        rt.anchoredPosition = Vector2.zero;
+        SetObjectiveVisible(false);
+        Time.timeScale = 0f;
     }
     public void CloseWindow()
     {
@@ -491,6 +501,10 @@ public class ItemControl : MonoBehaviour
         TriggerInteraction();
     }
 
+    public ItemInteractionType GetInteractionType()
+    {
+        return interactionType;
+    }
     /// <summary>
     /// Set interaction type
     /// </summary>

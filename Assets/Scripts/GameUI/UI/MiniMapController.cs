@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using SmallScaleInc.TopDownPixelCharactersPack1;
+//using System.ComponentModel;
 
 public class MiniMapController : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class MiniMapController : MonoBehaviour
     private Image[] itemMarkers = new Image[0];
     private Image[] enemyMarkers = new Image[0];
     private Image[] doorMarkers = new Image[0];
+
+    [SerializeField] public GameObject windowPanel;
+    [SerializeField] public GameObject windowPanelKey;
+    [SerializeField] public GameObject HospitalWindowPanel;
+    [SerializeField] public GameObject tutorialNote;
+    [SerializeField] public GameObject IsaacNote;
 
     private void Start()
     {
@@ -137,20 +144,96 @@ public class MiniMapController : MonoBehaviour
         RenderTexture previousTargetTexture = playerCamera.targetTexture;
         RenderTexture previousActiveTexture = RenderTexture.active;
 
-        playerCamera.targetTexture = renderTexture;
-        playerCamera.Render();
+        bool shouldRestoreWindowPanel = windowPanel != null && windowPanel.activeSelf;
+        bool shouldRestoreWindowPanelKey = windowPanelKey != null && windowPanelKey.activeSelf;
+        bool shouldRestoreHospitalWindowPanel = HospitalWindowPanel != null && HospitalWindowPanel.activeSelf;
+        bool shouldRestoreTutorialWindowPanel = tutorialNote != null && tutorialNote.activeSelf;
+        bool shouldRestoreIsaacWindowPanel = IsaacNote != null && IsaacNote.activeSelf;
 
-        RenderTexture.active = renderTexture;
-        mapTexture.ReadPixels(new Rect(0, 0, textureWidth, textureHeight), 0, 0);
-        mapTexture.Apply();
+        if (shouldRestoreWindowPanel)
+        {
+            windowPanel.SetActive(false);
+        }
 
-        playerCamera.targetTexture = previousTargetTexture;
-        RenderTexture.active = previousActiveTexture;
+        if (shouldRestoreWindowPanelKey)
+        {
+            windowPanelKey.SetActive(false);
+        }
+
+        if (shouldRestoreHospitalWindowPanel)
+        {
+            HospitalWindowPanel.SetActive(false);
+        }
+
+        if (shouldRestoreTutorialWindowPanel)
+        {
+            tutorialNote.SetActive(false);
+        }
+
+        if (shouldRestoreIsaacWindowPanel)
+        {
+            IsaacNote.SetActive(false);
+        }
+
+        try
+        {
+            playerCamera.targetTexture = renderTexture;
+            playerCamera.Render();
+
+            RenderTexture.active = renderTexture;
+            mapTexture.ReadPixels(new Rect(0, 0, textureWidth, textureHeight), 0, 0);
+            mapTexture.Apply();
+        }
+
+        finally
+        {
+            if (shouldRestoreWindowPanel)
+            {
+                windowPanel.SetActive(true);
+            }
+
+            if (shouldRestoreWindowPanelKey)
+            {
+                windowPanelKey.SetActive(true);
+            }
+
+            if (shouldRestoreHospitalWindowPanel)
+            {
+                HospitalWindowPanel.SetActive(true);
+            }
+
+            if (shouldRestoreTutorialWindowPanel)
+            {
+                tutorialNote.SetActive(true);
+            }
+
+            if (shouldRestoreIsaacWindowPanel)
+            {
+                IsaacNote.SetActive(true);
+            }
+
+            playerCamera.targetTexture = previousTargetTexture;
+            RenderTexture.active = previousActiveTexture;
+        }
     }
 
     private void RefreshTargets()
     {
-        itemControllers = FindObjectsOfType<ItemControl>();
+        ItemControl[] allItems = FindObjectsOfType<ItemControl>();
+        var filteredItems = new System.Collections.Generic.List<ItemControl>();
+
+        foreach (var item in allItems)
+        {
+            var type = item.GetInteractionType();
+
+            if(type == ItemInteractionType.Dialogue || type == ItemInteractionType.Custom)
+            {
+                continue;
+            }
+            filteredItems.Add(item);
+        }
+
+        itemControllers = filteredItems.ToArray();
         enemyControllers = FindObjectsOfType<EnemyControl>();
         doorTriggers = FindObjectsOfType<LockedInteractable>();
 

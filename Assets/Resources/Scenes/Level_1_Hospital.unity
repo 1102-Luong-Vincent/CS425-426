@@ -3489,7 +3489,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterInteract
-      value: Go to the left of the hospital to find the passage leading to the Military Quarantine Zone.
+      value: Go to the left of the hospital to find the passage leading to the Military
+        Quarantine Zone.
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: updateObjectiveOnInteract
@@ -3752,6 +3753,11 @@ Transform:
 --- !u!1 &975102452 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 975102450}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &975102453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8743917328937754648, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
   m_PrefabInstance: {fileID: 975102450}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1018273127
@@ -14994,6 +15000,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1378701566098362519, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: HospitalWindowPanel
+      value: 
+      objectReference: {fileID: 975102453}
     - target: {fileID: 1811936267003608858, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0

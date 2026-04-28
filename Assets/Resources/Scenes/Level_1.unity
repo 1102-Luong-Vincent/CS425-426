@@ -17010,6 +17010,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1378701566098362519, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: windowPanel
+      value: 
+      objectReference: {fileID: 1634426253}
+    - target: {fileID: 1378701566098362519, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: windowPanelKey
+      value: 
+      objectReference: {fileID: 971596409}
     - target: {fileID: 1811936267003608858, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -29301,6 +29309,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 219464462056448219, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
   m_PrefabInstance: {fileID: 971413224}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &971596409 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8743917328937754648, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 1539057314}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &988855267
 PrefabInstance:
@@ -63402,6 +63415,11 @@ PolygonCollider2D:
       - {x: 16.00266, y: 5.614507}
       - {x: 13.953774, y: 4.62244}
   m_UseDelaunayMesh: 0
+--- !u!1 &1634426253 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8743917328937754648, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 1162139190}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1637382811
 GameObject:
   m_ObjectHideFlags: 0

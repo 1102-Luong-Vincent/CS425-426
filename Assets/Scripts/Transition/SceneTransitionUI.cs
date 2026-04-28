@@ -69,6 +69,7 @@ public class SceneTransitionUI : MonoBehaviour
         }
 
         confirmationPanel.SetActive(true);
+        SoundManage.Instance.StopFootSteps();
         Time.timeScale = 0f;
     }
 
