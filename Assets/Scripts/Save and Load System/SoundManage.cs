@@ -13,11 +13,16 @@ public static class SoundManagerConstants
     public const string MainMenuMusicName = "danger and resolution";
     public const string GameplayMusic = "intense-horror-game-ambience";
     public const string GameplayMusic_Hospital = "thevoid";
+    public const string GamePlayMusic_Level2 = "trenox8-frozen-nightmare-305204";
     public const string PauseScreenMusic = "enigma horror sound";
     public const string BattleMusic = "silent-escape-survival-thriller";
     public const string Mini_BossMusic = "Mini_Boss";
     public const string Final_BossMusic = "Final_Boss";
+    public const string First_BossMusic = "First_Boss";
     public const string FootstepsSound = "Footsteps_Walking";
+    public const int FirstBossEnemyId = 4;
+    public const int IsaacFinalBossEnemyId = 5;
+    public const int TrevorMiniBossEnemyId = 6;
 }
 
 
@@ -151,7 +156,7 @@ public class SoundManage : MonoBehaviour
                 break;
 
             case "Level_2":
-                StopBackgroundMusic(); //find music first. haven't found it yet.
+                PlayBackgroundMusic(SoundManagerConstants.GamePlayMusic_Level2);
                 break;
 
             case "LV2_Dormitory":
@@ -163,9 +168,48 @@ public class SoundManage : MonoBehaviour
                 break;
 
             case "BattleScene":
-                PlayBackgroundMusic(SoundManagerConstants.BattleMusic);
+                PlayBackgroundMusic(GetBattleSceneMusic());
                 break;
         }
+    }
+
+    public string GetBattleSceneMusic()
+    {
+        BattleData battleData = GameValue.Instance != null ? GameValue.Instance.GetBattleData() : null;
+        if (battleData?.battleEnemys == null)
+        {
+            return SoundManagerConstants.BattleMusic;
+        }
+
+        if (BattleContainsEnemy(battleData, SoundManagerConstants.IsaacFinalBossEnemyId))
+        {
+            return SoundManagerConstants.Final_BossMusic;
+        }
+
+        if (BattleContainsEnemy(battleData, SoundManagerConstants.TrevorMiniBossEnemyId))
+        {
+            return SoundManagerConstants.Mini_BossMusic;
+        }
+
+        if(BattleContainsEnemy(battleData, SoundManagerConstants.FirstBossEnemyId))
+        {
+            return SoundManagerConstants.First_BossMusic;
+        }
+
+        return SoundManagerConstants.BattleMusic;
+    }
+
+    private bool BattleContainsEnemy(BattleData battleData, int enemyId)
+    {
+        foreach (EnemyValue enemy in battleData.battleEnemys)
+        {
+            if (enemy != null && enemy.GetID() == enemyId)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     #endregion
 

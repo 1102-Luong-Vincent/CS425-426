@@ -31,7 +31,7 @@ public class GameProcessManager : MonoBehaviour
         switch (sceneType)
         {
             case SceneType.GameStartScene: SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.GameplayMusic); break;
-            case SceneType.BattleScene: SoundManage.Instance.PlayBackgroundMusic(SoundManagerConstants.BattleMusic); break;
+            case SceneType.BattleScene: SoundManage.Instance.PlayBackgroundMusic(SoundManage.Instance.GetBattleSceneMusic()); break;
                 
         }
 
