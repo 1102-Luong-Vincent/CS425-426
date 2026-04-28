@@ -3,9 +3,10 @@ using UnityEngine;
 
 public static class CardEffect
 {
-    
+    static float rarityMultiplier = 1.0f;
     public static void UseEffect(string CardName, BattlePlayerValue player, List<EnemyValue> enemys, CardRarity rarity)
     {
+        rarityMultiplier = (1 + (int)rarity * 0.2f); //common 1.0, uncommon 1.2, rare 1.4, epic 1.6
         switch (CardName)
         {
             case "Adrenal Medkit":
@@ -76,53 +77,53 @@ public static class CardEffect
 
     static void DoAdrenalMedkit(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddHealth(0.15f);
+        player.AddHealth(rarityMultiplier * 0.15f);
     }
 
     static void DoAntidotePotion(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.IncreasesCriticalDamage(0.2f);
+        player.IncreasesCriticalDamage(rarityMultiplier * 0.2f);
     }
 
     static void DoBandage(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddHealth(0.50f);
+        player.AddHealth(rarityMultiplier * 0.50f);
     }
 
     static void DoReflexTonic(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(10);
+        player.AddAttack(rarityMultiplier * 10);
     }
 
     static void DoBerserkerWrap(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(0.2f);
+        player.AddAttack(rarityMultiplier * 0.2f);
     }
 
     static void DoBoostedBuzz(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(0.25f);
-        player.ReduceDefense(0.5f);
-        player.ReduceHealth(0.5f);
+        player.AddAttack(rarityMultiplier * 0.25f);
+        player.ReduceDefense(0.5f / rarityMultiplier);
+        player.ReduceHealth(0.5f / rarityMultiplier);
 
     }
 
     static void DoCombatPatch(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddDefense(0.25f);
-        player.AddHealth(0.25f);
+        player.AddDefense(rarityMultiplier * 0.25f);
+        player.AddHealth(rarityMultiplier * 0.25f);
     }
 
     static void DoStaminaCapsule(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.IncreasesCriticalDamageChance(0.20f);
+        player.IncreasesCriticalDamageChance(rarityMultiplier * 0.20f);
     }
 
     static void DoEnergyPotion(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddHealth(0.50f);
-        player.AddAttack(0.50f);
-        player.ReduceDefense(0.50f);
+        player.AddHealth(rarityMultiplier * 0.50f);
+        player.AddAttack(rarityMultiplier * 0.50f);
+        player.ReduceDefense(0.50f / rarityMultiplier);
     }
 
     static void DoFieldSurgeryKit(BattlePlayerValue player, List<EnemyValue> enemys)
@@ -137,57 +138,57 @@ public static class CardEffect
 
     static void DoLiquidCourageKit(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(5);
-        player.AddAttack(0.05f);
+        player.AddAttack(rarityMultiplier * 5);
+        player.AddDefense(rarityMultiplier * 0.05f);
     }
 
     static void DoMedkit(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddHealth(0.1f);
-        player.AddHealth(10);
+        player.AddHealth(rarityMultiplier * 0.1f);
+        player.AddHealth(rarityMultiplier * 10);
     }
 
     static void DoPhoenixShot(BattlePlayerValue player, List<EnemyValue> enemys)
     {
         foreach (var enemy in enemys)
         {
-            enemy.Health -= 10;
+            enemy.Health -= (int)rarityMultiplier * 10;
         }
     }
 
     static void DoEmergencyCapsule(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(5);
-        player.ReduceHealth(5);
+        player.AddAttack(rarityMultiplier * 5);
+        player.ReduceHealth(5 / rarityMultiplier);
     }
 
     static void DoFuryCatalyst(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddAttack(20);
-        player.ReduceHealth(0.2f);
+        player.AddAttack(rarityMultiplier * 20);
+        player.ReduceHealth(0.2f / rarityMultiplier);
     }
 
     static void DoRapidRecoveryInjector(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.AddHealth(0.5f);
-        player.ReduceDefense(0.2f);
+        player.AddHealth(rarityMultiplier * 0.5f);
+        player.ReduceDefense(0.2f/rarityMultiplier);
 
     }
 
     static void DoRevivalSerum(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        enemys[0].Health -= 100;
+        enemys[0].Health -= (int)rarityMultiplier * 100;
     }
 
     static void DoStimulantWrap(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.ReduceHealth(0.2f);
-        player.AddAttack(0.2f);
+        player.ReduceHealth(0.2f / rarityMultiplier);
+        player.AddAttack(rarityMultiplier * 0.2f);
     }
 
     static void DoSyringe(BattlePlayerValue player, List<EnemyValue> enemys)
     {
-        player.ReduceHealth(0.2f);
-        player.AddDefense(0.2f);
+        player.ReduceHealth(0.2f / rarityMultiplier);
+        player.AddDefense(rarityMultiplier * 0.2f);
     }
 }
