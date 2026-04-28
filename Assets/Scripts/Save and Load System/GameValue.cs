@@ -78,6 +78,7 @@ public class GameValue : MonoBehaviour
     //record data for defeated enemies 
     private HashSet<int> defeatedEnemies  = new HashSet<int>();
     private readonly HashSet<string> collectedInteractableIds = new HashSet<string>();
+    private readonly Dictionary<int, Vector3> enemyPositions = new Dictionary<int, Vector3>();
     private bool hasPendingPlayerPosition = false;
     private Vector3 pendingPlayerPosition = Vector3.zero;
     private bool suppressAutoSaveForNextSceneLoad = false;
@@ -122,6 +123,7 @@ public class GameValue : MonoBehaviour
         battleData = null;
         defeatedEnemies.Clear();
         collectedInteractableIds.Clear();
+        enemyPositions.Clear();
         hasPendingPlayerPosition = false;
         pendingPlayerPosition = Vector3.zero;
         suppressAutoSaveForNextSceneLoad = false;
@@ -294,6 +296,7 @@ public class GameValue : MonoBehaviour
         {
             SetDefeatedEnemyIds(saveData.world.defeatedEnemyIds);
             SetCollectedInteractableIds(saveData.world.collectedInteractableIds);
+            SetEnemyPositionSaveData(saveData.world.enemyPositions);
             playerValue.keyInteractable.Clear();
 
             if (saveData.world.keyInteractableIds != null)
@@ -311,6 +314,7 @@ public class GameValue : MonoBehaviour
         {
             SetDefeatedEnemyIds(null);
             SetCollectedInteractableIds(null);
+            SetEnemyPositionSaveData(null);
             playerValue.keyInteractable.Clear();
         }
 
@@ -394,6 +398,7 @@ public class GameValue : MonoBehaviour
     public void DefeatedEnemies(int worldEnemyID)
     {
         defeatedEnemies.Add(worldEnemyID);
+        enemyPositions.Remove(worldEnemyID);
     }
 
     public bool IsEnemyDefeated(int worldEnemyID)
@@ -424,6 +429,36 @@ public class GameValue : MonoBehaviour
         return collectedInteractableIds.OrderBy(id => id).ToList();
     }
 
+    public List<EnemyPositionSaveData> GetEnemyPositionSaveData()
+    {
+        return enemyPositions
+            .Where(pair => !defeatedEnemies.Contains(pair.Key))
+            .OrderBy(pair => pair.Key)
+            .Select(pair => new EnemyPositionSaveData(pair.Key, pair.Value))
+            .ToList();
+    }
+
+    public void SetEnemyPosition(int worldEnemyID, Vector3 position)
+    {
+        if (worldEnemyID <= 0 || defeatedEnemies.Contains(worldEnemyID))
+        {
+            return;
+        }
+
+        enemyPositions[worldEnemyID] = position;
+    }
+
+    public bool TryGetEnemyPosition(int worldEnemyID, out Vector3 position)
+    {
+        if (worldEnemyID <= 0 || defeatedEnemies.Contains(worldEnemyID))
+        {
+            position = Vector3.zero;
+            return false;
+        }
+
+        return enemyPositions.TryGetValue(worldEnemyID, out position);
+    }
+
     public void SetDefeatedEnemyIds(IEnumerable<int> enemyIds)
     {
         defeatedEnemies.Clear();
@@ -436,6 +471,29 @@ public class GameValue : MonoBehaviour
         foreach (int enemyId in enemyIds)
         {
             defeatedEnemies.Add(enemyId);
+            enemyPositions.Remove(enemyId);
+        }
+    }
+
+    public void SetEnemyPositionSaveData(IEnumerable<EnemyPositionSaveData> positions)
+    {
+        enemyPositions.Clear();
+
+        if (positions == null)
+        {
+            return;
+        }
+
+        foreach (EnemyPositionSaveData positionData in positions)
+        {
+            if (positionData == null ||
+                positionData.worldEnemyID <= 0 ||
+                defeatedEnemies.Contains(positionData.worldEnemyID))
+            {
+                continue;
+            }
+
+            enemyPositions[positionData.worldEnemyID] = positionData.GetPosition();
         }
     }
 

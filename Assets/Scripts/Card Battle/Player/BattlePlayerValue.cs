@@ -356,11 +356,11 @@ public class BattlePlayerValue : MonoBehaviour
         else OnMaxHealthChanged -= listener;
     }
     #endregion
-    private void OnDestroy()
+
+    public void SaveBattleResultToPlayerValue()
     {
-        // set playervalue health after battle
         PlayerValue playerValue = GameValue.Instance.GetPlayerValue();
-        playerValue.SetHealth(Health);
+        playerValue.SetHealth(Mathf.Max(1, Health));
     }
 
     // Utility to add a resource

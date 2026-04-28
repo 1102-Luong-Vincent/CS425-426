@@ -242,20 +242,20 @@ public class PlayerValue
 
     public void SetPlayerSaveData(PlayerSaveData data)
     {
-        ClearWeapons();
-        ClearCard();
-        Materials.Clear();
-        Decks.Clear();
-
         if (data == null)
         {
             Debug.LogWarning("SetPlayerSaveData called with null data.");
             return;
         }
 
+        ClearWeapons();
+        ClearCard();
+        Materials.Clear();
+        Decks.Clear();
+
         // 重新加载基本数据，restore base stats
-        Health = data.health;
-        MaxHealth = data.maxHealth;
+        MaxHealth = Mathf.Max(1, data.maxHealth);
+        Health = Mathf.Clamp(data.health, 1, MaxHealth);
         energy = data.energy;
         activeDeckIndex = data.activeDeckIndex;
 

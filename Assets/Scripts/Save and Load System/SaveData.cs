@@ -63,6 +63,7 @@ public class WorldSaveData
     public List<int> defeatedEnemyIds = new();
     public List<string> collectedInteractableIds = new();
     public List<string> keyInteractableIds = new();
+    public List<EnemyPositionSaveData> enemyPositions = new();
 
     public WorldSaveData() { }
 
@@ -71,6 +72,31 @@ public class WorldSaveData
         defeatedEnemyIds = gameValue.GetDefeatedEnemyIds();
         collectedInteractableIds = gameValue.GetCollectedInteractableIds();
         keyInteractableIds = gameValue.GetPlayerValue().keyInteractable.ToList();
+        enemyPositions = gameValue.GetEnemyPositionSaveData();
+    }
+}
+
+[System.Serializable]
+public class EnemyPositionSaveData
+{
+    public int worldEnemyID;
+    public float x;
+    public float y;
+    public float z;
+
+    public EnemyPositionSaveData() { }
+
+    public EnemyPositionSaveData(int worldEnemyID, Vector3 position)
+    {
+        this.worldEnemyID = worldEnemyID;
+        x = position.x;
+        y = position.y;
+        z = position.z;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return new Vector3(x, y, z);
     }
 }
 
