@@ -2741,6 +2741,11 @@ MonoBehaviour:
   itemColor: {r: 0, g: 1, b: 0, a: 1}
   enemyColor: {r: 1, g: 0, b: 0, a: 1}
   doorColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  windowPanel: {fileID: 0}
+  windowPanelKey: {fileID: 0}
+  HospitalWindowPanel: {fileID: 0}
+  tutorialNote: {fileID: 0}
+  IsaacNote: {fileID: 0}
 --- !u!1 &3462335441806286963
 GameObject:
   m_ObjectHideFlags: 0
@@ -5606,7 +5611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e27ddcbbee03634fba12d178f3b227c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkipSequence: 1
+  SkipSequence: 0
   DoorTrigger: {fileID: 0}
   tutorialZombie: {fileID: 0}
   bedroomDoorOpened: {fileID: 0}
