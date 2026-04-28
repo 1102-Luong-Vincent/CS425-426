@@ -17,12 +17,13 @@ public class SequenceManager : MonoBehaviour
     public Button SortButton2;
     public Button DeckButton;
     public Button CombineButton;
+    public Button CombineButton2;
     public Button UpgradeButton;
     public Button OptionsButton;
     public GameObject camera;
     public GameObject WeaponBlocker;
     public GameObject ItemBlocker;
-
+    
     // sequences we are managing:
     GameStartSequence gamestartsequence;
     private void Awake()

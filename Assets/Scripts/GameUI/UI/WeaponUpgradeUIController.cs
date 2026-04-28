@@ -44,6 +44,7 @@ using TMPro;
 
 public class WeaponUpgradeUIController : PanelControl
 {
+    
     [Header("Panels")]
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private GameObject resultPanel;
@@ -291,5 +292,6 @@ public class WeaponUpgradeUIController : PanelControl
     {
         if (selectPanel != null) selectPanel.SetActive(false);
         if (resultPanel != null) resultPanel.SetActive(true);
+        GameValue.Instance.FirstUpgradeFlag = true;
     }
 }

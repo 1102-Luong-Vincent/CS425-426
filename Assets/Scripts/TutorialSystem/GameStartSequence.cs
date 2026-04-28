@@ -84,6 +84,12 @@ public class GameStartSequence : BaseSequence
         //start combine tutorial
         yield return StartCoroutine(CardCombineTutorial());
 
+        //start weapon upgrade tutorial
+        yield return StartCoroutine(UpgradeTutorial());
+
+        //finish tutorial
+        yield return StartCoroutine(FinishTutorial());
+
         Cleanup();
 
         yield return null;
@@ -260,7 +266,7 @@ public class GameStartSequence : BaseSequence
 
         //wait for battle scene to load
         yield return new WaitUntil(() => GameValue.Instance.GetCurrentScence() == SceneType.BattleScene);
-
+        yield return null;
         GameObject battleCanvas = GameObject.Find("BattleCanvas");
         SequenceManager.Instance.WeaponBlocker.transform.SetParent(battleCanvas.transform, true);
         SequenceManager.Instance.ItemBlocker.transform.SetParent(battleCanvas.transform, true);
@@ -303,19 +309,22 @@ public class GameStartSequence : BaseSequence
         StartCoroutine(FadePanelOut("CombatTooltipPanel3", true));
         yield return StartCoroutine(FadePanelOut("CombatTooltipPanel4", true));
         //unlock the rest of the combat system
+        StartCoroutine(FadePanelIn("CombatTooltipPanel5"));
         Destroy(SequenceManager.Instance.WeaponBlocker);
         Destroy(SequenceManager.Instance.ItemBlocker);
 
+        // wait for battle scene to finish
+        yield return new WaitUntil(() => GameValue.Instance.GetCurrentScence() == SceneType.GameStartScene);
+        yield return null;
+        DestroyPanel("CombatTooltipPanel5");
 
 
-        yield return new WaitForSeconds(1f);
     }
 
     public IEnumerator CardCombineTutorial()
     {
         int originalCardCount = GameValue.Instance.GetPlayerValue().GetCardCount();
-        // wait for battle scene to finish
-        yield return new WaitUntil(() => GameValue.Instance.GetCurrentScence() == SceneType.GameStartScene);
+
         yield return new WaitForSeconds(1f);
 
         //prompt user to open inventory
@@ -350,18 +359,54 @@ public class GameStartSequence : BaseSequence
         yield return StartCoroutine(FadePanelIn("CombineTutorialPanel2"));
         yield return new WaitUntil(() => CardCombineManager.Instance.BothSlotsOccupied() == true);
 
+        SequenceManager.Instance.CombineButton2.interactable = false;
         //prompt user to click combine and wait for result
         yield return StartCoroutine(FadePanelOut("CombineTutorialPanel2", true));
         yield return StartCoroutine(FadePanelIn("CombineTutorialPanel3"));
+        SequenceManager.Instance.CombineButton2.interactable = true;
 
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetCardCount() < originalCardCount);
 
 
         yield return StartCoroutine(FadePanelOut("CombineTutorialPanel3", true));
 
-        yield return null;
+        yield return new WaitForSeconds(1f);
     }
 
+    public IEnumerator UpgradeTutorial()
+    {
+        SequenceManager.Instance.CombineButton.interactable = false;
+
+        //prompt user to open upgrade menu
+        yield return StartCoroutine(FadePanelIn("UpgradeTooltipPanel1"));
+        SequenceManager.Instance.UpgradeButton.interactable = true;
+        yield return new WaitUntil(() => PlayerMenuManager.Instance.GetCurrentState() == PlayerMenuManager.MenuState.Upgrade);
+
+        //prompt uesr to upgrade weapon
+        yield return StartCoroutine(FadePanelOut("UpgradeTooltipPanel1", true));
+
+        //wait for player to upgrade weapon
+        yield return StartCoroutine(FadePanelIn("UpgradeTooltipPanel2"));
+        yield return new WaitUntil(() => GameValue.Instance.FirstUpgradeFlag == true);
+        yield return StartCoroutine(FadePanelOut("UpgradeTooltipPanel2", true));
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    public IEnumerator FinishTutorial()
+    {
+        yield return StartCoroutine(FadePanelIn("InventoryTutorialPanel2"));
+        PlayerMenuManager.Instance.menuToggleEnabled = true;
+        
+        yield return new WaitUntil(() => PlayerMenuManager.Instance.IsMenuOpen() == false);
+
+        yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel2", true));
+        yield return StartCoroutine(FadePanelIn("FinalControlsPanel"));
+        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(FadePanelOut("FinalControlsPanel", true));
+
+        yield return new WaitForSeconds(1f);
+    }
 
     public void Cleanup()
     {

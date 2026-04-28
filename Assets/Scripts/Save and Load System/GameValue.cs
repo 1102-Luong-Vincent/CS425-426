@@ -83,7 +83,7 @@ public class GameValue : MonoBehaviour
     private Vector3 pendingPlayerPosition = Vector3.zero;
     private bool suppressAutoSaveForNextSceneLoad = false;
     //private int nextEnemyID = 1;
-
+    public bool FirstUpgradeFlag = false;
     private void Awake()
     {
         if (Instance != null && Instance != this)

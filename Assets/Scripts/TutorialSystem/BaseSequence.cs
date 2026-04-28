@@ -10,6 +10,11 @@ public abstract class BaseSequence : MonoBehaviour
     public IEnumerator FadePanelIn(string PanelName)
     {
         TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        if(panel == null)
+        {
+            Debug.LogError($"BaseSequence: No TutorialPanel found with name {PanelName}");
+            yield break;
+        }
         float alpha = 0f;
         while (alpha < 1f)
         {
@@ -23,6 +28,10 @@ public abstract class BaseSequence : MonoBehaviour
     public IEnumerator FadePanelOut(string PanelName, bool DestroyOnFade)
     {
         TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        if(panel == null) {
+           Debug.LogError($"BaseSequence: No TutorialPanel found with name {PanelName}");
+            yield break;
+        }
         float alpha = 1f;
         while (alpha > 0f)
         {
