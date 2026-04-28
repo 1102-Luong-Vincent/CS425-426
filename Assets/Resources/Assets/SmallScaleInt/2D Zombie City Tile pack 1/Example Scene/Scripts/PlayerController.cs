@@ -103,6 +103,7 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             if (Instance == null)
             {
                 Instance = this;
+                SceneManager.sceneLoaded += OnSceneLoaded;
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -904,6 +905,23 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
         private void OnDisable()
         {
             SoundManage.Instance?.StopFootSteps();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+                Instance = null;
+            }
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == "MainMenuScene")
+            {
+                Destroy(gameObject);
+            }
         }
 
         public void CheckWeapon()

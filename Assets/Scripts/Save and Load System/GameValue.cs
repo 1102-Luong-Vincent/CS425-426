@@ -150,6 +150,19 @@ public class GameValue : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (!TryGetSceneType(scene.name, out SceneType loadedScene))
+        {
+            if (string.Equals(scene.name, "MainMenuScene", StringComparison.OrdinalIgnoreCase))
+            {
+                CurrentScene = SceneType.None;
+                hasPendingPlayerPosition = false;
+            }
+
+            suppressAutoSaveForNextSceneLoad = false;
+            return;
+        }
+
+        CurrentScene = loadedScene;
         ApplyPendingPlayerPositionIfPossible();
 
         if (suppressAutoSaveForNextSceneLoad)
@@ -158,10 +171,15 @@ public class GameValue : MonoBehaviour
             return;
         }
 
-        if (ShouldAutoSaveScene(CurrentScene))
+        if (ShouldAutoSaveScene(loadedScene))
         {
             StartCoroutine(AutoSaveAfterSceneReady());
         }
+    }
+
+    private bool TryGetSceneType(string sceneName, out SceneType sceneType)
+    {
+        return Enum.TryParse(sceneName, true, out sceneType) && sceneType != SceneType.None;
     }
 
     public void LoadSceneByEnum(SceneType scene)
