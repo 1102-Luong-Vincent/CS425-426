@@ -32,6 +32,8 @@ public class InventoryUIControl :  PanelControl
     {
         public Button SortAZButton;
         public Button SortZAButton;
+        public Button SortRarityAscButton;
+        public Button SortRarityDescButton;
     }
 
 
@@ -53,6 +55,9 @@ public class InventoryUIControl :  PanelControl
         HealthText.text = playerValue.GetHealth().ToString();
         //EnergyText.text = playerValue.GetEnergy().ToString();
         CardsText.text = playerValue.HadCardsLibrary.Count.ToString();
+
+        // color deck buttons based on active deck
+
 
         //display available weapons
         InstantiateWeaponCards();
@@ -115,15 +120,35 @@ public class InventoryUIControl :  PanelControl
     {
         OnGameMenuButtonClick(buttons.SortAZButton, OnSortAZButtonClick);
         OnGameMenuButtonClick(buttons.SortZAButton, OnSortZAButtonClick);
+        OnGameMenuButtonClick(buttons.SortRarityAscButton, OnSortRarityAscButtonClick);
+        OnGameMenuButtonClick(buttons.SortRarityDescButton, OnSortRarityDescButtonClick);
     }
 
     void OnSortAZButtonClick()
     {
+        buttons.SortAZButton.gameObject.SetActive(false);
+        buttons.SortZAButton.gameObject.SetActive(true);
         SortCards("Alpha", "Ascending");
     }
     void OnSortZAButtonClick()
     {
+        buttons.SortAZButton.gameObject.SetActive(true);
+        buttons.SortZAButton.gameObject.SetActive(false);
         SortCards("Alpha", "Descending");
+    }
+
+    void OnSortRarityAscButtonClick()
+    {
+        buttons.SortRarityAscButton.gameObject.SetActive(false);
+        buttons.SortRarityDescButton.gameObject.SetActive(true);
+        SortCards("Rarity", "Ascending");
+    }
+
+    void OnSortRarityDescButtonClick()
+    {
+        buttons.SortRarityAscButton.gameObject.SetActive(true);
+        buttons.SortRarityDescButton.gameObject.SetActive(false);
+        SortCards("Rarity", "Descending");
     }
 
     void SortCards(string sortType, string order)
@@ -152,6 +177,27 @@ public class InventoryUIControl :  PanelControl
                 for (int i = 0; i < children.Count; i++)
                 {
                     children[i].SetSiblingIndex(i);
+                }
+                break;
+            case "Rarity":
+                List<Transform> rarityChildren = new List<Transform>();
+                foreach (Transform child in CardZone)
+                {
+                    if (child.name != "MenuCardSlot(Clone)")
+                        rarityChildren.Add(child);
+                }
+                switch (order)
+                {
+                    case InventoryConstants.Ascending:
+                        rarityChildren = rarityChildren.OrderBy(child => child.GetComponent<MenuCardControl>().GetCardValue().rarity).ToList();
+                        break;
+                    case InventoryConstants.Descending:
+                        rarityChildren = rarityChildren.OrderByDescending(child => child.GetComponent<MenuCardControl>().GetCardValue().rarity).ToList();
+                        break;
+                }
+                for(int i = 0; i < rarityChildren.Count; i++)
+                {
+                    rarityChildren[i].SetSiblingIndex(i);
                 }
                 break;
             default:

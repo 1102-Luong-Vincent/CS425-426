@@ -45,9 +45,14 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         playerValue = GameValue.Instance.GetPlayerValue();
-        OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0));
-        OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1));
-        OnGameMenuButtonClick(DeckButton3, () => OnDeckButtonClick(2));
+        OnGameMenuButtonClick(DeckButton1, () => OnDeckButtonClick(0, DeckButton1));
+        OnGameMenuButtonClick(DeckButton2, () => OnDeckButtonClick(1, DeckButton2));
+        OnGameMenuButtonClick(DeckButton3, () => OnDeckButtonClick(2, DeckButton3));
+        DeckButton1.gameObject.GetComponent<Image>().color = new Color(30, 47, 173);
+        DeckButton2.gameObject.GetComponent<Image>().color = new Color(0, 0, 30);
+        DeckButton3.gameObject.GetComponent<Image>().color = new Color(0, 0, 30);
+
+        
     }
 
     void CardClicked(GameObject card)
@@ -158,8 +163,15 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    void OnDeckButtonClick(int index)
+    void OnDeckButtonClick(int index, Button clickedButton)
     {
+        DeckButton1.gameObject.GetComponent<Image>().color = new Color(0, 0, 30);
+        DeckButton2.gameObject.GetComponent<Image>().color = new Color(0, 0, 30);
+        DeckButton3.gameObject.GetComponent<Image>().color = new Color(0, 0, 30);
+
+        clickedButton.gameObject.GetComponent<Image>().color = new Color(30, 47, 173);
+        //set color of clicked button
+
         playerValue.setActiveDeck(index);
         control.RefreshInventory();
     }
