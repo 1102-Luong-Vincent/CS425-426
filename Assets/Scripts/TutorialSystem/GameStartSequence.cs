@@ -49,10 +49,6 @@ public class GameStartSequence : BaseSequence
         //StartCoroutine(PlayGameStartSequence());
     }
 
-    private void Update()
-    {
-
-    }
 
     public override IEnumerator RunSequence()
     {
@@ -274,9 +270,9 @@ public class GameStartSequence : BaseSequence
         //wait for player turn to start
         yield return new WaitUntil(() => BattleManage.Instance.Turn == 1);
         StartCoroutine(FadePanelIn("CombatTutorialPanel"));
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(FadePanelIn("CombatTooltipPanel1"));
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(FadePanelIn("CombatTooltipPanel2"));
 
         //allow player to click on weapon
@@ -297,7 +293,7 @@ public class GameStartSequence : BaseSequence
         StartCoroutine(FadePanelIn("CombatTutorialPanel"));
         yield return new WaitForSeconds(1f);
         StartCoroutine(FadePanelIn("CombatTooltipPanel3"));
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         yield return StartCoroutine(FadePanelIn("CombatTooltipPanel4"));
         SequenceManager.Instance.ItemBlocker.SetActive(false);
 
@@ -395,6 +391,7 @@ public class GameStartSequence : BaseSequence
         DestroyPanel("CombatTooltipPanel2");
         DestroyPanel("CombatTooltipPanel3");
         DestroyPanel("CombatTooltipPanel4");
+        DestroyPanel("CombineTooltipPanel5");
         DestroyPanel("CombineTutorialPanel1");
         DestroyPanel("CombineTutorialPanel2");
         DestroyPanel("CombineTutorialPanel3");

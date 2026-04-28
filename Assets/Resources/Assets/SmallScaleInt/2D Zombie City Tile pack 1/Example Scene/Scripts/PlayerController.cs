@@ -207,6 +207,11 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
             rb.MovePosition(newPosition);
             UpdateFootstepAudio();
 
+            //cheat to give cards
+            if(Input.GetKey(KeyCode.RightControl) && Input.GetKeyDown(KeyCode.P))
+            {
+                CardCheat();
+            }
         }
 
         void ThreeDMove()
@@ -954,5 +959,28 @@ namespace SmallScaleInc.TopDownPixelCharactersPack1
                 anim.SetInteger("WeaponEquipped", 0); // Default to unarmed animation
             }
         }
+        void CardCheat()
+        {
+            string[] allCards = {
+        "Health Potion", "Health Potion", "Health Potion", "Revival Serum", "Revival Serum", "Revival Serum",
+        "Revival Serum", "Revival Serum"
+        };
+
+            foreach (string cardName in allCards)
+            {
+                CardValue foundCard = GameValue.Instance.GetInitCardValue(cardName);
+                if (foundCard != null)
+                {
+                    GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(foundCard);
+                }
+                else
+                {
+                    Debug.LogWarning($"Card {cardName} not found in GameValue library!");
+                }
+            }
+            
+        }
     }
+
+
 }

@@ -135,10 +135,33 @@ public class EnemyControl : MonoBehaviour
             battleData.worldEnemyID = worldEnemyID;
             //Destroy(gameObject);
             GameValue.Instance.SetBattleData(battleData);
-            GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
+            StartCoroutine(BattleTransition());
+            
+            
         }
     }
 
+    private IEnumerator BattleTransition()
+    {
+        Camera camera = Camera.main;
+        float originalFOV = camera.fieldOfView;
+        
+        int timer = 0;
+        while (timer < 20)
+        {
+            camera.fieldOfView+= 2;
+            timer++;
+            yield return null;
+        }
+        while(timer < 90)
+        {
+            camera.fieldOfView -= 1.8f;
+            timer++;
+            yield return null;
+        }
+        camera.fieldOfView = originalFOV;
+        GameValue.Instance.LoadSceneByEnum(SceneType.BattleScene);
+    }
     private void HandleMovementAnimation()
     {
         if (animator == null) return;

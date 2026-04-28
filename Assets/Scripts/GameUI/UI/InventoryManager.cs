@@ -57,8 +57,12 @@ public class InventoryManager : MonoBehaviour
 
     void CardClicked(GameObject card)
     {
-        Debug.Log("card clicked: " + card.GetComponent<MenuCardControl>().GetCardValue().CardName);
+
         PlayerValue player = GameValue.Instance.GetPlayerValue();
+        if(card.GetComponent<MenuCardControl>().GetCardValue() == null)
+        {
+            return;
+        }
         // if clicking in equipped cards, remove from deck
         if (card.tag == "EquipCard")
         {

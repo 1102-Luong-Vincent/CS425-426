@@ -116,8 +116,14 @@ public class BattleEnemyManager : MonoBehaviour
             anim = enemy.gameObject.GetComponent<Animator>();
             anim.SetBool("Attack2West", true);
             anim.SetBool("isAttackAttacking", true);
-            BattleManage.Instance.GetBattlePlayerController().GetComponent<Animator>().SetTrigger("Damage");
-
+            if (BattlePlayerValue.Instance.GetPlayerHealth() > 0)
+            {
+                BattleManage.Instance.GetBattlePlayerController().GetComponent<Animator>().SetTrigger("Damage");
+            }
+            else
+            {
+                BattleManage.Instance.GetBattlePlayerController().GetComponent<Animator>().SetTrigger("Death");
+            }
             if (audioSource != null && playerHitSound != null)
             {
                 audioSource.PlayOneShot(playerHitSound);

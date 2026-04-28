@@ -86,7 +86,8 @@ public class BattleManage : MonoBehaviour
             {
                 SetBattleOver(true);
                 BattlePlayerUIManager.Instance.HideAllCards();
-                BattleUIManager.DisplayGameOver();
+                StartCoroutine(BattleDefeat());
+                
             }
         } else
         {
@@ -131,6 +132,12 @@ public class BattleManage : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         EndBattle();
+    }
+
+    public IEnumerator BattleDefeat()
+    {
+        yield return new WaitForSeconds(1);
+        BattleUIManager.DisplayGameOver();
     }
     void EndBattle() //modified to display a win panel for the rewards. 
     {

@@ -255,7 +255,8 @@ public class BattlePlayerValue : MonoBehaviour
 
     public void ReduceHealth(float healthPercentage)
     {
-        if (healthPercentage <= 0) return;
+        if (healthPercentage <= 0)return;
+
         int healthToReduce = Mathf.RoundToInt(MaxHealth * healthPercentage);
         ReduceHealth(healthToReduce);
     }
@@ -265,6 +266,7 @@ public class BattlePlayerValue : MonoBehaviour
         if (healthAmount <= 0) return;
         int newHealth = Mathf.Max(1, Health - healthAmount);
         Health = newHealth;
+
     }
 
     #region Get
@@ -387,6 +389,10 @@ public class BattlePlayerValue : MonoBehaviour
         return anim;
     }
 
+    public int GetPlayerHealth()
+    {
+        return Health;  
+    }
     public void SetWeaponAnimation()
     {
         WeaponValue currentWeapon = GameValue.Instance.GetPlayerValue().EquipmentWeapon;
