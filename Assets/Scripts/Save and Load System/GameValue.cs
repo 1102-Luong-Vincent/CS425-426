@@ -83,7 +83,6 @@ public class GameValue : MonoBehaviour
     private bool suppressAutoSaveForNextSceneLoad = false;
     //private int nextEnemyID = 1;
 
-
     private void Awake()
     {
         if (Instance != null && Instance != this)

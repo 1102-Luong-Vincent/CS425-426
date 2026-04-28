@@ -137,6 +137,7 @@ public class ItemControl : MonoBehaviour
         RectTransform rt = windowPanel.GetComponent<RectTransform>();
         rt.anchoredPosition = Vector2.zero;
         SetObjectiveVisible(false);
+        SoundManage.Instance.StopFootSteps();
         Time.timeScale = 0f;
     }
     public void CloseWindow()
