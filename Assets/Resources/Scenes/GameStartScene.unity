@@ -492,6 +492,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: DoorTrigger
+      value: 
+      objectReference: {fileID: 850304708}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: SkipSequence
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: tutorialZombie
+      value: 
+      objectReference: {fileID: 1904962082}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: frontDoorClosed
+      value: 
+      objectReference: {fileID: 140432643}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: frontDoorOpened
+      value: 
+      objectReference: {fileID: 2099321000}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: bedroomDoorClosed
+      value: 
+      objectReference: {fileID: 30680252}
+    - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: bedroomDoorOpened
+      value: 
+      objectReference: {fileID: 2099321000}
     - target: {fileID: 1945364313981863642, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -580,8 +608,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3896078548115538229, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 2000968801}
+    - target: {fileID: 3896078548115538229, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: playercontroller
+      value: 
+      objectReference: {fileID: 2000968802}
     - target: {fileID: 3914836634477117874, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176038146645055595, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176038146645055595, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4176038146645055595, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4699466758230752328, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
@@ -639,6 +687,18 @@ PrefabInstance:
     - target: {fileID: 7853803012973567212, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_Name
       value: UI Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072480234005427558, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072480234005427558, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9072480234005427558, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7112,6 +7172,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eccbf779f128f4946b129d28554082da, type: 3}
+--- !u!1 &850304708 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1339652607056951652, guid: eccbf779f128f4946b129d28554082da, type: 3}
+  m_PrefabInstance: {fileID: 850304707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1040582529
 GameObject:
   m_ObjectHideFlags: 0
@@ -9029,6 +9094,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+--- !u!1 &1904962082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+  m_PrefabInstance: {fileID: 1904962081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1905158800
 GameObject:
   m_ObjectHideFlags: 0
@@ -12514,6 +12584,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01706c5a38a31cc4e8bf919adf3f526c, type: 3}
+--- !u!1 &2000968801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6680211341883172021, guid: 01706c5a38a31cc4e8bf919adf3f526c, type: 3}
+  m_PrefabInstance: {fileID: 2000968800}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2000968802 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1604492117741652125, guid: 01706c5a38a31cc4e8bf919adf3f526c, type: 3}
+  m_PrefabInstance: {fileID: 2000968800}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14d73210ef833024bb44ad7c5ddc4638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2009039618
 PrefabInstance:
   m_ObjectHideFlags: 0
