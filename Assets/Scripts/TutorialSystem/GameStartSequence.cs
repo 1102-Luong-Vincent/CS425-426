@@ -222,6 +222,12 @@ public class GameStartSequence : BaseSequence
         yield return StartCoroutine(FadePanelOut("InventoryTutorialPanel2", false));
         PlayerMenuManager.Instance.menuToggleEnabled = false;
 
+        //update player's objective
+        if (GameValue.Instance.GetCurrentObjective() == ObjectiveConstants.CompleteTutorial)
+        {
+            GameValue.Instance.SetCurrentObjective(ObjectiveConstants.LeaveStartRoom);
+        }
+
         yield return null;
     }
 
@@ -353,10 +359,7 @@ public class GameStartSequence : BaseSequence
         yield return StartCoroutine(FadePanelIn("CombineTutorialPanel3"));
 
         yield return new WaitUntil(() => GameValue.Instance.GetPlayerValue().GetCardCount() < originalCardCount);
-        if (GameValue.Instance.GetCurrentObjective() == ObjectiveConstants.CompleteTutorial)
-        {
-            GameValue.Instance.SetCurrentObjective(ObjectiveConstants.LeaveStartRoom);
-        }
+
 
         yield return StartCoroutine(FadePanelOut("CombineTutorialPanel3", true));
 
@@ -377,7 +380,25 @@ public class GameStartSequence : BaseSequence
         SequenceManager.Instance.UpgradeButton.interactable = true;
         SequenceManager.Instance.OptionsButton.interactable = true;
         PlayerMenuManager.Instance.menuToggleEnabled = true;
-        if(DoorTrigger != null)
+        DestroyPanel("MoveTutorialPanel");
+        DestroyPanel("SprintTutorialPanel");
+        DestroyPanel("InteractTutorialPanel");
+        DestroyPanel("InteractTooltipPanel");
+        DestroyPanel("InventoryTutorialPanel");
+        DestroyPanel("InventoryTooltipPanel");
+        DestroyPanel("CardSwapTutorialPanel1");
+        DestroyPanel("CardSwapTutorialPanel2");
+        DestroyPanel("WeaponTooltipPanel");
+        DestroyPanel("InventoryTutorialPanel2");
+        DestroyPanel("CombatTutorialPanel");
+        DestroyPanel("CombatTooltipPanel1");
+        DestroyPanel("CombatTooltipPanel2");
+        DestroyPanel("CombatTooltipPanel3");
+        DestroyPanel("CombatTooltipPanel4");
+        DestroyPanel("CombineTutorialPanel1");
+        DestroyPanel("CombineTutorialPanel2");
+        DestroyPanel("CombineTutorialPanel3");
+        if (DoorTrigger != null)
             DoorTrigger.SetActive(true);
     }
 }

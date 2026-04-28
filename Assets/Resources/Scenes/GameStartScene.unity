@@ -507,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 429286788}
     - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: SkipSequence
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1871032050109465056, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: tutorialZombie
@@ -7359,6 +7359,10 @@ PrefabInstance:
     - target: {fileID: 6390523133410768262, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_Size.y
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7973225903751537157, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 87786472300962072, guid: eccbf779f128f4946b129d28554082da, type: 3}

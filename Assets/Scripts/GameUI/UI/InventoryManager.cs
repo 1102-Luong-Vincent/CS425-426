@@ -52,24 +52,42 @@ public class InventoryManager : MonoBehaviour
 
     void CardClicked(GameObject card)
     {
-        // check to see if we have already selected a card
-        if (selectedCard == null)
+        Debug.Log("card clicked: " + card.GetComponent<MenuCardControl>().GetCardValue().CardName);
+        PlayerValue player = GameValue.Instance.GetPlayerValue();
+        // if clicking in equipped cards, remove from deck
+        if (card.tag == "EquipCard")
         {
-            selectedCard = card;
-            selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
+            Debug.Log("clicked equip card");
+            player.RemoveCardFromDeck(player.GetActiveDeckIndex(), card.GetComponent<MenuCardControl>().GetCardValue());
         }
-        else
+        // if clicking in library, add to deck (if we have space)
+        else if (card.tag == "BattleCard" && player.getDeckSize(player.GetActiveDeckIndex()) < 20)
         {
-            // if we have already selected a card, make sure we aren't swapping the same card with itself
-            if (selectedCard != card)
-            {
-                SwapCards(selectedCard, card);
-                selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
-                selectedCard = null;
-                control.RefreshInventory();
-            }
+            Debug.Log("clicked equip card");
+            player.AddCardToDeck(player.GetActiveDeckIndex(), card.GetComponent<MenuCardControl>().GetCardValue());
 
         }
+        //refresh current deck
+        playerValue.setActiveDeck(playerValue.GetActiveDeckIndex());
+        control.RefreshInventory();
+        //// check to see if we have already selected a card
+        //if (selectedCard == null)
+        //{
+        //    selectedCard = card;
+        //    selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
+        //}
+        //else
+        //{
+        //    // if we have already selected a card, make sure we aren't swapping the same card with itself
+        //    if (selectedCard != card)
+        //    {
+        //        SwapCards(selectedCard, card);
+        //        selectedCard.GetComponent<MenuCardControl>().ToggleSelected();
+        //        selectedCard = null;
+        //        control.RefreshInventory();
+        //    }
+
+        //}
 
     }
 

@@ -420,7 +420,7 @@ public class BattlePlayerValue : MonoBehaviour
             return;
         }
         
-        GameValue.Instance.GetPlayerValue().battleCardsList.Add(card);
+        GameValue.Instance.GetPlayerValue().HadCardsLibrary.Add(card);
         Debug.Log($"Added card to inventory: {card.CardName} ");
     }
 }

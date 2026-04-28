@@ -453,6 +453,87 @@ public class PlayerValue
 
         Debug.Log($"Added {resource.amount}x {resource.resourceName} to inventory!");
     }
+
+    public void RemoveCard(CardValue card)
+    {
+        HadCardsLibrary.Remove(card);
+        EquipmentCards.Remove(card);
+        battleCardsList.Remove(card);
+        foreach (var deck in Decks)
+        {
+            RemoveCardFromDeck(Decks.IndexOf(deck), card);
+        }
+    }
+
+    public void AddCardToDeck(int index, CardValue card)
+    {
+        if (index < 0 || index >= MAX_CARDS)
+        {
+            Debug.LogWarning($"Invalid card index: {index}");
+            return;
+        }
+        for(int i = 0; i < Decks[activeDeckIndex].Length; i++)
+        {
+            if (Decks[activeDeckIndex][i] == null)
+            {
+                Decks[activeDeckIndex][i] = card;
+                return;
+            }
+        }
+    }
+    public void RemoveCardFromDeck(int index, CardValue card)
+    {
+        Debug.Log($"Attempting to remove card {card.CardName} from deck {index}");
+        if (index < 0 || index >= MAX_CARDS)
+        {
+            Debug.LogWarning($"Invalid card index: {index}");
+            return;
+        }
+
+        for (int i = 0; i < Decks[index].Length; i++)
+        {
+            if (Decks[index][i] == card)
+            {
+                Decks[index][i] = null;
+                // only remove one instance of the card from the deck
+                break;
+            }
+        }
+
+        //compress deck to remove null gaps after removing card
+        for(int i = 0; i < Decks[index].Length - 1; i++)
+        {
+            Debug.Log("compressing deck to remove null gaps");
+            // if we find a null, search ahead in deck for next non-null card and move it up to fill gap
+            if (Decks[index][i] == null)
+            {
+                for (int j = i + 1; j < Decks[index].Length; j++)
+                {
+                    if (Decks[index][j] != null)
+                    {
+                        Decks[index][i] = Decks[index][j];
+                        Decks[index][j] = null;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public int getDeckSize(int index)
+    {
+        if (index < 0 || index >= Decks.Count)
+        {
+            Debug.LogWarning($"Invalid deck index: {index}");
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < MAX_CARDS; ++i)
+        {
+            if (Decks[index][i] != null) count++;
+        }
+        return count;
+    }
 }
 
 [System.Serializable]

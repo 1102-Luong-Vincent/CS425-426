@@ -35,6 +35,13 @@ public abstract class BaseSequence : MonoBehaviour
         yield return null;
     }
 
+    public void DestroyPanel(string PanelName)
+    {
+        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        if (panel != null)
+            Destroy(panel.gameObject);
+    }
+
     public IEnumerator LerpTransform(Transform T, Vector3 src, Vector3 dest, float eventTime)
     {
         float elapsedTime = 0f;
@@ -51,6 +58,6 @@ public abstract class BaseSequence : MonoBehaviour
         // This is a workaround to ensure that all objects in the scene are properly initialized before the sequence starts.
         // It forces a frame to pass, allowing all Start() methods to run.
         yield return null;
-        GameValue.Instance.LoadSceneByEnum(SceneType.GameStartScene);
+        GameValue.Instance.LoadSceneByEnum(GameValue.Instance.GetCurrentScence());
     }
 }

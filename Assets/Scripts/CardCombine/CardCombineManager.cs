@@ -202,9 +202,9 @@ public class CardCombineManager : PanelControl
         if (result != null)
         {
             Debug.Log("[Combine] SUCCESS → " + result.CardName);
+            player.RemoveCard(first);
+            player.RemoveCard(second);
 
-            player.HadCardsLibrary.Remove(first);
-            player.HadCardsLibrary.Remove(second);
             player.HadCardsLibrary.Add(result);
             ResultCard.SetCardUI(result);
             ClearAllSlots();

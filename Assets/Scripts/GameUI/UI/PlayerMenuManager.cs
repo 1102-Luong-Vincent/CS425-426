@@ -65,7 +65,7 @@ public class PlayerMenuManager : MonoBehaviour
     private void Update()
     {
         // Toggle menu with Tab or Escape key
-        if (Input.GetKeyDown(KeyCode.Tab) && menuToggleEnabled)
+        if (Input.GetKeyDown(KeyCode.Tab) && menuToggleEnabled && GameValue.Instance.GetCurrentScence() != SceneType.BattleScene)
         {
             if (currentState == MenuState.Closed && GameValue.Instance.GetCurrentScence() != SceneType.BattleScene)
             {
