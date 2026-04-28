@@ -43,6 +43,14 @@ public class UIManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     public void FadeToScene(SceneType scene,Vector3 pos)
     {
         fadeTransition.FadeToScene(scene,pos);
@@ -50,9 +58,20 @@ public class UIManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (string.Equals(scene.name, MainMenuSceneName, System.StringComparison.OrdinalIgnoreCase))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         ApplyMiniMapVisibility(scene.name);
 
-        if (scene.name == "BattleScene")
+        if (playerHealthHUD == null)
+        {
+            return;
+        }
+
+        if (string.Equals(scene.name, BattleSceneName, System.StringComparison.OrdinalIgnoreCase))
         {
             playerHealthHUD.SetActive(false);
         }

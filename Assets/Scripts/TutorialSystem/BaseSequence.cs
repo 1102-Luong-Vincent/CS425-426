@@ -9,7 +9,7 @@ public abstract class BaseSequence : MonoBehaviour
     public abstract IEnumerator RunSequence();
     public IEnumerator FadePanelIn(string PanelName)
     {
-        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        TutorialPanel panel = FindTutorialPanel(PanelName);
         if(panel == null)
         {
             Debug.LogError($"BaseSequence: No TutorialPanel found with name {PanelName}");
@@ -27,7 +27,7 @@ public abstract class BaseSequence : MonoBehaviour
 
     public IEnumerator FadePanelOut(string PanelName, bool DestroyOnFade)
     {
-        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        TutorialPanel panel = FindTutorialPanel(PanelName);
         if(panel == null) {
            Debug.LogError($"BaseSequence: No TutorialPanel found with name {PanelName}");
             yield break;
@@ -46,9 +46,15 @@ public abstract class BaseSequence : MonoBehaviour
 
     public void DestroyPanel(string PanelName)
     {
-        TutorialPanel panel = GameObject.Find(PanelName).GetComponent<TutorialPanel>();
+        TutorialPanel panel = FindTutorialPanel(PanelName);
         if (panel != null)
             Destroy(panel.gameObject);
+    }
+
+    private TutorialPanel FindTutorialPanel(string PanelName)
+    {
+        GameObject panelObject = GameObject.Find(PanelName);
+        return panelObject != null ? panelObject.GetComponent<TutorialPanel>() : null;
     }
 
     public IEnumerator LerpTransform(Transform T, Vector3 src, Vector3 dest, float eventTime)

@@ -80,6 +80,50 @@ public class SequenceManager : MonoBehaviour
         }
     }
 
+    public static void CancelActiveTutorial()
+    {
+        if (Instance != null)
+        {
+            Instance.CancelTutorial();
+        }
+    }
+
+    public void CancelTutorial()
+    {
+        StopAllCoroutines();
+        Time.timeScale = 1f;
+
+        if (gamestartsequence != null)
+        {
+            gamestartsequence.Cleanup();
+        }
+
+        if (PlayerMenuManager.Instance != null)
+        {
+            PlayerMenuManager.Instance.menuToggleEnabled = true;
+        }
+
+        if (WeaponBlocker != null)
+        {
+            Destroy(WeaponBlocker);
+        }
+
+        if (ItemBlocker != null)
+        {
+            Destroy(ItemBlocker);
+        }
+
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     private void RefreshSceneReferences()
     {
         playercontroller = FindFirstObjectByType<PlayerController>();

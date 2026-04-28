@@ -29,9 +29,13 @@ public class PlayerHUDController : MonoBehaviour
 
     void Start()
     {
-        player = GameValue.Instance.playerValue;
+        RefreshPlayerReference();
 
-        healthBar.maxValue = player.GetMaxHealth();
+        if (player != null)
+        {
+            healthBar.maxValue = player.GetMaxHealth();
+        }
+
         SetupObjectivePanel();
         UpdateHUD();
     }
@@ -48,6 +52,12 @@ public class PlayerHUDController : MonoBehaviour
 
     void UpdateHUD()
     {
+        RefreshPlayerReference();
+        if (player == null)
+        {
+            return;
+        }
+
         int currentHealth = player.GetHealth();
         int maxHealth = player.GetMaxHealth();
 
@@ -67,6 +77,14 @@ public class PlayerHUDController : MonoBehaviour
             objectiveText.text = objectiveDisplayText;
             ResizeObjectivePanel();
             SetObjectivePanelActive(showObjective && isObjectivePanelOpen && hasObjectiveContent);
+        }
+    }
+
+    private void RefreshPlayerReference()
+    {
+        if (GameValue.Instance != null)
+        {
+            player = GameValue.Instance.playerValue;
         }
     }
 

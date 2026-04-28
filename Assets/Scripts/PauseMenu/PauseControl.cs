@@ -173,6 +173,7 @@ public class PauseControl : MonoBehaviour
     {
         Time.timeScale = 1f; //make sure time scale is back to normal before going to main menu
         PlayButtonClickSound();
+        SequenceManager.CancelActiveTutorial();
         SceneManager.LoadScene("MainMenuScene"); //loads the main menu scene
 
         SetGameplayUIActive(false);

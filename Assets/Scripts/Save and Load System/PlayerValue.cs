@@ -52,7 +52,7 @@ public class PlayerValue
         InitPlayerDecks();
         setActiveDeck(activeDeckIndex);
         //≤‚ ‘≤ƒ¡œ
-        AddMaterial("Whetstone", 999);
+        AddMaterial("Whetstone", 10);
         //AddMaterial("Metal", 999);
     }
 

@@ -88,6 +88,7 @@ public class MainMenuManage : MonoBehaviour
         }
 
         audioSource.PlayOneShot(buttonClickSound);
+        SequenceManager.CancelActiveTutorial();
         GameValue.Instance.SetSaveData(continueSave);
     }
 
@@ -95,6 +96,7 @@ public class MainMenuManage : MonoBehaviour
     {
         Debug.Log("Remember to initialize GameValue");
         audioSource.PlayOneShot(buttonClickSound);
+        SequenceManager.CancelActiveTutorial();
         GameValue.Instance.ResetGameState();
         GameValue.Instance.ClearObjectiveProgress();
         GameValue.Instance.SetHappendStoryName(StoryName.Prologue);

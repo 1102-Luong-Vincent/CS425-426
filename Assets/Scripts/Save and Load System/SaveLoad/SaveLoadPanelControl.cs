@@ -152,6 +152,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     void OnCheckButtonClick()
     {
         if (selSaveLoadButton == null) return;
+        SequenceManager.CancelActiveTutorial();
         GameValue.Instance.SetSaveData(selSaveLoadButton.GetSaveData());
         audioSource.PlayOneShot(buttonClickSound);
 

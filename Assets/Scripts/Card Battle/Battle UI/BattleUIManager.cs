@@ -80,6 +80,7 @@ public class BattleUIManager : MonoBehaviour
     public void MainMenu()
     {
         Time.timeScale = 1f;
+        SequenceManager.CancelActiveTutorial();
         SceneManager.LoadScene("MainMenuScene");
     }
 }

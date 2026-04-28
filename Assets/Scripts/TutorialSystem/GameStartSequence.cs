@@ -410,17 +410,27 @@ public class GameStartSequence : BaseSequence
 
     public void Cleanup()
     {
-        SequenceManager.Instance.playercontroller.enabled = true;
-        SequenceManager.Instance.Button1.interactable = true;
-        SequenceManager.Instance.Button2.interactable = true;
-        SequenceManager.Instance.Button3.interactable = true;
-        SequenceManager.Instance.SortButton1.interactable = true;
-        SequenceManager.Instance.SortButton2.interactable = true;
-        SequenceManager.Instance.DeckButton.interactable = true;
-        SequenceManager.Instance.CombineButton.interactable = true;
-        SequenceManager.Instance.UpgradeButton.interactable = true;
-        SequenceManager.Instance.OptionsButton.interactable = true;
-        PlayerMenuManager.Instance.menuToggleEnabled = true;
+        SequenceManager manager = SequenceManager.Instance;
+
+        if (manager != null)
+        {
+            if (manager.playercontroller != null) manager.playercontroller.enabled = true;
+            if (manager.Button1 != null) manager.Button1.interactable = true;
+            if (manager.Button2 != null) manager.Button2.interactable = true;
+            if (manager.Button3 != null) manager.Button3.interactable = true;
+            if (manager.SortButton1 != null) manager.SortButton1.interactable = true;
+            if (manager.SortButton2 != null) manager.SortButton2.interactable = true;
+            if (manager.DeckButton != null) manager.DeckButton.interactable = true;
+            if (manager.CombineButton != null) manager.CombineButton.interactable = true;
+            if (manager.UpgradeButton != null) manager.UpgradeButton.interactable = true;
+            if (manager.OptionsButton != null) manager.OptionsButton.interactable = true;
+        }
+
+        if (PlayerMenuManager.Instance != null)
+        {
+            PlayerMenuManager.Instance.menuToggleEnabled = true;
+        }
+
         DestroyPanel("MoveTutorialPanel");
         DestroyPanel("SprintTutorialPanel");
         DestroyPanel("InteractTutorialPanel");
@@ -436,10 +446,14 @@ public class GameStartSequence : BaseSequence
         DestroyPanel("CombatTooltipPanel2");
         DestroyPanel("CombatTooltipPanel3");
         DestroyPanel("CombatTooltipPanel4");
-        DestroyPanel("CombineTooltipPanel5");
+        DestroyPanel("CombatTooltipPanel5");
+        DestroyPanel("CombineTooltipPanel1");
         DestroyPanel("CombineTutorialPanel1");
         DestroyPanel("CombineTutorialPanel2");
         DestroyPanel("CombineTutorialPanel3");
+        DestroyPanel("UpgradeTooltipPanel1");
+        DestroyPanel("UpgradeTooltipPanel2");
+        DestroyPanel("FinalControlsPanel");
         if (DoorTrigger != null)
             DoorTrigger.SetActive(true);
     }
