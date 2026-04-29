@@ -17,6 +17,9 @@ public class GameStartSequence : BaseSequence
     [SerializeField] private GameObject frontDoorOpened;
     [SerializeField] private GameObject frontDoorClosed;
 
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audio;
+    [SerializeField] AudioClip doorOpeningSound;
 
     //sequence flags
 
@@ -238,6 +241,9 @@ public class GameStartSequence : BaseSequence
         //open front door
         frontDoorClosed.SetActive(false);
         frontDoorOpened.SetActive(true);
+
+        //audio for front door opening
+        audio.PlayOneShot(doorOpeningSound);
 
         //move zombie into the room
         tutorialZombie.transform.position = zombieSpawnPoint;
