@@ -226,7 +226,7 @@ public class MiniMapController : MonoBehaviour
         {
             var type = item.GetInteractionType();
 
-            if(type == ItemInteractionType.Dialogue || type == ItemInteractionType.Custom)
+            if(type == ItemInteractionType.Custom)
             {
                 continue;
             }

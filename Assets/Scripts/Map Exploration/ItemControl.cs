@@ -76,6 +76,7 @@ public class ItemControl : MonoBehaviour
     private bool playerInRange = false;
     private PlayerController currentPlayer = null;
 
+    bool isPickedUp = false;
 
     private void Start()
     {
@@ -101,6 +102,11 @@ public class ItemControl : MonoBehaviour
 
     private void Update()
     {
+        //disables the interaction key E after initial pickup to prevent spamming
+        if (isPickedUp)
+        {
+            return;
+        }
         if(windowPanel != null && windowPanel.activeSelf)
         {
             if(Input.GetKeyDown(KeyCode.Backspace) || Input.GetKeyDown(interactionKey))
@@ -294,6 +300,7 @@ public class ItemControl : MonoBehaviour
             {
                 GameValue.Instance.GetPlayerValue().HadWeaponsLibrary.Add(weapon);
                 itemName = weapon.WeaponName;
+                isPickedUp = true; //prevents spamming when interactable is picked up
                 Debug.Log($"Added weapon {weaponID} to inventory.");
             }
             else
@@ -304,6 +311,7 @@ public class ItemControl : MonoBehaviour
         else
         {
             CardValue AddCard = GameValue.Instance.GetGameValueLibrary().GetInitCard(ItemID);
+            isPickedUp = true; //prevents spamming when interactable is picked up
 
             if (AddCard != null)
             {
@@ -405,8 +413,8 @@ public class ItemControl : MonoBehaviour
         {
             player.HadCardsLibrary.Add(keyItem);
             itemName = keyItem.CardName;
+            isPickedUp = true; //prevents spamming when interactable is picked up
 
-            
             InteractableNotification.Instance.ShowNotification(itemName);
             
             Debug.Log($"Key {ItemID} added to inventory");
