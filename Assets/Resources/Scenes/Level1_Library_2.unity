@@ -3054,7 +3054,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1942691125}
     m_Modifications:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: ItemID
@@ -3067,7 +3067,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupSound
       value: 
-      objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+      objectReference: {fileID: 8300000, guid: ea5574ced1f10b647a60504a38b1ba21, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterPickup
       value: Go to the door and enter the next map.
@@ -3189,6 +3189,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+--- !u!4 &1353908145 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7177733708982807187, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+  m_PrefabInstance: {fileID: 1353908144}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1375074680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3226,6 +3231,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 0
       objectReference: {fileID: 0}
@@ -3236,7 +3245,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: keyPickupSound
       value: 
-      objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+      objectReference: {fileID: 8300000, guid: cf97fe77de555e04cbed8be0a4363ff0, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: interactionType
       value: 4
@@ -4958,6 +4967,7 @@ Transform:
   - {fileID: 463011427}
   - {fileID: 1734145854}
   - {fileID: 426451798}
+  - {fileID: 1353908145}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1942691126
@@ -5090,7 +5100,6 @@ SceneRoots:
   - {fileID: 1248251030}
   - {fileID: 162749817}
   - {fileID: 1942691125}
-  - {fileID: 1353908144}
   - {fileID: 1606168068}
   - {fileID: 119665093}
   - {fileID: 1221429036}

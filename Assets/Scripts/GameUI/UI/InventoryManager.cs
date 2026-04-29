@@ -32,6 +32,11 @@ public class InventoryManager : MonoBehaviour
     GameObject targetCard; // card we want to replace
 
     bool replacingCard = false; // when we select a card, are we replacing it?
+
+    [Header("Equip Sound Effects")]
+    [SerializeField] AudioClip equipSound;
+    [SerializeField] AudioClip cardEquipSound;
+    [SerializeField] AudioSource audio;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -73,6 +78,7 @@ public class InventoryManager : MonoBehaviour
         else if (card.tag == "BattleCard" && player.getDeckSize(player.GetActiveDeckIndex()) < 20)
         {
             Debug.Log("clicked equip card");
+            audio.PlayOneShot(cardEquipSound);
             player.AddCardToDeck(player.GetActiveDeckIndex(), card.GetComponent<MenuCardControl>().GetCardValue());
 
         }
@@ -107,12 +113,15 @@ public class InventoryManager : MonoBehaviour
         {
             case "Knife":
                 playerPortrait.sprite = knifeImage;
+                audio.PlayOneShot(equipSound);
                 break;
             case "Pistol":
                 playerPortrait.sprite = pistolImage;
+                audio.PlayOneShot(equipSound);
                 break;
             case "Shotgun":
                 playerPortrait.sprite = shotgunImage;
+                audio.PlayOneShot(equipSound);
                 break;
             default:
                 playerPortrait.sprite = unarmedImage;

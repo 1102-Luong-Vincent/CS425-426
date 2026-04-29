@@ -170,7 +170,10 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
         }
 
         if (cardValue != null)
+        {
             Debug.Log($"Used card: {cardValue.CardName}");
+            audioSource.PlayOneShot(cardUseSound);
+        }
 
         else if(weaponValue != null)
 
@@ -203,7 +206,6 @@ public class BattleCardControl : CardUIBase, IPointerEnterHandler, IPointerExitH
             yield return StartCoroutine(ba.PlayCardAnimation(cardValue.CardName, BattlePlayerValue.Instance.getAnimator(), target.GetAnimator()));
             cardValue.UseEffect(BattlePlayerValue.Instance, BattleEnemyManager.Instance.GetEnemyValues());
         }
-        audioSource.PlayOneShot(cardUseSound);
 
         // 3. Remove card from player's hand
         BattlePlayerValue.Instance.RemoveCard(cardValue);

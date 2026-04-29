@@ -15403,7 +15403,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: pickupSound
       value: 
-      objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+      objectReference: {fileID: 8300000, guid: ea5574ced1f10b647a60504a38b1ba21, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: objectiveAfterPickup
       value: Go to the door and enter the next map.
@@ -17565,6 +17565,10 @@ PrefabInstance:
       propertyPath: pickupIcon
       value: 
       objectReference: {fileID: 21300000, guid: f89e360a5675f6042a0d9a7e5cd89dbd, type: 3}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a71a1974b13429f4594ddfbc1f27295c, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 1
@@ -27442,6 +27446,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 0
       objectReference: {fileID: 0}
@@ -27452,7 +27460,7 @@ PrefabInstance:
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: keyPickupSound
       value: 
-      objectReference: {fileID: 8300000, guid: ff8b37ff6215e5142b70b0bcf52a75cc, type: 3}
+      objectReference: {fileID: 8300000, guid: cf97fe77de555e04cbed8be0a4363ff0, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: interactionType
       value: 4
@@ -31656,6 +31664,10 @@ PrefabInstance:
       propertyPath: pickupIcon
       value: 
       objectReference: {fileID: 21300000, guid: 369b8d619879edd46a85f7bb572fe2e1, type: 3}
+    - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
+      propertyPath: pickupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a71a1974b13429f4594ddfbc1f27295c, type: 3}
     - target: {fileID: 105409371532791564, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: isWeaponPickup
       value: 1

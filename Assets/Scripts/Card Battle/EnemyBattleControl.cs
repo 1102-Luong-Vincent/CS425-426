@@ -23,6 +23,7 @@ public class EnemyBattleControl : MonoBehaviour
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip zombieDeathSound;
+    [SerializeField] AudioClip explosionSound;
 
     [SerializeField] private DamageText damageText;
 
@@ -49,6 +50,7 @@ public class EnemyBattleControl : MonoBehaviour
         {
             enemyValue.explodeOnDeath = true;
             enemyValue.explosionDamage = 15;
+            //audioSource.PlayOneShot(explosionSound);
         }
 
         InitAnimator();

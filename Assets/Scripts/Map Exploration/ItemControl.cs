@@ -56,6 +56,7 @@ public class ItemControl : MonoBehaviour
     [SerializeField] AudioClip interactionSound;
     [SerializeField] AudioClip pickupSound;
     [SerializeField] AudioClip keyPickupSound;
+    
 
     [Header("Pickup Icon")]
     [SerializeField] private Sprite pickupIcon;
@@ -126,6 +127,11 @@ public class ItemControl : MonoBehaviour
                 OpenWindow();
                 SetObjectiveVisible(false);
                 Time.timeScale = 0f;
+            }
+
+            if((interactionType == ItemInteractionType.KeyPickup))
+            {
+                audioSource.PlayOneShot(keyPickupSound);
             }
         }
     }
