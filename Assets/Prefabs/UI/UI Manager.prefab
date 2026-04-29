@@ -844,7 +844,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1515093.6, y: -40.51783}
+  m_AnchoredPosition: {x: -1524827.1, y: -40.51783}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3730602931531131079
@@ -6702,7 +6702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1617381.6, y: -521975.72}
+  m_AnchoredPosition: {x: -1625258.9, y: -525702.56}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6578151681780092132
@@ -7360,6 +7360,7 @@ MonoBehaviour:
   playerPortrait: {fileID: 3364425197603876227}
   equipSound: {fileID: 8300000, guid: 006df16b8edfbfa42b5c63b015fc7e9f, type: 3}
   cardEquipSound: {fileID: 8300000, guid: 61b1ae31c18995b479e84d31e9b59b7a, type: 3}
+  RemoveFromDeckSound: {fileID: 8300000, guid: 19ef299ff99760646854dc59b2693590, type: 3}
   audio: {fileID: 1873397765562565590}
 --- !u!82 &1873397765562565590
 AudioSource:
@@ -11561,6 +11562,7 @@ MonoBehaviour:
   buttonClickSound: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
   playerHUD: {fileID: 0}
   MiniMap: {fileID: 0}
+  raindrop: {fileID: 0}
 --- !u!82 &4826844068946480900
 AudioSource:
   m_ObjectHideFlags: 0

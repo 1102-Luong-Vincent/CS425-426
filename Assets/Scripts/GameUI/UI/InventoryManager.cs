@@ -36,6 +36,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Equip Sound Effects")]
     [SerializeField] AudioClip equipSound;
     [SerializeField] AudioClip cardEquipSound;
+    [SerializeField] AudioClip RemoveFromDeckSound;
     [SerializeField] AudioSource audio;
     void Awake()
     {
@@ -72,6 +73,7 @@ public class InventoryManager : MonoBehaviour
         if (card.tag == "EquipCard")
         {
             Debug.Log("clicked equip card");
+            audio.PlayOneShot(RemoveFromDeckSound);
             player.RemoveCardFromDeck(player.GetActiveDeckIndex(), card.GetComponent<MenuCardControl>().GetCardValue());
         }
         // if clicking in library, add to deck (if we have space)
