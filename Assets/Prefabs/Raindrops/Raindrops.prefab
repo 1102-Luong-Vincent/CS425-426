@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3554345593422073801}
   - component: {fileID: 2303647747067694568}
   - component: {fileID: 3872615614981371697}
+  - component: {fileID: 7029997817510632279}
   m_Layer: 0
   m_Name: Raindrops
   m_TagString: Untagged
@@ -4931,3 +4932,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7029997817510632279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7270208371589635227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a58faaa25ab1ca43836898b750253ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RaindropsParticleSystem: {fileID: 3554345593422073801}
+  audio: {fileID: 3872615614981371697}
+  raindrops: {fileID: 8300000, guid: 081848e65508c574290ac04798b49e90, type: 3}

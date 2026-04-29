@@ -8248,6 +8248,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7029997817510632279, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+      propertyPath: audio
+      value: 
+      objectReference: {fileID: 1336716789}
+    - target: {fileID: 7029997817510632279, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+      propertyPath: raindrops
+      value: 
+      objectReference: {fileID: 8300000, guid: 081848e65508c574290ac04798b49e90, type: 3}
+    - target: {fileID: 7029997817510632279, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+      propertyPath: RaindropsParticleSystem
+      value: 
+      objectReference: {fileID: 1336716791}
     - target: {fileID: 7270208371589635227, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
       propertyPath: m_Name
       value: Raindrops
@@ -8257,6 +8269,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+--- !u!114 &496452387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7029997817510632279, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+  m_PrefabInstance: {fileID: 496452386}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a58faaa25ab1ca43836898b750253ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &497882201 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 219464462056448219, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
@@ -15957,6 +15980,10 @@ PrefabInstance:
       propertyPath: MiniMap
       value: 
       objectReference: {fileID: 771727545}
+    - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
+      propertyPath: raindrop
+      value: 
+      objectReference: {fileID: 496452387}
     - target: {fileID: 8702837474752483758, guid: d14f2d48130fe934a9497814a84ec950, type: 3}
       propertyPath: playerHUD
       value: 
@@ -32458,6 +32485,16 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 219464462056448219, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
   m_PrefabInstance: {fileID: 1335047757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1336716789 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3872615614981371697, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+  m_PrefabInstance: {fileID: 496452386}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1336716791 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3554345593422073801, guid: ebff6e07a8f3ae044812f3bf6d763712, type: 3}
+  m_PrefabInstance: {fileID: 496452386}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1339820876
 GameObject:

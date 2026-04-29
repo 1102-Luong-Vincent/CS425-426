@@ -31,6 +31,8 @@ public class PauseControl : MonoBehaviour
     [SerializeField] GameObject playerHUD;
     [SerializeField] GameObject MiniMap;
 
+    [SerializeField] public RaindropController raindrop;
+
     private void Start()
     {
         Debug.Log($"PauseControl Start: {name}, instanceID={GetInstanceID()}");
@@ -78,6 +80,11 @@ public class PauseControl : MonoBehaviour
         Time.timeScale = 0f; //game stops running.
         isPaused = true;
 
+        if(raindrop != null)
+        {
+            raindrop.RaindropsPauseMusic();
+        }
+
         SoundManage.Instance.PauseBackgroundMusic();
 
         //if(gameplayMusic != null && gameplayMusic.isPlaying)
@@ -97,6 +104,12 @@ public class PauseControl : MonoBehaviour
             SetGameplayUIActive(true);
             Time.timeScale = 1f; //game starts running again
             isPaused = false;
+
+            if (raindrop != null)
+            {
+                raindrop.RaindropsResumeMusic();
+            }
+
             PlayButtonClickSound();
             SoundManage.Instance.ResumeBackgroundMusic(); // Stop any pause music first
 
