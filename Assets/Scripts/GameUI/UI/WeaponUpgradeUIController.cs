@@ -69,6 +69,11 @@ public class WeaponUpgradeUIController : PanelControl
     [SerializeField] private TMP_Text resultInfoText;          // ResultPanel/ResultContent/ResultInfoText
     [SerializeField] private Button resultConfirmButton;       // ResultPanel/ResultConfirmButton
 
+    [Header("Sound Effects")]
+    [SerializeField] AudioSource audio;
+    [SerializeField] AudioClip confirmSound;
+    [SerializeField] AudioClip cancelSound;
+
     private string selectedWeaponName = "Knife";
 
     private void Start()
@@ -199,6 +204,7 @@ public class WeaponUpgradeUIController : PanelControl
             player.EquipmentWeapon = next;
         }
 
+        audio.PlayOneShot(confirmSound);
         ShowResultMessage($"Upgrade Success!\n{current.WeaponName}: LV{current.weaponLevel} -> LV{next.weaponLevel}");
     }
 
@@ -216,6 +222,7 @@ public class WeaponUpgradeUIController : PanelControl
     {
         ShowSelect();
         RefreshSelectUI();
+        audio.PlayOneShot(cancelSound);
     }
 
     public void OnResultConfirm()

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using static ButtonEffect;
+using UnityEngine.Audio;
 
 public class PlayerMenuManager : MonoBehaviour
 {
@@ -20,7 +21,11 @@ public class PlayerMenuManager : MonoBehaviour
     public ButtonAndPanel Upgrade;
     public ButtonAndPanel Option;
 
+    [SerializeField] public AudioSource audio;
+    [SerializeField] public AudioClip buttonClickSound;
+
     [Serializable]
+
     public class ButtonAndPanel
     {
         public Button button;
@@ -110,6 +115,7 @@ public class PlayerMenuManager : MonoBehaviour
     void OnDeckButtonClick()
     {
         OpenSpecificMenu(MenuState.Deck);
+        audio.PlayOneShot(buttonClickSound);
         playerHUD.SetActive(false);
         playerMiniMap.SetActive(false);
     }
@@ -117,6 +123,7 @@ public class PlayerMenuManager : MonoBehaviour
     void OnCombineButtonClick()
     {
         OpenSpecificMenu(MenuState.Combine);
+        audio.PlayOneShot(buttonClickSound);
         playerHUD.SetActive(false);
         playerMiniMap.SetActive(false);
     }
@@ -124,6 +131,7 @@ public class PlayerMenuManager : MonoBehaviour
     void OnUpgradeButtonClick()
     {
         OpenSpecificMenu(MenuState.Upgrade);
+        audio.PlayOneShot(buttonClickSound);
         playerHUD.SetActive(false);
         playerMiniMap.SetActive(false);
     }
@@ -131,6 +139,7 @@ public class PlayerMenuManager : MonoBehaviour
     void OnOptionButtonClick()
     {
         OpenSpecificMenu(MenuState.Options);
+        audio.PlayOneShot(buttonClickSound);
         playerHUD.SetActive(false);
         playerMiniMap.SetActive(false);
     }
