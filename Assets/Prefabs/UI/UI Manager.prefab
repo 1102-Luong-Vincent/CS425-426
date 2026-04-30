@@ -844,7 +844,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1524827.1, y: -40.51783}
+  m_AnchoredPosition: {x: -2584111, y: -40.51783}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3730602931531131079
@@ -2315,8 +2315,8 @@ MonoBehaviour:
   LanguageButton: {fileID: 4195364867664214877}
   ControlsButton: {fileID: 0}
   BackButton: {fileID: 0}
-  audioSource: {fileID: 0}
-  buttonClickSound: {fileID: 0}
+  audioSource: {fileID: 4826844068946480900}
+  buttonClickSound: {fileID: 8300000, guid: c5cb2ac29e89dbf43a9b644caaad45e6, type: 3}
   volumePanelControl:
     VolumePanel: {fileID: 5061226773678387641}
     BackgroundVolumeSlider: {fileID: 416368867600235464}
@@ -6702,7 +6702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1625258.9, y: -525702.56}
+  m_AnchoredPosition: {x: -2761625.2, y: -888907.25}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6578151681780092132
@@ -11534,6 +11534,8 @@ MonoBehaviour:
   Option:
     button: {fileID: 3037476955743582725}
     panel: {fileID: 7593128164344722555}
+  audio: {fileID: 4826844068946480900}
+  buttonClickSound: {fileID: 8300000, guid: 5e11e38068399c241b2aa73bce3aedee, type: 3}
   playerHUD: {fileID: 1656631866271578976}
   playerMiniMap: {fileID: 3445296233971996233}
   menuToggleEnabled: 1
@@ -11570,7 +11572,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7853803012973567212}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -16825,6 +16827,10 @@ PrefabInstance:
       propertyPath: requiredText
       value: 
       objectReference: {fileID: 1610257023409981516}
+    - target: {fileID: 2963151282272150552, guid: 0021a5499d1fc62498c3c44bdca77fb2, type: 3}
+      propertyPath: clearCardSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 59b7b073d0ef48c40b3652bf66ec868e, type: 3}
     - target: {fileID: 3145295695598152144, guid: 0021a5499d1fc62498c3c44bdca77fb2, type: 3}
       propertyPath: m_Interactable
       value: 0

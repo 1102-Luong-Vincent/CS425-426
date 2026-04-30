@@ -37,6 +37,12 @@ public class CardCombineManager : PanelControl
     private int combineCost = 0;
     public int ownedChemicals = 0;
 
+    [SerializeField] AudioSource audio;
+    [SerializeField] AudioClip cardSelectSound;
+    [SerializeField] AudioClip combineSound;
+    [SerializeField] AudioClip cardDeselectSound;
+    [SerializeField] AudioClip clearCardSound;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -53,11 +59,13 @@ public class CardCombineManager : PanelControl
         ClearAllSlots();
 
         if (CombineButton != null)
+        {
             CombineButton.onClick.AddListener(CombineCards);
-
+        }
+            
         if (ClearButton != null)
             ClearButton.onClick.AddListener(ClearAllSlots);
-        CombineButton.interactable = false;
+            CombineButton.interactable = false;
         // HidePanel();
     }
 
@@ -118,14 +126,17 @@ public class CardCombineManager : PanelControl
         if (cardSlot == FirstSlot)
         {
             ClearFirstCard();
+            audio.PlayOneShot(cardDeselectSound);
             UpdateResult();
             cardSlot.HighLightCard(false);
+            audio.PlayOneShot(cardDeselectSound);
             return;
         }
 
         if (cardSlot == SecondSlot)
         {
             ClearSecondCard();
+            audio.PlayOneShot(cardDeselectSound);
             UpdateResult();
             cardSlot.HighLightCard(false);
             return;
@@ -135,6 +146,7 @@ public class CardCombineManager : PanelControl
         if (FirstSlot == null)
         {
             FirstSlot = cardSlot;
+            audio.PlayOneShot(cardSelectSound);
             FirstCard.SetCardUI(cardSlot.GetCardValue());
             cardSlot.HighLightCard(true);
             UpdateResult();
@@ -145,6 +157,7 @@ public class CardCombineManager : PanelControl
         if (SecondSlot == null)
         {
             SecondSlot = cardSlot;
+            audio.PlayOneShot(cardSelectSound);
             SecondCard.SetCardUI(cardSlot.GetCardValue());
             cardSlot.HighLightCard(true);
             UpdateResult();
@@ -202,6 +215,7 @@ public class CardCombineManager : PanelControl
         if (result != null)
         {
             Debug.Log("[Combine] SUCCESS → " + result.CardName);
+            audio.PlayOneShot(combineSound);
             player.RemoveCard(first);
             player.RemoveCard(second);
 
@@ -280,6 +294,7 @@ public class CardCombineManager : PanelControl
         ClearFirstCard();
         ClearSecondCard();
         ResultCard.Clear();
+        audio.PlayOneShot(clearCardSound);
         combineCost = 0;
         refreshText();
         CombineButton.interactable = false;

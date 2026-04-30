@@ -17255,6 +17255,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.9372549
       objectReference: {fileID: 0}
+    - target: {fileID: 2274061274493854917, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: cardDeselectSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 19ef299ff99760646854dc59b2693590, type: 3}
     - target: {fileID: 2353628932804459885, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -17395,6 +17399,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4826844068946480900, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5055729988956716754, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -17467,6 +17475,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8679556121952108408, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: audio
+      value: 
+      objectReference: {fileID: 1032863145}
     - target: {fileID: 9072480234005427558, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -29738,6 +29750,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b7a90f6ecae4734b84231c9ba8bea7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1032863145 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4826844068946480900, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+  m_PrefabInstance: {fileID: 771727544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1035615387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31757,7 +31774,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2844078144919458876, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6523777684969038024, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_Enabled
@@ -62979,7 +62996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2176869272599355111, guid: 8c60ec10e6d0341438d05d6c6b5e6119, type: 3}
       propertyPath: m_text
-      value: "I hav found more information. The government plans on destroying the
+      value: "I have found more information. The government plans on destroying the
         cure. They had no intention of saving humanity. I overheard one of the soldiers
         revealing the cure's location from the prisoner they were transporting. \n\nThe
         cure is at the Military Quarantine Zone, past the hospital. Unfortunately,
