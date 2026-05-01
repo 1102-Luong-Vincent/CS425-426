@@ -33,15 +33,15 @@ public class SceneDataManager : MonoBehaviour
             return;
         }
 
-        List<EnemyValue> enemyValues = GameValue.Instance.GetBattleData().battleEnemys;
+        BattleData battleData = GameValue.Instance.GetBattleData();
 
-        if (enemyValues == null)
+        if (battleData.GetMapScene() != GameValue.Instance.GetCurrentScence())
         {
-            Debug.Log("battleEnemys list is NULL");
+            Debug.Log("BattleData does not belong to this scene.");
             return;
         }
 
-        DestroyEnemys(enemyValues);
+        DestroyEnemyByWorldID(battleData.GetWorldEnemyID());
     }
 
 #if UNITY_EDITOR
@@ -113,5 +113,31 @@ public class SceneDataManager : MonoBehaviour
 
 
         Debug.Log($"DestroyEnemys finished. Remaining enemies: {enemyControls.Count}");
+    }
+
+    private void DestroyEnemyByWorldID(int worldEnemyID)
+    {
+        if (worldEnemyID <= 0)
+        {
+            return;
+        }
+
+        EnemyControl targetEnemy = null;
+        foreach (EnemyControl enemy in enemyControls)
+        {
+            if (enemy != null && enemy.GetWorldEnemyID() == worldEnemyID)
+            {
+                targetEnemy = enemy;
+                break;
+            }
+        }
+
+        if (targetEnemy == null)
+        {
+            return;
+        }
+
+        enemyControls.Remove(targetEnemy);
+        Destroy(targetEnemy.gameObject);
     }
 }

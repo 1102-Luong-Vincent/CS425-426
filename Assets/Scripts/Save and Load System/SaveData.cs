@@ -61,6 +61,7 @@ public class SaveData
 public class WorldSaveData
 {
     public List<int> defeatedEnemyIds = new();
+    public List<string> defeatedEnemyKeys = new();
     public List<string> collectedInteractableIds = new();
     public List<string> keyInteractableIds = new();
     public List<EnemyPositionSaveData> enemyPositions = new();
@@ -70,6 +71,7 @@ public class WorldSaveData
     public WorldSaveData(GameValue gameValue)
     {
         defeatedEnemyIds = gameValue.GetDefeatedEnemyIds();
+        defeatedEnemyKeys = gameValue.GetDefeatedEnemyKeys();
         collectedInteractableIds = gameValue.GetCollectedInteractableIds();
         keyInteractableIds = gameValue.GetPlayerValue().keyInteractable.ToList();
         enemyPositions = gameValue.GetEnemyPositionSaveData();
@@ -79,6 +81,7 @@ public class WorldSaveData
 [System.Serializable]
 public class EnemyPositionSaveData
 {
+    public string enemyKey;
     public int worldEnemyID;
     public float x;
     public float y;
@@ -94,9 +97,34 @@ public class EnemyPositionSaveData
         z = position.z;
     }
 
+    public EnemyPositionSaveData(string enemyKey, Vector3 position)
+    {
+        this.enemyKey = enemyKey;
+        this.worldEnemyID = GetWorldEnemyIdFromKey(enemyKey);
+        x = position.x;
+        y = position.y;
+        z = position.z;
+    }
+
     public Vector3 GetPosition()
     {
         return new Vector3(x, y, z);
+    }
+
+    private int GetWorldEnemyIdFromKey(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return 0;
+        }
+
+        int separatorIndex = key.LastIndexOf(':');
+        if (separatorIndex < 0 || separatorIndex >= key.Length - 1)
+        {
+            return 0;
+        }
+
+        return int.TryParse(key.Substring(separatorIndex + 1), out int id) ? id : 0;
     }
 }
 

@@ -143,7 +143,7 @@ public class BattleManage : MonoBehaviour
     void EndBattle() //modified to display a win panel for the rewards. 
     {
 
-        GameValue.Instance.DefeatedEnemies(battleData.worldEnemyID);
+        GameValue.Instance.DefeatedEnemies(battleData.GetMapScene(), battleData.GetWorldEnemyID());
         CompleteTrevorOptionalObjectiveIfNeeded();
         CompleteIsaacOptionalObjectiveIfNeeded();
         string rewardMessage = "";

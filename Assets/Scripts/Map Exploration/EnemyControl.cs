@@ -389,5 +389,10 @@ public class EnemyControl : MonoBehaviour
         return EnemyID;
     }
 
+    public int GetWorldEnemyID()
+    {
+        return worldEnemyID;
+    }
+
 
 }

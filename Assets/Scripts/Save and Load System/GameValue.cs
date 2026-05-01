@@ -76,9 +76,9 @@ public class GameValue : MonoBehaviour
     private List<ExcelWeaponData> weaponExcelCache;
 
     //record data for defeated enemies 
-    private HashSet<int> defeatedEnemies  = new HashSet<int>();
+    private HashSet<string> defeatedEnemyKeys  = new HashSet<string>();
     private readonly HashSet<string> collectedInteractableIds = new HashSet<string>();
-    private readonly Dictionary<int, Vector3> enemyPositions = new Dictionary<int, Vector3>();
+    private readonly Dictionary<string, Vector3> enemyPositions = new Dictionary<string, Vector3>();
     private bool hasPendingPlayerPosition = false;
     private Vector3 pendingPlayerPosition = Vector3.zero;
     private bool suppressAutoSaveForNextSceneLoad = false;
@@ -126,7 +126,7 @@ public class GameValue : MonoBehaviour
         currentOptionalObjective = string.Empty;
         completedOptionalObjectives.Clear();
         battleData = null;
-        defeatedEnemies.Clear();
+        defeatedEnemyKeys.Clear();
         collectedInteractableIds.Clear();
         enemyPositions.Clear();
         hasPendingPlayerPosition = false;
@@ -341,9 +341,9 @@ public class GameValue : MonoBehaviour
 
         if (saveData.world != null)
         {
-            SetDefeatedEnemyIds(saveData.world.defeatedEnemyIds);
+            SetDefeatedEnemySaveData(saveData.world.defeatedEnemyKeys, saveData.world.defeatedEnemyIds, saveData.currentScene);
             SetCollectedInteractableIds(saveData.world.collectedInteractableIds);
-            SetEnemyPositionSaveData(saveData.world.enemyPositions);
+            SetEnemyPositionSaveData(saveData.world.enemyPositions, saveData.currentScene);
             playerValue.keyInteractable.Clear();
 
             if (saveData.world.keyInteractableIds != null)
@@ -359,9 +359,9 @@ public class GameValue : MonoBehaviour
         }
         else
         {
-            SetDefeatedEnemyIds(null);
+            SetDefeatedEnemySaveData(null, null, SceneType.None);
             SetCollectedInteractableIds(null);
-            SetEnemyPositionSaveData(null);
+            SetEnemyPositionSaveData(null, SceneType.None);
             playerValue.keyInteractable.Clear();
         }
 
@@ -444,13 +444,29 @@ public class GameValue : MonoBehaviour
     //data to record defeated enemies
     public void DefeatedEnemies(int worldEnemyID)
     {
-        defeatedEnemies.Add(worldEnemyID);
-        enemyPositions.Remove(worldEnemyID);
+        DefeatedEnemies(CurrentScene, worldEnemyID);
+    }
+
+    public void DefeatedEnemies(SceneType scene, int worldEnemyID)
+    {
+        if (!TryGetEnemyKey(scene, worldEnemyID, out string enemyKey))
+        {
+            return;
+        }
+
+        defeatedEnemyKeys.Add(enemyKey);
+        enemyPositions.Remove(enemyKey);
     }
 
     public bool IsEnemyDefeated(int worldEnemyID)
     {
-        return defeatedEnemies.Contains(worldEnemyID);
+        return IsEnemyDefeated(CurrentScene, worldEnemyID);
+    }
+
+    public bool IsEnemyDefeated(SceneType scene, int worldEnemyID)
+    {
+        return TryGetEnemyKey(scene, worldEnemyID, out string enemyKey) &&
+               defeatedEnemyKeys.Contains(enemyKey);
     }
 
     public void MarkCollectedInteractable(string persistentId)
@@ -468,7 +484,12 @@ public class GameValue : MonoBehaviour
 
     public List<int> GetDefeatedEnemyIds()
     {
-        return defeatedEnemies.OrderBy(id => id).ToList();
+        return new List<int>();
+    }
+
+    public List<string> GetDefeatedEnemyKeys()
+    {
+        return defeatedEnemyKeys.OrderBy(key => key).ToList();
     }
 
     public List<string> GetCollectedInteractableIds()
@@ -479,7 +500,7 @@ public class GameValue : MonoBehaviour
     public List<EnemyPositionSaveData> GetEnemyPositionSaveData()
     {
         return enemyPositions
-            .Where(pair => !defeatedEnemies.Contains(pair.Key))
+            .Where(pair => !defeatedEnemyKeys.Contains(pair.Key))
             .OrderBy(pair => pair.Key)
             .Select(pair => new EnemyPositionSaveData(pair.Key, pair.Value))
             .ToList();
@@ -487,42 +508,79 @@ public class GameValue : MonoBehaviour
 
     public void SetEnemyPosition(int worldEnemyID, Vector3 position)
     {
-        if (worldEnemyID <= 0 || defeatedEnemies.Contains(worldEnemyID))
+        SetEnemyPosition(CurrentScene, worldEnemyID, position);
+    }
+
+    public void SetEnemyPosition(SceneType scene, int worldEnemyID, Vector3 position)
+    {
+        if (!TryGetEnemyKey(scene, worldEnemyID, out string enemyKey) ||
+            defeatedEnemyKeys.Contains(enemyKey))
         {
             return;
         }
 
-        enemyPositions[worldEnemyID] = position;
+        enemyPositions[enemyKey] = position;
     }
 
     public bool TryGetEnemyPosition(int worldEnemyID, out Vector3 position)
     {
-        if (worldEnemyID <= 0 || defeatedEnemies.Contains(worldEnemyID))
+        return TryGetEnemyPosition(CurrentScene, worldEnemyID, out position);
+    }
+
+    public bool TryGetEnemyPosition(SceneType scene, int worldEnemyID, out Vector3 position)
+    {
+        if (!TryGetEnemyKey(scene, worldEnemyID, out string enemyKey) ||
+            defeatedEnemyKeys.Contains(enemyKey))
         {
             position = Vector3.zero;
             return false;
         }
 
-        return enemyPositions.TryGetValue(worldEnemyID, out position);
+        return enemyPositions.TryGetValue(enemyKey, out position);
     }
 
     public void SetDefeatedEnemyIds(IEnumerable<int> enemyIds)
     {
-        defeatedEnemies.Clear();
+        SetDefeatedEnemySaveData(null, enemyIds, CurrentScene);
+    }
 
-        if (enemyIds == null)
+    public void SetDefeatedEnemySaveData(IEnumerable<string> enemyKeys, IEnumerable<int> legacyEnemyIds, SceneType legacyScene)
+    {
+        defeatedEnemyKeys.Clear();
+
+        if (enemyKeys != null)
+        {
+            foreach (string enemyKey in enemyKeys)
+            {
+                if (IsValidEnemyKey(enemyKey))
+                {
+                    defeatedEnemyKeys.Add(enemyKey);
+                    enemyPositions.Remove(enemyKey);
+                }
+            }
+        }
+
+        if (defeatedEnemyKeys.Count > 0 || legacyEnemyIds == null)
         {
             return;
         }
 
-        foreach (int enemyId in enemyIds)
+        foreach (int enemyId in legacyEnemyIds)
         {
-            defeatedEnemies.Add(enemyId);
-            enemyPositions.Remove(enemyId);
+            if (TryGetEnemyKey(legacyScene, enemyId, out string enemyKey))
+            {
+                defeatedEnemyKeys.Add(enemyKey);
+                enemyPositions.Remove(enemyKey);
+            }
         }
     }
 
     public void SetEnemyPositionSaveData(IEnumerable<EnemyPositionSaveData> positions)
+    {
+        SetEnemyPositionSaveData(positions, CurrentScene);
+    }
+
+    public void SetEnemyPositionSaveData(IEnumerable<EnemyPositionSaveData> positions, SceneType legacyScene)
     {
         enemyPositions.Clear();
 
@@ -533,15 +591,54 @@ public class GameValue : MonoBehaviour
 
         foreach (EnemyPositionSaveData positionData in positions)
         {
-            if (positionData == null ||
-                positionData.worldEnemyID <= 0 ||
-                defeatedEnemies.Contains(positionData.worldEnemyID))
+            if (positionData == null)
             {
                 continue;
             }
 
-            enemyPositions[positionData.worldEnemyID] = positionData.GetPosition();
+            string enemyKey = positionData.enemyKey;
+            if (!IsValidEnemyKey(enemyKey) &&
+                !TryGetEnemyKey(legacyScene, positionData.worldEnemyID, out enemyKey))
+            {
+                continue;
+            }
+
+            if (!defeatedEnemyKeys.Contains(enemyKey))
+            {
+                enemyPositions[enemyKey] = positionData.GetPosition();
+            }
         }
+    }
+
+    private bool TryGetEnemyKey(SceneType scene, int worldEnemyID, out string enemyKey)
+    {
+        enemyKey = string.Empty;
+
+        if (scene == SceneType.None ||
+            scene == SceneType.BattleScene ||
+            worldEnemyID <= 0)
+        {
+            return false;
+        }
+
+        enemyKey = $"{scene}:{worldEnemyID}";
+        return true;
+    }
+
+    private bool IsValidEnemyKey(string enemyKey)
+    {
+        if (string.IsNullOrWhiteSpace(enemyKey))
+        {
+            return false;
+        }
+
+        string[] parts = enemyKey.Split(':');
+        return parts.Length == 2 &&
+               Enum.TryParse(parts[0], true, out SceneType scene) &&
+               scene != SceneType.None &&
+               scene != SceneType.BattleScene &&
+               int.TryParse(parts[1], out int worldEnemyID) &&
+               worldEnemyID > 0;
     }
 
     public void SetCollectedInteractableIds(IEnumerable<string> interactableIds)
