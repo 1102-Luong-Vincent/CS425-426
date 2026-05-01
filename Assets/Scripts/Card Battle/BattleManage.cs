@@ -24,6 +24,7 @@ public class BattleManage : MonoBehaviour
     bool isPlayerAttacking = false;
     private bool playerActionLocked = false;
     public bool isBattleOver = false;
+    private EnemyValue enemyValue;
 
     public int Turn
     {

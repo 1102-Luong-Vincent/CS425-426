@@ -13,6 +13,7 @@ public class BattleEnemyManager : MonoBehaviour
     public EnemyBattleControl EnemyControlPrefab;
     public List<EnemyBattleControl> currentEnemys = new List<EnemyBattleControl>();
     Animator anim;
+    public EnemyValue enemyValue;
 
     private Vector2 rangeSize = new Vector2(2f, 2f); 
     public float minDistance = 1.5f;
@@ -23,6 +24,12 @@ public class BattleEnemyManager : MonoBehaviour
     [Header("Sound Effects")]
     [SerializeField] public AudioSource audioSource;
     [SerializeField] public AudioClip playerHitSound;
+    [SerializeField] public AudioClip enemyAttackSound;
+    [SerializeField] public AudioClip machineGunSound;
+    [SerializeField] public AudioClip swordAttackSound;
+    [SerializeField] public AudioClip BatSwingSound;
+    [SerializeField] public AudioClip knifeSwingSound;
+    [SerializeField] public AudioClip unarmedAttackSound;
 
     private void Awake()
     {
@@ -110,7 +117,32 @@ public class BattleEnemyManager : MonoBehaviour
         Debug.Log("Enemy action!");
         foreach (var enemy in currentEnemys)
         {
-            enemy.PlayAttackSound();
+            //enemy.PlayAttackSound();
+            if(enemy.EnemyValueReference.GetID() == 16 || enemy.EnemyValueReference.GetID() == 18 || enemy.EnemyValueReference.GetID() == 11)
+            {
+                audioSource.PlayOneShot(enemyAttackSound);
+            }
+            if(enemy.EnemyValueReference.GetID() == 12)
+            {
+                audioSource.PlayOneShot(machineGunSound);
+            }
+            if(enemy.EnemyValueReference.GetID() == 7 || enemy.EnemyValueReference.GetID() == 9 || enemy.EnemyValueReference.GetID() == 15)
+            {
+                audioSource.PlayOneShot(BatSwingSound);
+            }
+            if(enemy.EnemyValueReference.GetID() == 6 || enemy.EnemyValueReference.GetID() == 13)
+            {
+                audioSource.PlayOneShot(swordAttackSound);
+            }
+            if(enemy.EnemyValueReference.GetID() == 5)
+            {
+                audioSource.PlayOneShot(knifeSwingSound);
+            }
+            if(enemy.EnemyValueReference.GetID() == 17)
+            {
+                audioSource.PlayOneShot(unarmedAttackSound);
+            }
+
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
             BattleManage.Instance.GetBattlePlayerController().SpawnBlood();
             anim = enemy.gameObject.GetComponent<Animator>();
@@ -156,4 +188,3 @@ public class BattleEnemyManager : MonoBehaviour
         return currentEnemys;
     }
 }
-

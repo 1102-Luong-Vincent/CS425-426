@@ -24,6 +24,7 @@ public class EnemyBattleControl : MonoBehaviour
     [SerializeField] AudioClip attackSound;
     [SerializeField] AudioClip zombieDeathSound;
     [SerializeField] AudioClip explosionSound;
+    [SerializeField] AudioClip zombieGunSound;
 
     [SerializeField] private DamageText damageText;
 
@@ -305,6 +306,12 @@ public class EnemyBattleControl : MonoBehaviour
         if (audioSource != null && attackSound != null)
         {
             audioSource.PlayOneShot(attackSound);
+        }
+
+
+        if (enemyValue.GetID() == 16 || enemyValue.GetID() == 18)
+        {
+            audioSource.PlayOneShot(zombieGunSound);
         }
     }
 
