@@ -30,6 +30,7 @@ public class BattleEnemyManager : MonoBehaviour
     [SerializeField] public AudioClip BatSwingSound;
     [SerializeField] public AudioClip knifeSwingSound;
     [SerializeField] public AudioClip unarmedAttackSound;
+    [SerializeField] public AudioClip chainsawAttackSound;
 
     private void Awake()
     {
@@ -126,7 +127,7 @@ public class BattleEnemyManager : MonoBehaviour
             {
                 audioSource.PlayOneShot(machineGunSound);
             }
-            if(enemy.EnemyValueReference.GetID() == 7 || enemy.EnemyValueReference.GetID() == 9 || enemy.EnemyValueReference.GetID() == 15)
+            if(enemy.EnemyValueReference.GetID() == 7 || enemy.EnemyValueReference.GetID() == 9 || enemy.EnemyValueReference.GetID() == 15 || enemy.EnemyValueReference.GetID() == 10)
             {
                 audioSource.PlayOneShot(BatSwingSound);
             }
@@ -142,7 +143,11 @@ public class BattleEnemyManager : MonoBehaviour
             {
                 audioSource.PlayOneShot(unarmedAttackSound);
             }
-
+            if(enemy.EnemyValueReference.GetID() == 8)
+            {
+                audioSource.PlayOneShot(chainsawAttackSound);
+            }
+            
             enemy.EnemyValueReference.UseEffect(BattlePlayerValue.Instance, GetEnemyValues());
             BattleManage.Instance.GetBattlePlayerController().SpawnBlood();
             anim = enemy.gameObject.GetComponent<Animator>();
