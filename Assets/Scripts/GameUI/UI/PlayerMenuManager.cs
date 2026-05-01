@@ -16,6 +16,10 @@ public class PlayerMenuManager : MonoBehaviour
 
     public GameObject MainPanel;
 
+    [SerializeField] private GameObject darknessOverlay;
+    private bool darknessOverlayWasActiveBeforeMenu;
+    private bool hasStoredDarknessOverlayState;
+
     public ButtonAndPanel Deck;
     public ButtonAndPanel Combine;
     public ButtonAndPanel Upgrade;
@@ -165,6 +169,14 @@ public class PlayerMenuManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             MainPanel.SetActive(true);
+
+            // When open the inventory close the darkness overlay
+            //if (darknessOverlay != null && !hasStoredDarknessOverlayState)
+            //{
+            //    darknessOverlayWasActiveBeforeMenu = darknessOverlay.activeSelf;
+            //    hasStoredDarknessOverlayState = true;
+            //    darknessOverlay.SetActive(false);
+            //}
         }
 
         // Update state and refresh UI
@@ -186,6 +198,13 @@ public class PlayerMenuManager : MonoBehaviour
         Option.panel.HidePanel();
 
         MainPanel.SetActive(false);
+
+        // Open back up the darkness overlay when close the inventory
+        //if (darknessOverlay != null && hasStoredDarknessOverlayState)
+        //{
+        //    darknessOverlay.SetActive(darknessOverlayWasActiveBeforeMenu);
+        //    hasStoredDarknessOverlayState = false;
+        //}
 
         currentState = MenuState.Closed;
     }
