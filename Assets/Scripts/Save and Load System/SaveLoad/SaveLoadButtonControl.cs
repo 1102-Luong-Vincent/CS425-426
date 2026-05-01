@@ -34,7 +34,9 @@ public class SaveLoadButtonControl : MonoBehaviour
         this.saveData = saveData;
         this.saveFilePath = saveFilePath;
         //SaveLoadText.text = saveData.SaveTime.ToString();
-        SaveLoadText.text = saveData.saveTime;
+        SaveLoadText.text = string.IsNullOrWhiteSpace(saveData.saveName)
+            ? saveData.saveTime
+            : saveData.saveName;
     }
 
     void OnSaveLoadButtonClick()

@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using UnityEngine.Audio;
+using TMPro;
 
 public static class SaveLoadPath
 {
@@ -26,6 +27,11 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     public Button SavePanelSaveButton;
     public Button SavePanelCancelButton;
+
+    public GameObject SaveNamePanel;
+    public TMP_InputField SaveNameInput;
+    public Button SaveNameConfirmButton;
+    public Button SaveNameCancelButton;
 
     public Button LoadPanelLoadButton;
     public Button LoadPanelDeleteButton;
@@ -66,6 +72,7 @@ public class SaveLoadPanelControl : MonoBehaviour
         if (!Directory.Exists(normalSavePath)) Directory.CreateDirectory(normalSavePath);
         if (!Directory.Exists(autoSavePath)) Directory.CreateDirectory(autoSavePath);
         EnsurePanelContentParents();
+        CacheSaveNamePanelReferences();
         InitButtons();
 
         ClosePanel();
@@ -78,6 +85,16 @@ public class SaveLoadPanelControl : MonoBehaviour
         //CancelButton.onClick.AddListener(ClosePanel);
         SavePanelSaveButton.onClick.AddListener(OnSaveButtonClick);
         SavePanelCancelButton.onClick.AddListener(ClosePanel);
+
+        if (SaveNameConfirmButton != null)
+        {
+            SaveNameConfirmButton.onClick.AddListener(OnSaveNameConfirmButtonClick);
+        }
+
+        if (SaveNameCancelButton != null)
+        {
+            SaveNameCancelButton.onClick.AddListener(CloseSaveNamePanel);
+        }
 
         LoadPanelLoadButton.onClick.AddListener(OnCheckButtonClick);
         if (LoadPanelDeleteButton != null)
@@ -100,15 +117,16 @@ public class SaveLoadPanelControl : MonoBehaviour
     public void ClosePanel()
     {
         SetSelSaveLoadButton(null);
+        CloseSaveNamePanel();
         SavePanel.SetActive(false);
         LoadPanel.SetActive(false);
         SaveLoadRoot.SetActive(false);
     }
 
 
-    public void NormalSaveGame()
+    public void NormalSaveGame(string saveName = null)
     {
-        SaveGame(normalSavePath);
+        SaveGame(normalSavePath, null, saveName);
     }
 
     public void AutoSaveGame()
@@ -117,7 +135,7 @@ public class SaveLoadPanelControl : MonoBehaviour
         SaveGame(autoSavePath, AutoSaveFileName);
     }
 
-    private void SaveGame(string folderPath, string fileName = null)
+    private void SaveGame(string folderPath, string fileName = null, string saveName = null)
     {
         if (string.IsNullOrEmpty(fileName))
         {
@@ -126,6 +144,11 @@ public class SaveLoadPanelControl : MonoBehaviour
 
         string fullPath = Path.Combine(folderPath, fileName);
         SaveData saveData = new SaveData(fullPath, GameValue.Instance);
+        if (!string.IsNullOrWhiteSpace(saveName))
+        {
+            saveData.saveName = saveName.Trim();
+        }
+
         string json = JsonUtility.ToJson(saveData, true);
         File.WriteAllText(fullPath, json);
         Debug.Log($"Save to: {fullPath}");
@@ -144,9 +167,39 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     void OnSaveButtonClick()
     {
-        NormalSaveGame();
-        //LoadSaveButtons();
+        if (!CanShowSaveNamePanel())
+        {
+            NormalSaveGame();
+            LoadSaveButtonsForSavePanel();
+            return;
+        }
+
+        SaveNameInput.text = GetDefaultSaveName();
+        SaveNamePanel.SetActive(true);
+        SaveNamePanel.transform.SetAsLastSibling();
+        SaveNameInput.Select();
+        SaveNameInput.ActivateInputField();
+    }
+
+    void OnSaveNameConfirmButtonClick()
+    {
+        string saveName = SaveNameInput != null ? SaveNameInput.text.Trim() : string.Empty;
+        if (string.IsNullOrWhiteSpace(saveName))
+        {
+            saveName = GetDefaultSaveName();
+        }
+
+        NormalSaveGame(saveName);
+        CloseSaveNamePanel();
         LoadSaveButtonsForSavePanel();
+    }
+
+    void CloseSaveNamePanel()
+    {
+        if (SaveNamePanel != null)
+        {
+            SaveNamePanel.SetActive(false);
+        }
     }
 
     void OnCheckButtonClick()
@@ -305,6 +358,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     public void ShowSavePanel()
     {
         EnsurePanelContentParents();
+        CloseSaveNamePanel();
         SetSelSaveLoadButton(null);
         isShowingLoadPanel = false;
         LoadSaveButtonsForSavePanel();
@@ -316,6 +370,7 @@ public class SaveLoadPanelControl : MonoBehaviour
     public void ShowLoadPanel()
     {
         EnsurePanelContentParents();
+        CloseSaveNamePanel();
         SetSelSaveLoadButton(null);
         isShowingLoadPanel = true;
         LoadSaveButtonsForLoadPanel();
@@ -345,6 +400,63 @@ public class SaveLoadPanelControl : MonoBehaviour
         ReparentIfNeeded(SavePanelAutoSaveTransform, SavePanel != null ? SavePanel.transform : null);
         //ReparentIfNeeded(LoadPanelNormalSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
         ReparentIfNeeded(LoadPanelAutoSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
+    }
+
+    private void CacheSaveNamePanelReferences()
+    {
+        if (SaveNamePanel == null && SavePanel != null)
+        {
+            Transform saveNamePanelTransform = SavePanel.transform.Find("SaveNamePanel");
+            if (saveNamePanelTransform != null)
+            {
+                SaveNamePanel = saveNamePanelTransform.gameObject;
+            }
+        }
+
+        if (SaveNamePanel == null)
+        {
+            return;
+        }
+
+        if (SaveNameInput == null)
+        {
+            SaveNameInput = SaveNamePanel.GetComponentInChildren<TMP_InputField>(true);
+        }
+
+        if (SaveNameConfirmButton == null)
+        {
+            SaveNameConfirmButton = FindChildButton(SaveNamePanel.transform, "Confirm Button");
+            if (SaveNameConfirmButton == null)
+            {
+                SaveNameConfirmButton = FindChildButton(SaveNamePanel.transform, "Confirm Buttom");
+            }
+        }
+
+        if (SaveNameCancelButton == null)
+        {
+            SaveNameCancelButton = FindChildButton(SaveNamePanel.transform, "Cancel Button");
+        }
+    }
+
+    private Button FindChildButton(Transform parent, string childName)
+    {
+        if (parent == null)
+        {
+            return null;
+        }
+
+        Transform child = parent.Find(childName);
+        return child != null ? child.GetComponent<Button>() : null;
+    }
+
+    private bool CanShowSaveNamePanel()
+    {
+        return SaveNamePanel != null && SaveNameInput != null && SaveNameConfirmButton != null;
+    }
+
+    private string GetDefaultSaveName()
+    {
+        return System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
     private void ReparentIfNeeded(Transform contentTransform, Transform expectedParent)

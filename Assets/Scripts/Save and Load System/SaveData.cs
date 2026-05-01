@@ -13,6 +13,7 @@ public class SaveData
 {
     public int saveVersion;
     public string savePath;
+    public string saveName;
     public string saveTime;
     public SceneType currentScene;
     // public PlayerSaveData playerSaveData;
@@ -26,6 +27,7 @@ public class SaveData
     {
         saveVersion = 1;
         savePath = string.Empty;
+        saveName = string.Empty;
         saveTime = string.Empty;
         currentScene = SceneType.None;
         player = null;
@@ -41,6 +43,7 @@ public class SaveData
         //playerSaveData = new PlayerSaveData(gameValue.GetPlayerValue());
         //SaveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         this.saveVersion = 1;
+        this.saveName = string.Empty;
         this.saveTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         this.savePath = savePath;
         this.currentScene = gameValue.GetCurrentScence();
