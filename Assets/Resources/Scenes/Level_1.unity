@@ -17378,6 +17378,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 747920264637458591, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1031374101371800175, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -17410,6 +17414,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1429807093600118873, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1459672101319348484, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_fontSize
       value: 40
@@ -17425,6 +17433,10 @@ PrefabInstance:
     - target: {fileID: 1604364929370928231, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1687826896600529940, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1811936267003608858, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_SizeDelta.x
@@ -17678,6 +17690,10 @@ PrefabInstance:
       propertyPath: audio
       value: 
       objectReference: {fileID: 1032863145}
+    - target: {fileID: 8897631317593048843, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9072480234005427558, guid: fa4fbeafbce11f74dba02278de30b3ad, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -68252,6 +68268,14 @@ PrefabInstance:
       propertyPath: requiredCurrentObjectiveForLockedUpdate
       value: Head west to the hospital.
       objectReference: {fileID: 0}
+    - target: {fileID: 652417126230791086, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -7.189995
+      objectReference: {fileID: 0}
+    - target: {fileID: 652417126230791086, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.5950027
+      objectReference: {fileID: 0}
     - target: {fileID: 1339652607056951652, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_Name
       value: DoorTrigger
@@ -68330,6 +68354,10 @@ PrefabInstance:
       propertyPath: m_enableAutoSizing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5148037008589106255, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5334510970700369406, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -68353,6 +68381,18 @@ PrefabInstance:
     - target: {fileID: 7453478593673420078, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 5.9362
+      objectReference: {fileID: 0}
+    - target: {fileID: 8156119961820283454, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8295868984078799238, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -7.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8295868984078799238, guid: eccbf779f128f4946b129d28554082da, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.595
       objectReference: {fileID: 0}
     - target: {fileID: 8316018794383668896, guid: eccbf779f128f4946b129d28554082da, type: 3}
       propertyPath: m_IsActive

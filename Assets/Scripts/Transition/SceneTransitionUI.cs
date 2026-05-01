@@ -51,7 +51,9 @@ public class SceneTransitionUI : MonoBehaviour
     public void OnConfirmButton()
     {
         HideConfirmation();
+
         UIManager.Instance.FadeToScene(sceneToLoad, PlayerTransitionPosition);
+        
     }
 
     public void OnCancelButton()

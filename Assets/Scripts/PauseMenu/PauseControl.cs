@@ -86,6 +86,7 @@ public class PauseControl : MonoBehaviour
         }
 
         SoundManage.Instance.PauseBackgroundMusic();
+        SoundManage.Instance.StopFootSteps();
 
         //if(gameplayMusic != null && gameplayMusic.isPlaying)
         //{
