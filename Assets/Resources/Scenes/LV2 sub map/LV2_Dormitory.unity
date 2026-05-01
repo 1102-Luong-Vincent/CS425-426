@@ -1238,15 +1238,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_Name
-      value: An Unremarkable Zombie 2
+      value: Zombie Soldier 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3222855522173630696, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 287be937eff527e4a9acb122685b5879, type: 2}
     - target: {fileID: 4209295706544399311, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_FlipX
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: EnemyID
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: worldEnemyID
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1312,7 +1320,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_Name
-      value: An Unremarkable Zombie
+      value: Zombie Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222855522173630696, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 287be937eff527e4a9acb122685b5879, type: 2}
+    - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: EnemyID
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1577,8 +1593,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1459099905}
   - {fileID: 390277186}
+  - {fileID: 1459099905}
   - {fileID: 326138016}
   - {fileID: 1804888619}
   - {fileID: 1337051489}
@@ -4215,15 +4231,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_Name
-      value: Teen Zombie
+      value: Zombie Soldier 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3222855522173630696, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 287be937eff527e4a9acb122685b5879, type: 2}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: EnemyID
-      value: 2
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: worldEnemyID
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4786,15 +4806,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_Name
-      value: Loser Zombie
+      value: Zombie Soldier 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3222855522173630696, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 287be937eff527e4a9acb122685b5879, type: 2}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: EnemyID
-      value: 4
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: worldEnemyID
-      value: 8
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5644,19 +5668,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611354737829732598, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_Name
-      value: Midlife Crisis Zombie 2
+      value: Zombie Pipe
       objectReference: {fileID: 0}
+    - target: {fileID: 3222855522173630696, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c3c01ab42b1bf634c90bac46743d6ea4, type: 2}
     - target: {fileID: 4209295706544399311, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: EnemyID
-      value: 4
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8744953920764477652, guid: f1041a6eb7fc10d43ac87da08609aa81, type: 3}
       propertyPath: worldEnemyID
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

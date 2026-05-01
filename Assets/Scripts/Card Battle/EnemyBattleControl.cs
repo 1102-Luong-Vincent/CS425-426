@@ -44,16 +44,21 @@ public class EnemyBattleControl : MonoBehaviour
     {
         this.enemyValue = enemyValue;
         enemyNameText.text = enemyValue.EnemyName;
-        enemySprite.sprite = enemyValue.GetSprite();
+        //enemySprite.sprite = enemyValue.GetSprite();
 
-        if(enemyValue.GetID() == 4)
+        InitAnimator();
+
+        if (animator != null)
+        {
+            animator.Play("Idle"); // make sure your animation has this state
+        }
+
+        if (enemyValue.GetID() == 4)
         {
             enemyValue.explodeOnDeath = true;
             enemyValue.explosionDamage = 15;
             //audioSource.PlayOneShot(explosionSound);
         }
-
-        InitAnimator();
 
         SetHealth();
         Listener(true);
