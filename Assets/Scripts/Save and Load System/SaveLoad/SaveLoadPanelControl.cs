@@ -341,9 +341,9 @@ public class SaveLoadPanelControl : MonoBehaviour
 
     private void EnsurePanelContentParents()
     {
-        ReparentIfNeeded(SavePanelNormalSaveTransform, SavePanel != null ? SavePanel.transform : null);
+        //ReparentIfNeeded(SavePanelNormalSaveTransform, SavePanel != null ? SavePanel.transform : null);
         ReparentIfNeeded(SavePanelAutoSaveTransform, SavePanel != null ? SavePanel.transform : null);
-        ReparentIfNeeded(LoadPanelNormalSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
+        //ReparentIfNeeded(LoadPanelNormalSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
         ReparentIfNeeded(LoadPanelAutoSaveTransform, LoadPanel != null ? LoadPanel.transform : null);
     }
 
