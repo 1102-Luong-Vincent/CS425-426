@@ -171,12 +171,12 @@ public class PlayerMenuManager : MonoBehaviour
             MainPanel.SetActive(true);
 
             // When open the inventory close the darkness overlay
-            //if (darknessOverlay != null && !hasStoredDarknessOverlayState)
-            //{
-            //    darknessOverlayWasActiveBeforeMenu = darknessOverlay.activeSelf;
-            //    hasStoredDarknessOverlayState = true;
-            //    darknessOverlay.SetActive(false);
-            //}
+            if (darknessOverlay != null && !hasStoredDarknessOverlayState)
+            {
+                darknessOverlayWasActiveBeforeMenu = darknessOverlay.activeSelf;
+                hasStoredDarknessOverlayState = true;
+                darknessOverlay.SetActive(false);
+            }
         }
 
         // Update state and refresh UI
@@ -200,11 +200,11 @@ public class PlayerMenuManager : MonoBehaviour
         MainPanel.SetActive(false);
 
         // Open back up the darkness overlay when close the inventory
-        //if (darknessOverlay != null && hasStoredDarknessOverlayState)
-        //{
-        //    darknessOverlay.SetActive(darknessOverlayWasActiveBeforeMenu);
-        //    hasStoredDarknessOverlayState = false;
-        //}
+        if (darknessOverlay != null && hasStoredDarknessOverlayState)
+        {
+            darknessOverlay.SetActive(darknessOverlayWasActiveBeforeMenu);
+            hasStoredDarknessOverlayState = false;
+        }
 
         currentState = MenuState.Closed;
     }
